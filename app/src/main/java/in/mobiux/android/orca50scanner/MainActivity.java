@@ -78,6 +78,11 @@ public class MainActivity extends BaseActivity {
             Log.d(TAG, "" + tag.mReadCount);
             Log.d(TAG, "" + tag.strEPC);
             Log.d(TAG, "" + tag.cmd);
+
+            Inventory inventory = new Inventory();
+            inventory.setEpc(tag.strEPC);
+            inventory.setRssi(tag.strRSSI);
+            viewModel.insert(inventory);
         }
 
         @Override

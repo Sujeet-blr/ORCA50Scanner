@@ -37,6 +37,10 @@ public class Inventory extends BaseModel{
     @Expose
     private int quantity;
 
+    @SerializedName("rssi")
+    @Expose
+    private String rssi;
+
 //    @SerializedName("createdAt")
 //    @Expose
 //    private Date createdAt;
@@ -73,4 +77,11 @@ public class Inventory extends BaseModel{
         this.quantity = quantity;
     }
 
+    public String getRssi() {
+        return rssi;
+    }
+
+    public void setRssi(String rssi) {
+        this.rssi = rssi;
+    }
 }
