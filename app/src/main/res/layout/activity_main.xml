@@ -1,0 +1,258 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".MainActivity">
+
+    <LinearLayout
+        android:id="@+id/lltTop"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:padding="5dp">
+
+        <Button
+            android:id="@+id/btnStart"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Inventory" />
+
+        <Button
+            android:id="@+id/btnStop"
+            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp"
+            android:layout_weight="1"
+            android:text="Stop" />
+
+        <Button
+            android:id="@+id/btnRefresh"
+            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Refresh" />
+    </LinearLayout>
+
+    <View
+        android:id="@+id/vDivider1"
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:layout_below="@id/lltTop"
+        android:background="@android:color/darker_gray" />
+
+    <LinearLayout
+        android:id="@+id/lltTop2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/vDivider1"
+        android:background="@color/grey"
+        android:orientation="horizontal"
+        android:padding="5dp">
+
+        <TextView
+            style="@style/TextAppearance.AppCompat.Headline"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@color/white"
+            android:gravity="center"
+            android:text="Inventoried:" />
+
+        <TextView
+            android:id="@+id/tvInventoryCount"
+            style="@style/TextAppearance.AppCompat.Headline"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp"
+            android:layout_weight="1"
+            android:background="@color/white"
+            android:gravity="center"
+            android:text="47" />
+
+        <TextView
+            style="@style/TextAppearance.AppCompat.Headline"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@color/white"
+            android:gravity="center"
+            android:text="Items " />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/lltTop3"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/lltTop2"
+        android:background="@color/grey"
+        android:orientation="horizontal"
+        android:padding="5dp">
+
+        <TextView
+            style="@style/TextAppearance.AppCompat.Button"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@color/white"
+            android:gravity="center"
+            android:text="Speed: " />
+
+        <TextView
+            android:id="@+id/tvSpeed"
+            style="@style/TextAppearance.AppCompat.Button"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp"
+            android:layout_weight="1"
+            android:background="@color/white"
+            android:gravity="center"
+            android:text="11" />
+
+        <TextView
+            style="@style/TextAppearance.AppCompat.Button"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@color/white"
+            android:gravity="center"
+            android:text="Tag/Sec" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/lltList"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+
+        android:layout_below="@id/lltTop3"
+        android:layout_marginTop="16dp"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/white"
+            android:orientation="horizontal"
+            android:padding="8dp">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="2"
+                android:gravity="center"
+                android:text="ID"
+                android:textSize="14sp"
+                android:textStyle="bold" />
+
+            <View
+                android:layout_width="2dp"
+                android:layout_height="match_parent"
+                android:background="@color/grey" />
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="6"
+                android:gravity="center"
+                android:text="EPC"
+                android:textSize="14sp"
+                android:textStyle="bold" />
+
+            <View
+                android:layout_width="2dp"
+                android:layout_height="match_parent"
+                android:background="@color/grey" />
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="2"
+                android:gravity="center"
+                android:text="PC"
+                android:textSize="14sp"
+                android:textStyle="bold" />
+        </LinearLayout>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:clipChildren="true"
+            android:paddingBottom="20dp"
+            app:reverseLayout="true" />
+    </LinearLayout>
+
+    <RelativeLayout
+        android:id="@+id/footer"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true">
+
+        <Button
+            android:id="@+id/btnExport"
+            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="16dp"
+            android:text="Export to .csv" />
+    </RelativeLayout>
+
+
+    <!--    old code-->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:visibility="gone">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <CheckBox
+                android:id="@+id/RFID"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="RFID" />
+
+            <CheckBox
+                android:id="@+id/TDScanner"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="2DScanner" />
+
+            <Button
+                android:id="@+id/send"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="2"
+                android:text="Send"
+                android:textAllCaps="false" />
+
+            <Button
+                android:id="@+id/clear"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="2"
+                android:text="Clear"
+                android:textAllCaps="false" />
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/data_show_panel"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+    </LinearLayout>
+
+</RelativeLayout>
