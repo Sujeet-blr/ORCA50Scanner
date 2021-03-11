@@ -36,6 +36,8 @@ public class BaseActivity extends AppCompatActivity {
     public static int STORAGE_PERMISSION_CODE = 121;
     public static int CAMERA_PERMISSION_CODE = 123;
 
+    FileOutputStream outputStream;
+
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -109,10 +111,6 @@ public class BaseActivity extends AppCompatActivity {
 
     protected void exportToCSV(List<Inventory> list) {
 
-//        String fileName = System.currentTimeMillis() + ".csv";
-//        File destination = new File(getApplicationContext().getExternalFilesDir(Environment.DIRECTORY_DOCUMENTS),
-//                fileName);
-
         StringBuilder data = new StringBuilder();
 //        data.append("")
 
@@ -122,10 +120,10 @@ public class BaseActivity extends AppCompatActivity {
 
         try {
 //            destination.createNewFile();
-            FileOutputStream out = openFileOutput("data.csv", Context.MODE_PRIVATE);
-            out.write((data.toString()).getBytes());
-            out.close();
-            out.flush();
+//            FileOutputStream out = openFileOutput("data.csv", Context.MODE_PRIVATE);
+//            out.write((data.toString()).getBytes());
+//            out.close();
+//            out.flush();
 
             Context context = getApplicationContext();
 
@@ -138,7 +136,18 @@ public class BaseActivity extends AppCompatActivity {
             fileIntent.putExtra(Intent.EXTRA_STREAM, path);
             startActivity(Intent.createChooser(fileIntent, "Export"));
 
-        } catch (IOException e) {
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+
+    private void appendToLogs(String s) {
+        try {
+            outputStream = openFileOutput("data.csv", MODE_PRIVATE);
+            outputStream.write(s.getBytes());
+            outputStream.close();
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }

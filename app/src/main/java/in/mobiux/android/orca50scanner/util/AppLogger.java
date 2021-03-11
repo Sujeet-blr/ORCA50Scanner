@@ -25,6 +25,7 @@ public class AppLogger {
     private Context context;
     private static AppLogger instance;
     private StringBuilder data;
+    FileOutputStream out;
 
     private AppLogger(Context context) {
         this.context = context;
@@ -41,7 +42,8 @@ public class AppLogger {
 
     public void i(String tag, String msg) {
         Log.i(tag, msg);
-        data.append("\n" + tag + "\t:>, " + msg + "\t>," + String.valueOf(AppUtils.getFormattedTimestamp()));
+        data = new StringBuilder(("\n" + tag + "\t:>, " + msg + "\t," + String.valueOf(AppUtils.getFormattedTimestamp())));
+        appendToLogs(data.toString());
     }
 
     public void createAndExportLogs(Context context) {
@@ -52,12 +54,12 @@ public class AppLogger {
             return;
         }
 
-        FileOutputStream out = null;
+//        FileOutputStream out = null;
         try {
-            out = context.openFileOutput("logs.csv", Context.MODE_PRIVATE);
-            out.write((data.toString()).getBytes());
-            out.close();
-            out.flush();
+//            out = context.openFileOutput("logs.csv", Context.MODE_PRIVATE);
+//            out.write((data.toString()).getBytes());
+//            out.close();
+//            out.flush();
 
 
             File fileLocation = new File(context.getFilesDir(), "logs.csv");
@@ -68,9 +70,24 @@ public class AppLogger {
             fileIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
             fileIntent.putExtra(Intent.EXTRA_STREAM, path);
             context.startActivity(Intent.createChooser(fileIntent, "Export logs"));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+
+    private void appendToLogs(String data) {
+        if (context == null)
+            return;
+
+        if (ContextCompat.checkSelfPermission(context, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED)
+            return;
+        try {
+            out = context.openFileOutput("logs.csv", Context.MODE_APPEND);
+            out.write(data.getBytes());
+            out.close();
         } catch (IOException e) {
             e.printStackTrace();
         }
-
     }
 }
