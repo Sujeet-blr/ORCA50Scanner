@@ -24,12 +24,14 @@ import java.util.List;
 
 import in.mobiux.android.orca50scanner.R;
 import in.mobiux.android.orca50scanner.api.model.Inventory;
+import in.mobiux.android.orca50scanner.util.AppLogger;
 
 /**
  * Created by SUJEET KUMAR on 08-Mar-21.
  */
 public class BaseActivity extends AppCompatActivity {
 
+    protected AppLogger logger;
     public View parentLayout;
     public static int STORAGE_PERMISSION_CODE = 121;
     public static int CAMERA_PERMISSION_CODE = 123;
@@ -38,6 +40,7 @@ public class BaseActivity extends AppCompatActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        logger = AppLogger.getInstance(getApplicationContext());
     }
 
     @Override
@@ -114,7 +117,7 @@ public class BaseActivity extends AppCompatActivity {
 //        data.append("")
 
         for (Inventory inventory : list) {
-            data.append("\n" + inventory.getId() + "," + inventory.getEpc() + "," + "" + inventory.getQuantity());
+            data.append("\n" + inventory.getInventoryId() + "," + inventory.getEpc() + "," + String.valueOf(inventory.getQuantity()));
         }
 
         try {

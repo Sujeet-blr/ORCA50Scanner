@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "952765744815",
+    "project_id": "orca50scanner",
+    "storage_bucket": "orca50scanner.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:952765744815:android:fa9b05698b4ca5bc82b65a",
+        "android_client_info": {
+          "package_name": "in.mobiux.android.orca50scanner"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "952765744815-1ue27qhcif4mel5888u6lhts3doihmnr.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyARfhStUnCGGqKJHmzfGdZvdvhrCHlAAFU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "952765744815-1ue27qhcif4mel5888u6lhts3doihmnr.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

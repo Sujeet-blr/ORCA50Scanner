@@ -1,6 +1,7 @@
 package in.mobiux.android.orca50scanner.database;
 
 import android.app.Application;
+import android.content.Context;
 import android.os.AsyncTask;
 
 import androidx.lifecycle.LiveData;
@@ -12,25 +13,30 @@ import java.util.Timer;
 import java.util.TimerTask;
 import java.util.UUID;
 
+import in.mobiux.android.orca50scanner.MyApplication;
 import in.mobiux.android.orca50scanner.api.model.Inventory;
 import in.mobiux.android.orca50scanner.database.dao.InventoryDao;
+import in.mobiux.android.orca50scanner.util.AppLogger;
 
 /**
  * Created by SUJEET KUMAR on 09-Mar-21.
  */
 public class InventoryRepository {
 
+    public static final String TAG = InventoryRepository.class.getCanonicalName();
     private InventoryDao inventoryDao;
     private LiveData<List<Inventory>> liveData;
 
     TimerTask timerTask;
     Timer timer;
+    public MyApplication app;
 
     public InventoryRepository(Application application) {
         InventoryDatabase database = InventoryDatabase.getInstance(application);
 
         inventoryDao = database.inventoryDao();
         liveData = inventoryDao.getList();
+        app = (MyApplication) application.getApplicationContext();
     }
 
 
@@ -39,7 +45,7 @@ public class InventoryRepository {
     }
 
     public void insert(Inventory inventory) {
-        new InsertInventoryAsyncTask(inventoryDao).execute(inventory);
+        new InsertInventoryAsyncTask(app, inventoryDao).execute(inventory);
     }
 
     public void clearAll() {
@@ -54,14 +60,18 @@ public class InventoryRepository {
     private static class InsertInventoryAsyncTask extends AsyncTask<Inventory, Void, Void> {
 
         private InventoryDao inventoryDao;
+        Context context;
 
-        public InsertInventoryAsyncTask(InventoryDao inventoryDao) {
+        public InsertInventoryAsyncTask(Context context, InventoryDao inventoryDao) {
             this.inventoryDao = inventoryDao;
+            this.context = context;
         }
 
         @Override
         protected Void doInBackground(Inventory... inventories) {
-            inventoryDao.insert(inventories[0]);
+            Inventory inventory = inventories[0];
+            AppLogger.getInstance(context).i(TAG, "Data inserting to database");
+            inventoryDao.insert(inventory);
             return null;
         }
     }

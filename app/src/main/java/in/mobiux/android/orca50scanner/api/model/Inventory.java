@@ -7,8 +7,12 @@ import androidx.room.TypeConverter;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
+import com.rfid.rxobserver.bean.RXInventoryTag;
 
+import java.io.Serializable;
 import java.sql.Date;
+import java.util.Random;
+import java.util.UUID;
 
 import in.mobiux.android.orca50scanner.util.Converters;
 
@@ -17,25 +21,27 @@ import in.mobiux.android.orca50scanner.util.Converters;
  */
 
 @Entity(tableName = "inventory")
-public class Inventory extends BaseModel{
+public class Inventory extends RXInventoryTag implements Serializable {
 
-    @PrimaryKey(autoGenerate = true)
-    @NonNull
-    @SerializedName("primaryKey")
-    @Expose
-    private int id;
+//    @PrimaryKey(autoGenerate = true)
+//    @NonNull
+//    @SerializedName("primaryKey")
+//    @Expose
+//    private int id;
 
     @SerializedName("inventoryId")
     @Expose
-    private String inventoryId;
+    private String inventoryId = "ID"+String.valueOf(new Random().nextInt(999));
 
+    @PrimaryKey()
+    @NonNull
     @SerializedName("epc")
     @Expose
     private String epc;
 
     @SerializedName("quantity")
     @Expose
-    private int quantity;
+    private int quantity = new Random().nextInt(99);
 
     @SerializedName("rssi")
     @Expose
@@ -44,14 +50,6 @@ public class Inventory extends BaseModel{
 //    @SerializedName("createdAt")
 //    @Expose
 //    private Date createdAt;
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
 
     public String getInventoryId() {
         return inventoryId;

@@ -37,8 +37,8 @@ public class InventoryAdapter extends RecyclerView.Adapter<InventoryAdapter.Recy
 
     @Override
     public void onBindViewHolder(@NonNull RecyclerViewHolder holder, int position) {
-        holder.tvID.setText("" + inventories.get(position).getId());
-        holder.tvQty.setText("" + position);
+        holder.tvID.setText("" + inventories.get(position).getInventoryId());
+        holder.tvQty.setText("" + inventories.get(position).getQuantity());
         holder.tvName.setText("" + inventories.get(position).getEpc());
     }
 

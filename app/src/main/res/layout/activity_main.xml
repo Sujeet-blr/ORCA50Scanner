@@ -187,8 +187,8 @@
             android:id="@+id/recyclerView"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:clipChildren="true"
-            android:paddingBottom="20dp"
+            android:clipToPadding="false"
+            android:paddingBottom="80dp"
             app:reverseLayout="true" />
     </LinearLayout>
 
@@ -199,13 +199,21 @@
         android:layout_alignParentBottom="true">
 
         <Button
+            android:id="@+id/btnExportLogs"
+            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="16dp"
+            android:text="Export logs" />
+
+        <Button
             android:id="@+id/btnExport"
             style="@style/Widget.MaterialComponents.Button.OutlinedButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
             android:layout_marginRight="16dp"
-            android:text="Export to .csv" />
+            android:text="Export Data to .csv" />
     </RelativeLayout>
 
 
