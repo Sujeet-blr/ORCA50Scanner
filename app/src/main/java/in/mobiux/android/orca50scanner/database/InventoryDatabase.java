@@ -17,7 +17,7 @@ import in.mobiux.android.orca50scanner.util.Converters;
  * Created by SUJEET KUMAR on 09-Mar-21.
  */
 
-@Database(entities = {Inventory.class}, version = 23, exportSchema = false)
+@Database(entities = {Inventory.class}, version = 25, exportSchema = false)
 @TypeConverters({Converters.class})
 public abstract class InventoryDatabase extends RoomDatabase {
 

@@ -19,7 +19,8 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="Inventory" />
+            android:text="Inventory"
+            android:textSize="12sp" />
 
         <Button
             android:id="@+id/btnStop"
@@ -29,7 +30,8 @@
             android:layout_marginLeft="5dp"
             android:layout_marginRight="5dp"
             android:layout_weight="1"
-            android:text="Stop" />
+            android:text="Stop"
+            android:textSize="12sp" />
 
         <Button
             android:id="@+id/btnRefresh"
@@ -37,7 +39,8 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="Refresh" />
+            android:text="Refresh"
+            android:textSize="12sp" />
     </LinearLayout>
 
     <View
@@ -54,20 +57,22 @@
         android:layout_below="@id/vDivider1"
         android:background="@color/grey"
         android:orientation="horizontal"
-        android:padding="5dp">
+        android:paddingTop="5dp">
 
         <TextView
-            style="@style/TextAppearance.AppCompat.Headline"
+            style="@style/TextAppearance.MaterialComponents.Subtitle2"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:background="@color/white"
             android:gravity="center"
-            android:text="Inventoried:" />
+            android:padding="5dp"
+            android:text="Inventoried:"
+            android:textSize="16sp" />
 
         <TextView
             android:id="@+id/tvInventoryCount"
-            style="@style/TextAppearance.AppCompat.Headline"
+            style="@style/TextAppearance.MaterialComponents.Subtitle2"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginLeft="5dp"
@@ -75,16 +80,20 @@
             android:layout_weight="1"
             android:background="@color/white"
             android:gravity="center"
-            android:text="47" />
+            android:padding="5dp"
+            android:text="47"
+            android:textSize="16sp" />
 
         <TextView
-            style="@style/TextAppearance.AppCompat.Headline"
+            style="@style/TextAppearance.MaterialComponents.Subtitle2"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:background="@color/white"
             android:gravity="center"
-            android:text="Items " />
+            android:padding="5dp"
+            android:text="Items "
+            android:textSize="16sp" />
 
     </LinearLayout>
 
@@ -95,20 +104,22 @@
         android:layout_below="@id/lltTop2"
         android:background="@color/grey"
         android:orientation="horizontal"
-        android:padding="5dp">
+        android:paddingTop="5dp"
+        android:paddingBottom="5dp">
 
         <TextView
-            style="@style/TextAppearance.AppCompat.Button"
+            style="@style/TextAppearance.MaterialComponents.Subtitle2"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:background="@color/white"
             android:gravity="center"
+            android:padding="5dp"
             android:text="Speed: " />
 
         <TextView
             android:id="@+id/tvSpeed"
-            style="@style/TextAppearance.AppCompat.Button"
+            style="@style/TextAppearance.MaterialComponents.Subtitle2"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginLeft="5dp"
@@ -116,15 +127,17 @@
             android:layout_weight="1"
             android:background="@color/white"
             android:gravity="center"
+            android:padding="5dp"
             android:text="11" />
 
         <TextView
-            style="@style/TextAppearance.AppCompat.Button"
+            style="@style/TextAppearance.MaterialComponents.Subtitle2"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:background="@color/white"
             android:gravity="center"
+            android:padding="5dp"
             android:text="Tag/Sec" />
 
     </LinearLayout>
@@ -133,7 +146,6 @@
         android:id="@+id/lltList"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-
         android:layout_below="@id/lltTop3"
         android:layout_marginTop="16dp"
         android:orientation="vertical">
@@ -141,18 +153,17 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/white"
+            android:background="@drawable/shape_box_outline"
             android:orientation="horizontal"
             android:padding="8dp">
 
             <TextView
+                style="@style/TextAppearance.MaterialComponents.Subtitle2"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="2"
                 android:gravity="center"
-                android:text="ID"
-                android:textSize="14sp"
-                android:textStyle="bold" />
+                android:text="ID" />
 
             <View
                 android:layout_width="2dp"
@@ -160,13 +171,12 @@
                 android:background="@color/grey" />
 
             <TextView
+                style="@style/TextAppearance.MaterialComponents.Subtitle2"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="6"
                 android:gravity="center"
-                android:text="EPC"
-                android:textSize="14sp"
-                android:textStyle="bold" />
+                android:text="EPC" />
 
             <View
                 android:layout_width="2dp"
@@ -174,13 +184,12 @@
                 android:background="@color/grey" />
 
             <TextView
+                style="@style/TextAppearance.MaterialComponents.Subtitle2"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="2"
                 android:gravity="center"
-                android:text="PC"
-                android:textSize="14sp"
-                android:textStyle="bold" />
+                android:text="PC" />
         </LinearLayout>
 
         <androidx.recyclerview.widget.RecyclerView

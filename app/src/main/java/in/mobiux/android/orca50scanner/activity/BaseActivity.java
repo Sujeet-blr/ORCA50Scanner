@@ -22,6 +22,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.List;
 
+import in.mobiux.android.orca50scanner.MyApplication;
 import in.mobiux.android.orca50scanner.R;
 import in.mobiux.android.orca50scanner.api.model.Inventory;
 import in.mobiux.android.orca50scanner.util.AppLogger;
@@ -37,12 +38,14 @@ public class BaseActivity extends AppCompatActivity {
     public static int CAMERA_PERMISSION_CODE = 123;
 
     FileOutputStream outputStream;
+    protected MyApplication app;
 
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         logger = AppLogger.getInstance(getApplicationContext());
+        app = (MyApplication) getApplicationContext();
     }
 
     @Override

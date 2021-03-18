@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">RFID Inventory</string>
+
+    <string name="rfid_tag_dummy">E2 80 68 94 00 00 40 06FC 91 FD 26</string>
 </resources>

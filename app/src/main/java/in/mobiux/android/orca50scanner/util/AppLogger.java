@@ -40,10 +40,14 @@ public class AppLogger {
         return instance;
     }
 
-    public void i(String tag, String msg) {
+    public synchronized void i(String tag, String msg) {
         Log.i(tag, msg);
         data = new StringBuilder(("\n" + tag + "\t:>, " + msg + "\t," + String.valueOf(AppUtils.getFormattedTimestamp())));
         appendToLogs(data.toString());
+    }
+
+    public void e(String tag, String msg) {
+        i("ERROR " + tag, msg);
     }
 
     public void createAndExportLogs(Context context) {
@@ -75,8 +79,7 @@ public class AppLogger {
         }
     }
 
-
-    private void appendToLogs(String data) {
+    private void appendToLogs(String s) {
         if (context == null)
             return;
 
@@ -84,7 +87,7 @@ public class AppLogger {
             return;
         try {
             out = context.openFileOutput("logs.csv", Context.MODE_APPEND);
-            out.write(data.getBytes());
+            out.write(s.getBytes());
             out.close();
         } catch (IOException e) {
             e.printStackTrace();

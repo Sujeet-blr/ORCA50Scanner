@@ -6,6 +6,8 @@ import android.os.AsyncTask;
 
 import androidx.lifecycle.LiveData;
 
+import com.rfid.rxobserver.RXObserver;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Observable;
@@ -30,6 +32,7 @@ public class InventoryRepository {
     TimerTask timerTask;
     Timer timer;
     public MyApplication app;
+    RXObserver rxObserver;
 
     public InventoryRepository(Application application) {
         InventoryDatabase database = InventoryDatabase.getInstance(application);
@@ -45,7 +48,7 @@ public class InventoryRepository {
     }
 
     public void insert(Inventory inventory) {
-        new InsertInventoryAsyncTask(app, inventoryDao).execute(inventory);
+        new InsertInventoryAsyncTask(app.getApplicationContext(), inventoryDao).execute(inventory);
     }
 
     public void clearAll() {

@@ -21,6 +21,7 @@ public class InventoryAdapter extends RecyclerView.Adapter<InventoryAdapter.Recy
 
     Activity context;
     List<Inventory> inventories;
+    InventoryClickListener listener;
 
     public InventoryAdapter(Activity context, List<Inventory> inventories) {
         this.context = context;
@@ -37,9 +38,21 @@ public class InventoryAdapter extends RecyclerView.Adapter<InventoryAdapter.Recy
 
     @Override
     public void onBindViewHolder(@NonNull RecyclerViewHolder holder, int position) {
-        holder.tvID.setText("" + inventories.get(position).getInventoryId());
-        holder.tvQty.setText("" + inventories.get(position).getQuantity());
-        holder.tvName.setText("" + inventories.get(position).getEpc());
+
+        Inventory inventory = inventories.get(position);
+
+        holder.tvID.setText("" + inventory.getInventoryId());
+        holder.tvQty.setText("" + inventory.getRssi());
+        holder.tvName.setText("" + inventory.getEpc());
+
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (listener != null) {
+                    listener.onClick(inventories.get(position));
+                }
+            }
+        });
     }
 
     @Override
@@ -58,5 +71,13 @@ public class InventoryAdapter extends RecyclerView.Adapter<InventoryAdapter.Recy
             tvName = itemView.findViewById(R.id.tvName);
             tvQty = itemView.findViewById(R.id.tvQty);
         }
+    }
+
+    public void setOnItemClickListener(InventoryClickListener listener) {
+        this.listener = listener;
+    }
+
+    public interface InventoryClickListener {
+        void onClick(Inventory inventory);
     }
 }

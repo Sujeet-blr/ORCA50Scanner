@@ -14,11 +14,16 @@ import java.util.TimeZone;
  */
 public class AppUtils {
 
+    static SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS'Z'");
+    static String format;
+
     public static String getFormattedTimestamp() {
 
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS'Z'");
-        String format = simpleDateFormat.format(new Date());
-        Log.i("Date", format);
+        try {
+            format = simpleDateFormat.format(new Date());
+        } catch (Exception e) {
+            return "" + format;
+        }
         return format;
     }
 }

@@ -25,4 +25,11 @@ public class MyApplication extends Application {
 
 //        db = Room.databaseBuilder(getApplicationContext(), AppDatabase.class, "db_name.db").allowMainThreadQueries().fallbackToDestructiveMigration().build();
     }
+
+    @Override
+    public void onTerminate() {
+        super.onTerminate();
+
+
+    }
 }
