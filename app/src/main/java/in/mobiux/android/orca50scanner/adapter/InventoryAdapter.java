@@ -28,6 +28,11 @@ public class InventoryAdapter extends RecyclerView.Adapter<InventoryAdapter.Recy
         this.inventories = inventories;
     }
 
+    public void setValues(List<Inventory> values) {
+        this.inventories = values;
+        notifyDataSetChanged();
+    }
+
     @NonNull
     @Override
     public RecyclerViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {

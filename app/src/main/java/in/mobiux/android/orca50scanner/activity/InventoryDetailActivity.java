@@ -1,6 +1,7 @@
 package in.mobiux.android.orca50scanner.activity;
 
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.View;
 import android.widget.SeekBar;
 import android.widget.TextView;
@@ -31,11 +32,15 @@ public class InventoryDetailActivity extends BaseActivity {
     private Inventory inventory;
 
     private TextView tvEPC, tvRSSI, tvBack, tvClose, tvRSSIValue;
+    private boolean observerRegistrationStatus = false;
+    private Handler handler;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_inventory_detail);
+
+        handler = new Handler(getMainLooper());
 
         seekBar = findViewById(R.id.seekBar);
         tvEPC = findViewById(R.id.tvEPC);
@@ -56,6 +61,18 @@ public class InventoryDetailActivity extends BaseActivity {
 
         if (!connector.isConnected()) {
             connectRFID();
+        } else {
+            try {
+                rfidReaderHelper = RFIDReaderHelper.getDefaultHelper();
+                rfidReaderHelper.setTrigger(true);
+                ModuleManager.newInstance().setUHFStatus(true);
+                rfidReaderHelper.registerObserver(rxObserver);
+                observerRegistrationStatus = true;
+                rfidReaderHelper.realTimeInventory(ReaderSetting.newInstance().btReadId, (byte) 0x01);
+                logger.i(TAG, "Connected && On && observerRegistered :" + observerRegistrationStatus);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
 
         seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
@@ -83,6 +100,25 @@ public class InventoryDetailActivity extends BaseActivity {
     }
 
     @Override
+    protected void onStart() {
+        super.onStart();
+
+        if ((!observerRegistrationStatus) && (rfidReaderHelper != null)) {
+            rfidReaderHelper.registerObserver(rxObserver);
+            observerRegistrationStatus = true;
+        }
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+
+        if (observerRegistrationStatus) {
+            rfidReaderHelper.unRegisterObserver(rxObserver);
+        }
+    }
+
+    @Override
     protected void onDestroy() {
         super.onDestroy();
 
@@ -101,6 +137,7 @@ public class InventoryDetailActivity extends BaseActivity {
                     ModuleManager.newInstance().setUHFStatus(true);
                     rfidReaderHelper = RFIDReaderHelper.getDefaultHelper();
                     rfidReaderHelper.registerObserver(rxObserver);
+                    observerRegistrationStatus = true;
 //                    rfidReaderHelper.setRXTXListener(rxtxListener);
                     rfidReaderHelper.setTrigger(true);
 
@@ -122,25 +159,22 @@ public class InventoryDetailActivity extends BaseActivity {
     RXObserver rxObserver = new RXObserver() {
         @Override
         protected void refreshSetting(ReaderSetting readerSetting) {
-//            super.refreshSetting(readerSetting);
             logger.i(TAG, "Setting Refresh ");
         }
 
         @Override
         protected void onExeCMDStatus(byte cmd, byte status) {
-//            super.onExeCMDStatus(cmd, status);
             logger.i(TAG, "Command Executed " + cmd + "\tstatus " + status);
         }
 
         @Override
         protected void onInventoryTag(RXInventoryTag tag) {
             logger.i(TAG, "Tag Scanned " + tag.strEPC);
-//            Inventory inv = new Inventory();
-//            inv.setEpc(tag.strEPC);
-//            inv.setRssi(tag.strRSSI);
 
             if (tag.strEPC.equals(inventory.getEpc())) {
-                runOnUiThread(new Runnable() {
+
+
+                handler.post(new Runnable() {
                     @Override
                     public void run() {
                         inventory.setRssi(tag.strRSSI);
@@ -155,11 +189,6 @@ public class InventoryDetailActivity extends BaseActivity {
                         }
                     }
                 });
-            }
-            try {
-                Thread.sleep(500);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
             }
         }
 

@@ -82,7 +82,6 @@
             android:layout_height="match_parent">
 
             <SeekBar
-                android:progress="30"
                 android:id="@+id/seekBar"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
