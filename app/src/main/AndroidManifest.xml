@@ -18,6 +18,7 @@
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.READ_INTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.INTERNET" />
 
     <application
         android:name=".MyApplication"
@@ -27,8 +28,24 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.ORCA50Scanner">
-        <activity android:name=".activity.InventoryDetailActivity"></activity>
-        <activity android:name=".activity.RFIDActivity">
+        <activity android:name=".activity.LoginActivity"></activity>
+        <activity
+            android:name=".activity.DataSyncSettingActivity"
+            android:label="@string/label_data_sync" />
+        <activity
+            android:name=".activity.TransferAndAssignActivity"
+            android:label="@string/label_transfer_assign" />
+        <activity
+            android:name=".activity.LocateAssetActivity"
+            android:label="@string/label_locate_asset" />
+        <activity android:name=".activity.ScanInventoryActivity" />
+        <activity
+            android:name=".activity.AssetInventoryActivity" />
+        <activity android:name=".activity.HomeActivity" /> <!-- <activity android:name=".activity.SplashActivity" /> -->
+        <activity android:name=".activity.InventoryDetailActivity" />
+        <activity
+            android:name=".activity.SplashActivity"
+            android:theme="@style/orca_fullscreen">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

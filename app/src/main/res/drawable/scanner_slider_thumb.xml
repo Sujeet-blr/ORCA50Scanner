@@ -7,9 +7,9 @@
     <!--        android:endColor="@color/teal_200"-->
     <!--        android:startColor="@color/teal_700" />-->
 
-    <solid android:color="#1565C0" />
+    <solid android:color="@color/orange" />
     <size
-        android:width="5dp"
-        android:height="220dp" />
+        android:width="3dp"
+        android:height="150dp" />
 
 </shape>

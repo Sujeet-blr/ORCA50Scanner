@@ -12,5 +12,16 @@
         <!-- Status bar color. -->
         <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimaryVariant</item>
         <!-- Customize your theme here. -->
+
+        <item name="background">@color/white</item>
+
+    </style>
+
+    <style name="mytheme" parent="Theme.ORCA50Scanner">
+        <item name="actionBarTheme" > @color/white</item>
+    </style>
+
+    <style name="orca_fullscreen" parent="Theme.ORCA50Scanner">
+        <item name="android:windowFullscreen">true</item>
     </style>
 </resources>

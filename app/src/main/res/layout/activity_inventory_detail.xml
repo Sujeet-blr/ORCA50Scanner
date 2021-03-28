@@ -87,6 +87,7 @@
                 android:layout_height="match_parent"
                 android:layout_centerInParent="true"
                 android:clickable="false"
+                android:progress="50"
                 android:progressDrawable="@drawable/scanner_seekbar"
                 android:rotation="270"
                 android:soundEffectsEnabled="true"

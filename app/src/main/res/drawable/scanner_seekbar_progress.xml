@@ -5,7 +5,7 @@
             <shape android:shape="rectangle">
                 <size android:height="5dp" />
                 <corners android:radius="5dp" />
-                <solid android:color="#A61565C0" />
+                <solid android:color="@color/seekbar_progress_background" />
             </shape>
         </clip>
     </item>

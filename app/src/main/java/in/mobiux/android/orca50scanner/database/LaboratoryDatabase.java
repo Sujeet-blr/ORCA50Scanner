@@ -10,30 +10,32 @@ import androidx.room.TypeConverters;
 import androidx.sqlite.db.SupportSQLiteDatabase;
 
 import in.mobiux.android.orca50scanner.api.model.Inventory;
+import in.mobiux.android.orca50scanner.api.model.Laboratory;
 import in.mobiux.android.orca50scanner.database.dao.InventoryDao;
+import in.mobiux.android.orca50scanner.database.dao.LaboratoryDao;
 import in.mobiux.android.orca50scanner.util.Converters;
 
 /**
  * Created by SUJEET KUMAR on 09-Mar-21.
  */
 
-@Database(entities = {Inventory.class}, version = 28, exportSchema = false)
+@Database(entities = {Laboratory.class}, version = 29, exportSchema = false)
 @TypeConverters({Converters.class})
-public abstract class InventoryDatabase extends RoomDatabase {
+public abstract class LaboratoryDatabase extends RoomDatabase {
 
-    private static InventoryDatabase instance;
+    private static LaboratoryDatabase instance;
 
-    public abstract InventoryDao inventoryDao();
+    public abstract LaboratoryDao laboratoryDao();
 
-    public static synchronized InventoryDatabase getInstance(Context context) {
+    public static synchronized LaboratoryDatabase getInstance(Context context) {
         if (instance == null) {
-            instance = Room.databaseBuilder(context.getApplicationContext(), InventoryDatabase.class, "inventory.db").fallbackToDestructiveMigration().addCallback(roomCallback).build();
+            instance = Room.databaseBuilder(context.getApplicationContext(), LaboratoryDatabase.class, "laboratory.db").fallbackToDestructiveMigration().addCallback(roomCallback).build();
         }
 
         return instance;
     }
 
-    private static RoomDatabase.Callback roomCallback = new Callback() {
+    private static Callback roomCallback = new Callback() {
         @Override
         public void onCreate(@NonNull SupportSQLiteDatabase db) {
             super.onCreate(db);

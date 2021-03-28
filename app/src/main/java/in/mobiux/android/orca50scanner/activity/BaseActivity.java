@@ -6,6 +6,7 @@ import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
@@ -26,6 +27,7 @@ import in.mobiux.android.orca50scanner.MyApplication;
 import in.mobiux.android.orca50scanner.R;
 import in.mobiux.android.orca50scanner.api.model.Inventory;
 import in.mobiux.android.orca50scanner.util.AppLogger;
+import in.mobiux.android.orca50scanner.util.SessionManager;
 
 /**
  * Created by SUJEET KUMAR on 08-Mar-21.
@@ -40,12 +42,18 @@ public class BaseActivity extends AppCompatActivity {
     FileOutputStream outputStream;
     protected MyApplication app;
 
+    protected static String TAG = BaseActivity.class.getCanonicalName();
+    protected SessionManager session;
+
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         logger = AppLogger.getInstance(getApplicationContext());
         app = (MyApplication) getApplicationContext();
+        session = SessionManager.getInstance(getApplicationContext());
+
+        TAG = this.getClass().getCanonicalName();
     }
 
     @Override
@@ -153,5 +161,17 @@ public class BaseActivity extends AppCompatActivity {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        if (item.getItemId() == android.R.id.home) {
+//            if (!AppPrefs.Instance.hasCredentials()) {
+//                Intent intent = new Intent(getApplicationContext(), SignInActivity.class);
+//                startActivity(intent);
+//            }
+            finish();
+        }
+        return true;
     }
 }

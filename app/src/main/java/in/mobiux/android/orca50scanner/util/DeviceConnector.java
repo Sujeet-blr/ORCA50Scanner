@@ -11,6 +11,8 @@ import com.rfid.rxobserver.RXObserver;
 import com.rfid.rxobserver.ReaderSetting;
 import com.rfid.rxobserver.bean.RXInventoryTag;
 
+import java.util.logging.Handler;
+
 /**
  * Created by SUJEET KUMAR on 16-Mar-21.
  */
@@ -26,6 +28,7 @@ public class DeviceConnector {
     public static int BOUD_RATE = 115200;
 
     DeviceListener listener;
+    private static Handler handler;
 
     public static DeviceConnector getInstance(Context context) {
         if (deviceConnector == null)
@@ -118,6 +121,4 @@ public class DeviceConnector {
 
         }
     };
-
-
 }

@@ -31,7 +31,8 @@ public class Inventory extends RXInventoryTag implements Serializable {
 
     @SerializedName("inventoryId")
     @Expose
-    private String inventoryId = "ID"+String.valueOf(new Random().nextInt(999));
+    private int inventoryId;
+//    private String inventoryId = "ID" + String.valueOf(new Random().nextInt(999));
 
     @PrimaryKey()
     @NonNull
@@ -39,24 +40,49 @@ public class Inventory extends RXInventoryTag implements Serializable {
     @Expose
     private String epc;
 
+    @SerializedName("name")
+    @Expose
+    private String name;
+
+    @SerializedName("labId")
+    @Expose
+    private int labId;
+
+    @SerializedName("laboratoryName")
+    @Expose
+    private String laboratoryName;
+
     @SerializedName("quantity")
     @Expose
-    private int quantity = new Random().nextInt(99);
+    private int quantity = 0;
 
     @SerializedName("rssi")
     @Expose
     private String rssi;
 
+    @SerializedName("locationAssigned")
+    @Expose
+    private boolean locationAssigned = false;
+
 //    @SerializedName("createdAt")
 //    @Expose
 //    private Date createdAt;
 
-    public String getInventoryId() {
+
+    public int getInventoryId() {
         return inventoryId;
     }
 
-    public void setInventoryId(String inventoryId) {
+    public void setInventoryId(int inventoryId) {
         this.inventoryId = inventoryId;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     public String getEpc() {
@@ -82,4 +108,34 @@ public class Inventory extends RXInventoryTag implements Serializable {
     public void setRssi(String rssi) {
         this.rssi = rssi;
     }
+
+    public int getLabId() {
+        return labId;
+    }
+
+    public void setLabId(int labId) {
+        this.labId = labId;
+    }
+
+    public String getLaboratoryName() {
+        return laboratoryName;
+    }
+
+    public void setLaboratoryName(String laboratoryName) {
+        this.laboratoryName = laboratoryName;
+    }
+
+    public boolean isLocationAssigned() {
+        return locationAssigned;
+    }
+
+    public void setLocationAssigned(boolean locationAssigned) {
+        this.locationAssigned = locationAssigned;
+    }
+
+    @Override
+    public String toString() {
+        return "" + name;
+    }
 }
+

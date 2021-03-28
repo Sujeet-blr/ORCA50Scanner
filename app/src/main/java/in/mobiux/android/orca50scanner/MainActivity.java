@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.Manifest;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.view.View;
@@ -33,13 +34,15 @@ import java.util.TimerTask;
 import java.util.UUID;
 
 import in.mobiux.android.orca50scanner.activity.BaseActivity;
+import in.mobiux.android.orca50scanner.activity.InventoryDetailActivity;
+import in.mobiux.android.orca50scanner.activity.RFIDActivity;
 import in.mobiux.android.orca50scanner.adapter.InventoryAdapter;
 import in.mobiux.android.orca50scanner.api.model.Inventory;
 import in.mobiux.android.orca50scanner.database.AppDatabase;
 import in.mobiux.android.orca50scanner.util.RFIDReaderListener;
 import in.mobiux.android.orca50scanner.viewmodel.InventoryViewModel;
 
-public class MainActivity extends BaseActivity {
+public class MainActivity extends BaseActivity implements RFIDReaderListener {
 
     private static String TAG = MainActivity.class.getName();
 
@@ -56,75 +59,8 @@ public class MainActivity extends BaseActivity {
     private RecyclerView recyclerView;
     InventoryAdapter adapter;
 
-    Timer timer = new Timer();
-    TimerTask timerTask;
-
-
-    //    Build connector
-    public static ModuleConnector connector = new ReaderConnector();
-    RFIDReaderHelper rfidReaderHelper;
-//    ReaderHelper rfidReaderHelper;
-
     InventoryViewModel viewModel;
-
-    //    move to repository
-    RXObserver rxObserver = new RXObserver() {
-        @Override
-        protected void onInventoryTag(RXInventoryTag tag) {
-//            super.onInventoryTag(tag);
-            logger.i(TAG, "onInventoryTag method called ");
-
-//                            Toast.makeText(getApplicationContext(), "Tag Scanned : " + tag.strEPC, Toast.LENGTH_SHORT).show();
-
-            logger.i(TAG, "reader count : " + String.valueOf(tag.mReadCount));
-            logger.i(TAG, "epc : " + String.valueOf(tag.strEPC));
-            logger.i(TAG, "command : " + String.valueOf(tag.cmd));
-
-            Inventory inventory = new Inventory();
-            inventory.setEpc(tag.strEPC);
-            inventory.setRssi(tag.strRSSI);
-            viewModel.insert(inventory);
-        }
-
-        @Override
-        protected void onExeCMDStatus(byte cmd, byte status) {
-//            super.onExeCMDStatus(cmd, status);
-            logger.i(TAG, "onExeCMDSTATUS method called " + String.valueOf(cmd));
-        }
-
-        @Override
-        protected void onOperationTag(RXOperationTag tag) {
-//            super.onOperationTag(tag);
-            logger.i(TAG, "onOperationTag method called");
-//                            Toast.makeText(getApplicationContext(), "OnOperationTag" + tag.strEPC, Toast.LENGTH_SHORT).show();
-//            logger.i(TAG, "" + String.valueOf(tag.strData));
-            logger.i(TAG, "" + String.valueOf(tag.strEPC));
-            logger.i(TAG, "" + String.valueOf(tag.cmd));
-        }
-    };
-
-    RXTXListener rxtxListener = new RXTXListener() {
-        @Override
-        public void reciveData(byte[] bytes) {
-            logger.i(TAG, "data received");
-        }
-
-        @Override
-        public void sendData(byte[] bytes) {
-            logger.i(TAG, "data sent");
-        }
-
-        @Override
-        public void onLostConnect() {
-            runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    Toast.makeText(app, "Connection Lost", Toast.LENGTH_SHORT).show();
-                }
-            });
-            logger.i(TAG, "Connection has lost");
-        }
-    };
+    private RecyclerView.LayoutManager layoutManager;
 
 
     @Override
@@ -147,22 +83,41 @@ public class MainActivity extends BaseActivity {
 
         snackbar = Snackbar.make(parentLayout, "RFID-Device is not connected or PORT is not open, Please Check & Try Again", Snackbar.LENGTH_INDEFINITE);
         checkPermission(MainActivity.this, Manifest.permission.WRITE_EXTERNAL_STORAGE, STORAGE_PERMISSION_CODE);
-        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(MainActivity.this);
+        layoutManager = new LinearLayoutManager(MainActivity.this);
 
         viewModel = new ViewModelProvider(this).get(InventoryViewModel.class);
 
+//        connecting to RFID Device
+        app.connectRFID();
+
+        adapter = new InventoryAdapter(MainActivity.this, inventoryList);
+        recyclerView.setLayoutManager(layoutManager);
+        recyclerView.setAdapter(adapter);
+
+        adapter.setOnItemClickListener(new InventoryAdapter.InventoryClickListener() {
+            @Override
+            public void onClick(Inventory inventory) {
+                Intent intent = new Intent(MainActivity.this, InventoryDetailActivity.class);
+                intent.putExtra("tag", inventory);
+                app.scanningStatus = false;
+                ModuleManager.newInstance().setUHFStatus(true);
+                startActivity(intent);
+            }
+        });
 
         btnStart.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
+                app.scanningStatus = true;
                 logger.i(TAG, "clicked on Inventory Button");
-                if (connector.isConnected()) {
+                if (app.connector.isConnected()) {
                     Toast.makeText(app, "Already Connected", Toast.LENGTH_SHORT).show();
-                    logger.i(TAG, "already connected");
                     ModuleManager.newInstance().setScanStatus(true);
+                    btnStart.setText("Scanning");
+                    app.rfidReaderHelper.realTimeInventory(ReaderSetting.newInstance().btReadId, (byte) 0x01);
                 } else {
-                    startRFID();
+                    app.reconnectRFID();
                 }
             }
         });
@@ -171,7 +126,7 @@ public class MainActivity extends BaseActivity {
             @Override
             public void onClick(View view) {
                 logger.i(TAG, "clicked on Stop Button==========");
-                stopRFID();
+                app.scanningStatus = false;
             }
         });
 
@@ -179,7 +134,18 @@ public class MainActivity extends BaseActivity {
             @Override
             public void onClick(View view) {
                 logger.i(TAG, "clicked on Refresh Button");
-                viewModel.refresh();
+//                viewModel.refresh();
+                app.scanningStatus = false;
+                if (!app.connector.isConnected()) {
+                    app.reconnectRFID();
+                }
+
+                inventoryList.clear();
+                adapter.notifyDataSetChanged();
+                tvInventoryCount.setText("" + adapter.getItemCount());
+                tvSpeed.setText("0");
+                btnStart.setEnabled(true);
+                btnStart.setText("Inventory");
             }
         });
 
@@ -206,183 +172,50 @@ public class MainActivity extends BaseActivity {
                 }
             }
         });
-
-
-        viewModel.getAllInventory().observe(this, new Observer<List<Inventory>>() {
-            @Override
-            public void onChanged(List<Inventory> inventories) {
-                inventoryList = inventories;
-                adapter = new InventoryAdapter(MainActivity.this, inventories);
-                recyclerView.setLayoutManager(layoutManager);
-                recyclerView.setAdapter(adapter);
-
-                layoutManager.smoothScrollToPosition(recyclerView, null, adapter.getItemCount());
-
-                tvInventoryCount.setText("" + adapter.getItemCount());
-            }
-        });
     }
 
     @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        stopRFID();
+    protected void onStart() {
+        super.onStart();
 
-        if (rfidReaderHelper != null) {
-            rfidReaderHelper.unRegisterObservers();
-            rfidReaderHelper.signOut();
+        app.setOnRFIDListener(this);
+    }
+
+    @Override
+    public void onInventoryTag(Inventory inventory) {
+        boolean found = false;
+        for (Inventory inv : inventoryList) {
+            if (inv.getEpc().equals(inventory.getEpc())) {
+                found = true;
+            }
+        }
+        if (!found) {
+            inventoryList.add(inventory);
+            adapter.notifyDataSetChanged();
+        }
+
+        layoutManager.smoothScrollToPosition(recyclerView, null, adapter.getItemCount());
+        tvInventoryCount.setText("" + adapter.getItemCount());
+    }
+
+    @Override
+    public void onInventoryTagEnd(RXInventoryTag.RXInventoryTagEnd tagEnd) {
+        tvSpeed.setText("" + tagEnd.mReadRate);
+    }
+
+    @Override
+    public void onScanningStatus(boolean status) {
+        if (status) {
+            btnStart.setText("Scanning");
+            btnStart.setEnabled(false);
+        } else {
+            btnStart.setText("Inventory");
+            btnStart.setEnabled(true);
         }
     }
 
+    @Override
+    public void onConnection(boolean status) {
 
-    void startRFID() {
-        logger.i(TAG, "STARTING RFID Reader");
-        initRFID();
-    }
-
-    void initRFID() {
-
-        logger.i(TAG, "initializing RFID Reader");
-        try {
-            //Power on the UHF,must set the UHF can work.
-//            boolean status = ModuleManager.newInstance().setUHFStatus(true);
-//            logger.i(TAG, "UHF Status " + status);
-            try {
-                boolean uhfStatus = ModuleManager.newInstance().getUHFStatus();
-                logger.i(TAG, "UHF Status " + uhfStatus);
-                boolean scanStatus = ModuleManager.newInstance().getScanStatus();
-                logger.i(TAG, "Scan Status " + uhfStatus);
-            } catch (Exception e) {
-                e.printStackTrace();
-                logger.i(TAG, "Exception " + e.getLocalizedMessage());
-            }
-
-            if (connector == null) {
-                connector = new ReaderConnector();
-                logger.i(TAG, "created connector object");
-            }
-
-
-            logger.i(TAG, "Connecting to port : dev/ttyS4 and Boudrate at 115200");
-            boolean connectStatus = connector.connectCom("dev/ttyS4", 115200);
-            logger.i(TAG, "Connection Status : " + connectStatus);
-            if (connectStatus) {
-                try {
-                    logger.i(TAG, "== RFID Reader : CONNECTED SUCCESSFULLY");
-                    boolean uhfStatus = ModuleManager.newInstance().setUHFStatus(true);
-                    logger.i(TAG, "UHF Status " + uhfStatus);
-//                    ModuleManager.newInstance().setScanStatus(false);
-                    rfidReaderHelper = RFIDReaderHelper.getDefaultHelper();
-
-                    logger.i(TAG, "RFIDReaderHelper initialized success");
-                    if (rfidReaderHelper == null) {
-                        logger.i(TAG, "RFIDReaderHelper is null");
-                    }
-                    rfidReaderHelper.realTimeInventory((byte) 0xFF, (byte) 0x01);
-                    rfidReaderHelper.realTimeInventory(ReaderSetting.newInstance().btReadId, (byte) 0x01);
-                    rfidReaderHelper.setBeeperMode(ReaderSetting.newInstance().btReadId,CMD.SET_BEEPER_MODE);
-//                    rfidReaderHelper.registerObserver(rxObserver);
-                    rfidReaderHelper.registerObserver(new RXObserver() {
-                        @Override
-                        protected void onInventoryTag(RXInventoryTag tag) {
-//                            super.onInventoryTag(tag);
-                            logger.i(TAG, "onInventoryTag " + tag.strEPC);
-
-                            Inventory inventory = new Inventory();
-                            inventory.setEpc(tag.strEPC);
-                            inventory.setRssi(tag.strRSSI);
-                            viewModel.insert(inventory);
-                            Toast.makeText(app, "Scanned Success " + tag.strEPC, Toast.LENGTH_SHORT).show();
-                        }
-                    });
-
-                    logger.i(TAG, "RXObserver registered success");
-
-                    if (connector.isConnected()) {
-                        Toast.makeText(app, "Connected Successfully", Toast.LENGTH_SHORT).show();
-                    }
-
-//                    rfidReaderHelper.setRXTXListener(rxtxListener);
-                    rfidReaderHelper.setRXTXListener(new RXTXListener() {
-                        @Override
-                        public void reciveData(byte[] bytes) {
-                            logger.i(TAG, "reciveData");
-                        }
-
-                        @Override
-                        public void sendData(byte[] bytes) {
-                            logger.i(TAG, "sendData");
-                        }
-
-                        @Override
-                        public void onLostConnect() {
-                            logger.i(TAG, "onLostConnect");
-                        }
-                    });
-
-                    logger.i(TAG, "rxtListener registered");
-
-                } catch (Exception e) {
-                    logger.i(TAG, "== RFID Reader : CONNECTION FAILED with exception " + e.getLocalizedMessage());
-                    e.printStackTrace();
-                }
-            } else {
-
-                logger.i(TAG, "== RFID Reader : CONNECTION FAILED " + connector.isConnected());
-                snackbar.setAction("Ok", new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        startRFID();
-                        snackbar.dismiss();
-                    }
-                });
-
-                Toast.makeText(app, "Device Connection Failed", Toast.LENGTH_SHORT).show();
-                generateDummyData();
-                snackbar.show();
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-            logger.i(TAG, "" + e.getLocalizedMessage());
-        }
-    }
-
-    void stopRFID() {
-        logger.i(TAG, "STOPPING RFID Reader");
-        if (connector != null) {
-            if (connector.isConnected())
-                connector.disConnect();
-            logger.i(TAG, "Connection Status " + connector.isConnected());
-        }
-
-//        boolean UHFStatus = ModuleManager.newInstance().setUHFStatus(false);
-//
-//        logger.i(TAG, "UHF Status " + UHFStatus);
-
-//        boolean moduleManagerReleaseStatus = ModuleManager.newInstance().release();
-//        logger.i(TAG, "Module Manager Release Status " + moduleManagerReleaseStatus);
-        stopDummyData();
-    }
-
-    private void generateDummyData() {
-        Toast.makeText(app, "Started Dummy Data", Toast.LENGTH_SHORT).show();
-        stopDummyData();
-        timer = new Timer();
-        timerTask = new TimerTask() {
-            @Override
-            public void run() {
-                Inventory inventory = new Inventory();
-                inventory.setEpc("" + UUID.randomUUID().toString());
-                viewModel.insert(inventory);
-            }
-        };
-        timer.schedule(timerTask, 2000, 10000);
-    }
-
-    private void stopDummyData() {
-        if (timer != null)
-            timer.cancel();
-        if (timerTask != null)
-            timerTask.cancel();
     }
 }
