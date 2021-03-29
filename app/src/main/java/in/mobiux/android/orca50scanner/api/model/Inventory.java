@@ -63,6 +63,9 @@ public class Inventory extends RXInventoryTag implements Serializable {
     @SerializedName("locationAssigned")
     @Expose
     private boolean locationAssigned = false;
+    @SerializedName("syncRequired")
+    @Expose
+    private boolean syncRequired = false;
 
 //    @SerializedName("createdAt")
 //    @Expose
@@ -131,6 +134,14 @@ public class Inventory extends RXInventoryTag implements Serializable {
 
     public void setLocationAssigned(boolean locationAssigned) {
         this.locationAssigned = locationAssigned;
+    }
+
+    public boolean isSyncRequired() {
+        return syncRequired;
+    }
+
+    public void setSyncRequired(boolean syncRequired) {
+        this.syncRequired = syncRequired;
     }
 
     @Override

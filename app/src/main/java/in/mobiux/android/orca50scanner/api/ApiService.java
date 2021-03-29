@@ -5,6 +5,7 @@ import java.util.List;
 import in.mobiux.android.orca50scanner.api.model.AssetResponse;
 import in.mobiux.android.orca50scanner.api.model.DepartmentResponse;
 import in.mobiux.android.orca50scanner.api.model.Inventory;
+import in.mobiux.android.orca50scanner.api.model.Laboratory;
 import in.mobiux.android.orca50scanner.api.model.User;
 import in.mobiux.android.orca50scanner.util.SessionManager;
 import okhttp3.MultipartBody;
@@ -39,4 +40,7 @@ public interface ApiService {
 
     @GET(Endpoints.DEPARTMENTS)
     Call<List<DepartmentResponse>> departments(@Header("Authorization") String token);
+
+    @POST(Endpoints.UPDATE_ASSETS)
+    Call<Laboratory> updateAssets(@Header("Authentication") String token, @Body Laboratory laboratory);
 }

@@ -98,9 +98,18 @@ public class MyApplication extends Application {
         @Override
         protected void onInventoryTag(RXInventoryTag tag) {
             logger.i(TAG, "Tag scanner " + tag.strCRC + "#" + tag.strRSSI + "#" + tag.strFreq + "#" + tag.strPC + "#" + tag.btAntId);
+
+
+            logger.i(TAG, "EPC " + tag.strEPC);
+            logger.i(TAG, "CRC " + tag.strCRC);
+            logger.i(TAG, "RSSI " + tag.strRSSI);
+            logger.i(TAG, "Freq " + tag.strFreq);
+            logger.i(TAG, "PC " + tag.strPC);
+            logger.i(TAG, "read Count " + tag.mReadCount);
+
             Inventory inventory = new Inventory();
             inventory.setEpc(tag.strEPC);
-            inventory.setRssi("" + tag.strRSSI);
+            inventory.setRssi(tag.strRSSI);
 
             if (listener != null) {
                 mHandler.post(new Runnable() {
@@ -127,14 +136,15 @@ public class MyApplication extends Application {
 //                        tvInventoryCount.setText("" + tagEnd.mTagCount);
 //                        tvSpeed.setText("" + tagReadingSpeed);
 
-                        if (scanningStatus) {
-//                            btnStart.setText("Scanning");
-                            rfidReaderHelper.realTimeInventory(ReaderSetting.newInstance().btReadId, (byte) 0x01);
-                            listener.onScanningStatus(scanningStatus);
-                        } else {
-//                            btnStart.setText("Inventory");
-                            listener.onScanningStatus(scanningStatus);
-                        }
+//                        TODO
+//                        if (scanningStatus) {
+////                            btnStart.setText("Scanning");
+////                            rfidReaderHelper.realTimeInventory(ReaderSetting.newInstance().btReadId, (byte) 0x01);
+//                            listener.onScanningStatus(scanningStatus);
+//                        } else {
+////                            btnStart.setText("Inventory");
+//                            listener.onScanningStatus(scanningStatus);
+//                        }
                     }
                 });
             }
@@ -158,8 +168,8 @@ public class MyApplication extends Application {
 
                     ModuleManager.newInstance().setUHFStatus(true);
 
-                    rfidReaderHelper.setBeeperMode(ReaderSetting.newInstance().btReadId, (byte) 0x02);
-                    ReaderSetting.newInstance().btBeeperMode = (byte) 0x02;
+//                    rfidReaderHelper.setBeeperMode(ReaderSetting.newInstance().btReadId, (byte) 0x02);
+//                    ReaderSetting.newInstance().btBeeperMode = (byte) 0x02;
                     rfidReaderHelper.setTrigger(true);
 
                 } catch (Exception e) {
@@ -243,6 +253,7 @@ public class MyApplication extends Application {
                         inventory.setLabId(labId);
                         inventory.setLaboratoryName(labName);
                         inventory.setLocationAssigned(locationAssigned);
+                        inventory.setSyncRequired(false);
 
 
                         inventories.add(inventory);

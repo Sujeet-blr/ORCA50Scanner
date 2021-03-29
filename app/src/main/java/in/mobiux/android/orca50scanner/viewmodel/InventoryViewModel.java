@@ -14,7 +14,7 @@ import in.mobiux.android.orca50scanner.database.InventoryRepository;
 /**
  * Created by SUJEET KUMAR on 09-Mar-21.
  */
-public class  InventoryViewModel extends AndroidViewModel {
+public class InventoryViewModel extends AndroidViewModel {
 
     private InventoryRepository repository;
     private LiveData<List<Inventory>> data;
@@ -25,15 +25,19 @@ public class  InventoryViewModel extends AndroidViewModel {
         data = repository.getAllInventory();
     }
 
-    public void insert(Inventory inventory){
+    public void insert(Inventory inventory) {
         repository.insert(inventory);
     }
 
-    public LiveData<List<Inventory>> getAllInventory(){
+    public void update(Inventory inventory){
+        repository.update(inventory);
+    }
+
+    public LiveData<List<Inventory>> getAllInventory() {
         return data;
     }
 
-    public void refresh(){
+    public void refresh() {
         repository.clearAll();
     }
 }

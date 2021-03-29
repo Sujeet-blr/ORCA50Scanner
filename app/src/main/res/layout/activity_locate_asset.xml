@@ -40,7 +40,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
-            android:layout_margin="@dimen/margin_horizontal"
             android:backgroundTint="@color/black_button"
             android:text="Start Scan" />
 
@@ -54,10 +53,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_centerInParent="true"
-                android:clickable="false"
                 android:progressDrawable="@drawable/scanner_seekbar"
                 android:rotation="270"
-                android:soundEffectsEnabled="true"
                 android:thumb="@drawable/scanner_slider_thumb" />
 
             <TextView

@@ -16,7 +16,7 @@
 
         <ImageView
             android:layout_width="wrap_content"
-            android:layout_height="80dp"
+            android:layout_height="60dp"
             android:layout_gravity="center_horizontal"
             android:layout_margin="@dimen/margin_horizontal"
             android:src="@drawable/header_logo" />
@@ -36,7 +36,7 @@
         android:padding="5dp">
 
         <TextView
-            style="@style/TextAppearance.MaterialComponents.Headline6"
+            style="@style/TextAppearance.MaterialComponents.Subtitle2"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="10dp"
@@ -58,7 +58,7 @@
                 <androidx.cardview.widget.CardView
                     android:id="@+id/cardInventory"
                     android:layout_width="0dp"
-                    android:layout_height="200dp"
+                    android:layout_height="160dp"
                     android:layout_margin="5dp"
                     android:layout_weight="1"
                     app:cardBackgroundColor="@color/white"
@@ -75,8 +75,8 @@
                         android:orientation="vertical">
 
                         <ImageView
-                            android:layout_width="80dp"
-                            android:layout_height="80dp"
+                            android:layout_width="50dp"
+                            android:layout_height="50dp"
                             android:layout_gravity="center_horizontal"
                             android:src="@drawable/asset_inventory" />
 
@@ -96,7 +96,7 @@
                 <androidx.cardview.widget.CardView
                     android:id="@+id/cardLocate"
                     android:layout_width="0dp"
-                    android:layout_height="200dp"
+                    android:layout_height="160dp"
                     android:layout_margin="5dp"
                     android:layout_weight="1"
                     app:cardBackgroundColor="@color/white"
@@ -113,8 +113,8 @@
                         android:orientation="vertical">
 
                         <ImageView
-                            android:layout_width="80dp"
-                            android:layout_height="80dp"
+                            android:layout_width="50dp"
+                            android:layout_height="50dp"
                             android:layout_gravity="center_horizontal"
                             android:src="@drawable/locate_asset" />
 
@@ -139,7 +139,7 @@
                 <androidx.cardview.widget.CardView
                     android:id="@+id/cardTransfer"
                     android:layout_width="0dp"
-                    android:layout_height="200dp"
+                    android:layout_height="160dp"
                     android:layout_margin="5dp"
                     android:layout_weight="1"
                     app:cardBackgroundColor="@color/white"
@@ -156,8 +156,8 @@
                         android:orientation="vertical">
 
                         <ImageView
-                            android:layout_width="80dp"
-                            android:layout_height="80dp"
+                            android:layout_width="50dp"
+                            android:layout_height="50dp"
                             android:layout_gravity="center_horizontal"
                             android:padding="10dp"
                             android:src="@drawable/transfer_asset" />
@@ -178,7 +178,7 @@
                 <androidx.cardview.widget.CardView
                     android:id="@+id/cardSync"
                     android:layout_width="0dp"
-                    android:layout_height="200dp"
+                    android:layout_height="160dp"
                     android:layout_margin="5dp"
                     android:layout_weight="1"
                     app:cardBackgroundColor="@color/white"
@@ -195,8 +195,8 @@
                         android:orientation="vertical">
 
                         <ImageView
-                            android:layout_width="80dp"
-                            android:layout_height="80dp"
+                            android:layout_width="50dp"
+                            android:layout_height="50dp"
                             android:layout_gravity="center_horizontal"
                             android:padding="10dp"
                             android:src="@drawable/data_sync" />

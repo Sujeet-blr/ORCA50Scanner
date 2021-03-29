@@ -33,10 +33,10 @@ public class LoginActivity extends BaseActivity {
         edtPassword = findViewById(R.id.edtPassword);
         btnLogin = findViewById(R.id.btnLogin);
 
-        if (BuildConfig.DEBUG) {
+//        if (BuildConfig.DEBUG) {
             edtEmail.setText("adminsgul@footprints.com");
             edtPassword.setText("tempFP@1");
-        }
+//        }
 
         btnLogin.setOnClickListener(new View.OnClickListener() {
             @Override

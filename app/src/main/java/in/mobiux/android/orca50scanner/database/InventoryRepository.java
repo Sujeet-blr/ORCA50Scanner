@@ -51,6 +51,15 @@ public class InventoryRepository {
         new InsertInventoryAsyncTask(app.getApplicationContext(), inventoryDao).execute(inventory);
     }
 
+    public void update(Inventory inventory) {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                inventoryDao.update(inventory);
+            }
+        }).start();
+    }
+
     public void clearAll() {
         new Thread(new Runnable() {
             @Override

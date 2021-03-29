@@ -88,7 +88,9 @@ public class AssetInventoryActivity extends BaseActivity {
         cardInventory.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(getApplicationContext(), ScanInventoryActivity.class));
+                Intent intent = new Intent(getApplicationContext(), ScanInventoryActivity.class);
+                intent.putExtra("laboratory", selectedLab);
+                startActivity(intent);
             }
         });
 

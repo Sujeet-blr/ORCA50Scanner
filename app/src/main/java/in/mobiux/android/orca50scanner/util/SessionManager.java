@@ -26,12 +26,15 @@ public class SessionManager {
 
     public void saveToken(String token) {
         SharedPreferences.Editor editor = preferences.edit();
-        token = "Token " + token;
         editor.putString("token", token);
         editor.apply();
     }
 
     public String token() {
+        return "Token " + preferences.getString("token", "");
+    }
+
+    public String rawToken() {
         return preferences.getString("token", "");
     }
 }

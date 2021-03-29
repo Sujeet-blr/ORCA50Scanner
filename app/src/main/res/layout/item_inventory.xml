@@ -13,7 +13,7 @@
         app:cardBackgroundColor="@color/white"
         app:cardCornerRadius="8dp"
         app:cardElevation="3dp"
-        app:cardMaxElevation="8dp"
+        app:cardMaxElevation="5dp"
         app:cardPreventCornerOverlap="true"
         app:cardUseCompatPadding="true">
 
@@ -27,17 +27,18 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                android:padding="5dp">
+                android:padding="2dp">
 
                 <TextView
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="Equipment: " />
+                    android:text="Equipment: "
+                    android:textSize="14sp" />
 
                 <TextView
                     android:id="@+id/tvId"
-                    style="@style/TextAppearance.MaterialComponents.Body1"
+                    style="@style/TextAppearance.MaterialComponents.Body2"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="3"
@@ -49,17 +50,18 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                android:padding="5dp">
+                android:padding="2dp">
 
                 <TextView
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="EPC: " />
+                    android:text="EPC: "
+                    android:textSize="14sp" />
 
                 <TextView
                     android:id="@+id/tvName"
-                    style="@style/TextAppearance.MaterialComponents.Body1"
+                    style="@style/TextAppearance.MaterialComponents.Body2"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="3"
@@ -71,17 +73,18 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                android:padding="5dp">
+                android:padding="2dp">
 
                 <TextView
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="RSSI: " />
+                    android:text="RSSI: "
+                    android:textSize="14sp" />
 
                 <TextView
                     android:id="@+id/tvQty"
-                    style="@style/TextAppearance.MaterialComponents.Body1"
+                    style="@style/TextAppearance.MaterialComponents.Body2"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="3"

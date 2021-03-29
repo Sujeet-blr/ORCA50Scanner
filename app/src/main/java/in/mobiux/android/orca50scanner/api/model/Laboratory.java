@@ -2,10 +2,14 @@ package in.mobiux.android.orca50scanner.api.model;
 
 import androidx.annotation.NonNull;
 import androidx.room.Entity;
+import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by SUJEET KUMAR on 29-Mar-21.
@@ -31,6 +35,15 @@ public class Laboratory extends BaseModel {
     @SerializedName("levelName")
     @Expose
     private String levelName;
+
+    @SerializedName("department")
+    @Expose
+    private int department;
+
+    @Ignore
+    @SerializedName("assets")
+    @Expose
+    private List<String> assets = new ArrayList<>();
 
     public int getLabId() {
         return labId;
@@ -62,5 +75,21 @@ public class Laboratory extends BaseModel {
 
     public void setLevelName(String levelName) {
         this.levelName = levelName;
+    }
+
+    public int getDepartment() {
+        return department;
+    }
+
+    public void setDepartment(int department) {
+        this.department = department;
+    }
+
+    public List<String> getAssets() {
+        return assets;
+    }
+
+    public void setAssets(List<String> assets) {
+        this.assets = assets;
     }
 }

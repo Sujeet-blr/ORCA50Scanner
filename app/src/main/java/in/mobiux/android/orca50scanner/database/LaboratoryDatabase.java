@@ -19,7 +19,7 @@ import in.mobiux.android.orca50scanner.util.Converters;
  * Created by SUJEET KUMAR on 09-Mar-21.
  */
 
-@Database(entities = {Laboratory.class}, version = 29, exportSchema = false)
+@Database(entities = {Laboratory.class}, version = 31, exportSchema = false)
 @TypeConverters({Converters.class})
 public abstract class LaboratoryDatabase extends RoomDatabase {
 

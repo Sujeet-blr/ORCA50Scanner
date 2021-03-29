@@ -7,7 +7,10 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 import java.util.TimeZone;
+
+import in.mobiux.android.orca50scanner.api.model.Inventory;
 
 /**
  * Created by SUJEET KUMAR on 10-Mar-21.
@@ -25,5 +28,14 @@ public class AppUtils {
             return "" + format;
         }
         return format;
+    }
+
+    public static Inventory getMatchingInventory(String strEPC, List<Inventory> list) {
+        for (Inventory inventory : list) {
+            if (inventory.getEpc().equals(strEPC)){
+                return inventory;
+            }
+        }
+        return null;
     }
 }

@@ -26,11 +26,97 @@
                 android:backgroundTint="@color/black_button"
                 android:text="Scan Asset" />
 
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/recyclerView"
+            <!--            <androidx.recyclerview.widget.RecyclerView-->
+            <!--                android:id="@+id/recyclerView"-->
+            <!--                android:layout_width="match_parent"-->
+            <!--                android:layout_height="wrap_content"-->
+            <!--                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />-->
+
+            <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
+                android:layout_margin="@dimen/margin_horizontal"
+                app:cardCornerRadius="8dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="@dimen/margin_horizontal">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:padding="2dp">
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="Equipment: "
+                            android:textSize="14sp" />
+
+                        <TextView
+                            android:id="@+id/tvName"
+                            style="@style/TextAppearance.MaterialComponents.Body2"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="3"
+                            android:text="Dry Block X2" />
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginBottom="10dp"
+                        android:orientation="horizontal"
+                        android:padding="2dp">
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="EPC: "
+                            android:textSize="14sp" />
+
+                        <TextView
+                            android:id="@+id/tvEPC"
+                            style="@style/TextAppearance.MaterialComponents.Body2"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="3"
+                            android:text="@string/rfid_tag_dummy" />
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:padding="2dp">
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="RSSI: "
+                            android:textSize="14sp" />
+
+                        <TextView
+                            android:id="@+id/tvRSSI"
+                            style="@style/TextAppearance.MaterialComponents.Body2"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="3"
+                            android:text="34dB" />
+
+                    </LinearLayout>
+
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
 
             <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
@@ -48,11 +134,12 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Laboratory where the asset should be:" />
+                        android:text="Laboratory where the asset should be:"
+                        android:textSize="14sp" />
 
                     <TextView
                         android:id="@+id/tvLabName"
-                        style="@style/TextAppearance.MaterialComponents.Headline6"
+                        style="@style/TextAppearance.MaterialComponents.Body2"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="2.212A-c7" />
@@ -61,11 +148,12 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/margin_vertical"
-                        android:text="Serial Number:" />
+                        android:text="Serial Number:"
+                        android:textSize="14sp" />
 
                     <TextView
                         android:id="@+id/tvSerialNumber"
-                        style="@style/TextAppearance.MaterialComponents.Headline6"
+                        style="@style/TextAppearance.MaterialComponents.Body2"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="2-87-1143-220" />
@@ -84,12 +172,12 @@
                 app:cardUseCompatPadding="true">
 
                 <Spinner
-                    android:spinnerMode="dialog"
                     android:id="@+id/spinnerLevel"
                     android:layout_width="match_parent"
                     android:layout_height="50dp"
                     android:entries="@array/dummmy_spinner"
-                    android:paddingLeft="@dimen/margin_horizontal" />
+                    android:paddingLeft="@dimen/margin_horizontal"
+                    android:spinnerMode="dialog" />
             </androidx.cardview.widget.CardView>
 
             <androidx.cardview.widget.CardView
@@ -105,12 +193,12 @@
                 app:cardUseCompatPadding="true">
 
                 <Spinner
-                    android:spinnerMode="dialog"
                     android:id="@+id/spinnerLab"
                     android:layout_width="match_parent"
                     android:layout_height="50dp"
                     android:entries="@array/dummmy_spinner"
-                    android:paddingLeft="@dimen/margin_horizontal" />
+                    android:paddingLeft="@dimen/margin_horizontal"
+                    android:spinnerMode="dialog" />
             </androidx.cardview.widget.CardView>
 
             <LinearLayout

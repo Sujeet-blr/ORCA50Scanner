@@ -32,7 +32,7 @@ public class Presenter {
         app = (MyApplication) context;
     }
 
-    public void pullLatestData(){
+    public void pullLatestData() {
         inventories();
         laboratories();
         departments();
@@ -66,9 +66,12 @@ public class Presenter {
                         inventory.setLabId(labId);
                         inventory.setLaboratoryName(labName);
                         inventory.setLocationAssigned(locationAssigned);
+                        inventory.setSyncRequired(false);
 
 
                         inventories.add(inventory);
+
+                        Toast.makeText(app, "Sync Success", Toast.LENGTH_SHORT).show();
                     }
 
                     new Thread(new Runnable() {

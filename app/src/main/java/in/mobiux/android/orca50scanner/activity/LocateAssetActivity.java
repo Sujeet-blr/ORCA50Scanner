@@ -42,6 +42,7 @@ public class LocateAssetActivity extends BaseActivity implements RFIDReaderListe
     private List<Inventory> inventories = new ArrayList<>();
     private InventoryViewModel viewModel;
     private Inventory inventory = new Inventory();
+    private Inventory selectedAsset = new Inventory();
     boolean buttonStatus = false;
 
     private SeekBar seekBar;
@@ -62,11 +63,20 @@ public class LocateAssetActivity extends BaseActivity implements RFIDReaderListe
         tvRSSIValue = findViewById(R.id.tvRSSIValue);
         seekBar = findViewById(R.id.seekBar);
         btnStart = findViewById(R.id.btnStart);
+        btnStart.setTag(false);
 
 
         handler = new Handler(getMainLooper());
 //        connector = RFIDActivity.connector;
         connector = app.connector;
+
+        if (!connector.isConnected()) {
+            app.connectRFID();
+            ModuleManager.newInstance().setUHFStatus(true);
+        } else {
+            ModuleManager.newInstance().setUHFStatus(true);
+            logger.i(TAG, "connected");
+        }
 
         viewModel = new ViewModelProvider(this).get(InventoryViewModel.class);
 
@@ -99,12 +109,7 @@ public class LocateAssetActivity extends BaseActivity implements RFIDReaderListe
             @Override
             public void onClick(View view) {
 
-                if (btnStart.getTag() != null) {
-                    buttonStatus = (boolean) btnStart.getTag();
-                }
-
-                btnStart.setTag(!buttonStatus);
-
+                btnStart.setTag(!(boolean) btnStart.getTag());
 
                 if ((boolean) btnStart.getTag()) {
                     if (app.connector.isConnected()) {
@@ -118,9 +123,11 @@ public class LocateAssetActivity extends BaseActivity implements RFIDReaderListe
                     }
                 } else {
                     app.scanningStatus = false;
-                    ModuleManager.newInstance().setUHFStatus(false);
-                    btnStart.setText("Start");
+//                    ModuleManager.newInstance().setUHFStatus(false);
+                    btnStart.setText("Start Scan");
                 }
+
+                Toast.makeText(app, "Connection Status " + connector.isConnected(), Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -146,21 +153,43 @@ public class LocateAssetActivity extends BaseActivity implements RFIDReaderListe
         super.onStart();
 
         app.setOnRFIDListener(this);
+
+        try {
+            ModuleManager.newInstance().setScanStatus(true);
+        } catch (Exception e) {
+            logger.e(TAG, "" + e.getLocalizedMessage());
+        }
     }
 
     @Override
     public void onInventoryTag(Inventory tag) {
         boolean found = false;
+        Toast.makeText(app, "Scanned " + tag.getEpc(), Toast.LENGTH_SHORT).show();
+        logger.i(TAG, "Scanned " + tag.getEpc());
+        logger.i(TAG, tag.getRssi());
+
+        selectedAsset = inventories.get(spinner.getSelectedItemPosition());
+        inventory = selectedAsset;
+
+        tvRSSIValue.setText(tag.getRssi());
+
+        logger.i(TAG, inventory.getEpc() + " ### " + tag.getEpc());
 
         if (inventory.getEpc().equals(tag.getEpc())) {
+            logger.i(TAG, "Matching");
             inventory.setRssi(tag.strRSSI);
             tvRSSIValue.setText(tag.strRSSI);
             try {
-                seekBar.setProgress(Integer.valueOf(tag.strRSSI));
+                logger.i(TAG, "rssi is " + tag.getRssi());
+                int rssi = 0;
+                rssi = Integer.parseInt(tag.getRssi());
+                seekBar.setProgress(rssi, true);
             } catch (Exception e) {
                 e.printStackTrace();
                 logger.e(TAG, "" + e.getLocalizedMessage());
             }
+        } else {
+            logger.i(TAG, "Not Matching");
         }
     }
 
@@ -175,7 +204,7 @@ public class LocateAssetActivity extends BaseActivity implements RFIDReaderListe
             btnStart.setText("Stop");
             btnStart.setTag(true);
         } else {
-            btnStart.setText("Start");
+            btnStart.setText("Start Scan");
             btnStart.setTag(false);
         }
     }

@@ -24,7 +24,7 @@ public class SplashActivity extends BaseActivity {
             @Override
             public void run() {
 
-                if (session.token().isEmpty()) {
+                if (session.rawToken().isEmpty()) {
                     startActivity(new Intent(app, LoginActivity.class));
                 } else {
                     Intent intent = new Intent(getApplicationContext(), HomeActivity.class);

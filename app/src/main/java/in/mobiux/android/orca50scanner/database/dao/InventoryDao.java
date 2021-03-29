@@ -25,6 +25,9 @@ public interface InventoryDao {
     @Query("select * from inventory")
     LiveData<List<Inventory>> getList();
 
+    @Query("select * from inventory WHERE epc = (:epc)")
+    public Inventory[] getMatchingInventory(String epc);
+
     @Update
     void update(Inventory inventory);
 

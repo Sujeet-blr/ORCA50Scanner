@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="60dp"
+    android:background="@color/white"
     android:padding="5dp">
 
     <LinearLayout
@@ -19,9 +20,9 @@
             android:src="@drawable/george_logo" />
 
         <ImageView
-            android:layout_marginLeft="@dimen/margin_horizontal"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
+            android:layout_marginLeft="@dimen/margin_horizontal"
             android:src="@drawable/footer_logo" />
 
     </LinearLayout>

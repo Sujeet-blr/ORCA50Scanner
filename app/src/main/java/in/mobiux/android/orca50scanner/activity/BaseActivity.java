@@ -174,4 +174,8 @@ public class BaseActivity extends AppCompatActivity {
         }
         return true;
     }
+
+    protected void syncRequired(){
+        Toast.makeText(app, "Sync required to proceed", Toast.LENGTH_SHORT).show();
+    }
 }
