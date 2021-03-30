@@ -1,5 +1,6 @@
 package in.mobiux.android.orca50scanner.activity;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -44,6 +45,8 @@ public class BaseActivity extends AppCompatActivity {
 
     protected static String TAG = BaseActivity.class.getCanonicalName();
     protected SessionManager session;
+
+    protected ProgressDialog progressDialog;
 
 
     @Override

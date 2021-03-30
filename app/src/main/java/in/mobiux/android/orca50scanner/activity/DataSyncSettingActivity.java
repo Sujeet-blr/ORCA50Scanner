@@ -11,6 +11,7 @@ import android.app.ProgressDialog;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -30,7 +31,7 @@ import retrofit2.Response;
 public class DataSyncSettingActivity extends BaseActivity {
 
     private CardView cardSync, cardSettings, cardLicense, cardAbout;
-    private ProgressDialog progressDialog;
+//    private ProgressDialog progressDialog;
 
     private List<Laboratory> laboratories = new ArrayList<>();
     private List<Inventory> inventoryList = new ArrayList<>();
@@ -68,6 +69,20 @@ public class DataSyncSettingActivity extends BaseActivity {
             }
         });
 
+        cardSettings.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Toast.makeText(app, "Not Implemented", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        cardLicense.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Toast.makeText(app, "Not Implemented", Toast.LENGTH_SHORT).show();
+            }
+        });
+
         cardAbout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -78,6 +93,8 @@ public class DataSyncSettingActivity extends BaseActivity {
                 }
             }
         });
+
+
     }
 
 

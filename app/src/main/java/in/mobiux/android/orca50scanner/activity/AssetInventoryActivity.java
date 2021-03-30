@@ -12,6 +12,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -26,7 +27,7 @@ import in.mobiux.android.orca50scanner.viewmodel.LaboratoryViewModel;
 
 public class AssetInventoryActivity extends BaseActivity {
 
-    private CardView cardInventory;
+    private CardView cardInventory, cardSave;
     private LaboratoryViewModel laboratoryViewModel;
 
     private Spinner spinnerLevel, spinnerLab;
@@ -49,6 +50,7 @@ public class AssetInventoryActivity extends BaseActivity {
         cardInventory = findViewById(R.id.cardInventory);
         spinnerLevel = findViewById(R.id.spinnerLevel);
         spinnerLab = findViewById(R.id.spinnerLab);
+        cardSave = findViewById(R.id.cardSave);
         tvLab = findViewById(R.id.tvLab);
         tvLab.setText("");
 
@@ -91,6 +93,13 @@ public class AssetInventoryActivity extends BaseActivity {
                 Intent intent = new Intent(getApplicationContext(), ScanInventoryActivity.class);
                 intent.putExtra("laboratory", selectedLab);
                 startActivity(intent);
+            }
+        });
+
+        cardSave.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                finish();
             }
         });
 

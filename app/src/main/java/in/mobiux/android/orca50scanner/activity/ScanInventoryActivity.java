@@ -1,8 +1,11 @@
 package in.mobiux.android.orca50scanner.activity;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -24,7 +27,10 @@ import in.mobiux.android.orca50scanner.R;
 import in.mobiux.android.orca50scanner.adapter.InventoryAdapter;
 import in.mobiux.android.orca50scanner.api.model.DepartmentResponse;
 import in.mobiux.android.orca50scanner.api.model.Inventory;
+import in.mobiux.android.orca50scanner.api.model.Laboratory;
+import in.mobiux.android.orca50scanner.util.AppUtils;
 import in.mobiux.android.orca50scanner.util.RFIDReaderListener;
+import in.mobiux.android.orca50scanner.viewmodel.InventoryViewModel;
 
 public class ScanInventoryActivity extends BaseActivity implements View.OnClickListener, RFIDReaderListener {
 
@@ -32,11 +38,14 @@ public class ScanInventoryActivity extends BaseActivity implements View.OnClickL
     private TextView tvCount;
     private RecyclerView recyclerView;
     private DepartmentResponse.Child laboratory;
-    private List<Inventory> inventories = new ArrayList<>();
+    private List<Inventory> scannedInventories = new ArrayList<>();
+    private Map<String, Inventory> inventories = new HashMap<>();
     //    private Set<String> uniqueAsset = new HashSet<>();
     private Map<String, Inventory> map = new HashMap<>();
     private InventoryAdapter adapter;
     boolean startButtonStatus = false;
+
+    private InventoryViewModel viewModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,6 +61,7 @@ public class ScanInventoryActivity extends BaseActivity implements View.OnClickL
         btnClear = findViewById(R.id.btnClear);
         recyclerView = findViewById(R.id.recyclerView);
         tvCount.setText("");
+        btnStart.setTag(false);
 
         btnStart.setOnClickListener(this);
         btnSave.setOnClickListener(this);
@@ -61,15 +71,32 @@ public class ScanInventoryActivity extends BaseActivity implements View.OnClickL
         laboratory = (DepartmentResponse.Child) getIntent().getSerializableExtra("laboratory");
         if (laboratory != null) {
             getSupportActionBar().setTitle("You are in " + laboratory.getName());
+            logger.i(TAG, "lab selected " + laboratory.getName());
+        } else {
+            Toast.makeText(app, "Lab not selected", Toast.LENGTH_SHORT).show();
+            finish();
         }
 
         if (app.connector.isConnected()) {
             logger.i(TAG, "Connected");
+            ModuleManager.newInstance().setUHFStatus(true);
         } else {
             app.connectRFID();
         }
 
-        adapter = new InventoryAdapter(ScanInventoryActivity.this, inventories);
+        viewModel = new ViewModelProvider(this).get(InventoryViewModel.class);
+        viewModel.getAllInventory().observe(this, new Observer<List<Inventory>>() {
+            @Override
+            public void onChanged(List<Inventory> list) {
+                for (Inventory inventory : list) {
+                    inventories.put(inventory.getEpc(), inventory);
+                }
+
+                logger.i(TAG, "list fetched" + inventories.size());
+            }
+        });
+
+        adapter = new InventoryAdapter(ScanInventoryActivity.this, scannedInventories);
         recyclerView.setAdapter(adapter);
         tvCount.setText(adapter.getItemCount() + " PCS");
     }
@@ -100,17 +127,30 @@ public class ScanInventoryActivity extends BaseActivity implements View.OnClickL
                     btnStart.setText("Inventory Start");
                 }
 
-
                 break;
             case R.id.btnClear:
                 logger.i(TAG, "Clear");
-                inventories.clear();
+                scannedInventories.clear();
                 map.clear();
                 adapter.notifyDataSetChanged();
                 break;
             case R.id.btnSave:
                 logger.i(TAG, "Save");
                 Toast.makeText(app, "Saving data", Toast.LENGTH_SHORT).show();
+
+                progressDialog = new ProgressDialog(ScanInventoryActivity.this);
+                progressDialog.setMessage("Saving");
+                progressDialog.setIndeterminate(true);
+                progressDialog.show();
+
+                for (Inventory inventory : scannedInventories) {
+                    inventory.setLabId(laboratory.getId());
+                    inventory.setLaboratoryName(laboratory.getName());
+                    inventory.setSyncRequired(true);
+                    viewModel.update(inventory);
+                }
+
+                progressDialog.dismiss();
                 finish();
                 break;
         }
@@ -118,16 +158,36 @@ public class ScanInventoryActivity extends BaseActivity implements View.OnClickL
 
     @Override
     public void onInventoryTag(Inventory inventory) {
-        map.put(inventory.getEpc(), inventory);
-        Inventory matching = null;
-        for (Inventory inv : inventories) {
-            if (inv.getEpc().equals(inventory.getEpc())) {
-                matching = inv;
-            }
-        }
 
-        if (matching == null) {
-            inventories.add(inventory);
+        Inventory matchingAsset = inventories.get(inventory.getEpc());
+        if (matchingAsset != null) {
+            matchingAsset.setRssi(inventory.getRssi());
+            inventory = matchingAsset;
+
+            Inventory m = AppUtils.getMatchingInventory(inventory.getEpc(), scannedInventories);
+            if (m != null) {
+                logger.i(TAG, "existing in Scanned list " + m.getEpc());
+                m.setRssi(inventory.getRssi());
+            } else {
+                scannedInventories.add(inventory);
+                logger.i(TAG, "added to scanned list " + inventory.getEpc());
+            }
+
+
+//            map.put(inventory.getEpc(), inventory);
+//            Inventory matching = null;
+//            for (Inventory inv : scannedInventories) {
+//                if (inv.getEpc().equals(inventory.getEpc())) {
+//                    matching = inv;
+//                }
+//            }
+//
+//            if (matching == null) {
+//                scannedInventories.add(inventory);
+//            }
+
+        } else {
+            logger.i(TAG, "Scanned tag is not found in database " + inventory.getEpc());
         }
 
         adapter.notifyDataSetChanged();
