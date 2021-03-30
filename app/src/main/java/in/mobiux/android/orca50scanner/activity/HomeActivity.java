@@ -63,7 +63,7 @@ public class HomeActivity extends BaseActivity implements View.OnClickListener {
 
         checkPermission(HomeActivity.this, Manifest.permission.WRITE_EXTERNAL_STORAGE, STORAGE_PERMISSION_CODE);
         app.connectRFID();
-        app.inventories();
+//        app.inventories();
 
 //        Presenter.INSTANCE.pullLatestData();
     }

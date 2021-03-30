@@ -94,11 +94,23 @@ public class DataSyncSettingActivity extends BaseActivity {
             }
         });
 
-
+        Presenter.INSTANCE.setOnServerSyncListener(new Presenter.OnServerSyncListener() {
+            @Override
+            public void onSync(boolean status, List<Inventory> list) {
+                if (status) {
+                    progressDialog.dismiss();
+                }
+            }
+        });
     }
 
 
     private void sync(List<Inventory> list) {
+
+        progressDialog.setMessage("Syncing with Server");
+        progressDialog.setIndeterminate(true);
+        progressDialog.show();
+
         inventoryList = new ArrayList<>();
         Set<String> uniquesLabs = new HashSet<>();
 
@@ -123,9 +135,9 @@ public class DataSyncSettingActivity extends BaseActivity {
 
         if (laboratories.size() > 0) {
             updateAsset(laboratories.get(0));
-            progressDialog.setMessage("Syncing with Server");
-            progressDialog.setIndeterminate(true);
-            progressDialog.show();
+//            progressDialog.setMessage("Syncing with Server");
+//            progressDialog.setIndeterminate(true);
+//            progressDialog.show();
         } else {
             Presenter.INSTANCE.pullLatestData();
         }

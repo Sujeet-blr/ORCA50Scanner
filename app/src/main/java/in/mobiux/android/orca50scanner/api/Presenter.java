@@ -23,6 +23,7 @@ public class Presenter {
     public static Presenter INSTANCE;
     public static boolean configAvailable = false;
     MyApplication app;
+    private OnServerSyncListener listener;
 
     public static void init(Context context) {
         INSTANCE = new Presenter(context);
@@ -34,7 +35,7 @@ public class Presenter {
 
     public void pullLatestData() {
         inventories();
-        laboratories();
+//        laboratories();
         departments();
     }
 
@@ -70,8 +71,6 @@ public class Presenter {
 
 
                         inventories.add(inventory);
-
-                        Toast.makeText(app, "Sync Success", Toast.LENGTH_SHORT).show();
                     }
 
                     new Thread(new Runnable() {
@@ -80,6 +79,11 @@ public class Presenter {
                             app.inventoryDatabase.inventoryDao().insertAllWithReplace(inventories);
                         }
                     }).start();
+
+                    Toast.makeText(app, "Sync Success", Toast.LENGTH_SHORT).show();
+                    if (listener != null) {
+                        listener.onSync(true, inventories);
+                    }
                 }
             }
 
@@ -131,9 +135,12 @@ public class Presenter {
         });
     }
 
-    public void laboratories() {
-
+    public interface OnServerSyncListener {
+        void onSync(boolean status, List<Inventory> list);
     }
 
+    public void setOnServerSyncListener(OnServerSyncListener listener) {
+        this.listener = listener;
+    }
 
 }
