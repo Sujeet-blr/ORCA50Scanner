@@ -2,7 +2,6 @@ package in.mobiux.android.orca50scanner;
 
 import android.app.Application;
 import android.os.Handler;
-import android.widget.Toast;
 
 import androidx.lifecycle.ViewModelProvider;
 import androidx.room.Room;
@@ -97,15 +96,7 @@ public class MyApplication extends Application {
 
         @Override
         protected void onInventoryTag(RXInventoryTag tag) {
-            logger.i(TAG, "Tag scanner " + tag.strCRC + "#" + tag.strRSSI + "#" + tag.strFreq + "#" + tag.strPC + "#" + tag.btAntId);
-
-
-            logger.i(TAG, "EPC " + tag.strEPC);
-            logger.i(TAG, "CRC " + tag.strCRC);
-            logger.i(TAG, "RSSI " + tag.strRSSI);
-            logger.i(TAG, "Freq " + tag.strFreq);
-            logger.i(TAG, "PC " + tag.strPC);
-            logger.i(TAG, "read Count " + tag.mReadCount);
+            logger.i(TAG, "Tag scanner : crc-" + tag.strCRC + "# rssi-" + tag.strRSSI + "# freq-" + tag.strFreq + "#pc-" + tag.strPC + "#btnID-" + tag.btAntId);
 
             Inventory inventory = new Inventory();
             inventory.setEpc(tag.strEPC);
@@ -124,7 +115,6 @@ public class MyApplication extends Application {
         @Override
         protected void onInventoryTagEnd(RXInventoryTag.RXInventoryTagEnd tagEnd) {
             logger.i(TAG, "Inventory tag read end " + tagEnd.mTotalRead);
-            logger.i(TAG, "onInventoryTgEnd");
 
             int tagReadingSpeed = tagEnd.mReadRate;
 
@@ -156,7 +146,6 @@ public class MyApplication extends Application {
         try {
             if (connector.connectCom(DeviceConnector.PORT, DeviceConnector.BOUD_RATE)) {
                 logger.i(TAG, "CONNECTION SUCCESS");
-                Toast.makeText(this, "Connected Success", Toast.LENGTH_SHORT).show();
 
                 try {
 
@@ -177,11 +166,10 @@ public class MyApplication extends Application {
                     e.printStackTrace();
                 }
             } else {
-                logger.i(TAG, "CONNECTION FAILED");
-                Toast.makeText(this, "NOT Connected", Toast.LENGTH_SHORT).show();
+                logger.e(TAG, "CONNECTION FAILED");
             }
         } catch (Exception e) {
-            Toast.makeText(this, "Connection Failed", Toast.LENGTH_SHORT).show();
+            logger.e(TAG, "" + e.getLocalizedMessage());
         }
 
         if (listener != null) {

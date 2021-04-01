@@ -136,7 +136,6 @@ public class ScanInventoryActivity extends BaseActivity implements View.OnClickL
                 break;
             case R.id.btnSave:
                 logger.i(TAG, "Save");
-                Toast.makeText(app, "Saving data", Toast.LENGTH_SHORT).show();
 
                 progressDialog = new ProgressDialog(ScanInventoryActivity.this);
                 progressDialog.setMessage("Saving");

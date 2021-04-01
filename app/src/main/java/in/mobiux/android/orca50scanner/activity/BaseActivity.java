@@ -77,10 +77,7 @@ public class BaseActivity extends AppCompatActivity {
                     new String[]{permission},
                     requestCode);
         } else {
-            Toast.makeText(BaseActivity.this,
-                    "Permission already granted",
-                    Toast.LENGTH_SHORT)
-                    .show();
+            logger.i(TAG, "Permission already granted");
         }
     }
 
@@ -110,15 +107,9 @@ public class BaseActivity extends AppCompatActivity {
         } else if (requestCode == STORAGE_PERMISSION_CODE) {
             if (grantResults.length > 0
                     && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                Toast.makeText(this,
-                        "Storage Permission Granted",
-                        Toast.LENGTH_SHORT)
-                        .show();
+                logger.i(TAG, "Storage Permission Granted");
             } else {
-                Toast.makeText(this,
-                        "Storage Permission Denied",
-                        Toast.LENGTH_SHORT)
-                        .show();
+                logger.e(TAG, "Storage Permission Denied");
             }
         }
     }
@@ -178,7 +169,7 @@ public class BaseActivity extends AppCompatActivity {
         return true;
     }
 
-    protected void syncRequired(){
+    protected void syncRequired() {
         Toast.makeText(app, "Sync required to proceed", Toast.LENGTH_SHORT).show();
     }
 }

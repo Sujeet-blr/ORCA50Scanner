@@ -191,9 +191,9 @@ public class TransferAndAssignActivity extends BaseActivity implements RFIDReade
 
                     inventoryViewModel.update(selectedAsset);
                     logger.i(TAG, "Asset data saved ");
-                    Toast.makeText(app, "Saved Successfully", Toast.LENGTH_SHORT).show();
 
                 } else {
+                    logger.e(TAG, "Asset not found");
                     Toast.makeText(app, "Asset not found", Toast.LENGTH_SHORT).show();
                 }
             }

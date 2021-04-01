@@ -131,7 +131,6 @@ public class InventoryDetailActivity extends BaseActivity {
         try {
             if (connector.connectCom(DeviceConnector.PORT, BOUD_RATE)) {
                 logger.i(TAG, "CONNECTION SUCCESS");
-                Toast.makeText(app, "Connected Success", Toast.LENGTH_SHORT).show();
 
                 try {
                     ModuleManager.newInstance().setUHFStatus(true);
@@ -149,10 +148,9 @@ public class InventoryDetailActivity extends BaseActivity {
                 }
             } else {
                 logger.i(TAG, "CONNECTION FAILED");
-                Toast.makeText(app, "NOT Connected", Toast.LENGTH_SHORT).show();
             }
         } catch (Exception e) {
-            Toast.makeText(app, "Connection Failed", Toast.LENGTH_SHORT).show();
+            logger.e(TAG, "" + e.getLocalizedMessage());
         }
     }
 

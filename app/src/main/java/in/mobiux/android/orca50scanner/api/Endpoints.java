@@ -3,6 +3,8 @@ package in.mobiux.android.orca50scanner.api;
 public class Endpoints {
 
 
+        public static final String BASE_URL = "https://footprints-staging.hito.solutions/api/v1/";
+//    public static final String BASE_URL = "http://172.21.78.80/api/v1/";
 //    public static final String LOGIN = "api/users/signin";
 
 //    public static final String USERS = "/api/v1/users";

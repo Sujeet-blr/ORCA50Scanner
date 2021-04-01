@@ -112,7 +112,7 @@ public class MainActivity extends BaseActivity implements RFIDReaderListener {
                 app.scanningStatus = true;
                 logger.i(TAG, "clicked on Inventory Button");
                 if (app.connector.isConnected()) {
-                    Toast.makeText(app, "Already Connected", Toast.LENGTH_SHORT).show();
+                    logger.i(TAG, "Already connected");
                     ModuleManager.newInstance().setScanStatus(true);
                     btnStart.setText("Scanning");
                     app.rfidReaderHelper.realTimeInventory(ReaderSetting.newInstance().btReadId, (byte) 0x01);

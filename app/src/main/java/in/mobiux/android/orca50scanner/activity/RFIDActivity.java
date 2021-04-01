@@ -92,7 +92,6 @@ public class RFIDActivity extends BaseActivity {
         try {
             if (connector.connectCom(PORT, BOUD_RATE)) {
                 logger.i(TAG, "CONNECTION SUCCESS");
-                Toast.makeText(app, "Connected Success", Toast.LENGTH_SHORT).show();
 
                 try {
 
@@ -112,11 +111,10 @@ public class RFIDActivity extends BaseActivity {
                     e.printStackTrace();
                 }
             } else {
-                logger.i(TAG, "CONNECTION FAILED");
-                Toast.makeText(app, "NOT Connected", Toast.LENGTH_SHORT).show();
+                logger.e(TAG, "CONNECTION FAILED");
             }
         } catch (Exception e) {
-            Toast.makeText(app, "Connection Failed", Toast.LENGTH_SHORT).show();
+            logger.e(TAG, "" + e.getLocalizedMessage());
         }
     }
 

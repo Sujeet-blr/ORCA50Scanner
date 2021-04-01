@@ -95,7 +95,6 @@ public class LocateAssetActivity extends BaseActivity implements RFIDReaderListe
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int position, long l) {
                 inventory = inventories.get(position);
-                Toast.makeText(app, "" + inventory.getEpc(), Toast.LENGTH_SHORT).show();
                 logger.i(TAG, "" + inventory.getEpc() + "\t" + inventory.getName());
             }
 
@@ -127,7 +126,7 @@ public class LocateAssetActivity extends BaseActivity implements RFIDReaderListe
                     btnStart.setText("Start Scan");
                 }
 
-                Toast.makeText(app, "Connection Status " + connector.isConnected(), Toast.LENGTH_SHORT).show();
+                logger.i(TAG,"Connection Status : "+connector.isConnected());
             }
         });
 
@@ -164,7 +163,7 @@ public class LocateAssetActivity extends BaseActivity implements RFIDReaderListe
     @Override
     public void onInventoryTag(Inventory tag) {
         boolean found = false;
-        Toast.makeText(app, "Scanned " + tag.getEpc(), Toast.LENGTH_SHORT).show();
+
         logger.i(TAG, "Scanned " + tag.getEpc());
         logger.i(TAG, tag.getRssi());
 
@@ -183,7 +182,7 @@ public class LocateAssetActivity extends BaseActivity implements RFIDReaderListe
                 logger.i(TAG, "rssi is " + tag.getRssi());
                 int rssi = 0;
                 rssi = Integer.parseInt(tag.getRssi());
-                seekBar.setProgress(rssi, true);
+                seekBar.setProgress(rssi);
             } catch (Exception e) {
                 e.printStackTrace();
                 logger.e(TAG, "" + e.getLocalizedMessage());

@@ -24,14 +24,14 @@ public class ApiClient {
     static String TAG = ApiClient.class.getCanonicalName();
 
     //    private static final String BASE_URL = AppPrefs.Instance.getAppConfig().getBaseUrl();
-    private static final String BASE_URL = "https://footprints-staging.hito.solutions/api/v1/";
+//    private static final String BASE_URL = "https://footprints-staging.hito.solutions/api/v1/";
 
     private static Retrofit retrofit;
     private static ApiService apiService;
 
 
     private static Retrofit getClient() {
-        Log.i(TAG, "getClient Called " + BASE_URL);
+        Log.i(TAG, "getClient Called " + Endpoints.BASE_URL);
 
         if (retrofit == null) {
             HttpLoggingInterceptor interceptor = new HttpLoggingInterceptor();
@@ -44,7 +44,7 @@ public class ApiClient {
                     .addInterceptor(interceptor).build();
 
             retrofit = new Retrofit.Builder()
-                    .baseUrl(BASE_URL)
+                    .baseUrl(Endpoints.BASE_URL)
                     .client(client)
                     .addConverterFactory(GsonConverterFactory.create())
                     .build();
