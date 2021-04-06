@@ -1,5 +1,6 @@
 package in.mobiux.android.orca50scanner.activity;
 
+import android.app.ActionBar;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
@@ -9,6 +10,8 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -47,6 +50,8 @@ public class BaseActivity extends AppCompatActivity {
     protected SessionManager session;
 
     protected ProgressDialog progressDialog;
+    private ImageView ivHome;
+    private TextView textToolbarTitle;
 
 
     @Override
@@ -171,5 +176,27 @@ public class BaseActivity extends AppCompatActivity {
 
     protected void syncRequired() {
         Toast.makeText(app, "Sync required to proceed", Toast.LENGTH_SHORT).show();
+    }
+
+    protected void setTitle(String title) {
+        textToolbarTitle = findViewById(R.id.textToolbarTitle);
+        textToolbarTitle.setText(title);
+        setHomeButtonEnable(true);
+    }
+
+    protected void setHomeButtonEnable(boolean enable) {
+        ivHome = findViewById(R.id.ivHome);
+        if (enable) {
+            ivHome.setVisibility(View.VISIBLE);
+        } else {
+            ivHome.setVisibility(View.GONE);
+        }
+
+        ivHome.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                finish();
+            }
+        });
     }
 }

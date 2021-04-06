@@ -1,9 +1,11 @@
 package in.mobiux.android.orca50scanner.activity;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
@@ -13,11 +15,14 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.nativec.tools.ModuleManager;
 import com.rfid.rxobserver.ReaderSetting;
 import com.rfid.rxobserver.bean.RXInventoryTag;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -49,14 +54,14 @@ public class TransferAndAssignActivity extends BaseActivity implements RFIDReade
     private Inventory selectedAsset;
     private InventoryViewModel inventoryViewModel;
     private List<Inventory> inventories = new ArrayList<>();
+    List<Inventory> scannedInventories = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_transfer_and_assign);
 
-//        getSupportActionBar().setTitle("ASSET INVENTORY");
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        setTitle(getResources().getString(R.string.label_transfer_assign));
 
         spinnerLevel = findViewById(R.id.spinnerLevel);
         spinnerLab = findViewById(R.id.spinnerLab);
@@ -93,7 +98,7 @@ public class TransferAndAssignActivity extends BaseActivity implements RFIDReade
                     if (app.connector.isConnected()) {
                         ModuleManager.newInstance().setScanStatus(true);
                         btnStart.setTag(true);
-                        btnStart.setText("Stop");
+                        btnStart.setText(getResources().getString(R.string.stop_scan));
                         app.scanningStatus = true;
                         app.rfidReaderHelper.realTimeInventory(ReaderSetting.newInstance().btReadId, (byte) 0x01);
                     } else {
@@ -103,7 +108,7 @@ public class TransferAndAssignActivity extends BaseActivity implements RFIDReade
                 } else {
                     app.scanningStatus = false;
                     btnStart.setTag(false);
-                    btnStart.setText("Scan Asset");
+                    btnStart.setText(getResources().getString(R.string.start_scan));
                 }
             }
         });
@@ -192,6 +197,8 @@ public class TransferAndAssignActivity extends BaseActivity implements RFIDReade
                     inventoryViewModel.update(selectedAsset);
                     logger.i(TAG, "Asset data saved ");
 
+                    showSuccessDialog("Asset " + selectedAsset.getName() + "\nmoved to " + selectedLab.getName() + " successfully");
+
                 } else {
                     logger.e(TAG, "Asset not found");
                     Toast.makeText(app, "Asset not found", Toast.LENGTH_SHORT).show();
@@ -217,7 +224,48 @@ public class TransferAndAssignActivity extends BaseActivity implements RFIDReade
             selectedAsset = AppUtils.getMatchingInventory(asset.getEpc(), inventories);
         }
 
+        scannedInventories.add(inventory);
+
         updateUI(selectedAsset);
+    }
+
+    @Override
+    public void onScanningStatus(boolean status) {
+
+        btnStart.setTag(status);
+
+        if (status) {
+            btnStart.setText(getResources().getString(R.string.start_scan));
+        } else {
+            btnStart.setText(getResources().getString(R.string.stop_scan));
+        }
+    }
+
+
+    @Override
+    public void onInventoryTagEnd(RXInventoryTag.RXInventoryTagEnd tagEnd) {
+        asset = null;
+
+        Collections.sort(scannedInventories, new Comparator<Inventory>() {
+            @Override
+            public int compare(Inventory inventory, Inventory t1) {
+                return (Integer.parseInt(inventory.getRssi()) - Integer.parseInt(t1.getRssi()));
+//                return 0;
+            }
+        });
+
+        Collections.reverse(scannedInventories);
+
+        if (scannedInventories.size() > 3) {
+            for (int i = 3; i < scannedInventories.size(); i++) {
+                scannedInventories.remove(i);
+            }
+        }
+    }
+
+    @Override
+    public void onConnection(boolean status) {
+
     }
 
     private void updateUI(Inventory selectedAsset) {
@@ -231,25 +279,19 @@ public class TransferAndAssignActivity extends BaseActivity implements RFIDReade
         }
     }
 
-    @Override
-    public void onScanningStatus(boolean status) {
+    private void showSuccessDialog(String message) {
 
-        btnStart.setTag(status);
+        AlertDialog.Builder builder = new MaterialAlertDialogBuilder(this);
+        builder.setMessage(message);
 
-        if (status) {
-            btnStart.setText("Scan Asset");
-        } else {
-            btnStart.setText("Stop");
-        }
-    }
+        builder.setNegativeButton("OK", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                dialogInterface.dismiss();
+                finish();
+            }
+        });
 
-    @Override
-    public void onInventoryTagEnd(RXInventoryTag.RXInventoryTagEnd tagEnd) {
-        asset = null;
-    }
-
-    @Override
-    public void onConnection(boolean status) {
-
+        builder.show();
     }
 }

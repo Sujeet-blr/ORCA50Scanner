@@ -76,6 +76,7 @@ public class Presenter {
                     new Thread(new Runnable() {
                         @Override
                         public void run() {
+                            app.inventoryDatabase.inventoryDao().clearAll();
                             app.inventoryDatabase.inventoryDao().insertAllWithReplace(inventories);
                         }
                     }).start();

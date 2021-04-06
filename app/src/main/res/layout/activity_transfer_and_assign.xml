@@ -6,10 +6,15 @@
     android:layout_height="match_parent"
     tools:context=".activity.TransferAndAssignActivity">
 
+    <include
+        layout="@layout/action_bar_app"
+        android:layout_alignParentTop="true" />
+
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_above="@id/footer"
+        android:layout_below="@+id/toolbar"
         android:background="@color/screen_background">
 
         <LinearLayout
@@ -24,7 +29,7 @@
                 android:layout_gravity="center_horizontal"
                 android:layout_margin="@dimen/margin_horizontal"
                 android:backgroundTint="@color/black_button"
-                android:text="Scan Asset" />
+                android:text="@string/start_scan" />
 
             <!--            <androidx.recyclerview.widget.RecyclerView-->
             <!--                android:id="@+id/recyclerView"-->

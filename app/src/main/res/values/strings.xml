@@ -11,6 +11,8 @@
     <string name="label_transfer_assign">Transfer &amp; Scan</string>
     <string name="label_data_sync">Data Sync &amp; Settings</string>
     <string name="label_locate_asset">Locate An Asset</string>
+    <string name="start_scan">Start Scan</string>
+    <string name="stop_scan">Stop Scan</string>
 
     <string-array name="dummmy_spinner">
         <item>item1</item>

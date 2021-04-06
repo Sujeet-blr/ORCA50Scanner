@@ -14,12 +14,22 @@
         android:background="@color/white"
         android:orientation="vertical">
 
+        <TextView
+            style="@style/TextAppearance.MaterialComponents.Headline5"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:gravity="center"
+            android:text="@string/lab_equipment_inventory_mangement_system"
+            android:textAllCaps="true" />
+
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="60dp"
             android:layout_gravity="center_horizontal"
             android:layout_margin="@dimen/margin_horizontal"
-            android:src="@drawable/header_logo" />
+            android:src="@drawable/header_logo"
+            android:visibility="gone" />
 
     </LinearLayout>
 
@@ -35,13 +45,13 @@
         android:orientation="vertical"
         android:padding="5dp">
 
-        <TextView
-            style="@style/TextAppearance.MaterialComponents.Subtitle2"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="10dp"
-            android:text="@string/lab_equipment_inventory_mangement_system"
-            android:textAllCaps="true" />
+        <!--        <TextView-->
+        <!--            style="@style/TextAppearance.MaterialComponents.Subtitle2"-->
+        <!--            android:layout_width="match_parent"-->
+        <!--            android:layout_height="wrap_content"-->
+        <!--            android:layout_margin="10dp"-->
+        <!--            android:text="@string/lab_equipment_inventory_mangement_system"-->
+        <!--            android:textAllCaps="true" />-->
 
         <LinearLayout
             android:layout_width="match_parent"

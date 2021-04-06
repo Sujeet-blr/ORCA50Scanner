@@ -6,12 +6,16 @@
     android:layout_height="match_parent"
     tools:context=".activity.AssetInventoryActivity">
 
+    <include
+        layout="@layout/action_bar_app"
+        android:layout_alignParentTop="true" />
+
     <LinearLayout
         android:id="@+id/lltTop"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_above="@id/lltFooter"
-        android:layout_alignParentTop="true"
+        android:layout_below="@id/toolbar"
         android:background="@color/screen_background"
         android:orientation="vertical"
         android:paddingTop="@dimen/margin_vertical">
@@ -29,11 +33,11 @@
 
             <Spinner
                 android:id="@+id/spinnerLevel"
-                android:spinnerMode="dialog"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
                 android:entries="@array/dummmy_spinner"
-                android:paddingLeft="@dimen/margin_horizontal" />
+                android:paddingLeft="@dimen/margin_horizontal"
+                android:spinnerMode="dialog" />
         </androidx.cardview.widget.CardView>
 
         <androidx.cardview.widget.CardView
@@ -50,11 +54,11 @@
 
             <Spinner
                 android:id="@+id/spinnerLab"
-                android:spinnerMode="dialog"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
                 android:entries="@array/dummmy_spinner"
-                android:paddingLeft="@dimen/margin_horizontal" />
+                android:paddingLeft="@dimen/margin_horizontal"
+                android:spinnerMode="dialog" />
         </androidx.cardview.widget.CardView>
 
         <LinearLayout
@@ -89,8 +93,8 @@
             android:orientation="horizontal">
 
             <androidx.cardview.widget.CardView
-                android:layout_width="0dp"
                 android:id="@+id/cardInventory"
+                android:layout_width="0dp"
                 android:layout_height="180dp"
                 android:layout_margin="5dp"
                 android:layout_weight="1"
@@ -130,8 +134,8 @@
             </androidx.cardview.widget.CardView>
 
             <androidx.cardview.widget.CardView
-                android:layout_width="0dp"
                 android:id="@+id/cardSave"
+                android:layout_width="0dp"
                 android:layout_height="180dp"
                 android:layout_margin="5dp"
                 android:layout_weight="1"

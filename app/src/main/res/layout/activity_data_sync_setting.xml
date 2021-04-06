@@ -7,6 +7,12 @@
     android:background="@color/screen_background"
     tools:context=".activity.DataSyncSettingActivity">
 
+    <include
+        layout="@layout/action_bar_app"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true" />
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

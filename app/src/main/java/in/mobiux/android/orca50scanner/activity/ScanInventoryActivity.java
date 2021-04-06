@@ -52,8 +52,7 @@ public class ScanInventoryActivity extends BaseActivity implements View.OnClickL
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_scan_inventory);
 
-        getSupportActionBar().setTitle("");
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        setTitle("");
 
         tvCount = findViewById(R.id.tvCount);
         btnStart = findViewById(R.id.btnStart);
@@ -70,7 +69,7 @@ public class ScanInventoryActivity extends BaseActivity implements View.OnClickL
 
         laboratory = (DepartmentResponse.Child) getIntent().getSerializableExtra("laboratory");
         if (laboratory != null) {
-            getSupportActionBar().setTitle("You are in " + laboratory.getName());
+            setTitle("You are in " + laboratory.getName());
             logger.i(TAG, "lab selected " + laboratory.getName());
         } else {
             Toast.makeText(app, "Lab not selected", Toast.LENGTH_SHORT).show();
@@ -117,14 +116,14 @@ public class ScanInventoryActivity extends BaseActivity implements View.OnClickL
                 if ((boolean) btnStart.getTag()) {
                     if (app.connector.isConnected()) {
                         ModuleManager.newInstance().setScanStatus(true);
-                        btnStart.setText("Scanning");
+                        btnStart.setText(getResources().getString(R.string.stop_scan));
                         app.rfidReaderHelper.realTimeInventory(ReaderSetting.newInstance().btReadId, (byte) 0x01);
                     } else {
                         app.reconnectRFID();
                     }
                 } else {
                     app.scanningStatus = false;
-                    btnStart.setText("Inventory Start");
+                    btnStart.setText(getResources().getString(R.string.start_scan));
                 }
 
                 break;
@@ -133,6 +132,7 @@ public class ScanInventoryActivity extends BaseActivity implements View.OnClickL
                 scannedInventories.clear();
                 map.clear();
                 adapter.notifyDataSetChanged();
+                tvCount.setText(adapter.getItemCount() + " PCS");
                 break;
             case R.id.btnSave:
                 logger.i(TAG, "Save");
@@ -196,10 +196,10 @@ public class ScanInventoryActivity extends BaseActivity implements View.OnClickL
     @Override
     public void onScanningStatus(boolean status) {
         if (status) {
-            btnStart.setText("Scanning");
+            btnStart.setText(getResources().getString(R.string.stop_scan));
             btnStart.setTag(true);
         } else {
-            btnStart.setText("Inventory Start");
+            btnStart.setText(getResources().getString(R.string.start_scan));
             btnStart.setTag(false);
         }
     }

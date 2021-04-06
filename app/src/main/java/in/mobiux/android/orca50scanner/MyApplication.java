@@ -44,6 +44,7 @@ public class MyApplication extends Application {
     private String TAG = MyApplication.class.getName();
 
     public ModuleConnector connector = new ReaderConnector();
+    private ReaderSetting readerSetting = ReaderSetting.newInstance();
     public RFIDReaderHelper rfidReaderHelper;
     private RFIDReaderListener listener;
     boolean connectionStatus = false;
@@ -69,7 +70,6 @@ public class MyApplication extends Application {
 
         inventoryDatabase = InventoryDatabase.getInstance(getApplicationContext());
         laboratoryDatabase = LaboratoryDatabase.getInstance(getApplicationContext());
-//        db = Room.databaseBuilder(getApplicationContext(), AppDatabase.class, "db_name.db").allowMainThreadQueries().fallbackToDestructiveMigration().build();
     }
 
     private RXObserver rxObserver = new RXObserver() {
@@ -156,9 +156,11 @@ public class MyApplication extends Application {
                     }
 
                     ModuleManager.newInstance().setUHFStatus(true);
+                    byte beeperMode = 1;
 
-//                    rfidReaderHelper.setBeeperMode(ReaderSetting.newInstance().btReadId, (byte) 0x02);
-//                    ReaderSetting.newInstance().btBeeperMode = (byte) 0x02;
+                    rfidReaderHelper.setBeeperMode(readerSetting.btReadId, beeperMode);
+                    readerSetting.btBeeperMode = beeperMode;
+
                     rfidReaderHelper.setTrigger(true);
 
                 } catch (Exception e) {
@@ -210,57 +212,5 @@ public class MyApplication extends Application {
         if (rfidReaderHelper != null) {
             rfidReaderHelper.signOut();
         }
-    }
-
-    public void inventories() {
-
-        ApiClient.getApiService().inventoryList(session.token()).enqueue(new Callback<List<AssetResponse>>() {
-            @Override
-            public void onResponse(Call<List<AssetResponse>> call, Response<List<AssetResponse>> response) {
-                if (response.isSuccessful()) {
-
-                    List<Inventory> inventories = new ArrayList<>();
-                    for (AssetResponse res : response.body()) {
-
-                        Inventory inventory = new Inventory();
-
-                        inventory.setInventoryId(res.getId());
-                        inventory.setEpc(res.getAssetId().getRfid());
-                        inventory.setName(res.getName());
-
-                        int labId = -1;
-                        String labName = "";
-                        boolean locationAssigned = false;
-
-                        if (res.getDepartment() != null) {
-                            labId = res.getDepartment().getId();
-                            labName = res.getDepartment().getName();
-                            locationAssigned = true;
-                        }
-
-                        inventory.setLabId(labId);
-                        inventory.setLaboratoryName(labName);
-                        inventory.setLocationAssigned(locationAssigned);
-                        inventory.setSyncRequired(false);
-
-
-                        inventories.add(inventory);
-                    }
-
-                    new Thread(new Runnable() {
-                        @Override
-                        public void run() {
-                            inventoryDatabase.inventoryDao().insertAllWithReplace(inventories);
-                        }
-                    }).start();
-                }
-            }
-
-            @Override
-            public void onFailure(Call<List<AssetResponse>> call, Throwable t) {
-                logger.e(TAG, "" + t.getLocalizedMessage());
-                t.printStackTrace();
-            }
-        });
     }
 }

@@ -27,7 +27,7 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/Theme.ORCA50Scanner">
+        android:theme="@style/Theme.AppTheme.NoActionBar">
         <activity android:name=".activity.LoginActivity"></activity>
         <activity
             android:name=".activity.DataSyncSettingActivity"
@@ -39,8 +39,7 @@
             android:name=".activity.LocateAssetActivity"
             android:label="@string/label_locate_asset" />
         <activity android:name=".activity.ScanInventoryActivity" />
-        <activity
-            android:name=".activity.AssetInventoryActivity" />
+        <activity android:name=".activity.AssetInventoryActivity" />
         <activity android:name=".activity.HomeActivity" /> <!-- <activity android:name=".activity.SplashActivity" /> -->
         <activity android:name=".activity.InventoryDetailActivity" />
         <activity

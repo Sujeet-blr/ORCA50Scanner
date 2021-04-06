@@ -44,8 +44,7 @@ public class AssetInventoryActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_asset_inventory);
 
-        getSupportActionBar().setTitle("ASSET INVENTORY");
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        setTitle("ASSET INVENTORY");
 
         cardInventory = findViewById(R.id.cardInventory);
         spinnerLevel = findViewById(R.id.spinnerLevel);

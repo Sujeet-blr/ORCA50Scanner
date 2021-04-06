@@ -35,7 +35,7 @@ public class HomeActivity extends BaseActivity implements View.OnClickListener {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
 
-        getSupportActionBar().hide();
+//        getSupportActionBar().hide();
 
         cardInventory = findViewById(R.id.cardInventory);
         cardLocate = findViewById(R.id.cardLocate);

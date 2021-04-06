@@ -44,8 +44,8 @@ public class DataSyncSettingActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_data_sync_setting);
 
-//        getSupportActionBar().setTitle("ASSET INVENTORY");
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+        setTitle(getResources().getString(R.string.label_data_sync));
 
         cardSync = findViewById(R.id.cardSync);
         cardSettings = findViewById(R.id.cardSettings);

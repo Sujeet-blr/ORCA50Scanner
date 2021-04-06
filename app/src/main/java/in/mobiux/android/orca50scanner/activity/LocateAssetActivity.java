@@ -56,15 +56,13 @@ public class LocateAssetActivity extends BaseActivity implements RFIDReaderListe
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_locate_asset);
 
-//        getSupportActionBar().setTitle("ASSET INVENTORY");
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        setTitle(getResources().getString(R.string.label_locate_asset));
 
         spinner = findViewById(R.id.spinner);
         tvRSSIValue = findViewById(R.id.tvRSSIValue);
         seekBar = findViewById(R.id.seekBar);
         btnStart = findViewById(R.id.btnStart);
         btnStart.setTag(false);
-
 
         handler = new Handler(getMainLooper());
 //        connector = RFIDActivity.connector;
@@ -113,7 +111,7 @@ public class LocateAssetActivity extends BaseActivity implements RFIDReaderListe
                 if ((boolean) btnStart.getTag()) {
                     if (app.connector.isConnected()) {
                         ModuleManager.newInstance().setScanStatus(true);
-                        btnStart.setText("Stop");
+                        btnStart.setText(getResources().getString(R.string.stop_scan));
                         app.scanningStatus = true;
                         app.rfidReaderHelper.realTimeInventory(ReaderSetting.newInstance().btReadId, (byte) 0x01);
                     } else {
@@ -123,10 +121,10 @@ public class LocateAssetActivity extends BaseActivity implements RFIDReaderListe
                 } else {
                     app.scanningStatus = false;
 //                    ModuleManager.newInstance().setUHFStatus(false);
-                    btnStart.setText("Start Scan");
+                    btnStart.setText(getResources().getString(R.string.start_scan));
                 }
 
-                logger.i(TAG,"Connection Status : "+connector.isConnected());
+                logger.i(TAG, "Connection Status : " + connector.isConnected());
             }
         });
 
@@ -200,10 +198,10 @@ public class LocateAssetActivity extends BaseActivity implements RFIDReaderListe
     @Override
     public void onScanningStatus(boolean status) {
         if (status) {
-            btnStart.setText("Stop");
+            btnStart.setText(getResources().getString(R.string.stop_scan));
             btnStart.setTag(true);
         } else {
-            btnStart.setText("Start Scan");
+            btnStart.setText(getResources().getString(R.string.start_scan));
             btnStart.setTag(false);
         }
     }
