@@ -49,6 +49,12 @@
                     android:orientation="vertical"
                     android:padding="@dimen/margin_horizontal">
 
+                    <RadioGroup
+                        android:id="@+id/radioGroup"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical" />
+
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -60,7 +66,7 @@
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
                             android:text="Equipment: "
-                            android:textSize="14sp" />
+                            android:textSize="12sp" />
 
                         <TextView
                             android:id="@+id/tvName"
@@ -68,7 +74,8 @@
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="3"
-                            android:text="Dry Block X2" />
+                            android:text="Dry Block X2"
+                            android:textSize="12sp" />
 
                     </LinearLayout>
 
@@ -85,7 +92,7 @@
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
                             android:text="EPC: "
-                            android:textSize="14sp" />
+                            android:textSize="12sp" />
 
                         <TextView
                             android:id="@+id/tvEPC"
@@ -93,7 +100,8 @@
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="3"
-                            android:text="@string/rfid_tag_dummy" />
+                            android:text="@string/rfid_tag_dummy"
+                            android:textSize="12sp" />
 
                     </LinearLayout>
 
@@ -108,7 +116,7 @@
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
                             android:text="RSSI: "
-                            android:textSize="14sp" />
+                            android:textSize="12sp" />
 
                         <TextView
                             android:id="@+id/tvRSSI"
@@ -116,7 +124,8 @@
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="3"
-                            android:text="34dB" />
+                            android:text="34dB"
+                            android:textSize="12sp" />
 
                     </LinearLayout>
 

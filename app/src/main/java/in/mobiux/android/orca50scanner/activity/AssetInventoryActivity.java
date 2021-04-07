@@ -85,7 +85,7 @@ public class AssetInventoryActivity extends BaseActivity {
                 levelAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                 spinnerLevel.setAdapter(levelAdapter);
 
-                String sessionLevel = session.getValue("level");
+                String sessionLevel = session.getValue(TAG + "level");
                 if (!sessionLevel.isEmpty()) {
                     for (DepartmentResponse l : responses) {
                         if (String.valueOf(l.getId()).equals(sessionLevel)) {
@@ -118,7 +118,7 @@ public class AssetInventoryActivity extends BaseActivity {
                 if (responses.size() > 0) {
                     selectedLevel = responses.get(position);
 
-                    session.setValue("level", "" + selectedLevel.getId());
+                    session.setValue(TAG + "level", "" + selectedLevel.getId());
 
                     List<DepartmentResponse.Child> labList = responses.get(position).getChild();
 
@@ -126,7 +126,7 @@ public class AssetInventoryActivity extends BaseActivity {
                     labAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                     spinnerLab.setAdapter(labAdapter);
 
-                    String sessionLabId = session.getValue("lab");
+                    String sessionLabId = session.getValue(TAG + "lab");
                     if (!sessionLabId.isEmpty()) {
                         for (DepartmentResponse.Child child : labList) {
                             if (String.valueOf(child.getId()).equals(sessionLabId)) {
@@ -149,7 +149,7 @@ public class AssetInventoryActivity extends BaseActivity {
                 if (selectedLevel != null && selectedLevel.getChild().size() > 0) {
                     selectedLab = selectedLevel.getChild().get(position);
 
-                    session.setValue("lab", "" + selectedLab.getId());
+                    session.setValue(TAG + "lab", "" + selectedLab.getId());
                     tvLab.setText("" + selectedLab.getName());
                 }
             }

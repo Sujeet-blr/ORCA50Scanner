@@ -11,11 +11,14 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
+import com.google.android.material.radiobutton.MaterialRadioButton;
 import com.nativec.tools.ModuleManager;
 import com.rfid.rxobserver.ReaderSetting;
 import com.rfid.rxobserver.bean.RXInventoryTag;
@@ -26,6 +29,7 @@ import java.util.Comparator;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Random;
 
 import in.mobiux.android.orca50scanner.R;
 import in.mobiux.android.orca50scanner.api.model.DepartmentResponse;
@@ -46,6 +50,7 @@ public class TransferAndAssignActivity extends BaseActivity implements RFIDReade
     private List<DepartmentResponse> responses = new ArrayList<>();
     private DepartmentResponse selectedLevel;
     private DepartmentResponse.Child selectedLab;
+    private RadioGroup radioGroup;
     private TextView tvLab, tvLabName, tvSerialNumber, tvName, tvEPC, tvRSSI;
     private Button btnStart, btnSave;
 
@@ -63,6 +68,7 @@ public class TransferAndAssignActivity extends BaseActivity implements RFIDReade
 
         setTitle(getResources().getString(R.string.label_transfer_assign));
 
+        radioGroup = findViewById(R.id.radioGroup);
         spinnerLevel = findViewById(R.id.spinnerLevel);
         spinnerLab = findViewById(R.id.spinnerLab);
         tvLab = findViewById(R.id.tvLab);
@@ -200,9 +206,18 @@ public class TransferAndAssignActivity extends BaseActivity implements RFIDReade
                     showSuccessDialog("Asset " + selectedAsset.getName() + "\nmoved to " + selectedLab.getName() + " successfully");
 
                 } else {
-                    logger.e(TAG, "Asset not found");
-                    Toast.makeText(app, "Asset not found", Toast.LENGTH_SHORT).show();
+                    logger.e(TAG, "Asset not selected");
+                    Toast.makeText(app, "Asset not selected", Toast.LENGTH_SHORT).show();
                 }
+            }
+        });
+
+        radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(RadioGroup radioGroup, int position) {
+                if (scannedInventories.size() > 0)
+                    selectedAsset = scannedInventories.get(position);
+                updateUI(selectedAsset);
             }
         });
     }
@@ -246,21 +261,7 @@ public class TransferAndAssignActivity extends BaseActivity implements RFIDReade
     public void onInventoryTagEnd(RXInventoryTag.RXInventoryTagEnd tagEnd) {
         asset = null;
 
-        Collections.sort(scannedInventories, new Comparator<Inventory>() {
-            @Override
-            public int compare(Inventory inventory, Inventory t1) {
-                return (Integer.parseInt(inventory.getRssi()) - Integer.parseInt(t1.getRssi()));
-//                return 0;
-            }
-        });
-
-        Collections.reverse(scannedInventories);
-
-        if (scannedInventories.size() > 3) {
-            for (int i = 3; i < scannedInventories.size(); i++) {
-                scannedInventories.remove(i);
-            }
-        }
+        arrangeScannedInventory();
     }
 
     @Override
@@ -293,5 +294,37 @@ public class TransferAndAssignActivity extends BaseActivity implements RFIDReade
         });
 
         builder.show();
+    }
+
+    private List<Inventory> arrangeScannedInventory() {
+
+        Collections.sort(scannedInventories, new Comparator<Inventory>() {
+            @Override
+            public int compare(Inventory inventory, Inventory t1) {
+                return (Integer.parseInt(inventory.getRssi()) - Integer.parseInt(t1.getRssi()));
+//                return 0;
+            }
+        });
+
+        Collections.reverse(scannedInventories);
+
+        if (scannedInventories.size() > 3) {
+            for (int i = 3; i < scannedInventories.size(); i++) {
+                scannedInventories.remove(i);
+            }
+        }
+
+        updateScannedListViews();
+        return scannedInventories;
+    }
+
+    private void updateScannedListViews() {
+        radioGroup.removeAllViews();
+        for (int i = 0; i < scannedInventories.size(); i++) {
+            RadioButton radioButton = new RadioButton(this);
+            radioButton.setId(i);
+            radioButton.setText("" + scannedInventories.get(i).getName());
+            radioGroup.addView(radioButton);
+        }
     }
 }
