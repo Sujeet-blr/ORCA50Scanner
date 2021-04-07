@@ -37,4 +37,14 @@ public class SessionManager {
     public String rawToken() {
         return preferences.getString("token", "");
     }
+
+    public void setValue(String key, String value) {
+        SharedPreferences.Editor editor = preferences.edit();
+        editor.putString(key, value);
+        editor.apply();
+    }
+
+    public String getValue(String key) {
+        return preferences.getString(key, "");
+    }
 }

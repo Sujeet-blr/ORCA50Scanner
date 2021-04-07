@@ -23,6 +23,7 @@ import java.util.List;
 import in.mobiux.android.orca50scanner.R;
 import in.mobiux.android.orca50scanner.api.model.DepartmentResponse;
 import in.mobiux.android.orca50scanner.api.model.Laboratory;
+import in.mobiux.android.orca50scanner.util.AppUtils;
 import in.mobiux.android.orca50scanner.viewmodel.LaboratoryViewModel;
 
 public class AssetInventoryActivity extends BaseActivity {
@@ -83,6 +84,15 @@ public class AssetInventoryActivity extends BaseActivity {
                 levelAdapter = new ArrayAdapter<DepartmentResponse>(AssetInventoryActivity.this, android.R.layout.simple_spinner_item, responses);
                 levelAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                 spinnerLevel.setAdapter(levelAdapter);
+
+                String sessionLevel = session.getValue("level");
+                if (!sessionLevel.isEmpty()) {
+                    for (DepartmentResponse l : responses) {
+                        if (String.valueOf(l.getId()).equals(sessionLevel)) {
+                            spinnerLevel.setSelection(responses.indexOf(l));
+                        }
+                    }
+                }
             }
         });
 
@@ -107,9 +117,23 @@ public class AssetInventoryActivity extends BaseActivity {
             public void onItemSelected(AdapterView<?> adapterView, View view, int position, long l) {
                 if (responses.size() > 0) {
                     selectedLevel = responses.get(position);
-                    labAdapter = new ArrayAdapter<DepartmentResponse.Child>(AssetInventoryActivity.this, android.R.layout.simple_spinner_item, responses.get(position).getChild());
+
+                    session.setValue("level", "" + selectedLevel.getId());
+
+                    List<DepartmentResponse.Child> labList = responses.get(position).getChild();
+
+                    labAdapter = new ArrayAdapter<DepartmentResponse.Child>(AssetInventoryActivity.this, android.R.layout.simple_spinner_item, labList);
                     labAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                     spinnerLab.setAdapter(labAdapter);
+
+                    String sessionLabId = session.getValue("lab");
+                    if (!sessionLabId.isEmpty()) {
+                        for (DepartmentResponse.Child child : labList) {
+                            if (String.valueOf(child.getId()).equals(sessionLabId)) {
+                                spinnerLab.setSelection(labList.indexOf(child));
+                            }
+                        }
+                    }
                 }
             }
 
@@ -125,6 +149,7 @@ public class AssetInventoryActivity extends BaseActivity {
                 if (selectedLevel != null && selectedLevel.getChild().size() > 0) {
                     selectedLab = selectedLevel.getChild().get(position);
 
+                    session.setValue("lab", "" + selectedLab.getId());
                     tvLab.setText("" + selectedLab.getName());
                 }
             }
