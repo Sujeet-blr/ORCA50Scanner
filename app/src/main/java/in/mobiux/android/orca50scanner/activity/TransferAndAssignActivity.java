@@ -102,19 +102,19 @@ public class TransferAndAssignActivity extends BaseActivity implements RFIDReade
 
                 if ((boolean) btnStart.getTag()) {
                     if (app.connector.isConnected()) {
-                        ModuleManager.newInstance().setScanStatus(true);
-                        btnStart.setTag(true);
+//                        ModuleManager.newInstance().setScanStatus(true);
                         btnStart.setText(getResources().getString(R.string.stop_scan));
-                        app.scanningStatus = true;
-                        app.rfidReaderHelper.realTimeInventory(ReaderSetting.newInstance().btReadId, (byte) 0x01);
+//                        app.rfidReaderHelper.realTimeInventory(ReaderSetting.newInstance().btReadId, (byte) 0x01);
+                        app.startScanning();
                     } else {
                         app.reconnectRFID();
                         btnStart.setTag(false);
                     }
                 } else {
-                    app.scanningStatus = false;
-                    btnStart.setTag(false);
+//                    app.scanningStatus = false;
+//                    btnStart.setTag(false);
                     btnStart.setText(getResources().getString(R.string.start_scan));
+                    app.stopScanning();
                 }
             }
         });
@@ -320,11 +320,13 @@ public class TransferAndAssignActivity extends BaseActivity implements RFIDReade
 
     private void updateScannedListViews() {
         radioGroup.removeAllViews();
+        selectedAsset = null;
         for (int i = 0; i < scannedInventories.size(); i++) {
             RadioButton radioButton = new RadioButton(this);
             radioButton.setId(i);
             radioButton.setText("" + scannedInventories.get(i).getName());
             radioGroup.addView(radioButton);
         }
+        radioGroup.invalidate();
     }
 }

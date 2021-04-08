@@ -8,6 +8,7 @@ import android.content.SharedPreferences;
  */
 public class SessionManager {
 
+    public static final String TAG = SessionManager.class.getCanonicalName();
     private Context context;
     private SharedPreferences preferences;
     private static SessionManager INSTANCE;
@@ -22,6 +23,14 @@ public class SessionManager {
     private SessionManager(Context context) {
         this.context = context;
         preferences = context.getSharedPreferences("session", Context.MODE_PRIVATE);
+
+//        setting initial default value
+        if (getValue("rssi").isEmpty()) {
+            setValue("rssi", "80");
+        }
+        if (getValue("beeperMode").isEmpty()) {
+            setValue("beeperMode", "1");
+        }
     }
 
     public void saveToken(String token) {
@@ -42,6 +51,7 @@ public class SessionManager {
         SharedPreferences.Editor editor = preferences.edit();
         editor.putString(key, value);
         editor.apply();
+        AppLogger.getInstance(context).i(TAG, "Saved as key :" + key + " value :" + value);
     }
 
     public String getValue(String key) {

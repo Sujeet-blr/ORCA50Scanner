@@ -110,19 +110,24 @@ public class ScanInventoryActivity extends BaseActivity implements View.OnClickL
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.btnStart:
-                logger.i(TAG, "Start");
+
+                logger.i(TAG, "Start Button : " + btnStart.getText().toString());
                 btnStart.setTag(!(boolean) btnStart.getTag());
 
                 if ((boolean) btnStart.getTag()) {
                     if (app.connector.isConnected()) {
-                        ModuleManager.newInstance().setScanStatus(true);
+//                        app.scanningStatus = true;
+//                        ModuleManager.newInstance().setUHFStatus(true);
+//                        app.rfidReaderHelper.realTimeInventory(ReaderSetting.newInstance().btReadId, (byte) 0x01);
+                        app.startScanning();
                         btnStart.setText(getResources().getString(R.string.stop_scan));
-                        app.rfidReaderHelper.realTimeInventory(ReaderSetting.newInstance().btReadId, (byte) 0x01);
                     } else {
                         app.reconnectRFID();
+                        app.startScanning();
                     }
                 } else {
-                    app.scanningStatus = false;
+//                    app.scanningStatus = false;
+                    app.stopScanning();
                     btnStart.setText(getResources().getString(R.string.start_scan));
                 }
 
@@ -172,19 +177,6 @@ public class ScanInventoryActivity extends BaseActivity implements View.OnClickL
                 logger.i(TAG, "added to scanned list " + inventory.getEpc());
             }
 
-
-//            map.put(inventory.getEpc(), inventory);
-//            Inventory matching = null;
-//            for (Inventory inv : scannedInventories) {
-//                if (inv.getEpc().equals(inventory.getEpc())) {
-//                    matching = inv;
-//                }
-//            }
-//
-//            if (matching == null) {
-//                scannedInventories.add(inventory);
-//            }
-
         } else {
             logger.i(TAG, "Scanned tag is not found in database " + inventory.getEpc());
         }
@@ -206,7 +198,7 @@ public class ScanInventoryActivity extends BaseActivity implements View.OnClickL
 
     @Override
     public void onInventoryTagEnd(RXInventoryTag.RXInventoryTagEnd tagEnd) {
-
+        logger.i(TAG, "" + tagEnd.mTagCount);
     }
 
     @Override

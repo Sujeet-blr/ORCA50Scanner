@@ -55,6 +55,8 @@ public class MyApplication extends Application {
 
     public InventoryDatabase inventoryDatabase;
     public LaboratoryDatabase laboratoryDatabase;
+    public byte beeperMode = 1;
+    private boolean triggerEnable = false;
 
 
     @Override
@@ -70,6 +72,12 @@ public class MyApplication extends Application {
 
         inventoryDatabase = InventoryDatabase.getInstance(getApplicationContext());
         laboratoryDatabase = LaboratoryDatabase.getInstance(getApplicationContext());
+
+        try {
+            beeperMode = Byte.parseByte(session.getValue("beeperMode"));
+        } catch (Exception e) {
+            logger.e(TAG, "" + e.getLocalizedMessage());
+        }
     }
 
     private RXObserver rxObserver = new RXObserver() {
@@ -122,7 +130,15 @@ public class MyApplication extends Application {
                 mHandler.post(new Runnable() {
                     @Override
                     public void run() {
+
+                        if (triggerEnable){
+                            scanningStatus = false;
+                        }
+
                         listener.onInventoryTagEnd(tagEnd);
+                        listener.onScanningStatus(scanningStatus);
+
+
 //                        tvInventoryCount.setText("" + tagEnd.mTagCount);
 //                        tvSpeed.setText("" + tagReadingSpeed);
 
@@ -137,6 +153,10 @@ public class MyApplication extends Application {
 //                        }
                     }
                 });
+            }
+
+            if (scanningStatus) {
+                rfidReaderHelper.realTimeInventory(ReaderSetting.newInstance().btReadId, (byte) 0x01);
             }
         }
     };
@@ -156,12 +176,14 @@ public class MyApplication extends Application {
                     }
 
                     ModuleManager.newInstance().setUHFStatus(true);
-                    byte beeperMode = 1;
 
                     rfidReaderHelper.setBeeperMode(readerSetting.btReadId, beeperMode);
                     readerSetting.btBeeperMode = beeperMode;
 
-                    rfidReaderHelper.setTrigger(true);
+                    triggerEnable = true;
+                    rfidReaderHelper.setTrigger(triggerEnable);
+
+                    session.setValue("rssi", String.valueOf(rfidReaderHelper.getOutputPower(readerSetting.btReadId)));
 
                 } catch (Exception e) {
                     logger.i(TAG, "Exception " + e.getLocalizedMessage());
@@ -184,7 +206,7 @@ public class MyApplication extends Application {
             rfidReaderHelper.startWith();
 
             if (listener != null) {
-                listener.onScanningStatus(connector.isConnected());
+                listener.onConnection(connector.isConnected());
             }
         }
 
@@ -196,6 +218,34 @@ public class MyApplication extends Application {
 
     public void setOnRFIDListener(RFIDReaderListener listener) {
         this.listener = listener;
+    }
+
+    public void startScanning() {
+        scanningStatus = true;
+        triggerEnable = false;
+        rfidReaderHelper.setTrigger(triggerEnable);
+        rfidReaderHelper.realTimeInventory(ReaderSetting.newInstance().btReadId, (byte) 0x01);
+    }
+
+    public void stopScanning() {
+        scanningStatus = false;
+        triggerEnable = true;
+        rfidReaderHelper.setTrigger(true);
+    }
+
+    public void setOutputPower(String outputPower) {
+
+        byte btOutputPower = 0x00;
+        try {
+            btOutputPower = (byte) Integer.parseInt(outputPower.toString());
+        } catch (Exception e) {
+            logger.e(TAG, "" + e.getLocalizedMessage());
+        }
+
+        if (rfidReaderHelper != null) {
+            rfidReaderHelper.setOutputPower(readerSetting.btReadId, btOutputPower);
+            readerSetting.btAryOutputPower = new byte[]{btOutputPower};
+        }
     }
 
     @Override

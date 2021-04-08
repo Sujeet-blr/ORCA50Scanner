@@ -8,6 +8,7 @@ import androidx.lifecycle.ViewModelProvider;
 
 import android.Manifest;
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.view.View;
@@ -72,7 +73,9 @@ public class DataSyncSettingActivity extends BaseActivity {
         cardSettings.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(app, "Not Implemented", Toast.LENGTH_SHORT).show();
+//                Toast.makeText(app, "Not Implemented", Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(app, DeviceSettingsActivity.class);
+                startActivity(intent);
             }
         });
 

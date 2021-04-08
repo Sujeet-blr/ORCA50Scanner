@@ -199,4 +199,8 @@ public class BaseActivity extends AppCompatActivity {
             }
         });
     }
+
+    public void showToast(String message) {
+        Toast.makeText(app, "" + message, Toast.LENGTH_SHORT).show();
+    }
 }
