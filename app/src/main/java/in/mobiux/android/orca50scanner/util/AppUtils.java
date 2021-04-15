@@ -32,8 +32,9 @@ public class AppUtils {
     }
 
     public static Inventory getMatchingInventory(String strEPC, List<Inventory> list) {
+        String formattedEPC = strEPC.replace(" ", "");
         for (Inventory inventory : list) {
-            if (inventory.getEpc().equals(strEPC)){
+            if (formattedEPC.equals(inventory.getFormattedEPC())) {
                 return inventory;
             }
         }

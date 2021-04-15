@@ -169,7 +169,7 @@ public class InventoryDetailActivity extends BaseActivity {
         protected void onInventoryTag(RXInventoryTag tag) {
             logger.i(TAG, "Tag Scanned " + tag.strEPC);
 
-            if (tag.strEPC.equals(inventory.getEpc())) {
+            if ((tag.strEPC.replace(" ","")).equals(inventory.getFormattedEPC())) {
 
 
                 handler.post(new Runnable() {

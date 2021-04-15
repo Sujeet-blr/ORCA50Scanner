@@ -42,7 +42,7 @@ public class AppLogger {
 
     public synchronized void i(String tag, String msg) {
         Log.i(tag, msg);
-        data = new StringBuilder(("\n" + tag + "\t:>, " + msg + "\t," + String.valueOf(AppUtils.getFormattedTimestamp())));
+        data = new StringBuilder(("\n" + tag + "\t, " + msg + "\t," + String.valueOf(AppUtils.getFormattedTimestamp())));
         appendToLogs(data.toString());
     }
 

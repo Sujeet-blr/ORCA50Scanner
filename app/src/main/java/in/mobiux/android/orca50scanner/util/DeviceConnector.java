@@ -1,6 +1,7 @@
 package in.mobiux.android.orca50scanner.util;
 
 import android.content.Context;
+import android.os.Handler;
 
 import com.module.interaction.ModuleConnector;
 import com.module.interaction.RXTXListener;
@@ -11,7 +12,7 @@ import com.rfid.rxobserver.RXObserver;
 import com.rfid.rxobserver.ReaderSetting;
 import com.rfid.rxobserver.bean.RXInventoryTag;
 
-import java.util.logging.Handler;
+import in.mobiux.android.orca50scanner.api.model.Inventory;
 
 /**
  * Created by SUJEET KUMAR on 16-Mar-21.
@@ -27,8 +28,10 @@ public class DeviceConnector {
     public static String PORT = "dev/ttyS4";
     public static int BOUD_RATE = 115200;
 
-    DeviceListener listener;
-    private static Handler handler;
+    private RFIDReaderListener listener;
+    private Handler mHandler;
+    public byte beeperMode = 1;
+    boolean connectionStatus = false;
 
     public static DeviceConnector getInstance(Context context) {
         if (deviceConnector == null)
@@ -38,6 +41,7 @@ public class DeviceConnector {
 
     public DeviceConnector(Context context) {
         this.context = context;
+        mHandler = new Handler(context.getMainLooper());
     }
 
     private boolean connectDevice() {
@@ -45,19 +49,35 @@ public class DeviceConnector {
             ModuleManager.newInstance().setUHFStatus(true);
             try {
                 rfidReaderHelper = RFIDReaderHelper.getDefaultHelper();
+                rfidReaderHelper.setTrigger(true);
+                rfidReaderHelper.setBeeperMode(ReaderSetting.newInstance().btReadId, beeperMode);
+                ReaderSetting.newInstance().btBeeperMode = beeperMode;
+                rfidReaderHelper.registerObserver(rxObserver);
             } catch (Exception e) {
                 e.printStackTrace();
             }
-            boolean status = connector.connectCom(PORT, BOUD_RATE);
-            return status;
+            connectionStatus = connector.connectCom(PORT, BOUD_RATE);
+        } else {
+            connectionStatus = true;
         }
-        return true;
+
+        if (listener != null) {
+            mHandler.post(new Runnable() {
+                @Override
+                public void run() {
+                    listener.onConnection(connectionStatus);
+                }
+            });
+        }
+        return connectionStatus;
     }
 
-    private void addObserver(RXObserver rxObserver) {
-        if (connectDevice() && rfidReaderHelper != null) {
-            rfidReaderHelper.registerObserver(rxObserver);
-        }
+    public boolean isConnected() {
+        return connector.isConnected();
+    }
+
+    private static DeviceConnector getClient(Context context) {
+        return getInstance(context);
     }
 
     private void addListener(RXTXListener rxtxListener) {
@@ -69,41 +89,64 @@ public class DeviceConnector {
         }
     }
 
-
-    public void setOnEventListener(DeviceListener listener) {
+    public void setOnEventListener(RFIDReaderListener listener) {
         this.listener = listener;
     }
 
-    public abstract class DeviceListener extends RXObserver {
-
+    private RXObserver rxObserver = new RXObserver() {
         @Override
         protected void refreshSetting(ReaderSetting readerSetting) {
             if (listener != null) {
-                listener.refreshSetting(readerSetting);
+                mHandler.post(new Runnable() {
+                    @Override
+                    public void run() {
+
+                    }
+                });
             }
         }
 
         @Override
         protected void onExeCMDStatus(byte cmd, byte status) {
             if (listener != null) {
-                listener.onExeCMDStatus(cmd, status);
+                mHandler.post(new Runnable() {
+                    @Override
+                    public void run() {
+
+                    }
+                });
             }
         }
 
         @Override
         protected void onInventoryTag(RXInventoryTag tag) {
+
+            Inventory inventory = new Inventory();
+            inventory.setEpc(tag.strEPC);
+            inventory.setRssi(tag.strRSSI);
+
             if (listener != null) {
-                listener.onInventoryTag(tag);
+                mHandler.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        listener.onInventoryTag(inventory);
+                    }
+                });
             }
         }
 
         @Override
         protected void onInventoryTagEnd(RXInventoryTag.RXInventoryTagEnd tagEnd) {
             if (listener != null) {
-                listener.onInventoryTagEnd(tagEnd);
+                mHandler.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        listener.onInventoryTagEnd(tagEnd);
+                    }
+                });
             }
         }
-    }
+    };
 
     RXTXListener rxtxListener = new RXTXListener() {
         @Override
@@ -118,7 +161,15 @@ public class DeviceConnector {
 
         @Override
         public void onLostConnect() {
-
+            connectionStatus = false;
+            if (listener != null) {
+                mHandler.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        listener.onConnection(connectionStatus);
+                    }
+                });
+            }
         }
     };
 }

@@ -62,7 +62,11 @@ public class HomeActivity extends BaseActivity implements View.OnClickListener {
         });
 
         checkPermission(HomeActivity.this, Manifest.permission.WRITE_EXTERNAL_STORAGE, STORAGE_PERMISSION_CODE);
-        app.connectRFID();
+        try {
+            app.connectRFID();
+        } catch (Exception e) {
+            logger.e(TAG, "" + e.getLocalizedMessage());
+        }
 //        app.inventories();
 
 //        Presenter.INSTANCE.pullLatestData();
@@ -101,5 +105,11 @@ public class HomeActivity extends BaseActivity implements View.OnClickListener {
 
                 break;
         }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        app.onTerminate();
     }
 }

@@ -29,6 +29,7 @@ import java.util.Comparator;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Random;
 
 import in.mobiux.android.orca50scanner.R;
@@ -59,7 +60,8 @@ public class TransferAndAssignActivity extends BaseActivity implements RFIDReade
     private Inventory selectedAsset;
     private InventoryViewModel inventoryViewModel;
     private List<Inventory> inventories = new ArrayList<>();
-    List<Inventory> scannedInventories = new ArrayList<>();
+    private List<Inventory> scannedTagsList = new ArrayList<>();
+    private Map<String, Inventory> scannedTags = new HashMap<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -105,7 +107,7 @@ public class TransferAndAssignActivity extends BaseActivity implements RFIDReade
 //                        ModuleManager.newInstance().setScanStatus(true);
                         btnStart.setText(getResources().getString(R.string.stop_scan));
 //                        app.rfidReaderHelper.realTimeInventory(ReaderSetting.newInstance().btReadId, (byte) 0x01);
-                        app.startScanning();
+                        app.startScanning(TAG);
                     } else {
                         app.reconnectRFID();
                         btnStart.setTag(false);
@@ -215,8 +217,8 @@ public class TransferAndAssignActivity extends BaseActivity implements RFIDReade
         radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(RadioGroup radioGroup, int position) {
-                if (scannedInventories.size() > 0)
-                    selectedAsset = scannedInventories.get(position);
+                if (scannedTagsList.size() > 0)
+                    selectedAsset = scannedTagsList.get(position);
                 updateUI(selectedAsset);
             }
         });
@@ -230,16 +232,29 @@ public class TransferAndAssignActivity extends BaseActivity implements RFIDReade
 
     @Override
     public void onInventoryTag(Inventory inventory) {
-        if (asset == null) {
-            asset = inventory;
+//        if (asset == null) {
+//            asset = inventory;
+//        }
+
+        scannedTags.put(inventory.getFormattedEPC(), inventory);
+
+        Inventory matchingAsset = AppUtils.getMatchingInventory(inventory.getFormattedEPC(), inventories);
+        if (matchingAsset != null) {
+            matchingAsset.setRssi(inventory.getRssi());
+            scannedTags.put(matchingAsset.getFormattedEPC(), matchingAsset);
+            if (selectedAsset != null) {
+                selectedAsset = scannedTags.get(selectedAsset.getFormattedEPC());
+            }
         }
 
-        if (Integer.parseInt(inventory.getRssi()) > Integer.parseInt(asset.getRssi())) {
-            asset = inventory;
-            selectedAsset = AppUtils.getMatchingInventory(asset.getEpc(), inventories);
-        }
 
-        scannedInventories.add(inventory);
+//        if (Integer.parseInt(inventory.getRssi()) > Integer.parseInt(asset.getRssi())) {
+//            asset = inventory;
+//            selectedAsset = AppUtils.getMatchingInventory(asset.getEpc(), inventories);
+//            selectedAsset.setRssi(inventory.getRssi());
+//        }
+
+//        scannedTagsList.add(inventory);
 
         updateUI(selectedAsset);
     }
@@ -259,7 +274,7 @@ public class TransferAndAssignActivity extends BaseActivity implements RFIDReade
 
     @Override
     public void onInventoryTagEnd(RXInventoryTag.RXInventoryTagEnd tagEnd) {
-        asset = null;
+//        asset = null;
 
         arrangeScannedInventory();
     }
@@ -298,7 +313,10 @@ public class TransferAndAssignActivity extends BaseActivity implements RFIDReade
 
     private List<Inventory> arrangeScannedInventory() {
 
-        Collections.sort(scannedInventories, new Comparator<Inventory>() {
+        scannedTagsList.clear();
+        scannedTagsList.addAll(scannedTags.values());
+
+        Collections.sort(scannedTagsList, new Comparator<Inventory>() {
             @Override
             public int compare(Inventory inventory, Inventory t1) {
                 return (Integer.parseInt(inventory.getRssi()) - Integer.parseInt(t1.getRssi()));
@@ -306,25 +324,25 @@ public class TransferAndAssignActivity extends BaseActivity implements RFIDReade
             }
         });
 
-        Collections.reverse(scannedInventories);
+        Collections.reverse(scannedTagsList);
 
-        if (scannedInventories.size() > 3) {
-            for (int i = 3; i < scannedInventories.size(); i++) {
-                scannedInventories.remove(i);
+        if (scannedTagsList.size() > 3) {
+            for (int i = 3; i < scannedTagsList.size(); i++) {
+                scannedTagsList.remove(i);
             }
         }
 
         updateScannedListViews();
-        return scannedInventories;
+        return scannedTagsList;
     }
 
     private void updateScannedListViews() {
         radioGroup.removeAllViews();
         selectedAsset = null;
-        for (int i = 0; i < scannedInventories.size(); i++) {
+        for (int i = 0; i < scannedTagsList.size(); i++) {
             RadioButton radioButton = new RadioButton(this);
             radioButton.setId(i);
-            radioButton.setText("" + scannedInventories.get(i).getName());
+            radioButton.setText("" + scannedTagsList.get(i).getName());
             radioGroup.addView(radioButton);
         }
         radioGroup.invalidate();

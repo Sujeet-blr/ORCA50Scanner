@@ -41,7 +41,6 @@ public class ScanInventoryActivity extends BaseActivity implements View.OnClickL
     private List<Inventory> scannedInventories = new ArrayList<>();
     private Map<String, Inventory> inventories = new HashMap<>();
     //    private Set<String> uniqueAsset = new HashSet<>();
-    private Map<String, Inventory> map = new HashMap<>();
     private InventoryAdapter adapter;
     boolean startButtonStatus = false;
 
@@ -119,11 +118,11 @@ public class ScanInventoryActivity extends BaseActivity implements View.OnClickL
 //                        app.scanningStatus = true;
 //                        ModuleManager.newInstance().setUHFStatus(true);
 //                        app.rfidReaderHelper.realTimeInventory(ReaderSetting.newInstance().btReadId, (byte) 0x01);
-                        app.startScanning();
+                        app.startScanning(TAG);
                         btnStart.setText(getResources().getString(R.string.stop_scan));
                     } else {
                         app.reconnectRFID();
-                        app.startScanning();
+                        app.startScanning(TAG);
                     }
                 } else {
 //                    app.scanningStatus = false;
@@ -135,7 +134,6 @@ public class ScanInventoryActivity extends BaseActivity implements View.OnClickL
             case R.id.btnClear:
                 logger.i(TAG, "Clear");
                 scannedInventories.clear();
-                map.clear();
                 adapter.notifyDataSetChanged();
                 tvCount.setText(adapter.getItemCount() + " PCS");
                 break;
@@ -163,17 +161,17 @@ public class ScanInventoryActivity extends BaseActivity implements View.OnClickL
     @Override
     public void onInventoryTag(Inventory inventory) {
 
-        Inventory matchingAsset = inventories.get(inventory.getEpc());
+        Inventory matchingAsset = inventories.get(inventory.getFormattedEPC());
         if (matchingAsset != null) {
             matchingAsset.setRssi(inventory.getRssi());
-            inventory = matchingAsset;
+//            inventory = matchingAsset;
 
             Inventory m = AppUtils.getMatchingInventory(inventory.getEpc(), scannedInventories);
             if (m != null) {
                 logger.i(TAG, "existing in Scanned list " + m.getEpc());
                 m.setRssi(inventory.getRssi());
             } else {
-                scannedInventories.add(inventory);
+                scannedInventories.add(matchingAsset);
                 logger.i(TAG, "added to scanned list " + inventory.getEpc());
             }
 

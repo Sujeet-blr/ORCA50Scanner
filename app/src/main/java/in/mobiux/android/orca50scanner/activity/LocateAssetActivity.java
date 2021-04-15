@@ -94,6 +94,7 @@ public class LocateAssetActivity extends BaseActivity implements RFIDReaderListe
             public void onItemSelected(AdapterView<?> adapterView, View view, int position, long l) {
                 inventory = inventories.get(position);
                 logger.i(TAG, "" + inventory.getEpc() + "\t" + inventory.getName());
+                seekBar.setProgress(0);
             }
 
             @Override
@@ -108,24 +109,30 @@ public class LocateAssetActivity extends BaseActivity implements RFIDReaderListe
 
                 logger.i(TAG, "Start Clicked : " + btnStart.getText().toString());
                 btnStart.setTag(!(boolean) btnStart.getTag());
+                logger.i(TAG, "Button Status " + (boolean) btnStart.getTag());
 
                 if ((boolean) btnStart.getTag()) {
                     if (app.connector.isConnected()) {
-//                        ModuleManager.newInstance().setScanStatus(true);
                         ModuleManager.newInstance().setUHFStatus(true);
                         btnStart.setText(getResources().getString(R.string.stop_scan));
-//                        app.scanningStatus = true;
-//                        app.rfidReaderHelper.realTimeInventory(ReaderSetting.newInstance().btReadId, (byte) 0x01);
-                        app.startScanning();
+                        app.scanningStatus = true;
+                        app.triggerEnable = false;
+                        app.rfidReaderHelper.realTimeInventory(ReaderSetting.newInstance().btReadId, (byte) 0x01);
+                        logger.i(TAG, "realtimeinventorycommand sent");
+//                        app.startScanning(TAG);
+
                     } else {
                         app.reconnectRFID();
                         btnStart.setTag(false);
                     }
                 } else {
+                    app.triggerEnable = true;
+                    app.rfidReaderHelper.setTrigger(true);
                     app.stopScanning();
 //                    app.scanningStatus = false;
 //                    ModuleManager.newInstance().setUHFStatus(false);
                     btnStart.setText(getResources().getString(R.string.start_scan));
+                    logger.i(TAG, "stopping scan");
                 }
 
                 logger.i(TAG, "Connection Status : " + connector.isConnected());
@@ -172,14 +179,14 @@ public class LocateAssetActivity extends BaseActivity implements RFIDReaderListe
         selectedAsset = inventories.get(spinner.getSelectedItemPosition());
         inventory = selectedAsset;
 
-        tvRSSIValue.setText(tag.getRssi());
+//        tvRSSIValue.setText(tag.getRssi()+"%");
 
         logger.i(TAG, inventory.getEpc() + " ### " + tag.getEpc());
 
-        if (inventory.getEpc().equals(tag.getEpc())) {
+        if (inventory.getFormattedEPC().equals(tag.getFormattedEPC())) {
             logger.i(TAG, "Matching");
             inventory.setRssi(tag.strRSSI);
-            tvRSSIValue.setText(tag.strRSSI);
+            tvRSSIValue.setText(tag.strRSSI + "%");
             try {
                 logger.i(TAG, "rssi is " + tag.getRssi());
                 int rssi = 0;

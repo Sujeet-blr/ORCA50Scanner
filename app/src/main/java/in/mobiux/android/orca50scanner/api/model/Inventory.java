@@ -144,6 +144,10 @@ public class Inventory extends RXInventoryTag implements Serializable {
         this.syncRequired = syncRequired;
     }
 
+    public String getFormattedEPC() {
+        return getEpc().replace(" ", "");
+    }
+
     @Override
     public String toString() {
         return "" + name;

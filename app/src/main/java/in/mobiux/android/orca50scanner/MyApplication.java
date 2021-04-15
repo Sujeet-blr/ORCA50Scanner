@@ -56,7 +56,7 @@ public class MyApplication extends Application {
     public InventoryDatabase inventoryDatabase;
     public LaboratoryDatabase laboratoryDatabase;
     public byte beeperMode = 1;
-    private boolean triggerEnable = false;
+    public boolean triggerEnable = false;
 
 
     @Override
@@ -131,7 +131,7 @@ public class MyApplication extends Application {
                     @Override
                     public void run() {
 
-                        if (triggerEnable){
+                        if (triggerEnable) {
                             scanningStatus = false;
                         }
 
@@ -169,11 +169,15 @@ public class MyApplication extends Application {
 
                 try {
 
+
                     rfidReaderHelper = RFIDReaderHelper.getDefaultHelper();
                     if (!observerRegistrationStatus) {
                         rfidReaderHelper.registerObserver(rxObserver);
                         observerRegistrationStatus = true;
                     }
+
+                    readerSetting = ReaderSetting.newInstance();
+                    ModuleManager.newInstance().setScanStatus(true);
 
                     ModuleManager.newInstance().setUHFStatus(true);
 
@@ -220,17 +224,22 @@ public class MyApplication extends Application {
         this.listener = listener;
     }
 
-    public void startScanning() {
+    public void startScanning(String sourceTAG) {
+
+        ModuleManager.newInstance().setUHFStatus(true);
         scanningStatus = true;
         triggerEnable = false;
         rfidReaderHelper.setTrigger(triggerEnable);
         rfidReaderHelper.realTimeInventory(ReaderSetting.newInstance().btReadId, (byte) 0x01);
+
+        logger.i(TAG, sourceTAG + " # start Scan command sent");
     }
 
     public void stopScanning() {
         scanningStatus = false;
         triggerEnable = true;
-        rfidReaderHelper.setTrigger(true);
+        rfidReaderHelper.setTrigger(triggerEnable);
+        logger.i(TAG, "stop scan command sent");
     }
 
     public void setOutputPower(String outputPower) {
