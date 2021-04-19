@@ -134,8 +134,9 @@ public class ScanInventoryActivity extends BaseActivity implements View.OnClickL
                         app.startScanning(TAG);
                     }
                 } else {
+                    app.scanningStatus = false;
                     app.triggerEnable = true;
-                    app.rfidReaderHelper.setTrigger(true);
+//                    app.rfidReaderHelper.setTrigger(true);
 //                    app.scanningStatus = false;
                     app.stopScanning();
                     btnStart.setText(getResources().getString(R.string.start_scan));

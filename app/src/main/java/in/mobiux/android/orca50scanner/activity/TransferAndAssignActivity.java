@@ -118,14 +118,16 @@ public class TransferAndAssignActivity extends BaseActivity implements RFIDReade
                         logger.i(TAG, "realtimeinventorycommand sent");
 
                     } else {
+                        app.scanningStatus = false;
                         app.triggerEnable = true;
-                        app.rfidReaderHelper.setTrigger(true);
+//                        app.rfidReaderHelper.setTrigger(true);
                         app.reconnectRFID();
                         btnStart.setTag(false);
                     }
                 } else {
+                    app.scanningStatus = false;
                     app.triggerEnable = true;
-                    app.rfidReaderHelper.setTrigger(true);
+//                    app.rfidReaderHelper.setTrigger(true);
 //                    app.scanningStatus = false;
 //                    btnStart.setTag(false);
                     btnStart.setText(getResources().getString(R.string.start_scan));
@@ -278,9 +280,9 @@ public class TransferAndAssignActivity extends BaseActivity implements RFIDReade
         btnStart.setTag(status);
 
         if (status) {
-            btnStart.setText(getResources().getString(R.string.start_scan));
-        } else {
             btnStart.setText(getResources().getString(R.string.stop_scan));
+        } else {
+            btnStart.setText(getResources().getString(R.string.start_scan));
         }
     }
 

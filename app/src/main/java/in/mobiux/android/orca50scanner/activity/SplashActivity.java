@@ -27,7 +27,9 @@ public class SplashActivity extends BaseActivity {
                 if (session.rawToken().isEmpty()) {
                     startActivity(new Intent(app, LoginActivity.class));
                 } else {
+
                     Intent intent = new Intent(getApplicationContext(), HomeActivity.class);
+//                    Intent intent = new Intent(getApplicationContext(), RFIDActivity.class);
                     startActivity(intent);
                 }
                 finish();
