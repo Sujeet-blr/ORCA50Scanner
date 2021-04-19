@@ -90,7 +90,7 @@ public class MyApplication extends Application {
         protected void onExeCMDStatus(byte cmd, byte status) {
             logger.i(TAG, "Command Executed " + cmd + "\tstatus " + status);
 
-            if (cmd == CMD.REAL_TIME_INVENTORY)
+            if (cmd == CMD.REAL_TIME_INVENTORY) {
                 mHandler.post(new Runnable() {
                     @Override
                     public void run() {
@@ -100,6 +100,9 @@ public class MyApplication extends Application {
                         }
                     }
                 });
+            } else {
+
+            }
         }
 
         @Override
@@ -177,7 +180,7 @@ public class MyApplication extends Application {
                     }
 
                     readerSetting = ReaderSetting.newInstance();
-                    ModuleManager.newInstance().setScanStatus(true);
+//                    ModuleManager.newInstance().setScanStatus(true);
 
                     ModuleManager.newInstance().setUHFStatus(true);
 

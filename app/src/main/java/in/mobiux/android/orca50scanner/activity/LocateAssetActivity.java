@@ -124,6 +124,8 @@ public class LocateAssetActivity extends BaseActivity implements RFIDReaderListe
                     } else {
                         app.reconnectRFID();
                         btnStart.setTag(false);
+                        app.triggerEnable = true;
+                        app.rfidReaderHelper.setTrigger(true);
                     }
                 } else {
                     app.triggerEnable = true;

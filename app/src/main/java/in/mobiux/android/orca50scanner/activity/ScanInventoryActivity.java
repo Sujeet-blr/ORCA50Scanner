@@ -118,13 +118,24 @@ public class ScanInventoryActivity extends BaseActivity implements View.OnClickL
 //                        app.scanningStatus = true;
 //                        ModuleManager.newInstance().setUHFStatus(true);
 //                        app.rfidReaderHelper.realTimeInventory(ReaderSetting.newInstance().btReadId, (byte) 0x01);
-                        app.startScanning(TAG);
+//                        app.startScanning(TAG);
                         btnStart.setText(getResources().getString(R.string.stop_scan));
+
+
+                        ModuleManager.newInstance().setUHFStatus(true);
+                        btnStart.setText(getResources().getString(R.string.stop_scan));
+                        app.scanningStatus = true;
+                        app.triggerEnable = false;
+                        app.rfidReaderHelper.realTimeInventory(ReaderSetting.newInstance().btReadId, (byte) 0x01);
+                        logger.i(TAG, "realtimeinventorycommand sent");
+
                     } else {
                         app.reconnectRFID();
                         app.startScanning(TAG);
                     }
                 } else {
+                    app.triggerEnable = true;
+                    app.rfidReaderHelper.setTrigger(true);
 //                    app.scanningStatus = false;
                     app.stopScanning();
                     btnStart.setText(getResources().getString(R.string.start_scan));

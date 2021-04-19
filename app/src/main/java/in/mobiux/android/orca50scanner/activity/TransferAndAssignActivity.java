@@ -107,12 +107,25 @@ public class TransferAndAssignActivity extends BaseActivity implements RFIDReade
 //                        ModuleManager.newInstance().setScanStatus(true);
                         btnStart.setText(getResources().getString(R.string.stop_scan));
 //                        app.rfidReaderHelper.realTimeInventory(ReaderSetting.newInstance().btReadId, (byte) 0x01);
-                        app.startScanning(TAG);
+//                        app.startScanning(TAG);
+
+
+                        ModuleManager.newInstance().setUHFStatus(true);
+                        btnStart.setText(getResources().getString(R.string.stop_scan));
+                        app.scanningStatus = true;
+                        app.triggerEnable = false;
+                        app.rfidReaderHelper.realTimeInventory(ReaderSetting.newInstance().btReadId, (byte) 0x01);
+                        logger.i(TAG, "realtimeinventorycommand sent");
+
                     } else {
+                        app.triggerEnable = true;
+                        app.rfidReaderHelper.setTrigger(true);
                         app.reconnectRFID();
                         btnStart.setTag(false);
                     }
                 } else {
+                    app.triggerEnable = true;
+                    app.rfidReaderHelper.setTrigger(true);
 //                    app.scanningStatus = false;
 //                    btnStart.setTag(false);
                     btnStart.setText(getResources().getString(R.string.start_scan));
