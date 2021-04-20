@@ -3,12 +3,7 @@ package in.mobiux.android.orca50scanner.api;
 public class Endpoints {
 
 
-        public static final String BASE_URL = "https://footprints-staging.hito.solutions/api/v1/";
-//    public static final String BASE_URL = "http://172.21.78.80/api/v1/";
-//    public static final String LOGIN = "api/users/signin";
-
-//    public static final String USERS = "/api/v1/users";
-//    public static final String USER = "/api/v1/user/{userId}";
+    public static final String BASE_URL = "https://footprints-staging.hito.solutions/api/v1/";
 
     public static final String LOGIN = "auth/login/";
     public static final String DEPARTMENTS = "units/all/?flat_list=false";
@@ -17,6 +12,5 @@ public class Endpoints {
 
     public static final String ASSET_DETAILS = "assets/details/{assetId}/";
     public static final String ASSETS_OF_DEPARTMENT = "assets/";
-
 
 }

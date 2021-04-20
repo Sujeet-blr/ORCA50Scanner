@@ -39,13 +39,13 @@
                 android:spinnerMode="dialog" />
         </androidx.cardview.widget.CardView>
 
-        <Button
-            android:id="@+id/btnStart"
+        <TextView
+            android:id="@+id/txtIndicator"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
-            android:backgroundTint="@color/black_button"
-            android:text="@string/start_scan" />
+            android:text="@string/scanning"
+            android:textColor="@color/orange" />
 
 
         <RelativeLayout

@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:animateLayoutChanges="true"
     tools:context=".activity.TransferAndAssignActivity">
 
     <include
@@ -22,14 +23,14 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-            <Button
-                android:id="@+id/btnStart"
+            <TextView
+                android:id="@+id/txtIndicator"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
                 android:layout_margin="@dimen/margin_horizontal"
-                android:backgroundTint="@color/black_button"
-                android:text="@string/start_scan" />
+                android:text="@string/scanning"
+                android:textColor="@color/orange" />
 
             <!--            <androidx.recyclerview.widget.RecyclerView-->
             <!--                android:id="@+id/recyclerView"-->

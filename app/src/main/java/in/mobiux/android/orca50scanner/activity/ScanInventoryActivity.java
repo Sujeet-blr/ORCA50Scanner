@@ -34,8 +34,8 @@ import in.mobiux.android.orca50scanner.viewmodel.InventoryViewModel;
 
 public class ScanInventoryActivity extends BaseActivity implements View.OnClickListener, RFIDReaderListener {
 
-    private Button btnStart, btnSave, btnClear;
-    private TextView tvCount;
+    private Button  btnSave, btnClear;
+    private TextView tvCount, txtIndicator;
     private RecyclerView recyclerView;
     private DepartmentResponse.Child laboratory;
     private List<Inventory> scannedInventories = new ArrayList<>();
@@ -54,17 +54,17 @@ public class ScanInventoryActivity extends BaseActivity implements View.OnClickL
         setTitle("");
 
         tvCount = findViewById(R.id.tvCount);
-        btnStart = findViewById(R.id.btnStart);
+        txtIndicator = findViewById(R.id.txtIndicator);
         btnSave = findViewById(R.id.btnSave);
         btnClear = findViewById(R.id.btnClear);
         recyclerView = findViewById(R.id.recyclerView);
         tvCount.setText("");
-        btnStart.setTag(false);
+        txtIndicator.setTag(false);
+        txtIndicator.setText("");
 
-        btnStart.setOnClickListener(this);
         btnSave.setOnClickListener(this);
         btnClear.setOnClickListener(this);
-        btnStart.setTag(startButtonStatus);
+        txtIndicator.setTag(startButtonStatus);
 
         laboratory = (DepartmentResponse.Child) getIntent().getSerializableExtra("laboratory");
         if (laboratory != null) {
@@ -108,41 +108,37 @@ public class ScanInventoryActivity extends BaseActivity implements View.OnClickL
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
-            case R.id.btnStart:
-
-                logger.i(TAG, "Start Button : " + btnStart.getText().toString());
-                btnStart.setTag(!(boolean) btnStart.getTag());
-
-                if ((boolean) btnStart.getTag()) {
-                    if (app.connector.isConnected()) {
-//                        app.scanningStatus = true;
+//            case R.id.btnStart:
+//
+//                logger.i(TAG, "Start Button : " + btnStart.getText().toString());
+//                btnStart.setTag(!(boolean) btnStart.getTag());
+//
+//                if ((boolean) btnStart.getTag()) {
+//                    if (app.connector.isConnected()) {
+////                        app.scanningStatus = true;
+////                        ModuleManager.newInstance().setUHFStatus(true);
+////                        app.rfidReaderHelper.realTimeInventory(ReaderSetting.newInstance().btReadId, (byte) 0x01);
+////                        app.startScanning(TAG);
+//                        btnStart.setText(getResources().getString(R.string.stop_scan));
+//
+//
 //                        ModuleManager.newInstance().setUHFStatus(true);
+//                        btnStart.setText(getResources().getString(R.string.stop_scan));
+//                        app.scanningStatus = true;
 //                        app.rfidReaderHelper.realTimeInventory(ReaderSetting.newInstance().btReadId, (byte) 0x01);
+//                        logger.i(TAG, "realtimeinventorycommand sent");
+//
+//                    } else {
+//                        app.reconnectRFID();
 //                        app.startScanning(TAG);
-                        btnStart.setText(getResources().getString(R.string.stop_scan));
-
-
-                        ModuleManager.newInstance().setUHFStatus(true);
-                        btnStart.setText(getResources().getString(R.string.stop_scan));
-                        app.scanningStatus = true;
-                        app.triggerEnable = false;
-                        app.rfidReaderHelper.realTimeInventory(ReaderSetting.newInstance().btReadId, (byte) 0x01);
-                        logger.i(TAG, "realtimeinventorycommand sent");
-
-                    } else {
-                        app.reconnectRFID();
-                        app.startScanning(TAG);
-                    }
-                } else {
-                    app.scanningStatus = false;
-                    app.triggerEnable = true;
-//                    app.rfidReaderHelper.setTrigger(true);
+//                    }
+//                } else {
 //                    app.scanningStatus = false;
-                    app.stopScanning();
-                    btnStart.setText(getResources().getString(R.string.start_scan));
-                }
-
-                break;
+//                    app.stopScanning();
+//                    btnStart.setText(getResources().getString(R.string.start_scan));
+//                }
+//
+//                break;
             case R.id.btnClear:
                 logger.i(TAG, "Clear");
                 scannedInventories.clear();
@@ -198,11 +194,11 @@ public class ScanInventoryActivity extends BaseActivity implements View.OnClickL
     @Override
     public void onScanningStatus(boolean status) {
         if (status) {
-            btnStart.setText(getResources().getString(R.string.stop_scan));
-            btnStart.setTag(true);
+            txtIndicator.setText(getResources().getString(R.string.scanning));
+            txtIndicator.setTag(true);
         } else {
-            btnStart.setText(getResources().getString(R.string.start_scan));
-            btnStart.setTag(false);
+            txtIndicator.setText("");
+            txtIndicator.setTag(false);
         }
     }
 

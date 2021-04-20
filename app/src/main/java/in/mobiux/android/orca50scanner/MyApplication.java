@@ -2,6 +2,7 @@ package in.mobiux.android.orca50scanner;
 
 import android.app.Application;
 import android.os.Handler;
+import android.widget.Toast;
 
 import androidx.lifecycle.ViewModelProvider;
 import androidx.room.Room;
@@ -17,6 +18,8 @@ import com.rfid.rxobserver.bean.RXInventoryTag;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import in.mobiux.android.orca50scanner.api.ApiClient;
 import in.mobiux.android.orca50scanner.api.Presenter;
@@ -56,7 +59,9 @@ public class MyApplication extends Application {
     public InventoryDatabase inventoryDatabase;
     public LaboratoryDatabase laboratoryDatabase;
     public byte beeperMode = 1;
-    public boolean triggerEnable = false;
+    Timer timer = new Timer();
+    long scanningEndPoint = System.currentTimeMillis();
+    long scanningInterval = 500;
 
 
     @Override
@@ -74,13 +79,19 @@ public class MyApplication extends Application {
         laboratoryDatabase = LaboratoryDatabase.getInstance(getApplicationContext());
 
         try {
-            beeperMode = Byte.parseByte(session.getValue("beeperMode"));
+//            beeperMode = Byte.parseByte(session.getValue("beeperMode"));
+            logger.i(TAG, "" + beeperMode);
         } catch (Exception e) {
             logger.e(TAG, "" + e.getLocalizedMessage());
         }
+
+        initTimer();
+        scanningEndPoint = scanningEndPoint + scanningInterval;
     }
 
     private RXObserver rxObserver = new RXObserver() {
+
+
         @Override
         protected void refreshSetting(ReaderSetting readerSetting) {
             logger.i(TAG, "Setting Refresh ");
@@ -91,6 +102,7 @@ public class MyApplication extends Application {
             logger.i(TAG, "Command Executed " + cmd + "\tstatus " + status);
 
             if (cmd == CMD.REAL_TIME_INVENTORY) {
+                scanningEndPoint = System.currentTimeMillis() + scanningInterval;
                 mHandler.post(new Runnable() {
                     @Override
                     public void run() {
@@ -121,10 +133,13 @@ public class MyApplication extends Application {
             inventory.setEpc(tag.strEPC);
             inventory.setRssi(tag.strRSSI);
 
+            scanningEndPoint = System.currentTimeMillis() + scanningInterval;
+
             if (listener != null) {
                 mHandler.post(new Runnable() {
                     @Override
                     public void run() {
+                        listener.onScanningStatus(true);
                         listener.onInventoryTag(inventory);
                     }
                 });
@@ -137,22 +152,26 @@ public class MyApplication extends Application {
 
             int tagReadingSpeed = tagEnd.mReadRate;
 
+            scanningEndPoint = System.currentTimeMillis() + scanningInterval;
+
             if (listener != null) {
                 mHandler.post(new Runnable() {
                     @Override
                     public void run() {
 
                         listener.onInventoryTagEnd(tagEnd);
-                        listener.onScanningStatus(scanningStatus);
+//                        listener.onScanningStatus(scanningStatus);
+//                        listener.onScanningStatus(false);
                     }
                 });
             }
 
             if (scanningStatus) {
-                rfidReaderHelper.realTimeInventory(ReaderSetting.newInstance().btReadId, (byte) 0x01);
+//                rfidReaderHelper.realTimeInventory(ReaderSetting.newInstance().btReadId, (byte) 0x01);
             }
         }
     };
+
 
     public void connectRFID() {
 
@@ -174,10 +193,15 @@ public class MyApplication extends Application {
 
                     ModuleManager.newInstance().setUHFStatus(true);
 
-                    rfidReaderHelper.setBeeperMode(readerSetting.btReadId, beeperMode);
-                    readerSetting.btBeeperMode = beeperMode;
+                    int beeperResult = -1;
+                    beeperResult = rfidReaderHelper.setBeeperMode(ReaderSetting.newInstance().btReadId, (byte) 2);
+                    logger.i(TAG, "beeper result value " + beeperResult);
+                    Toast.makeText(this, "beeper value " + beeperResult, Toast.LENGTH_SHORT).show();
 
-                    triggerEnable = true;
+                    ReaderSetting.newInstance().btBeeperMode = ((byte) 2);
+
+                    logger.i(TAG, "beeper resultttt " + beeperResult);
+
                     rfidReaderHelper.setTrigger(true);
 
                     session.setValue("rssi", String.valueOf(rfidReaderHelper.getOutputPower(readerSetting.btReadId)));
@@ -211,12 +235,21 @@ public class MyApplication extends Application {
                 e.printStackTrace();
             }
 
-            if (!observerRegistrationStatus) {
-                rfidReaderHelper.registerObserver(rxObserver);
-                observerRegistrationStatus = true;
-            }
+
+            rfidReaderHelper.registerObserver(rxObserver);
+            observerRegistrationStatus = true;
 
             rfidReaderHelper.setTrigger(true);
+
+            int beeperResult = -1;
+            beeperResult = rfidReaderHelper.setBeeperMode(ReaderSetting.newInstance().btReadId, (byte) 2);
+
+            logger.i(TAG, "beeper result rec " + beeperResult);
+            Toast.makeText(this, "beeper result rec " + beeperResult, Toast.LENGTH_SHORT).show();
+            ReaderSetting.newInstance().btBeeperMode = ((byte) 2);
+
+            logger.i(TAG, "beeper result recc " + beeperResult);
+
 
             if (listener != null) {
                 listener.onConnection(connector.isConnected());
@@ -237,8 +270,6 @@ public class MyApplication extends Application {
 
         ModuleManager.newInstance().setUHFStatus(true);
         scanningStatus = true;
-        triggerEnable = false;
-//        rfidReaderHelper.setTrigger(triggerEnable);
         rfidReaderHelper.realTimeInventory(ReaderSetting.newInstance().btReadId, (byte) 0x01);
 
         logger.i(TAG, sourceTAG + " # start Scan command sent");
@@ -246,8 +277,6 @@ public class MyApplication extends Application {
 
     public void stopScanning() {
         scanningStatus = false;
-        triggerEnable = true;
-//        rfidReaderHelper.setTrigger(triggerEnable);
         logger.i(TAG, "stop scan command sent");
     }
 
@@ -280,5 +309,34 @@ public class MyApplication extends Application {
         if (rfidReaderHelper != null) {
             rfidReaderHelper.signOut();
         }
+
+        timer.cancel();
+    }
+
+    private void initTimer() {
+        timer.schedule(new TimerTask() {
+            @Override
+            public void run() {
+                logger.i(TAG, "" + System.currentTimeMillis());
+
+                if ((System.currentTimeMillis() % 2) == 0) {
+                    if (!connector.isConnected()) {
+                        reconnectRFID();
+                    }
+                }
+
+                if (System.currentTimeMillis() > scanningEndPoint) {
+                    if (listener != null) {
+                        mHandler.post(new Runnable() {
+                            @Override
+                            public void run() {
+                                listener.onScanningStatus(false);
+                                logger.i(TAG, "Scanning trigger off");
+                            }
+                        });
+                    }
+                }
+            }
+        }, 1000, 1000);
     }
 }

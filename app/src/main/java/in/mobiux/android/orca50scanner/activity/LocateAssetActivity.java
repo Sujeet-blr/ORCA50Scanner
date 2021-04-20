@@ -36,8 +36,7 @@ import static in.mobiux.android.orca50scanner.util.DeviceConnector.BOUD_RATE;
 public class LocateAssetActivity extends BaseActivity implements RFIDReaderListener {
 
     private Spinner spinner;
-    private TextView tvRSSIValue;
-    private Button btnStart;
+    private TextView tvRSSIValue, txtIndicator;
     private ArrayAdapter<Inventory> arrayAdapter;
     private List<Inventory> inventories = new ArrayList<>();
     private InventoryViewModel viewModel;
@@ -61,8 +60,9 @@ public class LocateAssetActivity extends BaseActivity implements RFIDReaderListe
         spinner = findViewById(R.id.spinner);
         tvRSSIValue = findViewById(R.id.tvRSSIValue);
         seekBar = findViewById(R.id.seekBar);
-        btnStart = findViewById(R.id.btnStart);
-        btnStart.setTag(false);
+        txtIndicator = findViewById(R.id.txtIndicator);
+        txtIndicator.setTag(false);
+        txtIndicator.setText("");
 
         handler = new Handler(getMainLooper());
 //        connector = RFIDActivity.connector;
@@ -103,45 +103,40 @@ public class LocateAssetActivity extends BaseActivity implements RFIDReaderListe
             }
         });
 
-        btnStart.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-                logger.i(TAG, "Start Clicked : " + btnStart.getText().toString());
-                btnStart.setTag(!(boolean) btnStart.getTag());
-                logger.i(TAG, "Button Status " + (boolean) btnStart.getTag());
-
-                if ((boolean) btnStart.getTag()) {
-                    if (app.connector.isConnected()) {
-                        ModuleManager.newInstance().setUHFStatus(true);
-                        btnStart.setText(getResources().getString(R.string.stop_scan));
-                        app.scanningStatus = true;
-                        app.triggerEnable = false;
-                        app.rfidReaderHelper.realTimeInventory(ReaderSetting.newInstance().btReadId, (byte) 0x01);
-                        logger.i(TAG, "realtimeinventorycommand sent");
-//                        app.startScanning(TAG);
-
-                    } else {
-                        app.scanningStatus = false;
-                        app.reconnectRFID();
-                        btnStart.setTag(false);
-                        app.triggerEnable = true;
-//                        app.rfidReaderHelper.setTrigger(true);
-                    }
-                } else {
-                    app.scanningStatus = false;
-                    app.triggerEnable = true;
-//                    app.rfidReaderHelper.setTrigger(true);
-                    app.stopScanning();
+//        btnStart.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//
+//                logger.i(TAG, "Start Clicked : " + btnStart.getText().toString());
+//                btnStart.setTag(!(boolean) btnStart.getTag());
+//                logger.i(TAG, "Button Status " + (boolean) btnStart.getTag());
+//
+//                if ((boolean) btnStart.getTag()) {
+//                    if (app.connector.isConnected()) {
+//                        ModuleManager.newInstance().setUHFStatus(true);
+//                        btnStart.setText(getResources().getString(R.string.stop_scan));
+//                        app.scanningStatus = true;
+//                        app.rfidReaderHelper.realTimeInventory(ReaderSetting.newInstance().btReadId, (byte) 0x01);
+//                        logger.i(TAG, "realtimeinventorycommand sent");
+////                        app.startScanning(TAG);
+//
+//                    } else {
+//                        app.scanningStatus = false;
+//                        app.reconnectRFID();
+//                        btnStart.setTag(false);
+//                    }
+//                } else {
 //                    app.scanningStatus = false;
-//                    ModuleManager.newInstance().setUHFStatus(false);
-                    btnStart.setText(getResources().getString(R.string.start_scan));
-                    logger.i(TAG, "stopping scan");
-                }
-
-                logger.i(TAG, "Connection Status : " + connector.isConnected());
-            }
-        });
+//                    app.stopScanning();
+////                    app.scanningStatus = false;
+////                    ModuleManager.newInstance().setUHFStatus(false);
+//                    btnStart.setText(getResources().getString(R.string.start_scan));
+//                    logger.i(TAG, "stopping scan");
+//                }
+//
+//                logger.i(TAG, "Connection Status : " + connector.isConnected());
+//            }
+//        });
 
         seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
@@ -167,7 +162,6 @@ public class LocateAssetActivity extends BaseActivity implements RFIDReaderListe
         app.setOnRFIDListener(this);
 
         try {
-//            ModuleManager.newInstance().setScanStatus(true);
             ModuleManager.newInstance().setUHFStatus(true);
         } catch (Exception e) {
             logger.e(TAG, "" + e.getLocalizedMessage());
@@ -218,11 +212,11 @@ public class LocateAssetActivity extends BaseActivity implements RFIDReaderListe
     @Override
     public void onScanningStatus(boolean status) {
         if (status) {
-            btnStart.setText(getResources().getString(R.string.stop_scan));
-            btnStart.setTag(status);
+            txtIndicator.setText(getResources().getString(R.string.scanning));
+            txtIndicator.setTag(status);
         } else {
-            btnStart.setText(getResources().getString(R.string.start_scan));
-            btnStart.setTag(status);
+            txtIndicator.setText("");
+            txtIndicator.setTag(status);
         }
     }
 

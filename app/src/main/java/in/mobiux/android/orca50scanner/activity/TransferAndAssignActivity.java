@@ -52,8 +52,8 @@ public class TransferAndAssignActivity extends BaseActivity implements RFIDReade
     private DepartmentResponse selectedLevel;
     private DepartmentResponse.Child selectedLab;
     private RadioGroup radioGroup;
-    private TextView tvLab, tvLabName, tvSerialNumber, tvName, tvEPC, tvRSSI;
-    private Button btnStart, btnSave;
+    private TextView tvLab, tvLabName, tvSerialNumber, tvName, tvEPC, tvRSSI,txtIndicator;
+    private Button btnSave;
 
     private LaboratoryViewModel laboratoryViewModel;
     private Inventory asset;
@@ -79,9 +79,10 @@ public class TransferAndAssignActivity extends BaseActivity implements RFIDReade
         tvName = findViewById(R.id.tvName);
         tvEPC = findViewById(R.id.tvEPC);
         tvRSSI = findViewById(R.id.tvRSSI);
-        btnStart = findViewById(R.id.btnStart);
+        txtIndicator = findViewById(R.id.txtIndicator);
         btnSave = findViewById(R.id.btnSave);
-        btnStart.setTag(false);
+        txtIndicator.setTag(false);
+        txtIndicator.setText("");
 
         tvLab.setText("");
         tvSerialNumber.setText("");
@@ -97,44 +98,39 @@ public class TransferAndAssignActivity extends BaseActivity implements RFIDReade
             app.connectRFID();
         }
 
-        btnStart.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                btnStart.setTag(!(boolean) btnStart.getTag());
-
-                if ((boolean) btnStart.getTag()) {
-                    if (app.connector.isConnected()) {
-//                        ModuleManager.newInstance().setScanStatus(true);
-                        btnStart.setText(getResources().getString(R.string.stop_scan));
+//        btnStart.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                btnStart.setTag(!(boolean) btnStart.getTag());
+//
+//                if ((boolean) btnStart.getTag()) {
+//                    if (app.connector.isConnected()) {
+////                        ModuleManager.newInstance().setScanStatus(true);
+//                        btnStart.setText(getResources().getString(R.string.stop_scan));
+////                        app.rfidReaderHelper.realTimeInventory(ReaderSetting.newInstance().btReadId, (byte) 0x01);
+////                        app.startScanning(TAG);
+//
+//
+//                        ModuleManager.newInstance().setUHFStatus(true);
+//                        btnStart.setText(getResources().getString(R.string.stop_scan));
+//                        app.scanningStatus = true;
 //                        app.rfidReaderHelper.realTimeInventory(ReaderSetting.newInstance().btReadId, (byte) 0x01);
-//                        app.startScanning(TAG);
-
-
-                        ModuleManager.newInstance().setUHFStatus(true);
-                        btnStart.setText(getResources().getString(R.string.stop_scan));
-                        app.scanningStatus = true;
-                        app.triggerEnable = false;
-                        app.rfidReaderHelper.realTimeInventory(ReaderSetting.newInstance().btReadId, (byte) 0x01);
-                        logger.i(TAG, "realtimeinventorycommand sent");
-
-                    } else {
-                        app.scanningStatus = false;
-                        app.triggerEnable = true;
-//                        app.rfidReaderHelper.setTrigger(true);
-                        app.reconnectRFID();
-                        btnStart.setTag(false);
-                    }
-                } else {
-                    app.scanningStatus = false;
-                    app.triggerEnable = true;
-//                    app.rfidReaderHelper.setTrigger(true);
+//                        logger.i(TAG, "realtimeinventorycommand sent");
+//
+//                    } else {
+//                        app.scanningStatus = false;
+//                        app.reconnectRFID();
+//                        btnStart.setTag(false);
+//                    }
+//                } else {
 //                    app.scanningStatus = false;
-//                    btnStart.setTag(false);
-                    btnStart.setText(getResources().getString(R.string.start_scan));
-                    app.stopScanning();
-                }
-            }
-        });
+////                    app.scanningStatus = false;
+////                    btnStart.setTag(false);
+//                    btnStart.setText(getResources().getString(R.string.start_scan));
+//                    app.stopScanning();
+//                }
+//            }
+//        });
 
         laboratoryViewModel.getAllInventory().observe(this, new Observer<List<Laboratory>>() {
             @Override
@@ -247,9 +243,6 @@ public class TransferAndAssignActivity extends BaseActivity implements RFIDReade
 
     @Override
     public void onInventoryTag(Inventory inventory) {
-//        if (asset == null) {
-//            asset = inventory;
-//        }
 
         scannedTags.put(inventory.getFormattedEPC(), inventory);
 
@@ -261,28 +254,19 @@ public class TransferAndAssignActivity extends BaseActivity implements RFIDReade
                 selectedAsset = scannedTags.get(selectedAsset.getFormattedEPC());
             }
         }
-
-
-//        if (Integer.parseInt(inventory.getRssi()) > Integer.parseInt(asset.getRssi())) {
-//            asset = inventory;
-//            selectedAsset = AppUtils.getMatchingInventory(asset.getEpc(), inventories);
-//            selectedAsset.setRssi(inventory.getRssi());
-//        }
-
-//        scannedTagsList.add(inventory);
-
+        arrangeScannedInventory();
         updateUI(selectedAsset);
     }
 
     @Override
     public void onScanningStatus(boolean status) {
 
-        btnStart.setTag(status);
+        txtIndicator.setTag(status);
 
         if (status) {
-            btnStart.setText(getResources().getString(R.string.stop_scan));
+            txtIndicator.setText(getResources().getString(R.string.scanning));
         } else {
-            btnStart.setText(getResources().getString(R.string.start_scan));
+            txtIndicator.setText("");
         }
     }
 
