@@ -29,6 +29,9 @@ public interface AssetHistoryDao {
     @Query("select * from assetHistory WHERE epc = (:epc)")
     public AssetHistory[] getMatchingInventory(String epc);
 
+    @Delete
+    void delete(AssetHistory history);
+
     @Query("Delete from assetHistory")
     void clearAll();
 }

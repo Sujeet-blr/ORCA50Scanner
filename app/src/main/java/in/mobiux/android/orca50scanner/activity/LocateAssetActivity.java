@@ -24,6 +24,8 @@ import com.rfid.rxobserver.bean.RXInventoryTag;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import in.mobiux.android.orca50scanner.R;
 import in.mobiux.android.orca50scanner.api.model.Inventory;
@@ -43,6 +45,8 @@ public class LocateAssetActivity extends BaseActivity implements RFIDReaderListe
     private Inventory inventory = new Inventory();
     private Inventory selectedAsset = new Inventory();
     boolean buttonStatus = false;
+
+    private Timer timer = null;
 
     private SeekBar seekBar;
     ModuleConnector connector;
@@ -149,6 +153,14 @@ public class LocateAssetActivity extends BaseActivity implements RFIDReaderListe
                 int rssi = 0;
                 rssi = Integer.parseInt(tag.getRssi());
                 seekBar.setProgress(rssi);
+
+
+                if (timer != null) {
+                    timer.cancel();
+                    timer = null;
+                    logger.i(TAG, "setting timer to null");
+                }
+
             } catch (Exception e) {
                 e.printStackTrace();
                 logger.e(TAG, "" + e.getLocalizedMessage());
@@ -165,8 +177,30 @@ public class LocateAssetActivity extends BaseActivity implements RFIDReaderListe
 //        when tag is away , value should reset
         if (tagEnd.mTagCount == 0) {
             inventory.setRssi("0");
-            int rssi = 0;
-            seekBar.setProgress(0);
+            logger.i(TAG, "tag end " + tagEnd.mTagCount);
+//            seekBar.setProgress(0);
+            if (timer == null) {
+                logger.i(TAG, "initializing timer object");
+                timer = new Timer();
+                logger.i(TAG, "created new timer");
+                timer.schedule(new TimerTask() {
+                    @Override
+                    public void run() {
+                        logger.i(TAG, "inside timerTask");
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                logger.i(TAG, "updating UI");
+                                inventory.setRssi("0");
+                                seekBar.setProgress(Integer.parseInt(inventory.getRssi()));
+                                logger.i(TAG, "updating UI " + inventory.getRssi() + " progress " + seekBar.getProgress());
+                            }
+                        });
+                    }
+                }, 300);
+            } else {
+                logger.i(TAG, "  current timer " + timer.toString());
+            }
         }
     }
 
@@ -186,5 +220,14 @@ public class LocateAssetActivity extends BaseActivity implements RFIDReaderListe
         } else {
             Toast.makeText(app, "Connection Lost", Toast.LENGTH_SHORT).show();
         }
+    }
+
+    private void initTimer() {
+        timer.schedule(new TimerTask() {
+            @Override
+            public void run() {
+
+            }
+        }, 1000, 500);
     }
 }

@@ -55,6 +55,10 @@ public class InventoryViewModel extends AndroidViewModel {
         return histories;
     }
 
+    public void deleteHistory(AssetHistory history){
+        historyRepository.delete(history);
+    }
+
     public void clearHistory(){
         historyRepository.clearAll();
     }

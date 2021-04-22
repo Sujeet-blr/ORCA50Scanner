@@ -49,6 +49,15 @@ public class AssetHistoryRepository {
         new InsertAsyncTask(app.getApplicationContext(), assetHistoryDao).execute(assetHistory);
     }
 
+    public void delete(AssetHistory history){
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                assetHistoryDao.delete(history);
+            }
+        }).start();
+    }
+
     public void clearAll() {
         new Thread(new Runnable() {
             @Override

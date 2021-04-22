@@ -354,7 +354,6 @@ public class MyApplication extends Application {
         timer.schedule(new TimerTask() {
             @Override
             public void run() {
-                logger.i(TAG, "" + System.currentTimeMillis());
 
                 if ((System.currentTimeMillis() % 2) == 0) {
                     if (!connector.isConnected()) {

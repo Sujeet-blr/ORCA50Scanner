@@ -131,12 +131,12 @@ public class DataSyncSettingActivity extends BaseActivity {
         progressDialog.show();
 
         inventoryList = new ArrayList<>();
-        Set<String> uniquesLabs = new HashSet<>();
+//        Set<String> uniquesLabs = new HashSet<>();
         HashMap<String, Laboratory> historyLabs = new HashMap<>();
 
         for (AssetHistory history : histories) {
             logger.i(TAG, "" + history.getEpc() + "    " + history.getDepartment() + "  " + history.getUpdateTimeIntervalInSeconds());
-            uniquesLabs.add(String.valueOf(history.getDepartment()));
+//            uniquesLabs.add(String.valueOf(history.getDepartment()));
 
             String departmentId = String.valueOf(history.getDepartment());
 
@@ -144,6 +144,7 @@ public class DataSyncSettingActivity extends BaseActivity {
             if (laboratory == null) {
                 laboratory = new Laboratory();
                 laboratory.setDepartment(Integer.parseInt(departmentId));
+                historyLabs.put(departmentId, laboratory);
             }
 
             history.setTime(history.getUpdateTimeIntervalInSeconds());
@@ -151,12 +152,12 @@ public class DataSyncSettingActivity extends BaseActivity {
         }
 
         laboratories.addAll(historyLabs.values());
+        for (Laboratory l : laboratories) {
+            logger.i(TAG, "lab " + l.getDepartment() + " assets " + l.getAssets().size());
+        }
 
         if (laboratories.size() > 0) {
             updateAsset(laboratories.get(0));
-//            progressDialog.setMessage("Syncing with Server");
-//            progressDialog.setIndeterminate(true);
-//            progressDialog.show();
         } else {
             Presenter.INSTANCE.pullLatestData();
         }
@@ -164,13 +165,21 @@ public class DataSyncSettingActivity extends BaseActivity {
 
 
     private void updateAsset(Laboratory laboratory) {
-        logger.i(TAG, "update Asset payload " + new Gson().toJson(laboratory));
+//        logger.i(TAG, "update Asset payload " + new Gson().toJson(laboratory));
+
+        for (AssetHistory history : laboratory.getAssets()) {
+            logger.i(TAG, "payload " + history.getEpc() + " dept " + history.getTime());
+        }
 
         ApiClient.getApiService().updateAssets(session.rawToken(), laboratory).enqueue(new Callback<Laboratory>() {
             @Override
             public void onResponse(Call<Laboratory> call, Response<Laboratory> response) {
                 if (response.isSuccessful()) {
                     laboratories.remove(laboratory);
+                    for (AssetHistory history : laboratory.getAssets()) {
+                        viewModel.deleteHistory(history);
+                    }
+
                     if (laboratories.size() > 0) {
                         updateAsset(laboratories.get(0));
                     } else {
