@@ -29,6 +29,7 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
@@ -62,7 +63,7 @@ public class TransferAndAssignActivity extends BaseActivity implements RFIDReade
     private Inventory asset;
     private Inventory selectedAsset;
     private InventoryViewModel inventoryViewModel;
-    private List<Inventory> inventories = new ArrayList<>();
+    private HashMap<String, Inventory> assets = new HashMap<>();
     private List<Inventory> scannedTagsList = new ArrayList<>();
     private Map<String, Inventory> scannedTags = new HashMap<>();
 
@@ -103,40 +104,6 @@ public class TransferAndAssignActivity extends BaseActivity implements RFIDReade
             app.connectRFID();
         }
 
-//        btnStart.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                btnStart.setTag(!(boolean) btnStart.getTag());
-//
-//                if ((boolean) btnStart.getTag()) {
-//                    if (app.connector.isConnected()) {
-////                        ModuleManager.newInstance().setScanStatus(true);
-//                        btnStart.setText(getResources().getString(R.string.stop_scan));
-////                        app.rfidReaderHelper.realTimeInventory(ReaderSetting.newInstance().btReadId, (byte) 0x01);
-////                        app.startScanning(TAG);
-//
-//
-//                        ModuleManager.newInstance().setUHFStatus(true);
-//                        btnStart.setText(getResources().getString(R.string.stop_scan));
-//                        app.scanningStatus = true;
-//                        app.rfidReaderHelper.realTimeInventory(ReaderSetting.newInstance().btReadId, (byte) 0x01);
-//                        logger.i(TAG, "realtimeinventorycommand sent");
-//
-//                    } else {
-//                        app.scanningStatus = false;
-//                        app.reconnectRFID();
-//                        btnStart.setTag(false);
-//                    }
-//                } else {
-//                    app.scanningStatus = false;
-////                    app.scanningStatus = false;
-////                    btnStart.setTag(false);
-//                    btnStart.setText(getResources().getString(R.string.start_scan));
-//                    app.stopScanning();
-//                }
-//            }
-//        });
-
         laboratoryViewModel.getAllInventory().observe(this, new Observer<List<Laboratory>>() {
             @Override
             public void onChanged(List<Laboratory> list) {
@@ -169,7 +136,9 @@ public class TransferAndAssignActivity extends BaseActivity implements RFIDReade
         inventoryViewModel.getAllInventory().observe(this, new Observer<List<Inventory>>() {
             @Override
             public void onChanged(List<Inventory> list) {
-                inventories = list;
+                for (Inventory inventory : list) {
+                    assets.put(inventory.getFormattedEPC(), inventory);
+                }
                 logger.i(TAG, "list update");
 
                 updateUI(selectedAsset);
@@ -258,7 +227,8 @@ public class TransferAndAssignActivity extends BaseActivity implements RFIDReade
 
         scannedTags.put(inventory.getFormattedEPC(), inventory);
 
-        Inventory matchingAsset = AppUtils.getMatchingInventory(inventory.getFormattedEPC(), inventories);
+        Inventory matchingAsset = assets.get(inventory.getFormattedEPC());
+
         if (matchingAsset != null) {
             matchingAsset.setRssi(inventory.getRssi());
             scannedTags.put(matchingAsset.getFormattedEPC(), matchingAsset);
@@ -267,7 +237,7 @@ public class TransferAndAssignActivity extends BaseActivity implements RFIDReade
             }
         }
         arrangeScannedInventory();
-        updateUI(selectedAsset);
+//        updateUI(selectedAsset);
     }
 
     @Override
@@ -343,19 +313,21 @@ public class TransferAndAssignActivity extends BaseActivity implements RFIDReade
             }
         }
 
-        updateScannedListViews();
+        logger.i(TAG, "scannedTagsSize " + scannedTagsList.size());
+        updateScannedListViews(scannedTagsList);
         return scannedTagsList;
     }
 
-    private void updateScannedListViews() {
+    private void updateScannedListViews(List<Inventory> scannedTagsList) {
         radioGroup.removeAllViews();
         selectedAsset = null;
         for (int i = 0; i < 3 && i < scannedTagsList.size(); i++) {
             RadioButton radioButton = new RadioButton(this);
             radioButton.setId(i);
             radioButton.setText("" + scannedTagsList.get(i).getName());
-            radioGroup.addView(radioButton);
+            radioGroup.addView(radioButton, i);
         }
         radioGroup.invalidate();
+        updateUI(selectedAsset);
     }
 }

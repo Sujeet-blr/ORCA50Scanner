@@ -178,7 +178,6 @@ public class LocateAssetActivity extends BaseActivity implements RFIDReaderListe
         if (tagEnd.mTagCount == 0) {
             inventory.setRssi("0");
             logger.i(TAG, "tag end " + tagEnd.mTagCount);
-//            seekBar.setProgress(0);
             if (timer == null) {
                 logger.i(TAG, "initializing timer object");
                 timer = new Timer();

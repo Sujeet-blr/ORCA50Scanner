@@ -109,37 +109,7 @@ public class ScanInventoryActivity extends BaseActivity implements View.OnClickL
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
-//            case R.id.btnStart:
-//
-//                logger.i(TAG, "Start Button : " + btnStart.getText().toString());
-//                btnStart.setTag(!(boolean) btnStart.getTag());
-//
-//                if ((boolean) btnStart.getTag()) {
-//                    if (app.connector.isConnected()) {
-////                        app.scanningStatus = true;
-////                        ModuleManager.newInstance().setUHFStatus(true);
-////                        app.rfidReaderHelper.realTimeInventory(ReaderSetting.newInstance().btReadId, (byte) 0x01);
-////                        app.startScanning(TAG);
-//                        btnStart.setText(getResources().getString(R.string.stop_scan));
-//
-//
-//                        ModuleManager.newInstance().setUHFStatus(true);
-//                        btnStart.setText(getResources().getString(R.string.stop_scan));
-//                        app.scanningStatus = true;
-//                        app.rfidReaderHelper.realTimeInventory(ReaderSetting.newInstance().btReadId, (byte) 0x01);
-//                        logger.i(TAG, "realtimeinventorycommand sent");
-//
-//                    } else {
-//                        app.reconnectRFID();
-//                        app.startScanning(TAG);
-//                    }
-//                } else {
-//                    app.scanningStatus = false;
-//                    app.stopScanning();
-//                    btnStart.setText(getResources().getString(R.string.start_scan));
-//                }
-//
-//                break;
+
             case R.id.btnClear:
                 logger.i(TAG, "Clear");
                 scannedInventories.clear();
