@@ -2,6 +2,7 @@ package in.mobiux.android.orca50scanner.activity;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.cardview.widget.CardView;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
@@ -33,6 +34,7 @@ import java.util.Map;
 import java.util.Random;
 
 import in.mobiux.android.orca50scanner.R;
+import in.mobiux.android.orca50scanner.api.model.AssetHistory;
 import in.mobiux.android.orca50scanner.api.model.DepartmentResponse;
 import in.mobiux.android.orca50scanner.api.model.Inventory;
 import in.mobiux.android.orca50scanner.api.model.Laboratory;
@@ -52,8 +54,9 @@ public class TransferAndAssignActivity extends BaseActivity implements RFIDReade
     private DepartmentResponse selectedLevel;
     private DepartmentResponse.Child selectedLab;
     private RadioGroup radioGroup;
-    private TextView tvLab, tvLabName, tvSerialNumber, tvName, tvEPC, tvRSSI,txtIndicator;
+    private TextView tvLab, tvLabName, tvSerialNumber, tvName, tvEPC, tvRSSI, txtIndicator;
     private Button btnSave;
+    private CardView cardAssetInfo;
 
     private LaboratoryViewModel laboratoryViewModel;
     private Inventory asset;
@@ -81,6 +84,8 @@ public class TransferAndAssignActivity extends BaseActivity implements RFIDReade
         tvRSSI = findViewById(R.id.tvRSSI);
         txtIndicator = findViewById(R.id.txtIndicator);
         btnSave = findViewById(R.id.btnSave);
+        cardAssetInfo = findViewById(R.id.cardAssetInfo);
+        cardAssetInfo.setVisibility(View.GONE);
         txtIndicator.setTag(false);
         txtIndicator.setText("");
 
@@ -216,6 +221,11 @@ public class TransferAndAssignActivity extends BaseActivity implements RFIDReade
                     inventoryViewModel.update(selectedAsset);
                     logger.i(TAG, "Asset data saved ");
 
+                    AssetHistory history = new AssetHistory();
+                    history.setEpc(selectedAsset.getFormattedEPC());
+                    history.setDepartment(selectedLab.getId());
+                    inventoryViewModel.insertAssetHistory(history);
+
                     showSuccessDialog("Asset " + selectedAsset.getName() + "\nmoved to " + selectedLab.getName() + " successfully");
 
                 } else {
@@ -228,8 +238,10 @@ public class TransferAndAssignActivity extends BaseActivity implements RFIDReade
         radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(RadioGroup radioGroup, int position) {
-                if (scannedTagsList.size() > 0)
+                if (scannedTagsList.size() > 0) {
                     selectedAsset = scannedTagsList.get(position);
+                    cardAssetInfo.setVisibility(View.VISIBLE);
+                }
                 updateUI(selectedAsset);
             }
         });
@@ -338,7 +350,7 @@ public class TransferAndAssignActivity extends BaseActivity implements RFIDReade
     private void updateScannedListViews() {
         radioGroup.removeAllViews();
         selectedAsset = null;
-        for (int i = 0; i < scannedTagsList.size(); i++) {
+        for (int i = 0; i < 3 && i < scannedTagsList.size(); i++) {
             RadioButton radioButton = new RadioButton(this);
             radioButton.setId(i);
             radioButton.setText("" + scannedTagsList.get(i).getName());

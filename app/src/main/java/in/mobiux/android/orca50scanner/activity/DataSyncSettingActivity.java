@@ -22,6 +22,7 @@ import java.util.Set;
 import in.mobiux.android.orca50scanner.R;
 import in.mobiux.android.orca50scanner.api.ApiClient;
 import in.mobiux.android.orca50scanner.api.Presenter;
+import in.mobiux.android.orca50scanner.api.model.AssetHistory;
 import in.mobiux.android.orca50scanner.api.model.Inventory;
 import in.mobiux.android.orca50scanner.api.model.Laboratory;
 import in.mobiux.android.orca50scanner.viewmodel.InventoryViewModel;
@@ -37,6 +38,7 @@ public class DataSyncSettingActivity extends BaseActivity {
     private List<Laboratory> laboratories = new ArrayList<>();
     private List<Inventory> inventoryList = new ArrayList<>();
     private List<Inventory> inventories = new ArrayList<>();
+    private List<AssetHistory> histories = new ArrayList<>();
 
     private InventoryViewModel viewModel;
 
@@ -60,6 +62,14 @@ public class DataSyncSettingActivity extends BaseActivity {
             @Override
             public void onChanged(List<Inventory> list) {
                 inventories = list;
+            }
+        });
+
+        viewModel.getHistories().observe(this, new Observer<List<AssetHistory>>() {
+            @Override
+            public void onChanged(List<AssetHistory> assetHistories) {
+                histories.clear();
+                histories.addAll(assetHistories);
             }
         });
 
@@ -129,9 +139,16 @@ public class DataSyncSettingActivity extends BaseActivity {
             laboratories.add(laboratory);
             laboratory.setDepartment(Integer.parseInt(labId));
 
-            for (Inventory inventory : inventoryList) {
-                if (labId.equals("" + inventory.getLabId())) {
-                    laboratory.getAssets().add(inventory.getEpc());
+//            for (Inventory inventory : inventoryList) {
+//                if (labId.equals("" + inventory.getLabId())) {
+//                    laboratory.getAssets().add(inventory.getEpc());
+//                }
+//            }
+
+            for (AssetHistory history : histories) {
+                if (labId.equals(String.valueOf(history.getDepartment()))){
+                    history.setTime(history.getUpdateTimeIntervalInSeconds());
+                    laboratory.getAssets().add(history);
                 }
             }
         }
@@ -158,6 +175,7 @@ public class DataSyncSettingActivity extends BaseActivity {
                     if (laboratories.size() > 0) {
                         updateAsset(laboratories.get(0));
                     } else {
+                        viewModel.clearHistory();
                         Presenter.INSTANCE.pullLatestData();
                         progressDialog.dismiss();
                     }

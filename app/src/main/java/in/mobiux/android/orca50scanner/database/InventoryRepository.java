@@ -55,6 +55,8 @@ public class InventoryRepository {
         new Thread(new Runnable() {
             @Override
             public void run() {
+                inventory.setUpdatedAt(System.currentTimeMillis());
+                AppLogger.getInstance(app).i(TAG, "update asset " + inventory.getFormattedEPC() + " time " + inventory.getUpdatedAt());
                 inventoryDao.update(inventory);
             }
         }).start();
@@ -82,7 +84,7 @@ public class InventoryRepository {
         @Override
         protected Void doInBackground(Inventory... inventories) {
             Inventory inventory = inventories[0];
-            AppLogger.getInstance(context).i(TAG, "Data inserting to database");
+            AppLogger.getInstance(context).i(TAG, "Data inserting to database & updated time " + inventory.getUpdatedAt());
             inventoryDao.insert(inventory);
             return null;
         }

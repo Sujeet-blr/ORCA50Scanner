@@ -43,7 +43,7 @@ public class Laboratory extends BaseModel {
     @Ignore
     @SerializedName("assets")
     @Expose
-    private List<String> assets = new ArrayList<>();
+    private List<AssetHistory> assets = new ArrayList<>();
 
     public int getLabId() {
         return labId;
@@ -85,11 +85,11 @@ public class Laboratory extends BaseModel {
         this.department = department;
     }
 
-    public List<String> getAssets() {
+    public List<AssetHistory> getAssets() {
         return assets;
     }
 
-    public void setAssets(List<String> assets) {
+    public void setAssets(List<AssetHistory> assets) {
         this.assets = assets;
     }
 }

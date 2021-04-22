@@ -95,6 +95,7 @@ public class LocateAssetActivity extends BaseActivity implements RFIDReaderListe
                 inventory = inventories.get(position);
                 logger.i(TAG, "" + inventory.getEpc() + "\t" + inventory.getName());
                 seekBar.setProgress(0);
+                inventory.setRssi("0");
             }
 
             @Override
@@ -177,8 +178,6 @@ public class LocateAssetActivity extends BaseActivity implements RFIDReaderListe
         selectedAsset = inventories.get(spinner.getSelectedItemPosition());
         inventory = selectedAsset;
 
-//        tvRSSIValue.setText(tag.getRssi()+"%");
-
         logger.i(TAG, inventory.getEpc() + " ### " + tag.getEpc());
 
         if (inventory.getFormattedEPC().equals(tag.getFormattedEPC())) {
@@ -202,11 +201,11 @@ public class LocateAssetActivity extends BaseActivity implements RFIDReaderListe
     @Override
     public void onInventoryTagEnd(RXInventoryTag.RXInventoryTagEnd tagEnd) {
         logger.i(TAG, "tagEnd " + tagEnd.mTagCount);
-        try {
-            seekBar.setProgress(Integer.parseInt(inventory.getRssi()));
-        } catch (Exception e) {
-            logger.e(TAG, "" + e.getLocalizedMessage());
-        }
+//        try {
+//            seekBar.setProgress(Integer.parseInt(inventory.getRssi()));
+//        } catch (Exception e) {
+//            logger.e(TAG, "" + e.getLocalizedMessage());
+//        }
     }
 
     @Override

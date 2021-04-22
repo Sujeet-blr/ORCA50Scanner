@@ -8,6 +8,7 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.room.Room;
 
 import com.module.interaction.ModuleConnector;
+import com.module.interaction.RXTXListener;
 import com.nativec.tools.ModuleManager;
 import com.rfid.RFIDReaderHelper;
 import com.rfid.ReaderConnector;
@@ -89,8 +90,40 @@ public class MyApplication extends Application {
         scanningEndPoint = scanningEndPoint + scanningInterval;
     }
 
-    private RXObserver rxObserver = new RXObserver() {
+    private RXTXListener rxtxListener = new RXTXListener() {
+        @Override
+        public void reciveData(byte[] bytes) {
+            logger.i(TAG, "reciveData " + bytes);
+        }
 
+        @Override
+        public void sendData(byte[] bytes) {
+            logger.i(TAG, "send Data " + bytes);
+            if (listener != null) {
+                mHandler.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        listener.onScanningStatus(true);
+                    }
+                });
+            }
+        }
+
+        @Override
+        public void onLostConnect() {
+            logger.i(TAG, "onLostConnect");
+            if (listener != null) {
+                mHandler.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        listener.onConnection(false);
+                    }
+                });
+            }
+        }
+    };
+
+    private RXObserver rxObserver = new RXObserver() {
 
         @Override
         protected void refreshSetting(ReaderSetting readerSetting) {
@@ -101,8 +134,9 @@ public class MyApplication extends Application {
         protected void onExeCMDStatus(byte cmd, byte status) {
             logger.i(TAG, "Command Executed " + cmd + "\tstatus " + status);
 
+            scanningEndPoint = System.currentTimeMillis() + scanningInterval;
+
             if (cmd == CMD.REAL_TIME_INVENTORY) {
-                scanningEndPoint = System.currentTimeMillis() + scanningInterval;
                 mHandler.post(new Runnable() {
                     @Override
                     public void run() {
@@ -185,6 +219,7 @@ public class MyApplication extends Application {
                     rfidReaderHelper = RFIDReaderHelper.getDefaultHelper();
                     if (!observerRegistrationStatus) {
                         rfidReaderHelper.registerObserver(rxObserver);
+                        rfidReaderHelper.setRXTXListener(rxtxListener);
                         observerRegistrationStatus = true;
                     }
 
@@ -238,6 +273,7 @@ public class MyApplication extends Application {
 
             rfidReaderHelper.registerObserver(rxObserver);
             observerRegistrationStatus = true;
+            rfidReaderHelper.setRXTXListener(rxtxListener);
 
             rfidReaderHelper.setTrigger(true);
 

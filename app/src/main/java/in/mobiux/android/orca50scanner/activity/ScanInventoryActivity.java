@@ -25,6 +25,7 @@ import java.util.Set;
 
 import in.mobiux.android.orca50scanner.R;
 import in.mobiux.android.orca50scanner.adapter.InventoryAdapter;
+import in.mobiux.android.orca50scanner.api.model.AssetHistory;
 import in.mobiux.android.orca50scanner.api.model.DepartmentResponse;
 import in.mobiux.android.orca50scanner.api.model.Inventory;
 import in.mobiux.android.orca50scanner.api.model.Laboratory;
@@ -34,7 +35,7 @@ import in.mobiux.android.orca50scanner.viewmodel.InventoryViewModel;
 
 public class ScanInventoryActivity extends BaseActivity implements View.OnClickListener, RFIDReaderListener {
 
-    private Button  btnSave, btnClear;
+    private Button btnSave, btnClear;
     private TextView tvCount, txtIndicator;
     private RecyclerView recyclerView;
     private DepartmentResponse.Child laboratory;
@@ -158,6 +159,11 @@ public class ScanInventoryActivity extends BaseActivity implements View.OnClickL
                     inventory.setLaboratoryName(laboratory.getName());
                     inventory.setSyncRequired(true);
                     viewModel.update(inventory);
+
+                    AssetHistory history = new AssetHistory();
+                    history.setEpc(inventory.getFormattedEPC());
+                    history.setDepartment(laboratory.getId());
+                    viewModel.insertAssetHistory(history);
                 }
 
                 progressDialog.dismiss();

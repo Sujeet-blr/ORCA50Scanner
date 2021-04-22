@@ -66,6 +66,9 @@ public class Inventory extends RXInventoryTag implements Serializable {
     @SerializedName("syncRequired")
     @Expose
     private boolean syncRequired = false;
+    @SerializedName("updatedAt")
+    @Expose
+    private long updatedAt = System.currentTimeMillis();
 
 //    @SerializedName("createdAt")
 //    @Expose
@@ -142,6 +145,19 @@ public class Inventory extends RXInventoryTag implements Serializable {
 
     public void setSyncRequired(boolean syncRequired) {
         this.syncRequired = syncRequired;
+    }
+
+    public long getUpdatedAt() {
+        return updatedAt;
+    }
+
+    public void setUpdatedAt(long updatedAt) {
+        this.updatedAt = updatedAt;
+    }
+
+    public long getUpdateTimeIntervalInSeconds() {
+        long seconds = (System.currentTimeMillis() - getUpdatedAt()) / 1000;
+        return seconds;
     }
 
     public String getFormattedEPC() {
