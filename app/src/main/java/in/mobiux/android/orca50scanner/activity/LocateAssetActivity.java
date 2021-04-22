@@ -46,9 +46,6 @@ public class LocateAssetActivity extends BaseActivity implements RFIDReaderListe
 
     private SeekBar seekBar;
     ModuleConnector connector;
-    RFIDReaderHelper rfidReaderHelper;
-    private boolean observerRegistrationStatus = false;
-    private Handler handler;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,8 +61,6 @@ public class LocateAssetActivity extends BaseActivity implements RFIDReaderListe
         txtIndicator.setTag(false);
         txtIndicator.setText("");
 
-        handler = new Handler(getMainLooper());
-//        connector = RFIDActivity.connector;
         connector = app.connector;
 
         if (!connector.isConnected()) {
@@ -103,41 +98,6 @@ public class LocateAssetActivity extends BaseActivity implements RFIDReaderListe
 
             }
         });
-
-//        btnStart.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//
-//                logger.i(TAG, "Start Clicked : " + btnStart.getText().toString());
-//                btnStart.setTag(!(boolean) btnStart.getTag());
-//                logger.i(TAG, "Button Status " + (boolean) btnStart.getTag());
-//
-//                if ((boolean) btnStart.getTag()) {
-//                    if (app.connector.isConnected()) {
-//                        ModuleManager.newInstance().setUHFStatus(true);
-//                        btnStart.setText(getResources().getString(R.string.stop_scan));
-//                        app.scanningStatus = true;
-//                        app.rfidReaderHelper.realTimeInventory(ReaderSetting.newInstance().btReadId, (byte) 0x01);
-//                        logger.i(TAG, "realtimeinventorycommand sent");
-////                        app.startScanning(TAG);
-//
-//                    } else {
-//                        app.scanningStatus = false;
-//                        app.reconnectRFID();
-//                        btnStart.setTag(false);
-//                    }
-//                } else {
-//                    app.scanningStatus = false;
-//                    app.stopScanning();
-////                    app.scanningStatus = false;
-////                    ModuleManager.newInstance().setUHFStatus(false);
-//                    btnStart.setText(getResources().getString(R.string.start_scan));
-//                    logger.i(TAG, "stopping scan");
-//                }
-//
-//                logger.i(TAG, "Connection Status : " + connector.isConnected());
-//            }
-//        });
 
         seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
@@ -183,7 +143,7 @@ public class LocateAssetActivity extends BaseActivity implements RFIDReaderListe
         if (inventory.getFormattedEPC().equals(tag.getFormattedEPC())) {
             logger.i(TAG, "Matching");
             inventory.setRssi(tag.strRSSI);
-            tvRSSIValue.setText(tag.strRSSI + "%");
+//            tvRSSIValue.setText(tag.strRSSI + "%");
             try {
                 logger.i(TAG, "rssi is " + tag.getRssi());
                 int rssi = 0;
@@ -201,21 +161,21 @@ public class LocateAssetActivity extends BaseActivity implements RFIDReaderListe
     @Override
     public void onInventoryTagEnd(RXInventoryTag.RXInventoryTagEnd tagEnd) {
         logger.i(TAG, "tagEnd " + tagEnd.mTagCount);
-//        try {
-//            seekBar.setProgress(Integer.parseInt(inventory.getRssi()));
-//        } catch (Exception e) {
-//            logger.e(TAG, "" + e.getLocalizedMessage());
-//        }
+
+//        when tag is away , value should reset
+        if (tagEnd.mTagCount == 0) {
+            inventory.setRssi("0");
+            int rssi = 0;
+            seekBar.setProgress(0);
+        }
     }
 
     @Override
     public void onScanningStatus(boolean status) {
         if (status) {
             txtIndicator.setText(getResources().getString(R.string.scanning));
-            txtIndicator.setTag(status);
         } else {
             txtIndicator.setText("");
-            txtIndicator.setTag(status);
         }
     }
 

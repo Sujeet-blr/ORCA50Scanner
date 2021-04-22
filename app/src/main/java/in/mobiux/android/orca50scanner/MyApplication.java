@@ -94,6 +94,15 @@ public class MyApplication extends Application {
         @Override
         public void reciveData(byte[] bytes) {
             logger.i(TAG, "reciveData " + bytes);
+            scanningEndPoint = System.currentTimeMillis() + scanningInterval;
+            if (listener != null) {
+                mHandler.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        listener.onScanningStatus(true);
+                    }
+                });
+            }
         }
 
         @Override
@@ -111,7 +120,7 @@ public class MyApplication extends Application {
 
         @Override
         public void onLostConnect() {
-            logger.i(TAG, "onLostConnect");
+                logger.i(TAG, "onLostConnect");
             if (listener != null) {
                 mHandler.post(new Runnable() {
                     @Override
@@ -151,7 +160,7 @@ public class MyApplication extends Application {
                     @Override
                     public void run() {
                         if (listener != null) {
-                            scanningStatus = false;
+                            scanningStatus = true;
                             listener.onScanningStatus(scanningStatus);
                         }
                     }
@@ -192,16 +201,9 @@ public class MyApplication extends Application {
                 mHandler.post(new Runnable() {
                     @Override
                     public void run() {
-
                         listener.onInventoryTagEnd(tagEnd);
-//                        listener.onScanningStatus(scanningStatus);
-//                        listener.onScanningStatus(false);
                     }
                 });
-            }
-
-            if (scanningStatus) {
-//                rfidReaderHelper.realTimeInventory(ReaderSetting.newInstance().btReadId, (byte) 0x01);
             }
         }
     };
@@ -224,8 +226,6 @@ public class MyApplication extends Application {
                     }
 
                     readerSetting = ReaderSetting.newInstance();
-//                    ModuleManager.newInstance().setScanStatus(true);
-
                     ModuleManager.newInstance().setUHFStatus(true);
 
                     int beeperResult = -1;
@@ -340,6 +340,7 @@ public class MyApplication extends Application {
 
         if (observerRegistrationStatus) {
             rfidReaderHelper.unRegisterObserver(rxObserver);
+            rfidReaderHelper.unRegisterObservers();
         }
 
         if (rfidReaderHelper != null) {

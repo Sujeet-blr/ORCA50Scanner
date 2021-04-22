@@ -14,7 +14,10 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Toast;
 
+import com.google.gson.Gson;
+
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -68,6 +71,8 @@ public class DataSyncSettingActivity extends BaseActivity {
         viewModel.getHistories().observe(this, new Observer<List<AssetHistory>>() {
             @Override
             public void onChanged(List<AssetHistory> assetHistories) {
+                logger.i(TAG, "history size " + assetHistories.size());
+
                 histories.clear();
                 histories.addAll(assetHistories);
             }
@@ -120,38 +125,32 @@ public class DataSyncSettingActivity extends BaseActivity {
 
     private void sync(List<Inventory> list) {
 
+        logger.i(TAG, "Syncing with Server");
         progressDialog.setMessage("Syncing with Server");
         progressDialog.setIndeterminate(true);
         progressDialog.show();
 
         inventoryList = new ArrayList<>();
         Set<String> uniquesLabs = new HashSet<>();
+        HashMap<String, Laboratory> historyLabs = new HashMap<>();
 
-        for (Inventory inventory : list) {
-            if (inventory.isSyncRequired()) {
-                inventoryList.add(inventory);
-                uniquesLabs.add("" + inventory.getLabId());
+        for (AssetHistory history : histories) {
+            logger.i(TAG, "" + history.getEpc() + "    " + history.getDepartment() + "  " + history.getUpdateTimeIntervalInSeconds());
+            uniquesLabs.add(String.valueOf(history.getDepartment()));
+
+            String departmentId = String.valueOf(history.getDepartment());
+
+            Laboratory laboratory = historyLabs.get(departmentId);
+            if (laboratory == null) {
+                laboratory = new Laboratory();
+                laboratory.setDepartment(Integer.parseInt(departmentId));
             }
+
+            history.setTime(history.getUpdateTimeIntervalInSeconds());
+            laboratory.getAssets().add(history);
         }
 
-        for (String labId : uniquesLabs) {
-            Laboratory laboratory = new Laboratory();
-            laboratories.add(laboratory);
-            laboratory.setDepartment(Integer.parseInt(labId));
-
-//            for (Inventory inventory : inventoryList) {
-//                if (labId.equals("" + inventory.getLabId())) {
-//                    laboratory.getAssets().add(inventory.getEpc());
-//                }
-//            }
-
-            for (AssetHistory history : histories) {
-                if (labId.equals(String.valueOf(history.getDepartment()))){
-                    history.setTime(history.getUpdateTimeIntervalInSeconds());
-                    laboratory.getAssets().add(history);
-                }
-            }
-        }
+        laboratories.addAll(historyLabs.values());
 
         if (laboratories.size() > 0) {
             updateAsset(laboratories.get(0));
@@ -165,12 +164,12 @@ public class DataSyncSettingActivity extends BaseActivity {
 
 
     private void updateAsset(Laboratory laboratory) {
+        logger.i(TAG, "update Asset payload " + new Gson().toJson(laboratory));
 
         ApiClient.getApiService().updateAssets(session.rawToken(), laboratory).enqueue(new Callback<Laboratory>() {
             @Override
             public void onResponse(Call<Laboratory> call, Response<Laboratory> response) {
                 if (response.isSuccessful()) {
-
                     laboratories.remove(laboratory);
                     if (laboratories.size() > 0) {
                         updateAsset(laboratories.get(0));
@@ -179,12 +178,16 @@ public class DataSyncSettingActivity extends BaseActivity {
                         Presenter.INSTANCE.pullLatestData();
                         progressDialog.dismiss();
                     }
+                } else {
+                    logger.e(TAG, "" + response.message());
+                    progressDialog.dismiss();
                 }
+
             }
 
             @Override
             public void onFailure(Call<Laboratory> call, Throwable t) {
-
+                logger.e(TAG, "" + t.getLocalizedMessage());
             }
         });
     }

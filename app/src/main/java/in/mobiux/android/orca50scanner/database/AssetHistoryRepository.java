@@ -27,6 +27,7 @@ public class AssetHistoryRepository {
     public static final String TAG = AssetHistoryRepository.class.getCanonicalName();
     private AssetHistoryDao assetHistoryDao;
     private LiveData<List<AssetHistory>> liveData;
+    private AppLogger logger;
 
     public MyApplication app;
 
@@ -36,6 +37,7 @@ public class AssetHistoryRepository {
         assetHistoryDao = database.assetHistoryDao();
         liveData = assetHistoryDao.getList();
         app = (MyApplication) application.getApplicationContext();
+        logger = AppLogger.getInstance(app);
     }
 
 
@@ -52,6 +54,7 @@ public class AssetHistoryRepository {
             @Override
             public void run() {
                 assetHistoryDao.clearAll();
+                logger.i(TAG, "clear all history");
             }
         }).start();
     }
