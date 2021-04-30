@@ -33,6 +33,8 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import in.mobiux.android.orca50scanner.R;
 import in.mobiux.android.orca50scanner.api.model.AssetHistory;
@@ -66,6 +68,8 @@ public class TransferAndAssignActivity extends BaseActivity implements RFIDReade
     private HashMap<String, Inventory> assets = new HashMap<>();
     private List<Inventory> scannedTagsList = new ArrayList<>();
     private Map<String, Inventory> scannedTags = new HashMap<>();
+    private String[] tags = new String[3];
+    private String[] epc = new String[9];
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -73,6 +77,16 @@ public class TransferAndAssignActivity extends BaseActivity implements RFIDReade
         setContentView(R.layout.activity_transfer_and_assign);
 
         setTitle(getResources().getString(R.string.label_transfer_assign));
+
+        epc[0] = "E2001021480F01060430E32B";
+        epc[1] = "E2 00 10 21 48 0F 01 06 02 80 ED 5C".replace(" ", "");
+        epc[2] = "E2 00 10 21 48 0F 01 06 02 90 EC 6D".replace(" ", "");
+        epc[3] = "E2 00 10 21 48 0F 01 06 02 60 ED 5A".replace(" ", "");
+        epc[4] = "57657657676";
+        epc[5] = "7657657354";
+        epc[6] = "765765rfer6";
+        epc[7] = "765765fdsf";
+        epc[8] = "765765dfed6";
 
         radioGroup = findViewById(R.id.radioGroup);
         spinnerLevel = findViewById(R.id.spinnerLevel);
@@ -103,6 +117,7 @@ public class TransferAndAssignActivity extends BaseActivity implements RFIDReade
         if (!app.connector.isConnected()) {
             app.connectRFID();
         }
+//        initDataGenerator();
 
         laboratoryViewModel.getAllInventory().observe(this, new Observer<List<Laboratory>>() {
             @Override
@@ -225,18 +240,19 @@ public class TransferAndAssignActivity extends BaseActivity implements RFIDReade
     @Override
     public void onInventoryTag(Inventory inventory) {
 
-        scannedTags.put(inventory.getFormattedEPC(), inventory);
-
         Inventory matchingAsset = assets.get(inventory.getFormattedEPC());
 
         if (matchingAsset != null) {
+            scannedTags.put(inventory.getFormattedEPC(), inventory);
+            logger.i(TAG, "matching found " + matchingAsset.getFormattedEPC());
             matchingAsset.setRssi(inventory.getRssi());
             scannedTags.put(matchingAsset.getFormattedEPC(), matchingAsset);
             if (selectedAsset != null) {
                 selectedAsset = scannedTags.get(selectedAsset.getFormattedEPC());
             }
+
+            arrangeScannedInventory();
         }
-        arrangeScannedInventory();
 //        updateUI(selectedAsset);
     }
 
@@ -255,9 +271,7 @@ public class TransferAndAssignActivity extends BaseActivity implements RFIDReade
 
     @Override
     public void onInventoryTagEnd(RXInventoryTag.RXInventoryTagEnd tagEnd) {
-//        asset = null;
-
-        arrangeScannedInventory();
+//        arrangeScannedInventory();
     }
 
     @Override
@@ -310,6 +324,7 @@ public class TransferAndAssignActivity extends BaseActivity implements RFIDReade
         if (scannedTagsList.size() > 3) {
             for (int i = 3; i < scannedTagsList.size(); i++) {
                 scannedTagsList.remove(i);
+                logger.i(TAG, "removing " + i);
             }
         }
 
@@ -320,7 +335,7 @@ public class TransferAndAssignActivity extends BaseActivity implements RFIDReade
 
     private void updateScannedListViews(List<Inventory> scannedTagsList) {
         radioGroup.removeAllViews();
-        selectedAsset = null;
+        logger.i(TAG, "update scanned list view " + scannedTagsList.size());
         for (int i = 0; i < 3 && i < scannedTagsList.size(); i++) {
             RadioButton radioButton = new RadioButton(this);
             radioButton.setId(i);
@@ -328,6 +343,35 @@ public class TransferAndAssignActivity extends BaseActivity implements RFIDReade
             radioGroup.addView(radioButton, i);
         }
         radioGroup.invalidate();
+        selectedAsset = null;
         updateUI(selectedAsset);
+    }
+
+    Random random = new Random();
+
+    private void initDataGenerator() {
+
+        Timer timer = new Timer();
+        timer.schedule(new TimerTask() {
+            @Override
+            public void run() {
+                Inventory inventory = new Inventory();
+                int rssi = random.nextInt(100);
+                int index = random.nextInt(epc.length - 1);
+                logger.i(TAG, "index " + index);
+                inventory.strEPC = epc[index];
+                inventory.setEpc(epc[index]);
+                inventory.setRssi(String.valueOf(rssi));
+                inventory.setLabId(191);
+                inventory.setName("Asset " + random.nextInt() + "  " + rssi);
+
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        onInventoryTag(inventory);
+                    }
+                });
+            }
+        }, 1000, 500);
     }
 }

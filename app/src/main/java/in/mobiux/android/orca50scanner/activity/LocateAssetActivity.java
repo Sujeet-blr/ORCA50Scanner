@@ -228,13 +228,4 @@ public class LocateAssetActivity extends BaseActivity implements RFIDReaderListe
             Toast.makeText(app, "Connection Lost", Toast.LENGTH_SHORT).show();
         }
     }
-
-    private void initTimer() {
-        timer.schedule(new TimerTask() {
-            @Override
-            public void run() {
-
-            }
-        }, 1000, 500);
-    }
 }

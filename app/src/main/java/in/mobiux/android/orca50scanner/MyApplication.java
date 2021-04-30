@@ -1,5 +1,6 @@
 package in.mobiux.android.orca50scanner;
 
+import android.app.Activity;
 import android.app.Application;
 import android.os.Handler;
 import android.widget.Toast;
@@ -22,6 +23,7 @@ import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import in.mobiux.android.orca50scanner.activity.BaseActivity;
 import in.mobiux.android.orca50scanner.api.ApiClient;
 import in.mobiux.android.orca50scanner.api.Presenter;
 import in.mobiux.android.orca50scanner.api.model.AssetResponse;
@@ -63,6 +65,8 @@ public class MyApplication extends Application {
     Timer timer = new Timer();
     long scanningEndPoint = System.currentTimeMillis();
     long scanningInterval = 500;
+
+    public List<BaseActivity> activities = new ArrayList<>();
 
 
     @Override
@@ -120,7 +124,7 @@ public class MyApplication extends Application {
 
         @Override
         public void onLostConnect() {
-                logger.i(TAG, "onLostConnect");
+            logger.i(TAG, "onLostConnect");
             if (listener != null) {
                 mHandler.post(new Runnable() {
                     @Override
@@ -347,7 +351,15 @@ public class MyApplication extends Application {
             rfidReaderHelper.signOut();
         }
 
+        for (BaseActivity activity:activities){
+            activity.finish();
+        }
+
         timer.cancel();
+    }
+
+    public void addActivity(BaseActivity activity) {
+        activities.add(activity);
     }
 
     private void initTimer() {
@@ -367,7 +379,6 @@ public class MyApplication extends Application {
                             @Override
                             public void run() {
                                 listener.onScanningStatus(false);
-                                logger.i(TAG, "Scanning trigger off");
                             }
                         });
                     }

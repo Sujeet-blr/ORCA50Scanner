@@ -2,8 +2,10 @@ package in.mobiux.android.orca50scanner.activity;
 
 import android.app.ActionBar;
 import android.app.ProgressDialog;
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
@@ -20,6 +22,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.core.content.FileProvider;
+
+import com.nativec.tools.ModuleManager;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -52,6 +56,7 @@ public class BaseActivity extends AppCompatActivity {
     protected ProgressDialog progressDialog;
     private ImageView ivHome;
     private TextView textToolbarTitle;
+    private VirtualKeyListenerBroadcastReceiver mVirtualKeyListenerBroadcastReceiver;
 
 
     @Override
@@ -60,8 +65,9 @@ public class BaseActivity extends AppCompatActivity {
         logger = AppLogger.getInstance(getApplicationContext());
         app = (MyApplication) getApplicationContext();
         session = SessionManager.getInstance(getApplicationContext());
-
+        app.addActivity(this);
         TAG = this.getClass().getCanonicalName();
+        registerVirtualKeyListener();
     }
 
     @Override
@@ -129,11 +135,6 @@ public class BaseActivity extends AppCompatActivity {
         }
 
         try {
-//            destination.createNewFile();
-//            FileOutputStream out = openFileOutput("data.csv", Context.MODE_PRIVATE);
-//            out.write((data.toString()).getBytes());
-//            out.close();
-//            out.flush();
 
             Context context = getApplicationContext();
 
@@ -202,5 +203,44 @@ public class BaseActivity extends AppCompatActivity {
 
     public void showToast(String message) {
         Toast.makeText(app, "" + message, Toast.LENGTH_SHORT).show();
+    }
+
+    private void registerVirtualKeyListener() {
+        mVirtualKeyListenerBroadcastReceiver = new VirtualKeyListenerBroadcastReceiver();
+        IntentFilter intentFilter = new IntentFilter(Intent.ACTION_CLOSE_SYSTEM_DIALOGS);
+        this.registerReceiver(mVirtualKeyListenerBroadcastReceiver, intentFilter);
+    }
+
+    private class VirtualKeyListenerBroadcastReceiver extends BroadcastReceiver {
+        private final String SYSTEM_REASON = "reason";
+        private final String SYSTEM_HOME_KEY = "homekey";
+        private final String SYSTEM_RECENT_APPS = "recentapps";
+
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            String action = intent.getAction();
+            if (action.equals(Intent.ACTION_CLOSE_SYSTEM_DIALOGS)) {
+                String systemReason = intent.getStringExtra(SYSTEM_REASON);
+                if (systemReason != null) {
+                    if (systemReason.equals(SYSTEM_HOME_KEY)) {
+                        System.out.println("Press HOME key");
+                        for (BaseActivity activity : app.activities) {
+                            if (!(activity instanceof HomeActivity)) {
+                                activity.finish();
+                            }
+                        }
+                    } else if (systemReason.equals(SYSTEM_RECENT_APPS)) {
+                        System.out.println("Press RECENT_APPS key");
+
+                    }
+                }
+            }
+        }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        this.unregisterReceiver(mVirtualKeyListenerBroadcastReceiver);
     }
 }

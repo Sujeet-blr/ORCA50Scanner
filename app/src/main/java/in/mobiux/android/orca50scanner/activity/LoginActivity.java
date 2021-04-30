@@ -35,6 +35,7 @@ public class LoginActivity extends BaseActivity {
         edtPassword = findViewById(R.id.edtPassword);
         btnLogin = findViewById(R.id.btnLogin);
 
+//        TODO
 //        if (BuildConfig.DEBUG) {
             edtEmail.setText("adminsgul@footprints.com");
             edtPassword.setText("tempFP@1");

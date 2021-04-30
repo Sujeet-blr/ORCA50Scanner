@@ -41,7 +41,6 @@ public class ScanInventoryActivity extends BaseActivity implements View.OnClickL
     private DepartmentResponse.Child laboratory;
     private List<Inventory> scannedInventories = new ArrayList<>();
     private Map<String, Inventory> inventories = new HashMap<>();
-    //    private Set<String> uniqueAsset = new HashSet<>();
     private InventoryAdapter adapter;
     boolean startButtonStatus = false;
 
@@ -148,7 +147,6 @@ public class ScanInventoryActivity extends BaseActivity implements View.OnClickL
         Inventory matchingAsset = inventories.get(inventory.getFormattedEPC());
         if (matchingAsset != null) {
             matchingAsset.setRssi(inventory.getRssi());
-//            inventory = matchingAsset;
 
             Inventory m = AppUtils.getMatchingInventory(inventory.getEpc(), scannedInventories);
             if (m != null) {

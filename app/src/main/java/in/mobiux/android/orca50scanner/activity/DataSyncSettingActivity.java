@@ -131,12 +131,10 @@ public class DataSyncSettingActivity extends BaseActivity {
         progressDialog.show();
 
         inventoryList = new ArrayList<>();
-//        Set<String> uniquesLabs = new HashSet<>();
         HashMap<String, Laboratory> historyLabs = new HashMap<>();
 
         for (AssetHistory history : histories) {
             logger.i(TAG, "" + history.getEpc() + "    " + history.getDepartment() + "  " + history.getUpdateTimeIntervalInSeconds());
-//            uniquesLabs.add(String.valueOf(history.getDepartment()));
 
             String departmentId = String.valueOf(history.getDepartment());
 
@@ -165,7 +163,6 @@ public class DataSyncSettingActivity extends BaseActivity {
 
 
     private void updateAsset(Laboratory laboratory) {
-//        logger.i(TAG, "update Asset payload " + new Gson().toJson(laboratory));
 
         for (AssetHistory history : laboratory.getAssets()) {
             logger.i(TAG, "payload " + history.getEpc() + " dept " + history.getTime());

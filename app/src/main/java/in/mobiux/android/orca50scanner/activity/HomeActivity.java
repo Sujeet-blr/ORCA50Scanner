@@ -35,8 +35,6 @@ public class HomeActivity extends BaseActivity implements View.OnClickListener {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
 
-//        getSupportActionBar().hide();
-
         cardInventory = findViewById(R.id.cardInventory);
         cardLocate = findViewById(R.id.cardLocate);
         cardTransfer = findViewById(R.id.cardTransfer);
@@ -67,9 +65,6 @@ public class HomeActivity extends BaseActivity implements View.OnClickListener {
         } catch (Exception e) {
             logger.e(TAG, "" + e.getLocalizedMessage());
         }
-//        app.inventories();
-
-//        Presenter.INSTANCE.pullLatestData();
     }
 
     @Override
@@ -105,6 +100,11 @@ public class HomeActivity extends BaseActivity implements View.OnClickListener {
 
                 break;
         }
+    }
+
+    @Override
+    public void onBackPressed() {
+//        super.onBackPressed();
     }
 
     @Override
