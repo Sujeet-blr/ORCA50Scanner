@@ -37,8 +37,8 @@ public class LoginActivity extends BaseActivity {
 
 //        TODO
 //        if (BuildConfig.DEBUG) {
-            edtEmail.setText("adminsgul@footprints.com");
-            edtPassword.setText("tempFP@1");
+            edtEmail.setText("demouser@sensingobjects.tech");
+            edtPassword.setText("footprints@123");
 //        }
 
         btnLogin.setOnClickListener(new View.OnClickListener() {
@@ -61,6 +61,7 @@ public class LoginActivity extends BaseActivity {
             public void onResponse(Call<User> call, Response<User> response) {
                 if (response.isSuccessful()) {
                     User us = response.body();
+                    session.setUser(us);
                     session.saveToken(us.getToken());
                     startActivity(new Intent(app, HomeActivity.class));
                     finish();

@@ -30,10 +30,11 @@
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
-        android:roundIcon="@mipmap/ic_launcher_round"
+        android:roundIcon="@mipmap/ic_launcher"
         android:supportsRtl="true"
         android:theme="@style/Theme.AppTheme.NoActionBar">
-        <activity android:name=".activity.BuzzerSettingActivity"></activity>
+        <activity android:name=".activity.ODScannerActivity"></activity>
+        <activity android:name=".activity.BuzzerSettingActivity" />
         <activity android:name=".activity.DeviceSettingsActivity" />
         <activity android:name=".activity.RFOutputPowerSettingActivity" />
         <activity android:name=".activity.LoginActivity" />

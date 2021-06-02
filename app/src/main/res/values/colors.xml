@@ -15,7 +15,8 @@
     <color name="orange">#ED7D31</color>
     <color name="black_text">#1C1C1C</color>
     <color name="black_button">#2B2B2B</color>
-    <color name="seekbar_progress_background">#DCE5F4</color>
+<!--    <color name="seekbar_progress_background">#DCE5F4</color>-->
+    <color name="seekbar_progress_background">#ED7D31</color>
     <color name="seekbar_default">#E5E8ED</color>
 
 </resources>

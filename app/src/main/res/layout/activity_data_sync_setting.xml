@@ -29,7 +29,7 @@
             <androidx.cardview.widget.CardView
                 android:id="@+id/cardSync"
                 android:layout_width="0dp"
-                android:layout_height="200dp"
+                android:layout_height="160dp"
                 android:layout_margin="5dp"
                 android:layout_weight="1"
                 app:cardBackgroundColor="@color/white"
@@ -46,8 +46,8 @@
                     android:orientation="vertical">
 
                     <ImageView
-                        android:layout_width="80dp"
-                        android:layout_height="80dp"
+                        android:layout_width="50dp"
+                        android:layout_height="50dp"
                         android:layout_gravity="center_horizontal"
                         android:src="@drawable/data_sync" />
 
@@ -67,7 +67,7 @@
             <androidx.cardview.widget.CardView
                 android:id="@+id/cardSettings"
                 android:layout_width="0dp"
-                android:layout_height="200dp"
+                android:layout_height="160dp"
                 android:layout_margin="5dp"
                 android:layout_weight="1"
                 app:cardBackgroundColor="@color/white"
@@ -84,8 +84,8 @@
                     android:orientation="vertical">
 
                     <ImageView
-                        android:layout_width="80dp"
-                        android:layout_height="80dp"
+                        android:layout_width="50dp"
+                        android:layout_height="50dp"
                         android:layout_gravity="center_horizontal"
                         android:src="@drawable/device_settings" />
 
@@ -110,7 +110,7 @@
             <androidx.cardview.widget.CardView
                 android:id="@+id/cardLicense"
                 android:layout_width="0dp"
-                android:layout_height="200dp"
+                android:layout_height="160dp"
                 android:layout_margin="5dp"
                 android:layout_weight="1"
                 app:cardBackgroundColor="@color/white"
@@ -127,8 +127,8 @@
                     android:orientation="vertical">
 
                     <ImageView
-                        android:layout_width="80dp"
-                        android:layout_height="80dp"
+                        android:layout_width="50dp"
+                        android:layout_height="50dp"
                         android:layout_gravity="center_horizontal"
                         android:padding="10dp"
                         android:src="@drawable/license_info" />
@@ -149,7 +149,7 @@
             <androidx.cardview.widget.CardView
                 android:id="@+id/cardAbout"
                 android:layout_width="0dp"
-                android:layout_height="200dp"
+                android:layout_height="160dp"
                 android:layout_margin="5dp"
                 android:layout_weight="1"
                 app:cardBackgroundColor="@color/white"
@@ -166,10 +166,11 @@
                     android:orientation="vertical">
 
                     <ImageView
-                        android:layout_width="80dp"
-                        android:layout_height="80dp"
+                        android:layout_width="50dp"
+                        android:layout_height="50dp"
                         android:layout_gravity="center_horizontal"
                         android:padding="10dp"
+                        android:scaleType="fitXY"
                         android:src="@drawable/about" />
 
                     <TextView
@@ -185,6 +186,18 @@
             </androidx.cardview.widget.CardView>
 
         </LinearLayout>
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/lltFooter"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:background="@color/white"
+        android:orientation="vertical">
+
+        <include layout="@layout/screen_footer" />
+
     </LinearLayout>
 
 </RelativeLayout>

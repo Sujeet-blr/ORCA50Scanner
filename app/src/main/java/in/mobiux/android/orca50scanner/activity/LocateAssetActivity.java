@@ -216,7 +216,7 @@ public class LocateAssetActivity extends BaseActivity implements RFIDReaderListe
         if (status) {
             txtIndicator.setText(getResources().getString(R.string.scanning));
         } else {
-            txtIndicator.setText("");
+            txtIndicator.setText("Start Scan");
         }
     }
 

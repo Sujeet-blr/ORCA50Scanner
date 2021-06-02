@@ -102,7 +102,7 @@ public class TransferAndAssignActivity extends BaseActivity implements RFIDReade
         cardAssetInfo = findViewById(R.id.cardAssetInfo);
         cardAssetInfo.setVisibility(View.GONE);
         txtIndicator.setTag(false);
-        txtIndicator.setText("");
+        txtIndicator.setText("Start Scan");
 
         tvLab.setText("");
         tvSerialNumber.setText("");
@@ -264,7 +264,7 @@ public class TransferAndAssignActivity extends BaseActivity implements RFIDReade
         if (status) {
             txtIndicator.setText(getResources().getString(R.string.scanning));
         } else {
-            txtIndicator.setText("");
+            txtIndicator.setText("Start Scan");
         }
     }
 
@@ -283,7 +283,7 @@ public class TransferAndAssignActivity extends BaseActivity implements RFIDReade
         if (selectedAsset != null) {
             tvName.setText("" + selectedAsset.getName());
             tvEPC.setText("" + selectedAsset.getEpc());
-            tvRSSI.setText("" + selectedAsset.getRssi());
+            tvRSSI.setText("" + selectedAsset.getRssi() + getResources().getString(R.string.rssi_unit));
 
             tvLabName.setText("" + selectedAsset.getLaboratoryName());
             tvSerialNumber.setText("" + selectedAsset.getInventoryId());
