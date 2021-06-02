@@ -3,7 +3,7 @@
 
     <string name="rfid_tag_dummy">E2 80 68 94 00 00 40 06FC 91 FD 26</string>
     <string name="save_data_exit_laboratory">Save Data &amp;\nExit Laboratory</string>
-    <string name="lab_equipment_inventory_mangement_system">LAB EQUIPMENT INVENTORY\nMANGEMENT SYSTEM</string>
+    <string name="lab_equipment_inventory_mangement_system">LAB EQUIPMENT INVENTORY\nMANAGEMENT SYSTEM</string>
     <string name="transfer_assign">Transfer &amp;\nAssign</string>
     <string name="data_sync_settings">Data Sync &amp;\nSettings</string>
     <string name="save_data_finish">Save Data &amp;\nFinish</string>
