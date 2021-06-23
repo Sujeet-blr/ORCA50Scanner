@@ -8,6 +8,7 @@ import android.Manifest;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
@@ -19,6 +20,7 @@ import in.mobiux.android.orca50scanner.api.ApiClient;
 import in.mobiux.android.orca50scanner.api.Presenter;
 import in.mobiux.android.orca50scanner.api.model.AssetResponse;
 import in.mobiux.android.orca50scanner.api.model.Inventory;
+import in.mobiux.android.orca50scanner.api.model.User;
 import in.mobiux.android.orca50scanner.viewmodel.InventoryViewModel;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -27,6 +29,7 @@ import retrofit2.Response;
 public class HomeActivity extends BaseActivity implements View.OnClickListener {
 
     private CardView cardInventory, cardLocate, cardTransfer, cardSync;
+    private TextView tvLoginAs;
     private InventoryViewModel viewModel;
     private List<Inventory> inventories = new ArrayList<>();
 
@@ -39,11 +42,17 @@ public class HomeActivity extends BaseActivity implements View.OnClickListener {
         cardLocate = findViewById(R.id.cardLocate);
         cardTransfer = findViewById(R.id.cardTransfer);
         cardSync = findViewById(R.id.cardSync);
+        tvLoginAs = findViewById(R.id.tvLoginAs);
 
         cardInventory.setOnClickListener(this);
         cardLocate.setOnClickListener(this);
         cardTransfer.setOnClickListener(this);
         cardSync.setOnClickListener(this);
+
+        if (session.hasCredentials()) {
+            User user = session.getUser();
+            tvLoginAs.setText("You are logged in as : "+user.getFirstName() + " " + user.getLastName());
+        }
 
         viewModel = new ViewModelProvider(this).get(InventoryViewModel.class);
         viewModel.getAllInventory().observe(this, new Observer<List<Inventory>>() {

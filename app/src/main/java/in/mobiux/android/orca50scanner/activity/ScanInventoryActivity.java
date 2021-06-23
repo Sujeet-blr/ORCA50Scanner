@@ -96,7 +96,7 @@ public class ScanInventoryActivity extends BaseActivity implements View.OnClickL
 
         adapter = new InventoryAdapter(ScanInventoryActivity.this, scannedInventories);
         recyclerView.setAdapter(adapter);
-        tvCount.setText(adapter.getItemCount() + " PCS");
+        tvCount.setText(adapter.getItemCount() + " Pcs");
     }
 
     @Override
@@ -113,7 +113,7 @@ public class ScanInventoryActivity extends BaseActivity implements View.OnClickL
                 logger.i(TAG, "Clear");
                 scannedInventories.clear();
                 adapter.notifyDataSetChanged();
-                tvCount.setText(adapter.getItemCount() + " PCS");
+                tvCount.setText(adapter.getItemCount() + " Pcs");
                 break;
             case R.id.btnSave:
                 logger.i(TAG, "Save");
@@ -171,7 +171,7 @@ public class ScanInventoryActivity extends BaseActivity implements View.OnClickL
             txtIndicator.setText(getResources().getString(R.string.scanning));
             txtIndicator.setTag(true);
         } else {
-            txtIndicator.setText("");
+            txtIndicator.setText("Start Scan");
             txtIndicator.setTag(false);
         }
     }

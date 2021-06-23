@@ -2,6 +2,11 @@ package in.mobiux.android.orca50scanner.util;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.util.Log;
+
+import com.google.gson.Gson;
+
+import in.mobiux.android.orca50scanner.api.model.User;
 
 /**
  * Created by SUJEET KUMAR on 28-Mar-21.
@@ -26,11 +31,44 @@ public class SessionManager {
 
 //        setting initial default value
         if (getValue("rssi").isEmpty()) {
-            setValue("rssi", "80");
+            setValue("rssi", "30");
         }
         if (getValue("beeperMode").isEmpty()) {
             setValue("beeperMode", "1");
         }
+    }
+
+
+    public void setUser(User user) {
+        Gson gson = new Gson();
+        String str = gson.toJson(user).toString();
+        if (user == null) {
+            str = "";
+        }
+
+        Log.i(TAG, "saved user is : " + str);
+        SharedPreferences.Editor editor = preferences.edit();
+        editor.putString("user", str);
+        editor.apply();
+    }
+
+    public User getUser() {
+        Gson gson = new Gson();
+        String str = preferences.getString("user", "");
+        if (str.isEmpty()) {
+            Log.i(TAG, str);
+            return null;
+        }
+        User user = gson.fromJson(str, User.class);
+        Log.i(TAG, str);
+        return user;
+    }
+
+    public boolean hasCredentials() {
+        if (!rawToken().isEmpty()) {
+            return true;
+        }
+        return false;
     }
 
     public void saveToken(String token) {
@@ -51,7 +89,7 @@ public class SessionManager {
         SharedPreferences.Editor editor = preferences.edit();
         editor.putString(key, value);
         editor.apply();
-        AppLogger.getInstance(context).i(TAG, "Saved as key :" + key + " value :" + value);
+        AppLogger.getInstance(context).i(TAG, "Saved as key :" + key + " value : " + value);
     }
 
     public String getValue(String key) {

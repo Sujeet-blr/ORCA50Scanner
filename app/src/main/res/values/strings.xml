@@ -1,19 +1,21 @@
 <resources>
-    <string name="app_name">RFID Inventory</string>
+    <string name="app_name">SO Inventory</string>
 
     <string name="rfid_tag_dummy">E2 80 68 94 00 00 40 06FC 91 FD 26</string>
-    <string name="save_data_exit_laboratory">Save Data &amp;\nExit Laboratory</string>
-    <string name="lab_equipment_inventory_mangement_system">LAB EQUIPMENT INVENTORY\nMANAGEMENT SYSTEM</string>
-    <string name="transfer_assign">Transfer &amp;\nAssign</string>
-    <string name="data_sync_settings">Data Sync &amp;\nSettings</string>
-    <string name="save_data_finish">Save Data &amp;\nFinish</string>
-    <string name="save_data_n_confirm">Save Data &amp;\nConfirm Transfer</string>
-    <string name="label_transfer_assign">Transfer &amp; Scan</string>
+    <string name="save_data_exit_laboratory">Save Data &amp; \nExit Department</string>
+    <string name="lab_equipment_inventory_mangement_system">ASSET INVENTORY MANAGEMENT SYSTEM</string>
+    <string name="transfer_assign">Transfer &amp; \nAssign</string>
+    <string name="data_sync_settings">Data Sync &amp; \nSettings</string>
+    <string name="save_data_finish">Save Data &amp; \nFinish</string>
+    <string name="save_data_n_confirm">Save Data &amp; \nConfirm Transfer</string>
+    <string name="label_transfer_assign">Transfer &amp; Assign</string>
     <string name="label_data_sync">Data Sync &amp; Settings</string>
-    <string name="label_locate_asset">Locate An Asset</string>
+    <string name="label_locate_asset">Locate Asset</string>
     <string name="start_scan">Start Scan</string>
     <string name="stop_scan">Stop Scan</string>
-    <string name="scanning">scanning</string>
+    <string name="scanning">Scanning in progress</string>
+    <string name="not_implemented">Feature coming soon</string>
+    <string name="rssi_unit">dBm</string>
 
     <string-array name="dummmy_spinner">
         <item>item1</item>
