@@ -141,6 +141,8 @@ public class MyApplication extends Application {
         @Override
         protected void refreshSetting(ReaderSetting readerSetting) {
             logger.i(TAG, "Setting Refresh ");
+
+            session.setValue("rssi", String.valueOf(rfidReaderHelper.getOutputPower(readerSetting.btReadId)));
         }
 
         @Override
@@ -235,7 +237,7 @@ public class MyApplication extends Application {
                     int beeperResult = -1;
                     beeperResult = rfidReaderHelper.setBeeperMode(ReaderSetting.newInstance().btReadId, (byte) 2);
                     logger.i(TAG, "beeper result value " + beeperResult);
-                    Toast.makeText(this, "beeper value " + beeperResult, Toast.LENGTH_SHORT).show();
+//                    Toast.makeText(this, "beeper value " + beeperResult, Toast.LENGTH_SHORT).show();
 
                     ReaderSetting.newInstance().btBeeperMode = ((byte) 2);
 
@@ -285,10 +287,11 @@ public class MyApplication extends Application {
             beeperResult = rfidReaderHelper.setBeeperMode(ReaderSetting.newInstance().btReadId, (byte) 2);
 
             logger.i(TAG, "beeper result rec " + beeperResult);
-            Toast.makeText(this, "beeper result rec " + beeperResult, Toast.LENGTH_SHORT).show();
+//            Toast.makeText(this, "beeper result rec " + beeperResult, Toast.LENGTH_SHORT).show();
             ReaderSetting.newInstance().btBeeperMode = ((byte) 2);
 
             logger.i(TAG, "beeper result recc " + beeperResult);
+            session.setValue("rssi", String.valueOf(rfidReaderHelper.getOutputPower(readerSetting.btReadId)));
 
 
             if (listener != null) {
@@ -306,19 +309,6 @@ public class MyApplication extends Application {
         this.listener = listener;
     }
 
-    public void startScanning(String sourceTAG) {
-
-        ModuleManager.newInstance().setUHFStatus(true);
-        scanningStatus = true;
-        rfidReaderHelper.realTimeInventory(ReaderSetting.newInstance().btReadId, (byte) 0x01);
-
-        logger.i(TAG, sourceTAG + " # start Scan command sent");
-    }
-
-    public void stopScanning() {
-        scanningStatus = false;
-        logger.i(TAG, "stop scan command sent");
-    }
 
     public void setOutputPower(String outputPower) {
 

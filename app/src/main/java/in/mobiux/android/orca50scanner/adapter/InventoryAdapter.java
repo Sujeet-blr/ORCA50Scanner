@@ -48,7 +48,7 @@ public class InventoryAdapter extends RecyclerView.Adapter<InventoryAdapter.Recy
 
         holder.tvID.setText("" + inventory.getName());
         holder.tvName.setText("" + inventory.getEpc());
-        holder.tvQty.setText("" + inventory.getRssi() + "dBm");
+        holder.tvQty.setText("" + inventory.getRssi() + context.getResources().getString(R.string.rssi_unit));
 
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override

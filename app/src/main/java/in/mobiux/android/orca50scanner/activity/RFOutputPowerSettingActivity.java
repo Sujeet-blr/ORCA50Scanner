@@ -20,7 +20,7 @@ public class RFOutputPowerSettingActivity extends BaseActivity {
 
     private EditText edtRSSI;
     private Button btnGet, btnSet;
-    private String rssiValue = "0";
+    private String rssiValue = "30";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,6 +34,7 @@ public class RFOutputPowerSettingActivity extends BaseActivity {
         btnSet = findViewById(R.id.btnSet);
 
         rssiValue = session.getValue("rssi");
+        logger.i(TAG, "rssi value from session " + rssiValue);
         edtRSSI.setText(rssiValue);
 
         btnGet.setOnClickListener(new View.OnClickListener() {
