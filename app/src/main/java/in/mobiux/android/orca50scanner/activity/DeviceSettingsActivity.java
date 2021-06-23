@@ -30,7 +30,13 @@ public class DeviceSettingsActivity extends BaseActivity {
         cardLogs = findViewById(R.id.cardLogs);
         tvAppVersion = findViewById(R.id.tvAppVersion);
 
-        tvAppVersion.setText("version code (Demo) " + BuildConfig.VERSION_CODE);
+        tvAppVersion.setText("version " + BuildConfig.VERSION_NAME);
+        tvAppVersion.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                showToast("Version Code " + BuildConfig.VERSION_CODE);
+            }
+        });
 
         cardRSSI.setOnClickListener(new View.OnClickListener() {
             @Override

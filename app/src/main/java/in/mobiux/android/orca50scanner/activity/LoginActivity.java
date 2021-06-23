@@ -37,8 +37,8 @@ public class LoginActivity extends BaseActivity {
 
 //        TODO
 //        if (BuildConfig.DEBUG) {
-            edtEmail.setText("demouser@sensingobjects.tech");
-            edtPassword.setText("footprints@123");
+            edtEmail.setText("adminsguldemo@footprints.com");
+            edtPassword.setText("vida@123");
 //        }
 
         btnLogin.setOnClickListener(new View.OnClickListener() {
