@@ -2,6 +2,7 @@ package in.mobiux.android.orca50scanner;
 
 import android.app.Activity;
 import android.app.Application;
+import android.media.MediaPlayer;
 import android.os.Handler;
 import android.widget.Toast;
 
@@ -67,6 +68,8 @@ public class MyApplication extends Application {
     long scanningInterval = 500;
 
     public List<BaseActivity> activities = new ArrayList<>();
+
+    private MediaPlayer mediaPlayer = MediaPlayer.create(this, R.raw.beeper);
 
 
     @Override
@@ -202,6 +205,8 @@ public class MyApplication extends Application {
             int tagReadingSpeed = tagEnd.mReadRate;
 
             scanningEndPoint = System.currentTimeMillis() + scanningInterval;
+
+            mediaPlayer.start();
 
             if (listener != null) {
                 mHandler.post(new Runnable() {
@@ -341,7 +346,7 @@ public class MyApplication extends Application {
             rfidReaderHelper.signOut();
         }
 
-        for (BaseActivity activity:activities){
+        for (BaseActivity activity : activities) {
             activity.finish();
         }
 

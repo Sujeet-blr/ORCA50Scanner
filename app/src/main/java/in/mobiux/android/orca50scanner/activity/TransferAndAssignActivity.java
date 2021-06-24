@@ -8,6 +8,7 @@ import androidx.lifecycle.ViewModelProvider;
 
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -68,8 +69,6 @@ public class TransferAndAssignActivity extends BaseActivity implements RFIDReade
     private HashMap<String, Inventory> assets = new HashMap<>();
     private List<Inventory> scannedTagsList = new ArrayList<>();
     private Map<String, Inventory> scannedTags = new HashMap<>();
-    private String[] tags = new String[3];
-    private String[] epc = new String[9];
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -78,15 +77,6 @@ public class TransferAndAssignActivity extends BaseActivity implements RFIDReade
 
         setTitle(getResources().getString(R.string.label_transfer_assign));
 
-        epc[0] = "E2001021480F01060430E32B";
-        epc[1] = "E2 00 10 21 48 0F 01 06 02 80 ED 5C".replace(" ", "");
-        epc[2] = "E2 00 10 21 48 0F 01 06 02 90 EC 6D".replace(" ", "");
-        epc[3] = "E2 00 10 21 48 0F 01 06 02 60 ED 5A".replace(" ", "");
-        epc[4] = "57657657676";
-        epc[5] = "7657657354";
-        epc[6] = "765765rfer6";
-        epc[7] = "765765fdsf";
-        epc[8] = "765765dfed6";
 
         radioGroup = findViewById(R.id.radioGroup);
         spinnerLevel = findViewById(R.id.spinnerLevel);
@@ -117,7 +107,6 @@ public class TransferAndAssignActivity extends BaseActivity implements RFIDReade
         if (!app.connector.isConnected()) {
             app.connectRFID();
         }
-//        initDataGenerator();
 
         laboratoryViewModel.getAllInventory().observe(this, new Observer<List<Laboratory>>() {
             @Override
@@ -253,7 +242,6 @@ public class TransferAndAssignActivity extends BaseActivity implements RFIDReade
 
             arrangeScannedInventory();
         }
-//        updateUI(selectedAsset);
     }
 
     @Override
@@ -263,6 +251,7 @@ public class TransferAndAssignActivity extends BaseActivity implements RFIDReade
 
         if (status) {
             txtIndicator.setText(getResources().getString(R.string.scanning));
+            radioGroup.setEnabled(false);
         } else {
             txtIndicator.setText("Start Scan");
         }
@@ -272,6 +261,12 @@ public class TransferAndAssignActivity extends BaseActivity implements RFIDReade
     @Override
     public void onInventoryTagEnd(RXInventoryTag.RXInventoryTagEnd tagEnd) {
 //        arrangeScannedInventory();
+        new Handler(getMainLooper()).postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                radioGroup.setEnabled(true);
+            }
+        }, 500);
     }
 
     @Override
@@ -345,33 +340,5 @@ public class TransferAndAssignActivity extends BaseActivity implements RFIDReade
         radioGroup.invalidate();
         selectedAsset = null;
         updateUI(selectedAsset);
-    }
-
-    Random random = new Random();
-
-    private void initDataGenerator() {
-
-        Timer timer = new Timer();
-        timer.schedule(new TimerTask() {
-            @Override
-            public void run() {
-                Inventory inventory = new Inventory();
-                int rssi = random.nextInt(100);
-                int index = random.nextInt(epc.length - 1);
-                logger.i(TAG, "index " + index);
-                inventory.strEPC = epc[index];
-                inventory.setEpc(epc[index]);
-                inventory.setRssi(String.valueOf(rssi));
-                inventory.setLabId(191);
-                inventory.setName("Asset " + random.nextInt() + "  " + rssi);
-
-                runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        onInventoryTag(inventory);
-                    }
-                });
-            }
-        }, 1000, 500);
     }
 }
