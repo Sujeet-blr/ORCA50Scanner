@@ -70,7 +70,9 @@ public class Presenter {
                         inventory.setLocationAssigned(locationAssigned);
                         inventory.setSyncRequired(false);
 
-                        inventories.add(inventory);
+                        if (inventory.getEpc()!=null&&(!inventory.getEpc().isEmpty())){
+                            inventories.add(inventory);
+                        }
                     }
 
                     new Thread(new Runnable() {

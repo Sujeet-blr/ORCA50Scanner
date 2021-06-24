@@ -74,7 +74,7 @@ public class MyApplication extends Application {
         super.onCreate();
 
         logger = AppLogger.getInstance(getApplicationContext());
-        logger.i(TAG, "============App Started....==========\n");
+        logger.i(TAG, "= App Started =\n");
         mHandler = new Handler(getMainLooper());
         Presenter.init(getApplicationContext());
         session = SessionManager.getInstance(getApplicationContext());
@@ -176,7 +176,7 @@ public class MyApplication extends Application {
 
         @Override
         protected void onInventoryTag(RXInventoryTag tag) {
-            logger.i(TAG, "Tag scanner : crc-" + tag.strCRC + "# rssi-" + tag.strRSSI + "# freq-" + tag.strFreq + "#pc-" + tag.strPC + "#btnID-" + tag.btAntId);
+            logger.i(TAG, "onInventoryTag : crc-" + tag.strCRC + "# rssi-" + tag.strRSSI + "# freq-" + tag.strFreq + "#pc-" + tag.strPC + "#btnID-" + tag.btAntId);
 
             Inventory inventory = new Inventory();
             inventory.setEpc(tag.strEPC);
@@ -197,7 +197,7 @@ public class MyApplication extends Application {
 
         @Override
         protected void onInventoryTagEnd(RXInventoryTag.RXInventoryTagEnd tagEnd) {
-            logger.i(TAG, "Inventory tag read end " + tagEnd.mTotalRead);
+            logger.i(TAG, "onInventoryTagEnd " + tagEnd.mTotalRead);
 
             int tagReadingSpeed = tagEnd.mReadRate;
 
