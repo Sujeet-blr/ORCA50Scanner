@@ -69,7 +69,7 @@ public class MyApplication extends Application {
 
     public List<BaseActivity> activities = new ArrayList<>();
 
-    private MediaPlayer mediaPlayer = MediaPlayer.create(this, R.raw.beeper);
+    private MediaPlayer mediaPlayer;
 
 
     @Override
@@ -82,6 +82,7 @@ public class MyApplication extends Application {
         Presenter.init(getApplicationContext());
         session = SessionManager.getInstance(getApplicationContext());
 
+        mediaPlayer = MediaPlayer.create(this, R.raw.beeper);
 
         inventoryDatabase = InventoryDatabase.getInstance(getApplicationContext());
         laboratoryDatabase = LaboratoryDatabase.getInstance(getApplicationContext());
