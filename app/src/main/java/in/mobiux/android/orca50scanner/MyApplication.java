@@ -2,6 +2,7 @@ package in.mobiux.android.orca50scanner;
 
 import android.app.Activity;
 import android.app.Application;
+import android.media.MediaPlayer;
 import android.os.Handler;
 import android.widget.Toast;
 
@@ -68,17 +69,20 @@ public class MyApplication extends Application {
 
     public List<BaseActivity> activities = new ArrayList<>();
 
+    private MediaPlayer mediaPlayer;
+
 
     @Override
     public void onCreate() {
         super.onCreate();
 
         logger = AppLogger.getInstance(getApplicationContext());
-        logger.i(TAG, "============App Started....==========\n");
+        logger.i(TAG, "= App Started =\n");
         mHandler = new Handler(getMainLooper());
         Presenter.init(getApplicationContext());
         session = SessionManager.getInstance(getApplicationContext());
 
+        mediaPlayer = MediaPlayer.create(this, R.raw.beeper);
 
         inventoryDatabase = InventoryDatabase.getInstance(getApplicationContext());
         laboratoryDatabase = LaboratoryDatabase.getInstance(getApplicationContext());
@@ -176,7 +180,7 @@ public class MyApplication extends Application {
 
         @Override
         protected void onInventoryTag(RXInventoryTag tag) {
-            logger.i(TAG, "Tag scanner : crc-" + tag.strCRC + "# rssi-" + tag.strRSSI + "# freq-" + tag.strFreq + "#pc-" + tag.strPC + "#btnID-" + tag.btAntId);
+            logger.i(TAG, "onInventoryTag : crc-" + tag.strCRC + "# rssi-" + tag.strRSSI + "# freq-" + tag.strFreq + "#pc-" + tag.strPC + "#btnID-" + tag.btAntId);
 
             Inventory inventory = new Inventory();
             inventory.setEpc(tag.strEPC);
@@ -197,11 +201,13 @@ public class MyApplication extends Application {
 
         @Override
         protected void onInventoryTagEnd(RXInventoryTag.RXInventoryTagEnd tagEnd) {
-            logger.i(TAG, "Inventory tag read end " + tagEnd.mTotalRead);
+            logger.i(TAG, "onInventoryTagEnd " + tagEnd.mTotalRead);
 
             int tagReadingSpeed = tagEnd.mReadRate;
 
             scanningEndPoint = System.currentTimeMillis() + scanningInterval;
+
+            mediaPlayer.start();
 
             if (listener != null) {
                 mHandler.post(new Runnable() {
@@ -341,7 +347,7 @@ public class MyApplication extends Application {
             rfidReaderHelper.signOut();
         }
 
-        for (BaseActivity activity:activities){
+        for (BaseActivity activity : activities) {
             activity.finish();
         }
 
