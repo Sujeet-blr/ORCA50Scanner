@@ -30,6 +30,8 @@ public class DeviceSettingsActivity extends BaseActivity {
         cardLogs = findViewById(R.id.cardLogs);
         tvAppVersion = findViewById(R.id.tvAppVersion);
 
+        cardBuzzer.setVisibility(View.GONE);
+
         tvAppVersion.setText("version " + BuildConfig.VERSION_NAME);
         tvAppVersion.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -58,7 +60,11 @@ public class DeviceSettingsActivity extends BaseActivity {
             @Override
             public void onClick(View view) {
                 if (ContextCompat.checkSelfPermission(DeviceSettingsActivity.this, Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
-                    logger.createAndExportLogs(DeviceSettingsActivity.this);
+//                    logger.createAndExportLogs(DeviceSettingsActivity.this);
+
+                    Intent intent = new Intent(app, SystemLogsManagementActivity.class);
+                    startActivity(intent);
+
                 } else {
                     checkPermission(DeviceSettingsActivity.this, Manifest.permission.WRITE_EXTERNAL_STORAGE, STORAGE_PERMISSION_CODE);
                 }

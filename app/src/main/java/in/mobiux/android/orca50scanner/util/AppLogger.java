@@ -22,10 +22,12 @@ import java.io.IOException;
  */
 public class AppLogger {
 
+    private static final String TAG = AppLogger.class.getCanonicalName();
     private Context context;
     private static AppLogger instance;
     private StringBuilder data;
-    FileOutputStream out;
+    private FileOutputStream out;
+    private String FILE_NAME = "logs.csv";
 
     private AppLogger(Context context) {
         this.context = context;
@@ -58,15 +60,9 @@ public class AppLogger {
             return;
         }
 
-//        FileOutputStream out = null;
         try {
-//            out = context.openFileOutput("logs.csv", Context.MODE_PRIVATE);
-//            out.write((data.toString()).getBytes());
-//            out.close();
-//            out.flush();
 
-
-            File fileLocation = new File(context.getFilesDir(), "logs.csv");
+            File fileLocation = new File(context.getFilesDir(), FILE_NAME);
             Uri path = FileProvider.getUriForFile(context, "in.mobiux.android.orca50scanner.fileprovider", fileLocation);
             Intent fileIntent = new Intent(Intent.ACTION_SEND);
             fileIntent.setType("text/csv");
@@ -86,10 +82,30 @@ public class AppLogger {
         if (ContextCompat.checkSelfPermission(context, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED)
             return;
         try {
-            out = context.openFileOutput("logs.csv", Context.MODE_APPEND);
+            out = context.openFileOutput(FILE_NAME, Context.MODE_APPEND);
             out.write(s.getBytes());
             out.close();
         } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void clearLogs() {
+        if (context == null) {
+            return;
+        }
+
+        if (ContextCompat.checkSelfPermission(context, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+            return;
+        }
+
+        try {
+            File fileLocation = new File(context.getFilesDir(), FILE_NAME);
+
+            if (fileLocation.exists()) {
+                fileLocation.delete();
+            }
+        }catch (Exception e){
             e.printStackTrace();
         }
     }

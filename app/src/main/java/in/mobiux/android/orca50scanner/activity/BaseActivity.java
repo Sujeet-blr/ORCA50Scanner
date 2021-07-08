@@ -47,7 +47,6 @@ public class BaseActivity extends AppCompatActivity {
     public static int STORAGE_PERMISSION_CODE = 121;
     public static int CAMERA_PERMISSION_CODE = 123;
 
-    FileOutputStream outputStream;
     protected MyApplication app;
 
     protected static String TAG = BaseActivity.class.getCanonicalName();
@@ -153,15 +152,6 @@ public class BaseActivity extends AppCompatActivity {
     }
 
 
-    private void appendToLogs(String s) {
-        try {
-            outputStream = openFileOutput("data.csv", MODE_PRIVATE);
-            outputStream.write(s.getBytes());
-            outputStream.close();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {

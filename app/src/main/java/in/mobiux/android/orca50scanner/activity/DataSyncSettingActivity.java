@@ -126,6 +126,8 @@ public class DataSyncSettingActivity extends BaseActivity {
 
     private void sync(List<Inventory> list) {
 
+        String synSetting = session.getValue(SystemLogsManagementActivity.KEY_RADIO);
+
         logger.i(TAG, "Syncing with Server");
         progressDialog.setMessage("Syncing with Server");
         progressDialog.setIndeterminate(true);
@@ -159,6 +161,14 @@ public class DataSyncSettingActivity extends BaseActivity {
             updateAsset(laboratories.get(0));
         } else {
             Presenter.INSTANCE.pullLatestData();
+        }
+
+        if (synSetting.equals("0")) {
+//            send to server then clear device
+            logger.clearLogs();
+        } else if (synSetting.equals("1")) {
+//            clear from device only
+            logger.clearLogs();
         }
     }
 

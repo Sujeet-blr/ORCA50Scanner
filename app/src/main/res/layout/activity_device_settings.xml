@@ -35,7 +35,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:padding="8dp"
-                    android:text="RF Power Output" />
+                    android:text="RF Output Power" />
 
                 <ImageView
                     android:layout_width="wrap_content"
@@ -95,7 +95,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:padding="8dp"
-                    android:text="Export Logs" />
+                    android:text="System Logs Management" />
 
                 <ImageView
                     android:layout_width="wrap_content"
