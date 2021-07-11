@@ -106,12 +106,8 @@ public class DataSyncSettingActivity extends BaseActivity {
         cardAbout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(app, getResources().getString(R.string.not_implemented), Toast.LENGTH_SHORT).show();
-//                if (ContextCompat.checkSelfPermission(DataSyncSettingActivity.this, Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
-//                    logger.createAndExportLogs(DataSyncSettingActivity.this);
-//                } else {
-//                    checkPermission(DataSyncSettingActivity.this, Manifest.permission.WRITE_EXTERNAL_STORAGE, STORAGE_PERMISSION_CODE);
-//                }
+                Intent intent = new Intent(app, AboutUsActivity.class);
+                startActivity(intent);
             }
         });
 
