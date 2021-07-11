@@ -4,6 +4,7 @@ import android.content.Context;
 import android.util.Log;
 import android.widget.Toast;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -14,6 +15,7 @@ import in.mobiux.android.orca50scanner.api.model.Inventory;
 import in.mobiux.android.orca50scanner.api.model.Laboratory;
 import in.mobiux.android.orca50scanner.database.LaboratoryRepository;
 import in.mobiux.android.orca50scanner.util.AppLogger;
+import in.mobiux.android.orca50scanner.util.AppUtils;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -70,7 +72,7 @@ public class Presenter {
                         inventory.setLocationAssigned(locationAssigned);
                         inventory.setSyncRequired(false);
 
-                        if (inventory.getEpc()!=null&&(!inventory.getEpc().isEmpty())){
+                        if (inventory.getEpc() != null && (!inventory.getEpc().isEmpty())) {
                             inventories.add(inventory);
                         }
                     }
@@ -133,6 +135,24 @@ public class Presenter {
 
             @Override
             public void onFailure(Call<List<DepartmentResponse>> call, Throwable t) {
+
+            }
+        });
+    }
+
+    private void sendLogsToServer(String token, File logFile) {
+
+        ApiClient.getApiService().uploadLogs(token, AppUtils.convertFileToRequestBody(logFile)).enqueue(new Callback<String>() {
+            @Override
+            public void onResponse(Call<String> call, Response<String> response) {
+                if (response.isSuccessful()) {
+                    AppLogger.getInstance(app).clearLogs();
+                } else {
+                }
+            }
+
+            @Override
+            public void onFailure(Call<String> call, Throwable t) {
 
             }
         });

@@ -17,15 +17,20 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 
+import okhttp3.MediaType;
+import okhttp3.RequestBody;
+
 /**
  * Created by SUJEET KUMAR on 10-Mar-21.
  */
 public class AppLogger {
 
+    private static final String TAG = AppLogger.class.getCanonicalName();
     private Context context;
     private static AppLogger instance;
     private StringBuilder data;
-    FileOutputStream out;
+    private FileOutputStream out;
+    private String FILE_NAME = "logs.csv";
 
     private AppLogger(Context context) {
         this.context = context;
@@ -41,7 +46,7 @@ public class AppLogger {
     }
 
     public synchronized void i(String tag, String msg) {
-        Log.i(tag, msg);
+//        Log.i(tag, msg);
         data = new StringBuilder(("\n" + tag + "\t, " + msg + "\t," + String.valueOf(AppUtils.getFormattedTimestamp())));
         appendToLogs(data.toString());
     }
@@ -58,15 +63,9 @@ public class AppLogger {
             return;
         }
 
-//        FileOutputStream out = null;
         try {
-//            out = context.openFileOutput("logs.csv", Context.MODE_PRIVATE);
-//            out.write((data.toString()).getBytes());
-//            out.close();
-//            out.flush();
 
-
-            File fileLocation = new File(context.getFilesDir(), "logs.csv");
+            File fileLocation = new File(context.getFilesDir(), FILE_NAME);
             Uri path = FileProvider.getUriForFile(context, "in.mobiux.android.orca50scanner.fileprovider", fileLocation);
             Intent fileIntent = new Intent(Intent.ACTION_SEND);
             fileIntent.setType("text/csv");
@@ -86,11 +85,56 @@ public class AppLogger {
         if (ContextCompat.checkSelfPermission(context, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED)
             return;
         try {
-            out = context.openFileOutput("logs.csv", Context.MODE_APPEND);
+            out = context.openFileOutput(FILE_NAME, Context.MODE_APPEND);
             out.write(s.getBytes());
             out.close();
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    public void clearLogs() {
+        if (context == null) {
+            return;
+        }
+
+        if (ContextCompat.checkSelfPermission(context, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+            return;
+        }
+
+        try {
+            File fileLocation = new File(context.getFilesDir(), FILE_NAME);
+
+            if (fileLocation.exists()) {
+                fileLocation.delete();
+            }
+
+            Log.i(TAG, "log file deleted");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+
+    public File getLogFile(Context context) {
+//        must check storage permission before calling this method
+
+        if (ContextCompat.checkSelfPermission(context, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+
+            return null;
+        }
+
+        try {
+
+            File fileLocation = new File(context.getFilesDir(), FILE_NAME);
+            Uri path = FileProvider.getUriForFile(context, "in.mobiux.android.orca50scanner.fileprovider", fileLocation);
+
+            return fileLocation;
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return null;
     }
 }

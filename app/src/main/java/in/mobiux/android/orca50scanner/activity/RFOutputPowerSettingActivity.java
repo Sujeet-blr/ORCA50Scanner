@@ -52,9 +52,16 @@ public class RFOutputPowerSettingActivity extends BaseActivity {
                 if (edtRSSI.getText().length() > 0) {
                     rssiValue = edtRSSI.getText().toString();
                     if (TextUtils.isDigitsOnly(rssiValue)) {
-                        session.setValue("rssi", rssiValue);
-                        app.setOutputPower(session.getValue("rssi"));
-                        showDialog("RF Power Output set successfully");
+
+                        int value = Integer.parseInt(rssiValue);
+
+                        if (value >= 3 && value <= 30) {
+                            session.setValue("rssi", rssiValue);
+                            app.setOutputPower(session.getValue("rssi"));
+                            showDialog("RF Power Output set to " + value + " dBm");
+                        } else {
+                            edtRSSI.setError("valid range is 3dBm to 30dBm");
+                        }
                     } else {
                         showToast("Invalid value");
                     }
