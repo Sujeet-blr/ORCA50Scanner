@@ -12,6 +12,7 @@
     <string name="label_data_sync">Data Sync &amp; Settings</string>
     <string name="label_locate_asset">Locate Asset</string>
     <string name="label_about_us">About Us</string>
+    <string name="label_license">License Information</string>
     <string name="start_scan">Start Scan</string>
     <string name="stop_scan">Stop Scan</string>
     <string name="scanning">Scanning in progress</string>
@@ -19,19 +20,20 @@
     <string name="rssi_unit">dBm</string>
 
     <string name="about_us_content">"Sensing Objects powered by Footprints is a suite of innovative solutions to address requirements for traceability of products, assets and processes that are essential for business operations in areas such as within inventory management, manufacturing process management, service and maintenance management and logistic processes. \n
-        \n\nThe portfolio of solutions is brought to you by RFIDdirect Limited and Hito IT Solutions L.L.C.
-        \n\nRFIDdirect Limited is a specialist supplier of RFID technology within the European market and operates as a Hardware, Software, Consumables and Bureau Service provider to Industrial, Logistics and Retail customers.
+        \nThe portfolio of solutions is brought to you by RFIDdirect Limited and Hito IT Solutions L.L.C.
+        \nRFIDdirect Limited is a specialist supplier of RFID technology within the European market and operates as a Hardware, Software, Consumables and Bureau Service provider to Industrial, Logistics and Retail customers.
         \n\nHito IT Solutions L.L.C. is an innovative software solutions provider developing and offering cutting edge technology solutions supporting tracking and traceability requirements of Industrial, Logistics and Retail customers.
         \n\nPlease visit www.sensingobjects.tech to know more.
-        \n\n\n\nLicense Information:
-        \n\nThis application is supplied to St. George University of London by RFIDdirect Limited. For detailed terms and conditions for this license, please contact
+        </string>
+
+    <string name="license_content">"This application is supplied to St. George University of London by RFIDdirect Limited. For detailed terms and conditions for this license, please contact
         \n\nFrits van Calker
-        \nfvc@rfiddirect.eu
+        fvc@rfiddirect.eu
         \nRFIDdirect Limited
-        \nBromfield Commercial Park, Stephen Gray Road, Unit 1, Office 8, Mold, Flintshire, CH7 1HE. United Kingdom
+        Bromfield Commercial Park, Stephen Gray Road, Unit 1, Office 8, Mold, Flintshire, CH7 1HE. United Kingdom
         \nTel.:
-        \n+44 (0)845 249 0068
-        \n+44 (0)1352 752044"</string>
+        +44 (0)845 249 0068
+        +44 (0)1352 752044"</string>
 
     <string-array name="dummmy_spinner">
         <item>item1</item>

@@ -99,7 +99,8 @@ public class DataSyncSettingActivity extends BaseActivity {
         cardLicense.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(app, getResources().getString(R.string.not_implemented), Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(app, LicenseActivity.class);
+                startActivity(intent);
             }
         });
 

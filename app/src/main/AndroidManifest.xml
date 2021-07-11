@@ -35,7 +35,8 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.AppTheme.NoActionBar"
         android:usesCleartextTraffic="true">
-        <activity android:name=".activity.AboutUsActivity"></activity>
+        <activity android:name=".activity.LicenseActivity"></activity>
+        <activity android:name=".activity.AboutUsActivity" />
         <activity android:name=".activity.SampleActivity" />
         <activity android:name=".activity.SystemLogsManagementActivity" />
         <activity android:name=".activity.BuzzerSettingActivity" />
