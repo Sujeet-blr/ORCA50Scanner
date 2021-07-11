@@ -16,6 +16,7 @@ import android.widget.Toast;
 
 import com.google.gson.Gson;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -28,6 +29,7 @@ import in.mobiux.android.orca50scanner.api.Presenter;
 import in.mobiux.android.orca50scanner.api.model.AssetHistory;
 import in.mobiux.android.orca50scanner.api.model.Inventory;
 import in.mobiux.android.orca50scanner.api.model.Laboratory;
+import in.mobiux.android.orca50scanner.util.AppUtils;
 import in.mobiux.android.orca50scanner.viewmodel.InventoryViewModel;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -126,8 +128,6 @@ public class DataSyncSettingActivity extends BaseActivity {
 
     private void sync(List<Inventory> list) {
 
-        String synSetting = session.getValue(SystemLogsManagementActivity.KEY_RADIO);
-
         logger.i(TAG, "Syncing with Server");
         progressDialog.setMessage("Syncing with Server");
         progressDialog.setIndeterminate(true);
@@ -161,15 +161,9 @@ public class DataSyncSettingActivity extends BaseActivity {
             updateAsset(laboratories.get(0));
         } else {
             Presenter.INSTANCE.pullLatestData();
+            processLogs();
         }
 
-        if (synSetting.equals("0")) {
-//            send to server then clear device
-            logger.clearLogs();
-        } else if (synSetting.equals("1")) {
-//            clear from device only
-            logger.clearLogs();
-        }
     }
 
 
@@ -194,6 +188,7 @@ public class DataSyncSettingActivity extends BaseActivity {
                         viewModel.clearHistory();
                         Presenter.INSTANCE.pullLatestData();
                         progressDialog.dismiss();
+                        processLogs();
                     }
                 } else {
                     logger.e(TAG, "" + response.message());
@@ -207,5 +202,44 @@ public class DataSyncSettingActivity extends BaseActivity {
                 logger.e(TAG, "" + t.getLocalizedMessage());
             }
         });
+    }
+
+    private void sendLogsToServer(File logFile) {
+
+        ApiClient.getApiService().uploadLogs(session.token(), AppUtils.convertFileToRequestBody(logFile)).enqueue(new Callback<String>() {
+            @Override
+            public void onResponse(Call<String> call, Response<String> response) {
+                if (response.isSuccessful()) {
+                    logger.clearLogs();
+                    showToast("Clear logs");
+                } else {
+                    showToast("logs upload failed");
+                }
+            }
+
+            @Override
+            public void onFailure(Call<String> call, Throwable t) {
+                showToast("something went wrong");
+            }
+        });
+    }
+
+    //    process the logs according to logs settingsA
+    private void processLogs() {
+
+        String synSetting = session.getValue(SystemLogsManagementActivity.KEY_RADIO);
+
+        if (synSetting.isEmpty() || synSetting.equals("0")) {
+//            send to server then clear device
+            File logFile = logger.getLogFile(app);
+            if (logFile != null) {
+                sendLogsToServer(logger.getLogFile(app));
+            } else {
+                showToast("logs not found");
+            }
+        } else if (synSetting.equals("1")) {
+//            clear from device only
+            logger.clearLogs();
+        }
     }
 }

@@ -19,7 +19,6 @@ public class SplashActivity extends BaseActivity {
         getSupportActionBar().hide();
 
 
-
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
@@ -28,8 +27,9 @@ public class SplashActivity extends BaseActivity {
                     startActivity(new Intent(app, LoginActivity.class));
                 } else {
 
-                    Intent intent = new Intent(getApplicationContext(), HomeActivity.class);
+//                    Intent intent = new Intent(getApplicationContext(), HomeActivity.class);
 //                    Intent intent = new Intent(getApplicationContext(), RFIDActivity.class);
+                    Intent intent = new Intent(getApplicationContext(), SampleActivity.class);
                     startActivity(intent);
                 }
                 finish();

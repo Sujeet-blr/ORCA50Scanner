@@ -75,50 +75,50 @@ public class SystemLogsManagementActivity extends BaseActivity {
         });
     }
 
-    private void sendLogsToServerDialog() {
-
-        AlertDialog.Builder builder = new MaterialAlertDialogBuilder(SystemLogsManagementActivity.this);
-        builder.setMessage("Are you sure ? You want to send logs & clear logs from device ?");
-
-        builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
-                dialogInterface.dismiss();
-                logger.clearLogs();
-            }
-        });
-
-        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
-                dialogInterface.dismiss();
-            }
-        });
-
-        builder.show();
-
-    }
-
-    private void clearLogsDialog() {
-
-        AlertDialog.Builder builder = new MaterialAlertDialogBuilder(SystemLogsManagementActivity.this);
-        builder.setMessage("Are you sure ? You want to clear device logs ?");
-
-        builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
-                dialogInterface.dismiss();
-                logger.clearLogs();
-            }
-        });
-
-        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
-                dialogInterface.dismiss();
-            }
-        });
-
-        builder.show();
-    }
+//    private void sendLogsToServerDialog() {
+//
+//        AlertDialog.Builder builder = new MaterialAlertDialogBuilder(SystemLogsManagementActivity.this);
+//        builder.setMessage("Are you sure ? You want to send logs & clear logs from device ?");
+//
+//        builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+//            @Override
+//            public void onClick(DialogInterface dialogInterface, int i) {
+//                dialogInterface.dismiss();
+//                logger.clearLogs();
+//            }
+//        });
+//
+//        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+//            @Override
+//            public void onClick(DialogInterface dialogInterface, int i) {
+//                dialogInterface.dismiss();
+//            }
+//        });
+//
+//        builder.show();
+//
+//    }
+//
+//    private void clearLogsDialog() {
+//
+//        AlertDialog.Builder builder = new MaterialAlertDialogBuilder(SystemLogsManagementActivity.this);
+//        builder.setMessage("Are you sure ? You want to clear device logs ?");
+//
+//        builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+//            @Override
+//            public void onClick(DialogInterface dialogInterface, int i) {
+//                dialogInterface.dismiss();
+//                logger.clearLogs();
+//            }
+//        });
+//
+//        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+//            @Override
+//            public void onClick(DialogInterface dialogInterface, int i) {
+//                dialogInterface.dismiss();
+//            }
+//        });
+//
+//        builder.show();
+//    }
 }

@@ -37,8 +37,8 @@ public class LoginActivity extends BaseActivity {
 
 //        TODO
 //        if (BuildConfig.DEBUG) {
-            edtEmail.setText("adminsguldemo@footprints.com");
-            edtPassword.setText("vida@123");
+        edtEmail.setText("adminsguldemo@footprints.com");
+        edtPassword.setText("vida@123");
 //        }
 
         btnLogin.setOnClickListener(new View.OnClickListener() {
@@ -60,6 +60,7 @@ public class LoginActivity extends BaseActivity {
             @Override
             public void onResponse(Call<User> call, Response<User> response) {
                 if (response.isSuccessful()) {
+                    logger.i(TAG, "Login Success " + user.getEmail());
                     User us = response.body();
                     session.setUser(us);
                     session.saveToken(us.getToken());

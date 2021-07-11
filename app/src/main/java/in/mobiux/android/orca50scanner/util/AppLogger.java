@@ -17,6 +17,9 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 
+import okhttp3.MediaType;
+import okhttp3.RequestBody;
+
 /**
  * Created by SUJEET KUMAR on 10-Mar-21.
  */
@@ -43,7 +46,7 @@ public class AppLogger {
     }
 
     public synchronized void i(String tag, String msg) {
-        Log.i(tag, msg);
+//        Log.i(tag, msg);
         data = new StringBuilder(("\n" + tag + "\t, " + msg + "\t," + String.valueOf(AppUtils.getFormattedTimestamp())));
         appendToLogs(data.toString());
     }
@@ -105,8 +108,33 @@ public class AppLogger {
             if (fileLocation.exists()) {
                 fileLocation.delete();
             }
-        }catch (Exception e){
+
+            Log.i(TAG, "log file deleted");
+        } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+
+    public File getLogFile(Context context) {
+//        must check storage permission before calling this method
+
+        if (ContextCompat.checkSelfPermission(context, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+
+            return null;
+        }
+
+        try {
+
+            File fileLocation = new File(context.getFilesDir(), FILE_NAME);
+            Uri path = FileProvider.getUriForFile(context, "in.mobiux.android.orca50scanner.fileprovider", fileLocation);
+
+            return fileLocation;
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return null;
     }
 }

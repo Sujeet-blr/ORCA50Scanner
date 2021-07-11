@@ -58,7 +58,7 @@ public class RFOutputPowerSettingActivity extends BaseActivity {
                         if (value >= 3 && value <= 30) {
                             session.setValue("rssi", rssiValue);
                             app.setOutputPower(session.getValue("rssi"));
-                            showDialog("RF Output Power set to " + value + " dBm");
+                            showDialog("RF Power Output set to " + value + " dBm");
                         } else {
                             edtRSSI.setError("valid range is 3dBm to 30dBm");
                         }

@@ -67,6 +67,8 @@ public class BaseActivity extends AppCompatActivity {
         app.addActivity(this);
         TAG = this.getClass().getCanonicalName();
         registerVirtualKeyListener();
+
+        logger.i(TAG, "created Activity : " + this.getClass().getCanonicalName());
     }
 
     @Override
@@ -150,7 +152,6 @@ public class BaseActivity extends AppCompatActivity {
             e.printStackTrace();
         }
     }
-
 
 
     @Override

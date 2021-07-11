@@ -10,7 +10,6 @@ public class Endpoints {
     public static final String ASSETS = "assets/?rfid=True";
     public static final String UPDATE_ASSETS = "assets/device-scan/";
 
-    public static final String ASSET_DETAILS = "assets/details/{assetId}/";
-    public static final String ASSETS_OF_DEPARTMENT = "assets/";
+    public static final String LOGS = "tracking/device-log/";
 
 }
