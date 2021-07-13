@@ -358,6 +358,13 @@ public class MyApplication extends Application {
         activities.add(activity);
     }
 
+    public void clearAllActivity() {
+        for (BaseActivity activity : activities) {
+            activity.finish();
+        }
+    }
+
+
     private void initTimer() {
         timer.schedule(new TimerTask() {
             @Override

@@ -90,7 +90,6 @@ public class DataSyncSettingActivity extends BaseActivity {
         cardSettings.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-//                Toast.makeText(app, "Not Implemented", Toast.LENGTH_SHORT).show();
                 Intent intent = new Intent(app, DeviceSettingsActivity.class);
                 startActivity(intent);
             }
@@ -117,6 +116,7 @@ public class DataSyncSettingActivity extends BaseActivity {
             public void onSync(boolean status, List<Inventory> list) {
                 if (status) {
                     progressDialog.dismiss();
+                    processLogs();
                 }
             }
         });
@@ -197,6 +197,7 @@ public class DataSyncSettingActivity extends BaseActivity {
             @Override
             public void onFailure(Call<Laboratory> call, Throwable t) {
                 logger.e(TAG, "" + t.getLocalizedMessage());
+                progressDialog.dismiss();
             }
         });
     }

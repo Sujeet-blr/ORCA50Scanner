@@ -69,6 +69,11 @@ public class BaseActivity extends AppCompatActivity {
         registerVirtualKeyListener();
 
         logger.i(TAG, "created Activity : " + this.getClass().getCanonicalName());
+
+//        if (!session.hasCredentials() && !(this instanceof LoginActivity)) {
+//            Intent intent = new Intent(app, LoginActivity.class);
+//            startActivity(intent);
+//        }
     }
 
     @Override
