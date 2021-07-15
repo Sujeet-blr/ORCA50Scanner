@@ -5,6 +5,7 @@ import java.util.List;
 import in.mobiux.android.orca50scanner.api.model.AssetResponse;
 import in.mobiux.android.orca50scanner.api.model.DepartmentResponse;
 import in.mobiux.android.orca50scanner.api.model.Laboratory;
+import in.mobiux.android.orca50scanner.api.model.SyncPayload;
 import in.mobiux.android.orca50scanner.api.model.User;
 import okhttp3.MultipartBody;
 import retrofit2.Call;
@@ -38,4 +39,7 @@ public interface ApiService {
     @Multipart
     @POST(Endpoints.LOGS)
     Call<String> uploadLogs(@Header("Authorization") String token, @Part MultipartBody.Part file);
+
+    @POST(Endpoints.UPDATE_ASSETS_NEW)
+    Call<SyncPayload> updateAssetsNew(@Header("Authentication") String token, @Body SyncPayload syncPayload);
 }

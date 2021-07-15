@@ -26,6 +26,8 @@ import in.mobiux.android.orca50scanner.api.Presenter;
 import in.mobiux.android.orca50scanner.api.model.AssetHistory;
 import in.mobiux.android.orca50scanner.api.model.Inventory;
 import in.mobiux.android.orca50scanner.api.model.Laboratory;
+import in.mobiux.android.orca50scanner.core.DataSyncListener;
+import in.mobiux.android.orca50scanner.core.ServerClient;
 import in.mobiux.android.orca50scanner.util.AppUtils;
 import in.mobiux.android.orca50scanner.viewmodel.InventoryViewModel;
 import retrofit2.Call;
@@ -43,6 +45,8 @@ public class DeviceSettingsActivity extends BaseActivity {
     private List<AssetHistory> histories = new ArrayList<>();
 
     private InventoryViewModel viewModel;
+    private ServerClient serverClient;
+    private int requestCode = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,6 +63,32 @@ public class DeviceSettingsActivity extends BaseActivity {
         cardBuzzer.setVisibility(View.GONE);
 
         tvAppVersion.setText("version " + BuildConfig.VERSION_NAME);
+
+        serverClient = ServerClient.getInstance(getApplicationContext());
+        serverClient.setOnSyncListener(DeviceSettingsActivity.this, new DataSyncListener() {
+            @Override
+            public void onSyncSuccess() {
+                showToast("Sync Success");
+                progressDialog.dismiss();
+
+                if (requestCode == 401) {
+                    app.clearAllActivity();
+                    processLogs();
+                    session.logout();
+
+                    Intent intent = new Intent(app, LoginActivity.class);
+                    startActivity(intent);
+
+                    requestCode = 0;
+                }
+            }
+
+            @Override
+            public void onSyncFailed() {
+                showToast("Sync Failed");
+                progressDialog.dismiss();
+            }
+        });
 
 
         progressDialog = new ProgressDialog(DeviceSettingsActivity.this);
@@ -122,7 +152,15 @@ public class DeviceSettingsActivity extends BaseActivity {
         cardLogout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                sync(inventories);
+//                sync(inventories);
+
+                logger.i(TAG, "Syncing with Server");
+                progressDialog.setMessage("Syncing with Server");
+                progressDialog.setIndeterminate(true);
+                progressDialog.show();
+
+                serverClient.sync(DeviceSettingsActivity.this);
+
             }
         });
 

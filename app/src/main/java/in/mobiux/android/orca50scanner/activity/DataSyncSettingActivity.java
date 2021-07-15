@@ -29,6 +29,8 @@ import in.mobiux.android.orca50scanner.api.Presenter;
 import in.mobiux.android.orca50scanner.api.model.AssetHistory;
 import in.mobiux.android.orca50scanner.api.model.Inventory;
 import in.mobiux.android.orca50scanner.api.model.Laboratory;
+import in.mobiux.android.orca50scanner.core.DataSyncListener;
+import in.mobiux.android.orca50scanner.core.ServerClient;
 import in.mobiux.android.orca50scanner.util.AppUtils;
 import in.mobiux.android.orca50scanner.viewmodel.InventoryViewModel;
 import retrofit2.Call;
@@ -46,6 +48,7 @@ public class DataSyncSettingActivity extends BaseActivity {
     private List<AssetHistory> histories = new ArrayList<>();
 
     private InventoryViewModel viewModel;
+    private ServerClient serverClient;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,6 +62,22 @@ public class DataSyncSettingActivity extends BaseActivity {
         cardSettings = findViewById(R.id.cardSettings);
         cardLicense = findViewById(R.id.cardLicense);
         cardAbout = findViewById(R.id.cardAbout);
+
+        serverClient = ServerClient.getInstance(getApplicationContext());
+        serverClient.setOnSyncListener(DataSyncSettingActivity.this, new DataSyncListener() {
+            @Override
+            public void onSyncSuccess() {
+                showToast("Sync Success");
+                progressDialog.dismiss();
+            }
+
+            @Override
+            public void onSyncFailed() {
+                showToast("Sync Failed");
+                progressDialog.dismiss();
+            }
+        });
+
 
         progressDialog = new ProgressDialog(DataSyncSettingActivity.this);
         viewModel = new ViewModelProvider(this).get(InventoryViewModel.class);
@@ -83,7 +102,13 @@ public class DataSyncSettingActivity extends BaseActivity {
         cardSync.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                sync(inventories);
+//                sync(inventories);
+
+                logger.i(TAG, "Syncing with Server");
+                progressDialog.setMessage("Syncing with Server");
+                progressDialog.setIndeterminate(true);
+                progressDialog.show();
+                serverClient.sync(DataSyncSettingActivity.this);
             }
         });
 
