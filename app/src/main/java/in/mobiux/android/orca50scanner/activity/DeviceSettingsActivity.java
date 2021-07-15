@@ -68,6 +68,7 @@ public class DeviceSettingsActivity extends BaseActivity {
         serverClient.setOnSyncListener(DeviceSettingsActivity.this, new DataSyncListener() {
             @Override
             public void onSyncSuccess() {
+                logger.i(TAG, "sync success");
                 showToast("Sync Success");
                 progressDialog.dismiss();
 
@@ -85,6 +86,7 @@ public class DeviceSettingsActivity extends BaseActivity {
 
             @Override
             public void onSyncFailed() {
+                logger.i(TAG, "sync failed");
                 showToast("Sync Failed");
                 progressDialog.dismiss();
             }

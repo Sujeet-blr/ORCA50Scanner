@@ -75,11 +75,11 @@ public class ServerClient {
 
         viewModel.getHistories().observe(activity, new Observer<List<AssetHistory>>() {
             @Override
-            public void onChanged(List<AssetHistory> histories) {
-                logger.i(TAG, "history size " + histories.size());
+            public void onChanged(List<AssetHistory> list) {
+                logger.i(TAG, "history size " + list.size());
 
                 histories.clear();
-                histories.addAll(histories);
+                histories.addAll(list);
             }
         });
     }
@@ -87,7 +87,13 @@ public class ServerClient {
     public void sync(BaseActivity activity) {
         this.activity = activity;
 
+        logger.i(TAG, "history size is " + histories.size());
         if (histories.size() > 0) {
+
+            for (AssetHistory history : histories) {
+                history.setTime(history.getUpdateTimeIntervalInSeconds());
+            }
+
             SyncPayload payload = new SyncPayload();
             payload.setHistories(histories);
             updateAssetNew(payload);
@@ -96,11 +102,9 @@ public class ServerClient {
         }
     }
 
-    private List<Laboratory> laboratories = new ArrayList<>();
-
     private void updateAssetNew(SyncPayload payload) {
 
-        ApiClient.getApiService().updateAssetsNew(app.session.token(), payload).enqueue(new Callback<SyncPayload>() {
+        ApiClient.getApiService().updateAssetsNew(app.session.rawToken(), payload).enqueue(new Callback<SyncPayload>() {
             @Override
             public void onResponse(Call<SyncPayload> call, Response<SyncPayload> response) {
                 if (response.isSuccessful()) {

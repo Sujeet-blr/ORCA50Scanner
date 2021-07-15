@@ -28,6 +28,7 @@ import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import in.mobiux.android.orca50scanner.BuildConfig;
 import in.mobiux.android.orca50scanner.R;
 import in.mobiux.android.orca50scanner.api.model.Inventory;
 import in.mobiux.android.orca50scanner.util.DeviceConnector;
@@ -68,12 +69,16 @@ public class LocateAssetActivity extends BaseActivity implements RFIDReaderListe
 
         connector = app.connector;
 
-        if (!connector.isConnected()) {
-            app.connectRFID();
-            ModuleManager.newInstance().setUHFStatus(true);
+        if (BuildConfig.DEBUG) {
+
         } else {
-            ModuleManager.newInstance().setUHFStatus(true);
-            logger.i(TAG, "connected");
+            if (!connector.isConnected()) {
+                app.connectRFID();
+                ModuleManager.newInstance().setUHFStatus(true);
+            } else {
+                ModuleManager.newInstance().setUHFStatus(true);
+                logger.i(TAG, "connected");
+            }
         }
 
         viewModel = new ViewModelProvider(this).get(InventoryViewModel.class);
@@ -135,7 +140,8 @@ public class LocateAssetActivity extends BaseActivity implements RFIDReaderListe
         app.setOnRFIDListener(this);
 
         try {
-            ModuleManager.newInstance().setUHFStatus(true);
+            if (!BuildConfig.DEBUG)
+                ModuleManager.newInstance().setUHFStatus(true);
         } catch (Exception e) {
             logger.e(TAG, "" + e.getLocalizedMessage());
         }

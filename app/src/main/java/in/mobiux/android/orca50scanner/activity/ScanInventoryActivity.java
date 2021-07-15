@@ -23,6 +23,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import in.mobiux.android.orca50scanner.BuildConfig;
 import in.mobiux.android.orca50scanner.R;
 import in.mobiux.android.orca50scanner.adapter.InventoryAdapter;
 import in.mobiux.android.orca50scanner.api.model.AssetHistory;
@@ -75,11 +76,15 @@ public class ScanInventoryActivity extends BaseActivity implements View.OnClickL
             finish();
         }
 
-        if (app.connector.isConnected()) {
-            logger.i(TAG, "Connected");
-            ModuleManager.newInstance().setUHFStatus(true);
-        } else {
-            app.connectRFID();
+        if (BuildConfig.DEBUG){
+
+        }else {
+            if (app.connector.isConnected()) {
+                logger.i(TAG, "Connected");
+                ModuleManager.newInstance().setUHFStatus(true);
+            } else {
+                app.connectRFID();
+            }
         }
 
         viewModel = new ViewModelProvider(this).get(InventoryViewModel.class);

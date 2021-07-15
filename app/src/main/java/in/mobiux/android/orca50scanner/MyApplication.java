@@ -96,6 +96,10 @@ public class MyApplication extends Application {
 
         initTimer();
         scanningEndPoint = scanningEndPoint + scanningInterval;
+
+        if (BuildConfig.DEBUG) {
+            activateSimulator();
+        }
     }
 
     private RXTXListener rxtxListener = new RXTXListener() {
@@ -223,6 +227,10 @@ public class MyApplication extends Application {
 
     public void connectRFID() {
 
+        if (BuildConfig.DEBUG) {
+            return;
+        }
+
         try {
             if (connector.connectCom(DeviceConnector.PORT, DeviceConnector.BOUD_RATE)) {
                 logger.i(TAG, "CONNECTION SUCCESS");
@@ -270,6 +278,11 @@ public class MyApplication extends Application {
     }
 
     public void reconnectRFID() {
+
+        if (BuildConfig.DEBUG) {
+            return;
+        }
+
         logger.i(TAG, "reconnecting rfid");
         if (connector.isConnected() && rfidReaderHelper != null) {
             rfidReaderHelper.startWith();
@@ -388,5 +401,65 @@ public class MyApplication extends Application {
                 }
             }
         }, 1000, 1000);
+    }
+
+    private void activateSimulator() {
+
+        Timer timer = new Timer();
+        timer.schedule(new TimerTask() {
+            @Override
+            public void run() {
+
+                if (listener != null && session.hasCredentials()) {
+
+                    mHandler.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            listener.onConnection(true);
+                            listener.onScanningStatus(true);
+                        }
+                    });
+                    try {
+                        Thread.sleep(2000);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+
+                    mHandler.post(new Runnable() {
+                        @Override
+                        public void run() {
+
+                            Inventory inventory = new Inventory();
+                            inventory.setEpc("AA000004");
+                            inventory.setRssi("10");
+
+                            listener.onInventoryTag(inventory);
+
+                        }
+                    });
+
+
+                    try {
+                        Thread.sleep(500);
+
+                        RXInventoryTag.RXInventoryTagEnd tagEnd = new RXInventoryTag.RXInventoryTagEnd();
+                        tagEnd.mReadRate = 33;
+                        tagEnd.mTotalRead = 44;
+                        tagEnd.mTagCount = 55;
+
+                        mHandler.post(new Runnable() {
+                            @Override
+                            public void run() {
+                                listener.onScanningStatus(false);
+                                listener.onInventoryTagEnd(tagEnd);
+                            }
+                        });
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+        }, 30000, 30000);
+
     }
 }

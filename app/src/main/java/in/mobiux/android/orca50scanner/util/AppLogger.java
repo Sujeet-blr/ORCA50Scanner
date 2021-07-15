@@ -17,6 +17,7 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 
+import in.mobiux.android.orca50scanner.BuildConfig;
 import okhttp3.MediaType;
 import okhttp3.RequestBody;
 
@@ -46,7 +47,9 @@ public class AppLogger {
     }
 
     public synchronized void i(String tag, String msg) {
-//        Log.i(tag, msg);
+        if (BuildConfig.DEBUG){
+            Log.i(tag, msg);
+        }
         data = new StringBuilder(("\n" + tag + "\t, " + msg + "\t," + String.valueOf(AppUtils.getFormattedTimestamp())));
         appendToLogs(data.toString());
     }
