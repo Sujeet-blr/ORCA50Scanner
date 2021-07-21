@@ -25,6 +25,7 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 import in.mobiux.android.orca50scanner.activity.BaseActivity;
+import in.mobiux.android.orca50scanner.activity.LoginActivity;
 import in.mobiux.android.orca50scanner.api.ApiClient;
 import in.mobiux.android.orca50scanner.api.Presenter;
 import in.mobiux.android.orca50scanner.api.model.AssetResponse;
@@ -348,8 +349,13 @@ public class MyApplication extends Application {
     public void onTerminate() {
         super.onTerminate();
 
-        ModuleManager.newInstance().setUHFStatus(false);
-        ModuleManager.newInstance().release();
+        try {
+            ModuleManager.newInstance().setUHFStatus(false);
+            ModuleManager.newInstance().release();
+        } catch (Exception e) {
+            e.printStackTrace();
+            logger.e(TAG, "" + e.getLocalizedMessage());
+        }
 
         if (observerRegistrationStatus) {
             rfidReaderHelper.unRegisterObserver(rxObserver);
@@ -374,6 +380,14 @@ public class MyApplication extends Application {
     public void clearAllActivity() {
         for (BaseActivity activity : activities) {
             activity.finish();
+        }
+    }
+
+    public void clearStackOnSignOut() {
+        for (BaseActivity activity : activities) {
+            if (!(activity instanceof LoginActivity)) {
+                activity.finish();
+            }
         }
     }
 

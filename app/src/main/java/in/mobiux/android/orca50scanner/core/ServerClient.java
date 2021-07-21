@@ -249,7 +249,7 @@ public class ServerClient {
         });
     }
 
-    //    process the logs according to logs settingsA
+    //    process the logs according to logs settings
     private void processLogs() {
 
         String synSetting = session.getValue(SystemLogsManagementActivity.KEY_RADIO);

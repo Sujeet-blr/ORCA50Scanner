@@ -51,7 +51,7 @@ public class HomeActivity extends BaseActivity implements View.OnClickListener {
 
         if (session.hasCredentials()) {
             User user = session.getUser();
-            tvLoginAs.setText("You are logged in as : "+user.getFirstName() + " " + user.getLastName());
+            tvLoginAs.setText("You are logged in as : " + user.getFirstName() + " " + user.getLastName());
         }
 
         viewModel = new ViewModelProvider(this).get(InventoryViewModel.class);
@@ -73,6 +73,16 @@ public class HomeActivity extends BaseActivity implements View.OnClickListener {
             app.connectRFID();
         } catch (Exception e) {
             logger.e(TAG, "" + e.getLocalizedMessage());
+        }
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+
+        if (!session.hasCredentials()) {
+            Intent intent = new Intent(app, LoginActivity.class);
+            startActivity(intent);
         }
     }
 

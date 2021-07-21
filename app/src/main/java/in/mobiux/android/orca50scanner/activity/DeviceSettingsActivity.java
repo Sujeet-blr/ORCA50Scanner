@@ -73,7 +73,8 @@ public class DeviceSettingsActivity extends BaseActivity {
                 progressDialog.dismiss();
 
                 if (requestCode == 401) {
-                    app.clearAllActivity();
+//                    app.clearStackOnSignOut();
+                    finish();
                     processLogs();
                     session.logout();
 
@@ -161,6 +162,8 @@ public class DeviceSettingsActivity extends BaseActivity {
                 progressDialog.setIndeterminate(true);
                 progressDialog.show();
 
+                requestCode = 401;
+
                 serverClient.sync(DeviceSettingsActivity.this);
 
             }
@@ -172,6 +175,7 @@ public class DeviceSettingsActivity extends BaseActivity {
                 if (status) {
                     progressDialog.dismiss();
                     app.clearAllActivity();
+                    finish();
                     processLogs();
                     session.logout();
 

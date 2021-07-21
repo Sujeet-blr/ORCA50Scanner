@@ -70,15 +70,15 @@ public class ScanInventoryActivity extends BaseActivity implements View.OnClickL
         laboratory = (DepartmentResponse.Child) getIntent().getSerializableExtra("laboratory");
         if (laboratory != null) {
             setTitle("You are in " + laboratory.getName());
-            logger.i(TAG, "lab selected " + laboratory.getName());
+            logger.i(TAG, "lab selected " + laboratory.getName() + "\t" + laboratory.getId());
         } else {
             Toast.makeText(app, "Lab not selected", Toast.LENGTH_SHORT).show();
             finish();
         }
 
-        if (BuildConfig.DEBUG){
+        if (BuildConfig.DEBUG) {
 
-        }else {
+        } else {
             if (app.connector.isConnected()) {
                 logger.i(TAG, "Connected");
                 ModuleManager.newInstance().setUHFStatus(true);
@@ -87,21 +87,30 @@ public class ScanInventoryActivity extends BaseActivity implements View.OnClickL
             }
         }
 
+        adapter = new InventoryAdapter(ScanInventoryActivity.this, scannedInventories);
+        recyclerView.setAdapter(adapter);
+        tvCount.setText(adapter.getItemCount() + " Pcs");
+
         viewModel = new ViewModelProvider(this).get(InventoryViewModel.class);
         viewModel.getAllInventory().observe(this, new Observer<List<Inventory>>() {
             @Override
             public void onChanged(List<Inventory> list) {
                 for (Inventory inventory : list) {
+                    logger.i(TAG, "lab id " + inventory.getLabId());
                     inventories.put(inventory.getEpc(), inventory);
+
+                    if (laboratory.getId() == inventory.getLabId()) {
+                        scannedInventories.add(inventory);
+                    }
                 }
 
+
+//                scannedInventories.addAll(inventories.values());
+                tvCount.setText(adapter.getItemCount() + " Pcs");
+                adapter.notifyDataSetChanged();
                 logger.i(TAG, "list fetched" + inventories.size());
             }
         });
-
-        adapter = new InventoryAdapter(ScanInventoryActivity.this, scannedInventories);
-        recyclerView.setAdapter(adapter);
-        tvCount.setText(adapter.getItemCount() + " Pcs");
     }
 
     @Override
@@ -151,13 +160,16 @@ public class ScanInventoryActivity extends BaseActivity implements View.OnClickL
 
         Inventory matchingAsset = inventories.get(inventory.getFormattedEPC());
         if (matchingAsset != null) {
+            logger.i(TAG, "Matching found");
             matchingAsset.setRssi(inventory.getRssi());
 
             Inventory m = AppUtils.getMatchingInventory(inventory.getEpc(), scannedInventories);
             if (m != null) {
                 logger.i(TAG, "existing in Scanned list " + m.getEpc());
                 m.setRssi(inventory.getRssi());
+                m.setScanStatus(true);
             } else {
+                matchingAsset.setScanStatus(true);
                 scannedInventories.add(matchingAsset);
                 logger.i(TAG, "added to scanned list " + inventory.getEpc());
             }
@@ -183,7 +195,7 @@ public class ScanInventoryActivity extends BaseActivity implements View.OnClickL
 
     @Override
     public void onInventoryTagEnd(RXInventoryTag.RXInventoryTagEnd tagEnd) {
-        logger.i(TAG, "" + tagEnd.mTagCount);
+        logger.i(TAG, "Tag count " + tagEnd.mTagCount);
     }
 
     @Override

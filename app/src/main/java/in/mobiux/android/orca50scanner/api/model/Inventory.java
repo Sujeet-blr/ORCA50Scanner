@@ -69,6 +69,9 @@ public class Inventory extends RXInventoryTag implements Serializable {
     @SerializedName("updatedAt")
     @Expose
     private long updatedAt = System.currentTimeMillis();
+    @SerializedName("scanStatus")
+    @Expose
+    private boolean scanStatus = false;
 
 //    @SerializedName("createdAt")
 //    @Expose
@@ -153,6 +156,14 @@ public class Inventory extends RXInventoryTag implements Serializable {
 
     public void setUpdatedAt(long updatedAt) {
         this.updatedAt = updatedAt;
+    }
+
+    public boolean isScanStatus() {
+        return scanStatus;
+    }
+
+    public void setScanStatus(boolean scanStatus) {
+        this.scanStatus = scanStatus;
     }
 
     public long getUpdateTimeIntervalInSeconds() {
