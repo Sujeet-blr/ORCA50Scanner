@@ -1,4 +1,4 @@
-package in.mobiux.android.orca50scanner.activity;
+package in.mobiux.android.orca50scanner.dev;
 
 import android.Manifest;
 import android.content.BroadcastReceiver;
@@ -8,13 +8,10 @@ import android.content.IntentFilter;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.os.Handler;
-import android.os.Message;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
@@ -23,7 +20,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.snackbar.Snackbar;
 import com.module.interaction.ModuleConnector;
-import com.module.interaction.RXTXListener;
 import com.nativec.tools.ModuleManager;
 import com.rfid.RFIDReaderHelper;
 import com.rfid.ReaderConnector;
@@ -31,20 +27,16 @@ import com.rfid.config.CMD;
 import com.rfid.rxobserver.RXObserver;
 import com.rfid.rxobserver.ReaderSetting;
 import com.rfid.rxobserver.bean.RXInventoryTag;
-import com.rfid.rxobserver.bean.RXOperationTag;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
 import java.util.Timer;
 import java.util.TimerTask;
-import java.util.UUID;
 
-import in.mobiux.android.orca50scanner.BuildConfig;
 import in.mobiux.android.orca50scanner.MyApplication;
 import in.mobiux.android.orca50scanner.R;
+import in.mobiux.android.orca50scanner.activity.BaseActivity;
 import in.mobiux.android.orca50scanner.adapter.InventoryAdapter;
 import in.mobiux.android.orca50scanner.api.model.Inventory;
 import in.mobiux.android.orca50scanner.database.AppDatabase;

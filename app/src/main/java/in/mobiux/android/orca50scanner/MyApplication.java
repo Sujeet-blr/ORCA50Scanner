@@ -1,13 +1,8 @@
 package in.mobiux.android.orca50scanner;
 
-import android.app.Activity;
 import android.app.Application;
 import android.media.MediaPlayer;
 import android.os.Handler;
-import android.widget.Toast;
-
-import androidx.lifecycle.ViewModelProvider;
-import androidx.room.Room;
 
 import com.module.interaction.ModuleConnector;
 import com.module.interaction.RXTXListener;
@@ -21,14 +16,13 @@ import com.rfid.rxobserver.bean.RXInventoryTag;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 import java.util.Timer;
 import java.util.TimerTask;
 
 import in.mobiux.android.orca50scanner.activity.BaseActivity;
 import in.mobiux.android.orca50scanner.activity.LoginActivity;
-import in.mobiux.android.orca50scanner.api.ApiClient;
 import in.mobiux.android.orca50scanner.api.Presenter;
-import in.mobiux.android.orca50scanner.api.model.AssetResponse;
 import in.mobiux.android.orca50scanner.api.model.Inventory;
 import in.mobiux.android.orca50scanner.database.AppDatabase;
 import in.mobiux.android.orca50scanner.database.InventoryDatabase;
@@ -37,10 +31,6 @@ import in.mobiux.android.orca50scanner.util.AppLogger;
 import in.mobiux.android.orca50scanner.util.DeviceConnector;
 import in.mobiux.android.orca50scanner.util.RFIDReaderListener;
 import in.mobiux.android.orca50scanner.util.SessionManager;
-import in.mobiux.android.orca50scanner.viewmodel.LaboratoryViewModel;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 
 /**
  * Created by SUJEET KUMAR on 08-Mar-21.
@@ -252,7 +242,6 @@ public class MyApplication extends Application {
                     int beeperResult = -1;
                     beeperResult = rfidReaderHelper.setBeeperMode(ReaderSetting.newInstance().btReadId, (byte) 2);
                     logger.i(TAG, "beeper result value " + beeperResult);
-//                    Toast.makeText(this, "beeper value " + beeperResult, Toast.LENGTH_SHORT).show();
 
                     ReaderSetting.newInstance().btBeeperMode = ((byte) 2);
 
@@ -307,7 +296,6 @@ public class MyApplication extends Application {
             beeperResult = rfidReaderHelper.setBeeperMode(ReaderSetting.newInstance().btReadId, (byte) 2);
 
             logger.i(TAG, "beeper result rec " + beeperResult);
-//            Toast.makeText(this, "beeper result rec " + beeperResult, Toast.LENGTH_SHORT).show();
             ReaderSetting.newInstance().btBeeperMode = ((byte) 2);
 
             logger.i(TAG, "beeper result recc " + beeperResult);
@@ -419,6 +407,10 @@ public class MyApplication extends Application {
 
     private void activateSimulator() {
 
+        if (!BuildConfig.DEBUG) {
+            return;
+        }
+
         Timer timer = new Timer();
         timer.schedule(new TimerTask() {
             @Override
@@ -445,7 +437,8 @@ public class MyApplication extends Application {
 
                             Inventory inventory = new Inventory();
                             inventory.setEpc("AA000004");
-                            inventory.setRssi("10");
+                            int rssi = new Random().nextInt(99);
+                            inventory.setRssi("" + rssi);
 
                             listener.onInventoryTag(inventory);
 

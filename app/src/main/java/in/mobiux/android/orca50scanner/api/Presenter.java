@@ -56,6 +56,7 @@ public class Presenter {
                         inventory.setInventoryId(res.getId());
                         inventory.setEpc(res.getAssetId().getRfid());
                         inventory.setName(res.getName());
+                        inventory.setBarcode(res.getAssetId().getBarCode());
 
                         int labId = -1;
                         String labName = "";

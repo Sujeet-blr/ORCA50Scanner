@@ -1,22 +1,18 @@
 package in.mobiux.android.orca50scanner.core;
 
 import android.content.Context;
-import android.widget.Toast;
 
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
-import androidx.lifecycle.ViewModelStoreOwner;
 
 import java.io.File;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 import in.mobiux.android.orca50scanner.MyApplication;
 import in.mobiux.android.orca50scanner.activity.BaseActivity;
 import in.mobiux.android.orca50scanner.activity.SystemLogsManagementActivity;
 import in.mobiux.android.orca50scanner.api.ApiClient;
-import in.mobiux.android.orca50scanner.api.Presenter;
 import in.mobiux.android.orca50scanner.api.model.AssetHistory;
 import in.mobiux.android.orca50scanner.api.model.AssetResponse;
 import in.mobiux.android.orca50scanner.api.model.DepartmentResponse;
@@ -121,8 +117,7 @@ public class ServerClient {
 
             @Override
             public void onFailure(Call<SyncPayload> call, Throwable t) {
-                activity.showToast("Something went wrong");
-                logger.e(TAG, "" + t.getLocalizedMessage());
+                logger.e(TAG, "Something went wrong in updating assets " + t.getLocalizedMessage());
 
                 if (syncListener != null) {
                     syncListener.onSyncFailed();
@@ -145,6 +140,7 @@ public class ServerClient {
                         inventory.setInventoryId(res.getId());
                         inventory.setEpc(res.getAssetId().getRfid());
                         inventory.setName(res.getName());
+                        inventory.setBarcode(res.getAssetId().getBarCode());
 
                         int labId = -1;
                         String labName = "";
@@ -186,8 +182,7 @@ public class ServerClient {
 
             @Override
             public void onFailure(Call<List<AssetResponse>> call, Throwable t) {
-                activity.showToast("Something went wrong");
-                logger.e(TAG, "" + t.getLocalizedMessage());
+                logger.e(TAG, "Something went wrong on retrieving assets " + t.getLocalizedMessage());
                 if (syncListener != null) {
                     syncListener.onSyncFailed();
                 }
@@ -278,13 +273,11 @@ public class ServerClient {
                     logger.i(TAG, "logs uploaded succes & clear");
                 } else {
                     logger.i(TAG, "logs upload failed");
-//                    showToast("logs upload failed");
                 }
             }
 
             @Override
             public void onFailure(Call<String> call, Throwable t) {
-                activity.showToast("something went wrong");
                 logger.i(TAG, "logs upload Failed " + t.getLocalizedMessage());
             }
         });

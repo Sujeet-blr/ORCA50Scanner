@@ -37,7 +37,7 @@
         android:usesCleartextTraffic="true">
         <activity android:name=".activity.LicenseActivity"></activity>
         <activity android:name=".activity.AboutUsActivity" />
-        <activity android:name=".activity.SampleActivity" />
+        <activity android:name=".dev.SampleActivity" />
         <activity android:name=".activity.SystemLogsManagementActivity" />
         <activity android:name=".activity.BuzzerSettingActivity" />
         <activity android:name=".activity.DeviceSettingsActivity" />
@@ -55,7 +55,7 @@
         <activity android:name=".activity.ScanInventoryActivity" />
         <activity android:name=".activity.AssetInventoryActivity" />
         <activity android:name=".activity.HomeActivity" /> <!-- <activity android:name=".activity.SplashActivity" /> -->
-        <activity android:name=".activity.InventoryDetailActivity" />
+        <activity android:name=".dev.InventoryDetailActivity" />
         <activity
             android:name=".activity.SplashActivity"
             android:theme="@style/orca_fullscreen">

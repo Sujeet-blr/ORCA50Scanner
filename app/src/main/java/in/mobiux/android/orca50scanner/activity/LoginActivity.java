@@ -1,18 +1,14 @@
 package in.mobiux.android.orca50scanner.activity;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.Toast;
 
 import in.mobiux.android.orca50scanner.BuildConfig;
 import in.mobiux.android.orca50scanner.R;
 import in.mobiux.android.orca50scanner.api.ApiClient;
-import in.mobiux.android.orca50scanner.api.Presenter;
 import in.mobiux.android.orca50scanner.api.model.User;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -69,15 +65,14 @@ public class LoginActivity extends BaseActivity {
                     startActivity(new Intent(app, HomeActivity.class));
                     finish();
 
-
                 } else {
-                    Toast.makeText(app, "Invalid Credentials", Toast.LENGTH_SHORT).show();
+                    showToast("Invalid Credentials");
                 }
             }
 
             @Override
             public void onFailure(Call<User> call, Throwable t) {
-                Toast.makeText(app, "Something went wrong", Toast.LENGTH_SHORT).show();
+                showToast("Something went wrong");
                 logger.i(TAG, "login failed " + t.getLocalizedMessage());
             }
         });

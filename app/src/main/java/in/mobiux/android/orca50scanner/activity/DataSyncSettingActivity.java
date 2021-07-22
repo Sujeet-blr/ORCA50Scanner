@@ -258,7 +258,7 @@ public class DataSyncSettingActivity extends BaseActivity {
             if (logFile != null) {
                 sendLogsToServer(logger.getLogFile(app));
             } else {
-                showToast("logs not found");
+                logger.e(TAG, "logs not found");
             }
         } else if (synSetting.equals("1")) {
 //            clear from device only

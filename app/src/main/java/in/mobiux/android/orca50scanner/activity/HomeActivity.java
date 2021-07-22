@@ -9,22 +9,14 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import in.mobiux.android.orca50scanner.MainActivity;
 import in.mobiux.android.orca50scanner.R;
-import in.mobiux.android.orca50scanner.api.ApiClient;
-import in.mobiux.android.orca50scanner.api.Presenter;
-import in.mobiux.android.orca50scanner.api.model.AssetResponse;
 import in.mobiux.android.orca50scanner.api.model.Inventory;
 import in.mobiux.android.orca50scanner.api.model.User;
 import in.mobiux.android.orca50scanner.viewmodel.InventoryViewModel;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 
 public class HomeActivity extends BaseActivity implements View.OnClickListener {
 
@@ -61,7 +53,7 @@ public class HomeActivity extends BaseActivity implements View.OnClickListener {
                 inventories = list;
 
                 if (inventories.isEmpty()) {
-                    Toast.makeText(app, "Sync with server to proceed", Toast.LENGTH_SHORT).show();
+                    showToast("Sync with server to proceed");
                     Intent intent = new Intent(app, DataSyncSettingActivity.class);
                     startActivity(intent);
                 }

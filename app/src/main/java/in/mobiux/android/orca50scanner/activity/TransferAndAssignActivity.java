@@ -1,7 +1,6 @@
 package in.mobiux.android.orca50scanner.activity;
 
 import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
@@ -17,12 +16,8 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
-import com.google.android.material.radiobutton.MaterialRadioButton;
-import com.nativec.tools.ModuleManager;
-import com.rfid.rxobserver.ReaderSetting;
 import com.rfid.rxobserver.bean.RXInventoryTag;
 
 import java.util.ArrayList;
@@ -30,20 +25,14 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.Random;
-import java.util.Timer;
-import java.util.TimerTask;
 
 import in.mobiux.android.orca50scanner.R;
 import in.mobiux.android.orca50scanner.api.model.AssetHistory;
 import in.mobiux.android.orca50scanner.api.model.DepartmentResponse;
 import in.mobiux.android.orca50scanner.api.model.Inventory;
 import in.mobiux.android.orca50scanner.api.model.Laboratory;
-import in.mobiux.android.orca50scanner.database.InventoryRepository;
-import in.mobiux.android.orca50scanner.util.AppUtils;
 import in.mobiux.android.orca50scanner.util.RFIDReaderListener;
 import in.mobiux.android.orca50scanner.viewmodel.InventoryViewModel;
 import in.mobiux.android.orca50scanner.viewmodel.LaboratoryViewModel;
@@ -203,7 +192,7 @@ public class TransferAndAssignActivity extends BaseActivity implements RFIDReade
 
                 } else {
                     logger.e(TAG, "Asset not selected");
-                    Toast.makeText(app, "Asset not selected", Toast.LENGTH_SHORT).show();
+                    showToast("Asset not selected");
                 }
             }
         });

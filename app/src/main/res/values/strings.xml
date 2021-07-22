@@ -6,7 +6,7 @@
     <string name="lab_equipment_inventory_mangement_system">ASSET INVENTORY MANAGEMENT SYSTEM</string>
     <string name="transfer_assign">Transfer &amp; \nAssign</string>
     <string name="data_sync_settings">Data Sync &amp; \nSettings</string>
-    <string name="save_data_finish">Save Data &amp; \nFinish</string>
+    <string name="save_data_finish">Finish</string>
     <string name="save_data_n_confirm">Save Data &amp; \nConfirm Transfer</string>
     <string name="label_transfer_assign">Transfer &amp; Assign</string>
     <string name="label_data_sync">Data Sync &amp; Settings</string>
@@ -34,6 +34,7 @@
         \nTel.:
         +44 (0)845 249 0068
         +44 (0)1352 752044"</string>
+    <string name="print">Print</string>
 
     <string-array name="dummmy_spinner">
         <item>item1</item>

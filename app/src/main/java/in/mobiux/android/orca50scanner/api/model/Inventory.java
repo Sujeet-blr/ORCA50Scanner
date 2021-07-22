@@ -59,6 +59,9 @@ public class Inventory extends RXInventoryTag implements Serializable {
     @SerializedName("rssi")
     @Expose
     private String rssi;
+    @SerializedName("barcode")
+    @Expose
+    private String barcode;
 
     @SerializedName("locationAssigned")
     @Expose
@@ -140,6 +143,14 @@ public class Inventory extends RXInventoryTag implements Serializable {
 
     public void setLocationAssigned(boolean locationAssigned) {
         this.locationAssigned = locationAssigned;
+    }
+
+    public String getBarcode() {
+        return barcode;
+    }
+
+    public void setBarcode(String barcode) {
+        this.barcode = barcode;
     }
 
     public boolean isSyncRequired() {

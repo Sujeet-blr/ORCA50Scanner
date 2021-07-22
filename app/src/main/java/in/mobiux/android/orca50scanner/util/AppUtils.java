@@ -1,7 +1,6 @@
 package in.mobiux.android.orca50scanner.util;
 
 import android.util.Log;
-import android.widget.Toast;
 
 import java.io.File;
 import java.text.DateFormat;

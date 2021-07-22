@@ -276,14 +276,12 @@ public class DeviceSettingsActivity extends BaseActivity {
                     logger.i(TAG, "logs uploaded succes & clear");
                 } else {
                     logger.i(TAG, "logs upload failed");
-//                    showToast("logs upload failed");
                 }
             }
 
             @Override
             public void onFailure(Call<String> call, Throwable t) {
-                showToast("something went wrong");
-                logger.i(TAG, "" + t.getLocalizedMessage());
+                logger.i(TAG, "Something went wrong on logs upload " + t.getLocalizedMessage());
             }
         });
     }
@@ -299,7 +297,7 @@ public class DeviceSettingsActivity extends BaseActivity {
             if (logFile != null) {
                 sendLogsToServer(logger.getLogFile(app));
             } else {
-                showToast("logs not found");
+                logger.e(TAG, "logs not found");
             }
         } else if (synSetting.equals("1")) {
 //            clear from device only

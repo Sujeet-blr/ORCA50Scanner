@@ -5,22 +5,16 @@ import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
 import android.os.Bundle;
-import android.os.Handler;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.SeekBar;
 import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.module.interaction.ModuleConnector;
 import com.nativec.tools.ModuleManager;
-import com.rfid.RFIDReaderHelper;
-import com.rfid.rxobserver.RXObserver;
-import com.rfid.rxobserver.ReaderSetting;
 import com.rfid.rxobserver.bean.RXInventoryTag;
 
 import java.util.ArrayList;
@@ -31,11 +25,8 @@ import java.util.TimerTask;
 import in.mobiux.android.orca50scanner.BuildConfig;
 import in.mobiux.android.orca50scanner.R;
 import in.mobiux.android.orca50scanner.api.model.Inventory;
-import in.mobiux.android.orca50scanner.util.DeviceConnector;
 import in.mobiux.android.orca50scanner.util.RFIDReaderListener;
 import in.mobiux.android.orca50scanner.viewmodel.InventoryViewModel;
-
-import static in.mobiux.android.orca50scanner.util.DeviceConnector.BOUD_RATE;
 
 public class LocateAssetActivity extends BaseActivity implements RFIDReaderListener {
 
@@ -69,6 +60,12 @@ public class LocateAssetActivity extends BaseActivity implements RFIDReaderListe
 
         connector = app.connector;
 
+        Inventory asset = (Inventory) getIntent().getSerializableExtra("asset");
+
+        if (asset != null) {
+            inventory = asset;
+        }
+
         if (BuildConfig.DEBUG) {
 
         } else {
@@ -81,6 +78,7 @@ public class LocateAssetActivity extends BaseActivity implements RFIDReaderListe
             }
         }
 
+
         viewModel = new ViewModelProvider(this).get(InventoryViewModel.class);
 
         viewModel.getAllInventory().observe(this, new Observer<List<Inventory>>() {
@@ -91,6 +89,15 @@ public class LocateAssetActivity extends BaseActivity implements RFIDReaderListe
                 arrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                 spinner.setAdapter(arrayAdapter);
                 arrayAdapter.notifyDataSetChanged();
+
+                if (asset != null) {
+                    for (Inventory i : inventories) {
+                        if (i.getFormattedEPC().equals(asset.getFormattedEPC())) {
+                            inventory = i;
+                            spinner.setSelection(inventories.indexOf(inventory));
+                        }
+                    }
+                }
             }
         });
 
@@ -229,9 +236,9 @@ public class LocateAssetActivity extends BaseActivity implements RFIDReaderListe
     @Override
     public void onConnection(boolean status) {
         if (status) {
-            Toast.makeText(app, "Connected", Toast.LENGTH_SHORT).show();
+            showToast("Connected");
         } else {
-            Toast.makeText(app, "Connection Lost", Toast.LENGTH_SHORT).show();
+            showToast("Connection Lost");
         }
     }
 }
