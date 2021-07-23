@@ -42,7 +42,9 @@
         <activity android:name=".activity.BuzzerSettingActivity" />
         <activity android:name=".activity.DeviceSettingsActivity" />
         <activity android:name=".activity.RFOutputPowerSettingActivity" />
-        <activity android:name=".activity.LoginActivity" />
+        <activity
+            android:name=".activity.LoginActivity"
+            android:windowSoftInputMode="stateHidden" />
         <activity
             android:name=".activity.DataSyncSettingActivity"
             android:label="@string/label_data_sync" />

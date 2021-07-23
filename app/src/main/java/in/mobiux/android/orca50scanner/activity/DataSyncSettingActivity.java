@@ -40,7 +40,6 @@ import retrofit2.Response;
 public class DataSyncSettingActivity extends BaseActivity {
 
     private CardView cardSync, cardSettings, cardLicense, cardAbout;
-//    private ProgressDialog progressDialog;
 
     private List<Laboratory> laboratories = new ArrayList<>();
     private List<Inventory> inventoryList = new ArrayList<>();
@@ -63,23 +62,6 @@ public class DataSyncSettingActivity extends BaseActivity {
         cardLicense = findViewById(R.id.cardLicense);
         cardAbout = findViewById(R.id.cardAbout);
 
-        serverClient = ServerClient.getInstance(getApplicationContext());
-        serverClient.setOnSyncListener(DataSyncSettingActivity.this, new DataSyncListener() {
-            @Override
-            public void onSyncSuccess() {
-                showToast("Sync Success");
-                progressDialog.dismiss();
-            }
-
-            @Override
-            public void onSyncFailed() {
-                showToast("Sync Failed");
-                progressDialog.dismiss();
-            }
-        });
-
-
-        progressDialog = new ProgressDialog(DataSyncSettingActivity.this);
         viewModel = new ViewModelProvider(this).get(InventoryViewModel.class);
 
         viewModel.getAllInventory().observe(this, new Observer<List<Inventory>>() {
@@ -105,10 +87,12 @@ public class DataSyncSettingActivity extends BaseActivity {
 //                sync(inventories);
 
                 logger.i(TAG, "Syncing with Server");
+                progressDialog = new ProgressDialog(DataSyncSettingActivity.this);
                 progressDialog.setMessage("Syncing with Server");
                 progressDialog.setIndeterminate(true);
                 progressDialog.show();
-                serverClient.sync(DataSyncSettingActivity.this);
+
+                doSync();
             }
         });
 
@@ -135,134 +119,35 @@ public class DataSyncSettingActivity extends BaseActivity {
                 startActivity(intent);
             }
         });
-
-        Presenter.INSTANCE.setOnServerSyncListener(new Presenter.OnServerSyncListener() {
-            @Override
-            public void onSync(boolean status, List<Inventory> list) {
-                if (status) {
-                    progressDialog.dismiss();
-                    processLogs();
-                }
-            }
-        });
     }
 
 
-    private void sync(List<Inventory> list) {
+    private void doSync() {
 
-        logger.i(TAG, "Syncing with Server");
-        progressDialog.setMessage("Syncing with Server");
-        progressDialog.setIndeterminate(true);
-        progressDialog.show();
-
-        inventoryList = new ArrayList<>();
-        HashMap<String, Laboratory> historyLabs = new HashMap<>();
-
-        for (AssetHistory history : histories) {
-            logger.i(TAG, "" + history.getEpc() + "    " + history.getDepartment() + "  " + history.getUpdateTimeIntervalInSeconds());
-
-            String departmentId = String.valueOf(history.getDepartment());
-
-            Laboratory laboratory = historyLabs.get(departmentId);
-            if (laboratory == null) {
-                laboratory = new Laboratory();
-                laboratory.setDepartment(Integer.parseInt(departmentId));
-                historyLabs.put(departmentId, laboratory);
-            }
-
-            history.setTime(history.getUpdateTimeIntervalInSeconds());
-            laboratory.getAssets().add(history);
-        }
-
-        laboratories.addAll(historyLabs.values());
-        for (Laboratory l : laboratories) {
-            logger.i(TAG, "lab " + l.getDepartment() + " assets " + l.getAssets().size());
-        }
-
-        if (laboratories.size() > 0) {
-            updateAsset(laboratories.get(0));
-        } else {
-            Presenter.INSTANCE.pullLatestData();
-            processLogs();
-        }
-
-    }
-
-
-    private void updateAsset(Laboratory laboratory) {
-
-        for (AssetHistory history : laboratory.getAssets()) {
-            logger.i(TAG, "payload " + history.getEpc() + " dept " + history.getTime());
-        }
-
-        ApiClient.getApiService().updateAssets(session.rawToken(), laboratory).enqueue(new Callback<Laboratory>() {
+        serverClient = ServerClient.getInstance(getApplicationContext());
+        serverClient.setOnSyncListener(DataSyncSettingActivity.this, new DataSyncListener() {
             @Override
-            public void onResponse(Call<Laboratory> call, Response<Laboratory> response) {
-                if (response.isSuccessful()) {
-                    laboratories.remove(laboratory);
-                    for (AssetHistory history : laboratory.getAssets()) {
-                        viewModel.deleteHistory(history);
-                    }
-
-                    if (laboratories.size() > 0) {
-                        updateAsset(laboratories.get(0));
-                    } else {
-                        viewModel.clearHistory();
-                        Presenter.INSTANCE.pullLatestData();
-                        progressDialog.dismiss();
-                        processLogs();
-                    }
-                } else {
-                    logger.e(TAG, "" + response.message());
-                    progressDialog.dismiss();
-                }
-
+            public void onSyncSuccess() {
+                showToast("Sync Success");
+                progressDialog.dismiss();
             }
 
             @Override
-            public void onFailure(Call<Laboratory> call, Throwable t) {
-                logger.e(TAG, "" + t.getLocalizedMessage());
+            public void onSyncFailed() {
+                showToast("Sync Failed");
                 progressDialog.dismiss();
             }
         });
+
+        serverClient.sync(DataSyncSettingActivity.this);
     }
 
-    private void sendLogsToServer(File logFile) {
+    @Override
+    protected void onStart() {
+        super.onStart();
 
-        ApiClient.getApiService().uploadLogs(session.token(), AppUtils.convertFileToRequestBody(logFile)).enqueue(new Callback<String>() {
-            @Override
-            public void onResponse(Call<String> call, Response<String> response) {
-                if (response.isSuccessful()) {
-                    logger.clearLogs();
-                    showToast("Clear logs");
-                } else {
-                    showToast("logs upload failed");
-                }
-            }
-
-            @Override
-            public void onFailure(Call<String> call, Throwable t) {
-                showToast("something went wrong");
-            }
-        });
-    }
-
-    //    process the logs according to logs settingsA
-    private void processLogs() {
-
-        String synSetting = session.getValue(SystemLogsManagementActivity.KEY_RADIO);
-
-        if (synSetting.isEmpty() || synSetting.equals("0")) {
-//            send to server then clear device
-            File logFile = logger.getLogFile(app);
-            if (logFile != null) {
-                sendLogsToServer(logger.getLogFile(app));
-            } else {
-                logger.e(TAG, "logs not found");
-            }
-        } else if (synSetting.equals("1")) {
-//            clear from device only
-            logger.clearLogs();
+        if (!session.hasCredentials()) {
+            finish();
         }
     }
 }
