@@ -7,19 +7,15 @@ import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.util.Log;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
+
 import androidx.core.content.ContextCompat;
 import androidx.core.content.FileProvider;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 
 import in.mobiux.android.orca50scanner.BuildConfig;
-import okhttp3.MediaType;
-import okhttp3.RequestBody;
 
 /**
  * Created by SUJEET KUMAR on 10-Mar-21.
@@ -31,7 +27,7 @@ public class AppLogger {
     private static AppLogger instance;
     private StringBuilder data;
     private FileOutputStream out;
-    private String FILE_NAME = "logs.csv";
+    private final String FILE_NAME = "logs.csv";
 
     private AppLogger(Context context) {
         this.context = context;
@@ -50,7 +46,7 @@ public class AppLogger {
         if (BuildConfig.DEBUG){
             Log.i(tag, msg);
         }
-        data = new StringBuilder(("\n" + tag + "\t, " + msg + "\t," + String.valueOf(AppUtils.getFormattedTimestamp())));
+        data = new StringBuilder(("\n" + tag + "\t, " + msg + "\t," + AppUtils.getFormattedTimestamp()));
         appendToLogs(data.toString());
     }
 
@@ -130,7 +126,6 @@ public class AppLogger {
         try {
 
             File fileLocation = new File(context.getFilesDir(), FILE_NAME);
-            Uri path = FileProvider.getUriForFile(context, "in.mobiux.android.orca50scanner.fileprovider", fileLocation);
 
             return fileLocation;
 

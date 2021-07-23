@@ -1,15 +1,16 @@
 package in.mobiux.android.orca50scanner.activity;
 
-import android.app.ActionBar;
 import android.app.ProgressDialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.pm.PackageManager;
+import android.content.res.Configuration;
+import android.content.res.Resources;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Environment;
+import android.util.DisplayMetrics;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
@@ -26,6 +27,7 @@ import androidx.core.content.FileProvider;
 
 import java.io.File;
 import java.util.List;
+import java.util.Locale;
 
 import in.mobiux.android.orca50scanner.MyApplication;
 import in.mobiux.android.orca50scanner.R;
@@ -66,10 +68,7 @@ public class BaseActivity extends AppCompatActivity {
 
         logger.i(TAG, "created Activity : " + this.getClass().getCanonicalName());
 
-//        if (!session.hasCredentials() && !(this instanceof LoginActivity)) {
-//            Intent intent = new Intent(app, LoginActivity.class);
-//            startActivity(intent);
-//        }
+        switchLanguage(session.getLanguage());
     }
 
     @Override
@@ -78,6 +77,22 @@ public class BaseActivity extends AppCompatActivity {
         if (parentLayout == null) {
             parentLayout = findViewById(android.R.id.content);
         }
+    }
+
+
+    protected void switchLanguage(String language) {
+        Resources resources = getResources();
+        Configuration config = resources.getConfiguration();
+        DisplayMetrics dm = resources.getDisplayMetrics();
+        if (language.equals("en")) {
+            config.locale = Locale.ENGLISH;
+        } else {
+            config.locale = Locale.SIMPLIFIED_CHINESE;
+        }
+//        resources.updateConfiguration(config, dm);
+
+        session.setLanguage(language);
+//        PreferenceUtil.commitString("language", language);
     }
 
     // Function to check and request permission.
@@ -133,7 +148,7 @@ public class BaseActivity extends AppCompatActivity {
 //        data.append("")
 
         for (Inventory inventory : list) {
-            data.append("\n" + inventory.getInventoryId() + "," + inventory.getEpc() + "," + String.valueOf(inventory.getQuantity()));
+            data.append("\n" + inventory.getInventoryId() + "," + inventory.getEpc() + "," + inventory.getQuantity());
         }
 
         try {

@@ -72,7 +72,7 @@ public class LoginActivity extends BaseActivity {
 
             @Override
             public void onFailure(Call<User> call, Throwable t) {
-                showToast("Something went wrong");
+                showToast(getResources().getString(R.string.something_went_wrong));
                 logger.i(TAG, "login failed " + t.getLocalizedMessage());
             }
         });

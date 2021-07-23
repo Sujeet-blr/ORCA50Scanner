@@ -102,6 +102,13 @@ public class SessionManager {
     public void logout() {
         saveToken("");
         setUser(null);
+    }
 
+    public String getLanguage() {
+        return preferences.getString("language", "zh");
+    }
+
+    public void setLanguage(String language) {
+        setValue("language", language);
     }
 }

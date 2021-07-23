@@ -19,7 +19,7 @@ public class SplashActivity extends BaseActivity {
         getSupportActionBar().hide();
 
 
-        new Handler().postDelayed(new Runnable() {
+        new Handler(getMainLooper()).postDelayed(new Runnable() {
             @Override
             public void run() {
 

@@ -18,6 +18,7 @@
     <string name="scanning">Scanning in progress</string>
     <string name="not_implemented">Feature coming soon</string>
     <string name="rssi_unit">dBm</string>
+    <string name="something_went_wrong">Something went wrong. Please try again</string>
 
     <string name="about_us_content">"Sensing Objects powered by Footprints is a suite of innovative solutions to address requirements for traceability of products, assets and processes that are essential for business operations in areas such as within inventory management, manufacturing process management, service and maintenance management and logistic processes. \n
         \nThe portfolio of solutions is brought to you by RFIDdirect Limited and Hito IT Solutions L.L.C.

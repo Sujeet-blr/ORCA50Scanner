@@ -68,7 +68,7 @@ public class SystemLogsManagementActivity extends BaseActivity {
                         session.setValue(KEY_RADIO, "1");
                         showToast("Saved Success");
                     } else {
-                        showToast("Something went wrong");
+                        showToast(getResources().getString(R.string.something_went_wrong));
                     }
                 }
             }
