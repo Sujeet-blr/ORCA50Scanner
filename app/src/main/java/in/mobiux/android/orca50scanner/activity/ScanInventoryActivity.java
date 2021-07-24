@@ -64,6 +64,7 @@ public class ScanInventoryActivity extends BaseActivity implements View.OnClickL
         btnSave.setOnClickListener(this);
         btnClear.setOnClickListener(this);
         btnPrint.setOnClickListener(this);
+        btnPrint.setVisibility(View.GONE);
         txtIndicator.setTag(startButtonStatus);
 
         laboratory = (DepartmentResponse.Child) getIntent().getSerializableExtra("laboratory");
@@ -154,8 +155,6 @@ public class ScanInventoryActivity extends BaseActivity implements View.OnClickL
                 break;
             case R.id.btnPrint:
                 logger.i(TAG, "print");
-
-                switchLanguage("de");
 
                 Intent intent = getIntent();
                 finish();

@@ -84,7 +84,7 @@
     <string name="system_logs_management">System Logs Management</string>
     <string name="logout">Logout</string>
     <string name="asset_ninventory">Asset\nInventory</string>
-    <string name="locate_nasset">locate \nAsset</string>
+    <string name="locate_nasset">Locate \nAsset</string>
     <string name="return_to_inventory">Return To Inventory</string>
     <string name="close">Close</string>
     <string name="verify_to_proceed">Verify to proceed</string>

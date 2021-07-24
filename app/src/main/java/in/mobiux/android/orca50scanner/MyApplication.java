@@ -1,8 +1,11 @@
 package in.mobiux.android.orca50scanner;
 
 import android.app.Application;
+import android.content.res.Configuration;
+import android.content.res.Resources;
 import android.media.MediaPlayer;
 import android.os.Handler;
+import android.util.DisplayMetrics;
 
 import com.module.interaction.ModuleConnector;
 import com.module.interaction.RXTXListener;
@@ -16,6 +19,7 @@ import com.rfid.rxobserver.bean.RXInventoryTag;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 import java.util.Random;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -91,6 +95,8 @@ public class MyApplication extends Application {
         if (BuildConfig.DEBUG) {
             activateSimulator();
         }
+
+        switchLanguage(session.getLanguage());
     }
 
     private RXTXListener rxtxListener = new RXTXListener() {
@@ -468,5 +474,29 @@ public class MyApplication extends Application {
             }
         }, 30000, 30000);
 
+    }
+
+    public void switchLanguage(String language) {
+        logger.i(TAG, "Language is " + language);
+        Resources resources = getApplicationContext().getResources();
+        Configuration config = resources.getConfiguration();
+        DisplayMetrics dm = resources.getDisplayMetrics();
+        if (language.equals("en")) {
+            config.locale = Locale.ENGLISH;
+        } else if (language.equals("de")) {
+            config.locale = Locale.GERMAN;
+        } else if (language.equals("fr")) {
+            config.locale = Locale.FRENCH;
+        } else if (language.equals("nl")) {
+            config.locale = new Locale("nl");
+        } else {
+            config.locale = Locale.ENGLISH;
+        }
+        resources.updateConfiguration(config, dm);
+
+        onConfigurationChanged(config);
+
+        session.setLanguage(language);
+//        PreferenceUtil.commitString("language", language);
     }
 }

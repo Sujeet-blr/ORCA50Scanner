@@ -25,6 +25,8 @@ import androidx.core.content.ContextCompat;
 import androidx.core.content.FileProvider;
 
 
+import org.jetbrains.annotations.NotNull;
+
 import java.io.File;
 import java.util.List;
 import java.util.Locale;
@@ -55,6 +57,11 @@ public class BaseActivity extends AppCompatActivity {
     private TextView textToolbarTitle;
     private VirtualKeyListenerBroadcastReceiver mVirtualKeyListenerBroadcastReceiver;
 
+    protected String LanEnglish = "en";
+    protected String LanGerman = "de";
+    protected String LanFrench = "fr";
+    protected String LanDutch = "nl";
+
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -79,6 +86,13 @@ public class BaseActivity extends AppCompatActivity {
         }
     }
 
+    @Override
+    public void onConfigurationChanged(@NonNull @NotNull Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+
+        logger.i(TAG, "onConfiguration Changed");
+    }
+
 
     protected void switchLanguage(String language) {
         logger.i(TAG, "Language is " + language);
@@ -91,10 +105,14 @@ public class BaseActivity extends AppCompatActivity {
             config.locale = Locale.GERMAN;
         } else if (language.equals("fr")) {
             config.locale = Locale.FRENCH;
+        } else if (language.equals("nl")) {
+            config.locale = new Locale("nl");
         } else {
             config.locale = Locale.ENGLISH;
         }
         resources.updateConfiguration(config, dm);
+
+        onConfigurationChanged(config);
 
         session.setLanguage(language);
 //        PreferenceUtil.commitString("language", language);

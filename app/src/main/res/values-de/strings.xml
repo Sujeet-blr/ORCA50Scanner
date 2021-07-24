@@ -3,4 +3,11 @@
     <string name="app_name">SO Inventory</string>
     <string name="print">german</string>
     <string name="label_license">german0</string>
+    <string name="label_verification">German</string>
+    <string name="label_transfer_assign">German</string>
+    <string name="label_data_sync">German</string>
+    <string name="label_device_settings">German</string>
+    <string name="label_asset_inventory">German</string>
+    <string name="label_locate_asset">German</string>
+    <string name="label_about_us">German</string>
 </resources>
