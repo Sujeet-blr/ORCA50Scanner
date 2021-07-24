@@ -35,7 +35,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:padding="8dp"
-                    android:text="RF Power Output" />
+                    android:text="@string/rf_power_output" />
 
                 <ImageView
                     android:layout_width="wrap_content"
@@ -65,7 +65,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:padding="8dp"
-                    android:text="Buzzer Behavior" />
+                    android:text="@string/buzzer_behavior" />
 
                 <ImageView
                     android:layout_width="wrap_content"
@@ -95,7 +95,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:padding="8dp"
-                    android:text="System Logs Management" />
+                    android:text="@string/system_logs_management" />
 
                 <ImageView
                     android:layout_width="wrap_content"
@@ -125,7 +125,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:padding="8dp"
-                    android:text="Logout" />
+                    android:text="@string/logout" />
 
                 <ImageView
                     android:layout_width="wrap_content"

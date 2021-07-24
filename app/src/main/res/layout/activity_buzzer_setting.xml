@@ -25,17 +25,17 @@
             <RadioButton
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Quiet" />
+                android:text="@string/quiet" />
 
             <RadioButton
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Beep after an inventory round" />
+                android:text="@string/beep_after_an_inventory_round" />
 
             <RadioButton
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Beep after a tag is identified.(For test only)" />
+                android:text="@string/beep_after_a_tag_is_identified_for_test_only" />
 
         </RadioGroup>
 
@@ -44,7 +44,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/margin_horizontal"
-            android:text="SET" />
+            android:text="@string/set" />
 
     </LinearLayout>
 

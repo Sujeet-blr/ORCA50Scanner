@@ -11,6 +11,7 @@
 
     <string name="label_transfer_assign">Transfer &amp; Assign</string>
     <string name="label_data_sync">Data Sync &amp; Settings</string>
+    <string name="label_device_settings">"Device Settings"</string>
     <string name="label_asset_inventory">Asset Inventory</string>
     <string name="label_locate_asset">Locate Asset</string>
     <string name="label_about_us">About Us</string>
@@ -34,6 +35,8 @@
     <string name="stop_scan">Stop Scan</string>
     <string name="scanning">Scanning in progress</string>
     <string name="asset_not_selected">Asset not selected</string>
+    <string name="sync_success">Sync Success</string>
+    <string name="sync_failed">Sync Failed</string>
     <string name="asset">Asset</string>
     <string name="not_implemented">Feature coming soon</string>
     <string name="rssi_unit">dBm</string>
@@ -47,6 +50,8 @@
     <string name="invalid_credentials">Invalid Credentials</string>
     <string name="connected">Connected</string>
     <string name="connection_lost">Connection Lost</string>
+    <string name="you_are_logged_in_as">You are logged in as : </string>
+    <string name="syncing_with_server">Syncing with Server</string>
 
     <string name="about_us_content">"Sensing Objects powered by Footprints is a suite of innovative solutions to address requirements for traceability of products, assets and processes that are essential for business operations in areas such as within inventory management, manufacturing process management, service and maintenance management and logistic processes. \n
         \nThe portfolio of solutions is brought to you by RFIDdirect Limited and Hito IT Solutions L.L.C.
@@ -64,6 +69,33 @@
         +44 (0)845 249 0068
         +44 (0)1352 752044"</string>
     <string name="print">Print</string>
+    <string name="selected_department_is">Selected department is : </string>
+    <string name="proceed_to_nscan_inventory">Proceed to \n Scan Inventory</string>
+    <string name="quiet">Quiet</string>
+    <string name="beep_after_an_inventory_round">Beep after an inventory round</string>
+    <string name="beep_after_a_tag_is_identified_for_test_only">Beep after a tag is identified.(For test only)</string>
+    <string name="set">SET</string>
+    <string name="data_sync_nwith_server">Data sync\nwith Server</string>
+    <string name="device_nsettings">Device\nSettings</string>
+    <string name="license_ninformation">license\ninformation</string>
+    <string name="about_us">About Us</string>
+    <string name="rf_power_output">RF Power Output</string>
+    <string name="buzzer_behavior">Buzzer Behavior</string>
+    <string name="system_logs_management">System Logs Management</string>
+    <string name="logout">Logout</string>
+    <string name="asset_ninventory">Asset\nInventory</string>
+    <string name="locate_nasset">locate \nAsset</string>
+    <string name="return_to_inventory">Return To Inventory</string>
+    <string name="close">Close</string>
+    <string name="verify_to_proceed">Verify to proceed</string>
+    <string name="login">Login</string>
+    <string name="clear">Clear</string>
+    <string name="send_logs_to_server_and_clear_from_device">Send logs to server and clear from device</string>
+    <string name="clear_logs_from_device_only">Clear logs from device only</string>
+    <string name="save">Save</string>
+    <string name="select_asset_to_transfer">Select asset to transfer</string>
+    <string name="department_where_the_asset_should_be">Department where the asset should be:</string>
+    <string name="transfer_asset_to">Transfer Asset To :</string>
 
     <string-array name="dummmy_spinner">
         <item>item1</item>

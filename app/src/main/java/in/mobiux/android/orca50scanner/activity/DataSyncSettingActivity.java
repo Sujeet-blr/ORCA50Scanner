@@ -41,8 +41,6 @@ public class DataSyncSettingActivity extends BaseActivity {
 
     private CardView cardSync, cardSettings, cardLicense, cardAbout;
 
-    private List<Laboratory> laboratories = new ArrayList<>();
-    private List<Inventory> inventoryList = new ArrayList<>();
     private List<Inventory> inventories = new ArrayList<>();
     private List<AssetHistory> histories = new ArrayList<>();
 
@@ -76,6 +74,7 @@ public class DataSyncSettingActivity extends BaseActivity {
             public void onChanged(List<AssetHistory> assetHistories) {
                 logger.i(TAG, "history size " + assetHistories.size());
 
+
                 histories.clear();
                 histories.addAll(assetHistories);
             }
@@ -88,7 +87,7 @@ public class DataSyncSettingActivity extends BaseActivity {
 
                 logger.i(TAG, "Syncing with Server");
                 progressDialog = new ProgressDialog(DataSyncSettingActivity.this);
-                progressDialog.setMessage("Syncing with Server");
+                progressDialog.setMessage(getResources().getString(R.string.syncing_with_server));
                 progressDialog.setIndeterminate(true);
                 progressDialog.show();
 
@@ -128,13 +127,13 @@ public class DataSyncSettingActivity extends BaseActivity {
         serverClient.setOnSyncListener(DataSyncSettingActivity.this, new DataSyncListener() {
             @Override
             public void onSyncSuccess() {
-                showToast("Sync Success");
+                showToast(getResources().getString(R.string.sync_success));
                 progressDialog.dismiss();
             }
 
             @Override
             public void onSyncFailed() {
-                showToast("Sync Failed");
+                showToast(getResources().getString(R.string.sync_failed));
                 progressDialog.dismiss();
             }
         });

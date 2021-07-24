@@ -33,7 +33,7 @@
                 style="@style/TextAppearance.MaterialComponents.Headline6"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="67 Pcs"
+                android:text="- Pcs"
                 android:textAllCaps="false" />
 
             <TextView
@@ -51,7 +51,7 @@
                 android:layout_height="wrap_content"
                 android:layout_alignBaseline="@id/tvCount"
                 android:layout_alignParentRight="true"
-                android:text="Clear"
+                android:text="@string/clear"
                 android:textColor="@color/orange" />
         </RelativeLayout>
 

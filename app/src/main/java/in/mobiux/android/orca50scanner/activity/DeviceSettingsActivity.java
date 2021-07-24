@@ -53,7 +53,7 @@ public class DeviceSettingsActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_device_settings);
 
-        setTitle("Device Settings");
+        setTitle(getResources().getString(R.string.label_device_settings));
         cardRSSI = findViewById(R.id.cardRSSI);
         cardBuzzer = findViewById(R.id.cardBuzzer);
         cardLogs = findViewById(R.id.cardLogs);
@@ -63,36 +63,6 @@ public class DeviceSettingsActivity extends BaseActivity {
         cardBuzzer.setVisibility(View.GONE);
 
         tvAppVersion.setText("version " + BuildConfig.VERSION_NAME);
-
-//        serverClient = ServerClient.getInstance(getApplicationContext());
-//        serverClient.setOnSyncListener(DeviceSettingsActivity.this, new DataSyncListener() {
-//            @Override
-//            public void onSyncSuccess() {
-//                progressDialog.dismiss();
-//                logger.i(TAG, "sync success");
-//                showToast("Sync Success");
-//
-//                if (requestCode == 401) {
-////                    app.clearStackOnSignOut();
-//                    finish();
-//                    processLogs();
-//                    session.logout();
-//
-//                    Intent intent = new Intent(app, LoginActivity.class);
-//                    startActivity(intent);
-//
-//                    requestCode = 0;
-//                }
-//            }
-//
-//            @Override
-//            public void onSyncFailed() {
-//                progressDialog.dismiss();
-//                logger.i(TAG, "sync failed");
-//                showToast("Sync Failed");
-//            }
-//        });
-
 
         viewModel = new ViewModelProvider(this).get(InventoryViewModel.class);
 
@@ -158,7 +128,7 @@ public class DeviceSettingsActivity extends BaseActivity {
 
                 logger.i(TAG, "Syncing with Server");
                 progressDialog = new ProgressDialog(DeviceSettingsActivity.this);
-                progressDialog.setMessage("Syncing with Server");
+                progressDialog.setMessage(getResources().getString(R.string.syncing_with_server));
                 progressDialog.setIndeterminate(true);
                 progressDialog.show();
 
@@ -177,7 +147,7 @@ public class DeviceSettingsActivity extends BaseActivity {
             public void onSyncSuccess() {
                 progressDialog.dismiss();
                 logger.i(TAG, "sync success");
-                showToast("Sync Success");
+                showToast(getResources().getString(R.string.sync_success));
 
                 if (requestCode == 401) {
 //                    app.clearStackOnSignOut();
@@ -196,7 +166,7 @@ public class DeviceSettingsActivity extends BaseActivity {
             public void onSyncFailed() {
                 progressDialog.dismiss();
                 logger.i(TAG, "sync failed");
-                showToast("Sync Failed");
+                showToast(getResources().getString(R.string.sync_failed));
             }
         });
 

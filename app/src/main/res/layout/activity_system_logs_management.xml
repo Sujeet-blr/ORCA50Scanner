@@ -26,13 +26,13 @@
                 android:id="@+id/rad1"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Send logs to server and clear from device" />
+                android:text="@string/send_logs_to_server_and_clear_from_device" />
 
             <RadioButton
                 android:id="@+id/rad2"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Clear logs from device only" />
+                android:text="@string/clear_logs_from_device_only" />
 
         </RadioGroup>
 
@@ -42,6 +42,6 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_margin="@dimen/margin_horizontal"
-            android:text="Save" />
+            android:text="@string/save" />
     </LinearLayout>
 </RelativeLayout>

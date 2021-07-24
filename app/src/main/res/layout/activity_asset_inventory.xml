@@ -76,14 +76,14 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Selected department is  " />
+                android:text="@string/selected_department_is" />
 
             <TextView
                 android:id="@+id/tvLab"
                 style="@style/TextAppearance.MaterialComponents.Headline6"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="2.214A-C7A" />
+                android:text="-" />
         </LinearLayout>
 
         <LinearLayout
@@ -125,7 +125,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignParentBottom="true"
-                        android:text="Proceed to\nScan Inventory"
+                        android:text="@string/proceed_to_nscan_inventory"
                         android:textAllCaps="true"
                         android:textColor="@color/orange" />
 

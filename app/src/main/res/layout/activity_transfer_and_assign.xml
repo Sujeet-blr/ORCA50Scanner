@@ -60,7 +60,7 @@
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:text="Select asset to transfer"
+                            android:text="@string/select_asset_to_transfer"
                             android:textSize="12sp" />
 
                     </LinearLayout>
@@ -182,7 +182,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Department where the asset should be:"
+                        android:text="@string/department_where_the_asset_should_be"
                         android:textSize="14sp" />
 
                     <TextView
@@ -263,14 +263,14 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Transfer Asset To :   " />
+                    android:text="@string/transfer_asset_to" />
 
                 <TextView
                     android:id="@+id/tvLab"
                     style="@style/TextAppearance.MaterialComponents.Headline6"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="2.214A-C7A" />
+                    android:text="-" />
             </LinearLayout>
 
             <Button
