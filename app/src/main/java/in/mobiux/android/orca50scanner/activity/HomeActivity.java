@@ -53,7 +53,7 @@ public class HomeActivity extends BaseActivity implements View.OnClickListener {
                 inventories = list;
 
                 if (inventories.isEmpty()) {
-                    showToast("Sync with server to proceed");
+                    showToast(getResources().getString(R.string.sync_with_server_to_proceed));
                     Intent intent = new Intent(app, DataSyncSettingActivity.class);
                     startActivity(intent);
                 }

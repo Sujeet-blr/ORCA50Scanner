@@ -197,8 +197,6 @@ public class LocateAssetActivity extends BaseActivity implements RFIDReaderListe
 
                     session.setValue(TAG + "lab", "" + selectedLab.getId());
 
-//                    todo
-
                     inventories.clear();
                     for (Inventory i : assetsList) {
                         if (i.getLabId() == selectedLab.getId()) {
@@ -349,16 +347,16 @@ public class LocateAssetActivity extends BaseActivity implements RFIDReaderListe
         if (status) {
             txtIndicator.setText(getResources().getString(R.string.scanning));
         } else {
-            txtIndicator.setText("Start Scan");
+            txtIndicator.setText(getResources().getString(R.string.start_scan));
         }
     }
 
     @Override
     public void onConnection(boolean status) {
         if (status) {
-            showToast("Connected");
+            showToast(getResources().getString(R.string.connected));
         } else {
-            showToast("Connection Lost");
+            showToast(getResources().getString(R.string.connection_lost));
         }
     }
 }

@@ -27,7 +27,7 @@ public class RFOutputPowerSettingActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_r_f_output_power_setting);
 
-        setTitle("RF Power Output");
+        setTitle(getResources().getString(R.string.label_rf_power_output));
 
         edtRSSI = findViewById(R.id.edtRSSI);
         btnGet = findViewById(R.id.btnGet);
@@ -58,7 +58,7 @@ public class RFOutputPowerSettingActivity extends BaseActivity {
                         if (value >= 3 && value <= 30) {
                             session.setValue("rssi", rssiValue);
                             app.setOutputPower(session.getValue("rssi"));
-                            showDialog("RF Power Output set to " + value + " dBm");
+                            showDialog(getResources().getString(R.string.rf_power_output_set_to) + value + " dBm");
                         } else {
                             edtRSSI.setError("valid range is 3dBm to 30dBm");
                         }
@@ -75,7 +75,7 @@ public class RFOutputPowerSettingActivity extends BaseActivity {
         AlertDialog.Builder builder = new MaterialAlertDialogBuilder(RFOutputPowerSettingActivity.this);
         builder.setMessage(message);
 
-        builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+        builder.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
                 dialogInterface.dismiss();

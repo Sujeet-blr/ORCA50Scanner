@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">SO Inventory</string>
+    <string name="print">german</string>
+    <string name="label_license">german0</string>
+</resources>

@@ -81,15 +81,20 @@ public class BaseActivity extends AppCompatActivity {
 
 
     protected void switchLanguage(String language) {
+        logger.i(TAG, "Language is " + language);
         Resources resources = getResources();
         Configuration config = resources.getConfiguration();
         DisplayMetrics dm = resources.getDisplayMetrics();
         if (language.equals("en")) {
             config.locale = Locale.ENGLISH;
+        } else if (language.equals("de")) {
+            config.locale = Locale.GERMAN;
+        } else if (language.equals("fr")) {
+            config.locale = Locale.FRENCH;
         } else {
-            config.locale = Locale.SIMPLIFIED_CHINESE;
+            config.locale = Locale.ENGLISH;
         }
-//        resources.updateConfiguration(config, dm);
+        resources.updateConfiguration(config, dm);
 
         session.setLanguage(language);
 //        PreferenceUtil.commitString("language", language);
@@ -123,21 +128,21 @@ public class BaseActivity extends AppCompatActivity {
             if (grantResults.length > 0
                     && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 Toast.makeText(this,
-                        "Camera Permission Granted",
+                        R.string.camera_permission_granted,
                         Toast.LENGTH_SHORT)
                         .show();
             } else {
                 Toast.makeText(this,
-                        "Camera Permission Denied",
+                        R.string.camera_permission_denied,
                         Toast.LENGTH_SHORT)
                         .show();
             }
         } else if (requestCode == STORAGE_PERMISSION_CODE) {
             if (grantResults.length > 0
                     && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                logger.i(TAG, "Storage Permission Granted");
+                logger.i(TAG, getResources().getString(R.string.storage_permission_granted));
             } else {
-                logger.e(TAG, "Storage Permission Denied");
+                logger.e(TAG, getResources().getString(R.string.storage_permission_denied));
             }
         }
     }
@@ -183,7 +188,7 @@ public class BaseActivity extends AppCompatActivity {
     }
 
     protected void syncRequired() {
-        Toast.makeText(app, "Sync required to proceed", Toast.LENGTH_SHORT).show();
+        Toast.makeText(app, R.string.sync_required, Toast.LENGTH_SHORT).show();
     }
 
     protected void setTitle(String title) {

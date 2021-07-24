@@ -81,7 +81,7 @@ public class TransferAndAssignActivity extends BaseActivity implements RFIDReade
         cardAssetInfo = findViewById(R.id.cardAssetInfo);
         cardAssetInfo.setVisibility(View.GONE);
         txtIndicator.setTag(false);
-        txtIndicator.setText("Start Scan");
+        txtIndicator.setText(getResources().getString(R.string.start_scan));
 
         tvLab.setText("");
         tvSerialNumber.setText("");
@@ -192,7 +192,7 @@ public class TransferAndAssignActivity extends BaseActivity implements RFIDReade
 
                 } else {
                     logger.e(TAG, "Asset not selected");
-                    showToast("Asset not selected");
+                    showToast(getResources().getString(R.string.asset_not_selected));
                 }
             }
         });
@@ -242,7 +242,7 @@ public class TransferAndAssignActivity extends BaseActivity implements RFIDReade
             txtIndicator.setText(getResources().getString(R.string.scanning));
             radioGroup.setEnabled(false);
         } else {
-            txtIndicator.setText("Start Scan");
+            txtIndicator.setText(R.string.start_scan);
         }
     }
 
@@ -279,7 +279,7 @@ public class TransferAndAssignActivity extends BaseActivity implements RFIDReade
         AlertDialog.Builder builder = new MaterialAlertDialogBuilder(this);
         builder.setMessage(message);
 
-        builder.setNegativeButton("OK", new DialogInterface.OnClickListener() {
+        builder.setNegativeButton(R.string.ok, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
                 dialogInterface.dismiss();

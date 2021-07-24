@@ -33,7 +33,7 @@ import in.mobiux.android.orca50scanner.viewmodel.InventoryViewModel;
 
 public class ScanInventoryActivity extends BaseActivity implements View.OnClickListener, RFIDReaderListener {
 
-    private Button btnSave, btnClear;
+    private Button btnSave, btnClear, btnPrint;
     private TextView tvCount, txtIndicator;
     private RecyclerView recyclerView;
     private DepartmentResponse.Child laboratory;
@@ -55,6 +55,7 @@ public class ScanInventoryActivity extends BaseActivity implements View.OnClickL
         txtIndicator = findViewById(R.id.txtIndicator);
         btnSave = findViewById(R.id.btnSave);
         btnClear = findViewById(R.id.btnClear);
+        btnPrint = findViewById(R.id.btnPrint);
         recyclerView = findViewById(R.id.recyclerView);
         tvCount.setText("");
         txtIndicator.setTag(false);
@@ -62,15 +63,16 @@ public class ScanInventoryActivity extends BaseActivity implements View.OnClickL
 
         btnSave.setOnClickListener(this);
         btnClear.setOnClickListener(this);
+        btnPrint.setOnClickListener(this);
         txtIndicator.setTag(startButtonStatus);
 
         laboratory = (DepartmentResponse.Child) getIntent().getSerializableExtra("laboratory");
         if (laboratory != null) {
-            setTitle("You are in " + laboratory.getName());
+            setTitle(getResources().getString(R.string.you_are_in) + laboratory.getName());
             logger.i(TAG, "lab selected " + laboratory.getName() + "\t" + laboratory.getId());
         } else {
             logger.e(TAG, "Lab not selected");
-            showToast("Lab not selected");
+            showToast(getResources().getString(R.string.lab_not_selected));
             finish();
         }
 
@@ -131,7 +133,7 @@ public class ScanInventoryActivity extends BaseActivity implements View.OnClickL
                 logger.i(TAG, "Save");
 
                 progressDialog = new ProgressDialog(ScanInventoryActivity.this);
-                progressDialog.setMessage("Saving");
+                progressDialog.setMessage(getResources().getString(R.string.saving));
                 progressDialog.setIndeterminate(true);
                 progressDialog.show();
 
@@ -149,6 +151,15 @@ public class ScanInventoryActivity extends BaseActivity implements View.OnClickL
 
                 progressDialog.dismiss();
                 finish();
+                break;
+            case R.id.btnPrint:
+                logger.i(TAG, "print");
+
+                switchLanguage("de");
+
+                Intent intent = getIntent();
+                finish();
+                startActivity(intent);
                 break;
         }
     }
@@ -200,7 +211,7 @@ public class ScanInventoryActivity extends BaseActivity implements View.OnClickL
             txtIndicator.setText(getResources().getString(R.string.scanning));
             txtIndicator.setTag(true);
         } else {
-            txtIndicator.setText("Start Scan");
+            txtIndicator.setText(getResources().getString(R.string.start_scan));
             txtIndicator.setTag(false);
         }
     }

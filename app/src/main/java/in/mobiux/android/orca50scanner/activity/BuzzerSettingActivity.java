@@ -26,7 +26,7 @@ public class BuzzerSettingActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_buzzer_setting);
 
-        setTitle("Buzzer Behavior");
+        setTitle(getResources().getString(R.string.label_buzzer_behavior));
 
         radioGroup = findViewById(R.id.radioGroup);
         btnSave = findViewById(R.id.btnSave);
@@ -59,9 +59,9 @@ public class BuzzerSettingActivity extends BaseActivity {
                         ReaderSetting.newInstance().btBeeperMode = beeperMode;
                     }
                     session.setValue("beeperMode", String.valueOf(beeperMode));
-                    showDialog("Buzzer Mode set to : \n" + ((RadioButton) radioGroup.getChildAt(beeperMode)).getText().toString());
+                    showDialog(getResources().getString(R.string.buzzer_mode_set_to) + " \n" + ((RadioButton) radioGroup.getChildAt(beeperMode)).getText().toString());
                 } else {
-                    showToast("Select a option to set");
+                    showToast(getResources().getString(R.string.select_option));
                 }
             }
         });
@@ -71,7 +71,7 @@ public class BuzzerSettingActivity extends BaseActivity {
         AlertDialog.Builder builder = new MaterialAlertDialogBuilder(BuzzerSettingActivity.this);
         builder.setMessage(message);
 
-        builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+        builder.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
                 dialogInterface.dismiss();

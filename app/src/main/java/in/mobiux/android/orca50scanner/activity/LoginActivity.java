@@ -24,7 +24,7 @@ public class LoginActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
-        setTitle("Verification");
+        setTitle(getResources().getString(R.string.label_verification));
         setHomeButtonEnable(false);
 
         edtEmail = findViewById(R.id.edtEmail);
@@ -66,7 +66,7 @@ public class LoginActivity extends BaseActivity {
                     finish();
 
                 } else {
-                    showToast("Invalid Credentials");
+                    showToast(getResources().getString(R.string.invalid_credentials));
                 }
             }
 

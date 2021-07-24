@@ -8,17 +8,45 @@
     <string name="data_sync_settings">Data Sync &amp; \nSettings</string>
     <string name="save_data_finish">Finish</string>
     <string name="save_data_n_confirm">Save Data &amp; \nConfirm Transfer</string>
+
     <string name="label_transfer_assign">Transfer &amp; Assign</string>
     <string name="label_data_sync">Data Sync &amp; Settings</string>
+    <string name="label_asset_inventory">Asset Inventory</string>
     <string name="label_locate_asset">Locate Asset</string>
     <string name="label_about_us">About Us</string>
     <string name="label_license">License Information</string>
+    <string name="label_buzzer_behavior">Buzzer Behavior</string>
+    <string name="label_system_logs_management">System Logs Management...</string>
+    <string name="label_rf_power_output">RF Power Output</string>
+    <string name="label_verification">"Verification"</string>
+    <string name="sync_with_server_to_proceed">Sync with server to proceed</string>
+
+    <string name="camera_permission_granted">Camera Permission Granted</string>
+    <string name="camera_permission_denied">Camera Permission Denied</string>
+    <string name="storage_permission_granted">Storage Permission Granted</string>
+    <string name="storage_permission_denied">Storage Permission Denied</string>
+
+    <string name="sync_required">Sync required to proceed</string>
+    <string name="buzzer_mode_set_to">Buzzer Mode set to : </string>
+    <string name="select_option">Select a option to set</string>
+    <string name="ok">OK</string>
     <string name="start_scan">Start Scan</string>
     <string name="stop_scan">Stop Scan</string>
     <string name="scanning">Scanning in progress</string>
+    <string name="asset_not_selected">Asset not selected</string>
+    <string name="asset">Asset</string>
     <string name="not_implemented">Feature coming soon</string>
     <string name="rssi_unit">dBm</string>
     <string name="something_went_wrong">Something went wrong. Please try again</string>
+    <string name="choose_an_option_to_update">Choose any option to update</string>
+    <string name="saved_success">Saved Success</string>
+    <string name="lab_not_selected">Lab not selected</string>
+    <string name="you_are_in">You are in </string>
+    <string name="saving">Saving</string>
+    <string name="rf_power_output_set_to">RF Power Output set to </string>
+    <string name="invalid_credentials">Invalid Credentials</string>
+    <string name="connected">Connected</string>
+    <string name="connection_lost">Connection Lost</string>
 
     <string name="about_us_content">"Sensing Objects powered by Footprints is a suite of innovative solutions to address requirements for traceability of products, assets and processes that are essential for business operations in areas such as within inventory management, manufacturing process management, service and maintenance management and logistic processes. \n
         \nThe portfolio of solutions is brought to you by RFIDdirect Limited and Hito IT Solutions L.L.C.

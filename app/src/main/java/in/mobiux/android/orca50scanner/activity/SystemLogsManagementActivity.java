@@ -28,7 +28,7 @@ public class SystemLogsManagementActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_system_logs_management);
 
-        setTitle("System Logs Management...");
+        setTitle(getResources().getString(R.string.label_system_logs_management));
 
         radioGroup = findViewById(R.id.radioGroup);
         radioSendLogs = findViewById(R.id.rad1);
@@ -59,14 +59,14 @@ public class SystemLogsManagementActivity extends BaseActivity {
             public void onClick(View view) {
 
                 if (radioGroup.getCheckedRadioButtonId() == -1) {
-                    showToast("Choose any option to update");
+                    showToast(getResources().getString(R.string.choose_an_option_to_update));
                 } else {
                     if (radioGroup.getCheckedRadioButtonId() == R.id.rad1) {
                         session.setValue(KEY_RADIO, "0");
-                        showToast("Saved Success");
+                        showToast(getResources().getString(R.string.saved_success));
                     } else if (radioGroup.getCheckedRadioButtonId() == R.id.rad2) {
                         session.setValue(KEY_RADIO, "1");
-                        showToast("Saved Success");
+                        showToast(getResources().getString(R.string.saved_success));
                     } else {
                         showToast(getResources().getString(R.string.something_went_wrong));
                     }
