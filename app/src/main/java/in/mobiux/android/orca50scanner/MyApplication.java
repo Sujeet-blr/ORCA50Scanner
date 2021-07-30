@@ -52,7 +52,6 @@ public class MyApplication extends Application {
     private ReaderSetting readerSetting = ReaderSetting.newInstance();
     public RFIDReaderHelper rfidReaderHelper;
     public RFIDReaderListener listener;
-    boolean connectionStatus = false;
     private Handler mHandler;
     private boolean observerRegistrationStatus = false;
     public boolean scanningStatus = false;
@@ -219,7 +218,6 @@ public class MyApplication extends Application {
             }
         }
     };
-
 
     public void connectRFID() {
 
@@ -415,29 +413,5 @@ public class MyApplication extends Application {
                 }
             }
         }, 1000, 1000);
-    }
-
-    public void switchLanguage(String language) {
-        logger.i(TAG, "Language is " + language);
-        Resources resources = getApplicationContext().getResources();
-        Configuration config = resources.getConfiguration();
-        DisplayMetrics dm = resources.getDisplayMetrics();
-        if (language.equals("en")) {
-            config.locale = Locale.ENGLISH;
-        } else if (language.equals("de")) {
-            config.locale = Locale.GERMAN;
-        } else if (language.equals("fr")) {
-            config.locale = Locale.FRENCH;
-        } else if (language.equals("nl")) {
-            config.locale = new Locale("nl");
-        } else {
-            config.locale = Locale.ENGLISH;
-        }
-
-        resources.updateConfiguration(config, dm);
-
-        onConfigurationChanged(config);
-
-        session.setLanguage(LanguageUtils.Language.valueOf(language));
     }
 }
