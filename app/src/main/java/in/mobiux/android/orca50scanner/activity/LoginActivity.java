@@ -1,9 +1,7 @@
 package in.mobiux.android.orca50scanner.activity;
 
-import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
-import android.content.res.Resources;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
@@ -17,13 +15,14 @@ import androidx.annotation.NonNull;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import in.mobiux.android.orca50scanner.BuildConfig;
 import in.mobiux.android.orca50scanner.R;
 import in.mobiux.android.orca50scanner.api.ApiClient;
 import in.mobiux.android.orca50scanner.api.model.User;
-import in.mobiux.android.orca50scanner.util.LocaleHelper;
+import in.mobiux.android.orca50scanner.util.LanguageUtils;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -33,7 +32,7 @@ public class LoginActivity extends BaseActivity {
     private EditText edtEmail, edtPassword;
     private Button btnLogin;
     private Spinner spnrLanguage;
-    private List<String> languages = new ArrayList<>();
+    private List<LanguageUtils.Language> languages = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,29 +47,16 @@ public class LoginActivity extends BaseActivity {
         btnLogin = findViewById(R.id.btnLogin);
         spnrLanguage = findViewById(R.id.spnrLanguage);
 
-        languages.add("English");
-        languages.add("German");
-        languages.add("French");
-        languages.add("Dutch");
+        languages.addAll(Arrays.asList(LanguageUtils.Language.values()));
 
 
-        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(LoginActivity.this, android.R.layout.simple_spinner_item, languages);
+        ArrayAdapter<LanguageUtils.Language> arrayAdapter = new ArrayAdapter<LanguageUtils.Language>(LoginActivity.this, android.R.layout.simple_spinner_item, languages);
         arrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spnrLanguage.setAdapter(arrayAdapter);
 
-        String selectedLanguage = session.getLanguage();
-
-        if (selectedLanguage.equals(LanEnglish)) {
-            spnrLanguage.setSelection(0);
-        } else if (selectedLanguage.equals(LanGerman)) {
-            spnrLanguage.setSelection(1);
-        } else if (selectedLanguage.equals(LanFrench)) {
-            spnrLanguage.setSelection(2);
-        } else if (selectedLanguage.equals(LanDutch)) {
-            spnrLanguage.setSelection(3);
-        } else {
-            spnrLanguage.setSelection(0);
-        }
+        LanguageUtils.Language selectedLanguage = session.getLanguage();
+        int position = languages.indexOf(selectedLanguage);
+        spnrLanguage.setSelection(position);
 
 
         if (BuildConfig.DEBUG) {
@@ -95,30 +81,14 @@ public class LoginActivity extends BaseActivity {
         spnrLanguage.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                String selectedLan = "en";
+                LanguageUtils.Language language = (LanguageUtils.Language) spnrLanguage.getSelectedItem();
 
-                if (spnrLanguage.getSelectedItemPosition() == 0) {
-                    selectedLan = LanEnglish;
-                } else if (spnrLanguage.getSelectedItemPosition() == 1) {
-                    selectedLan = LanGerman;
-                } else if (spnrLanguage.getSelectedItemPosition() == 2) {
-                    selectedLan = LanFrench;
-                } else if (spnrLanguage.getSelectedItemPosition() == 3) {
-                    selectedLan = LanDutch;
-                } else {
-                    selectedLan = LanEnglish;
-                }
+                logger.i(TAG, "selected language is " + language);
 
-                if (!session.getLanguage().equals(selectedLan)) {
-                    switchLanguage(selectedLan);
-//                    session.setLanguage(selectedLan);
+                if (!session.getLanguage().equals(language)) {
+                    languageUtils.switchLanguage(LoginActivity.this, language);
                     recreate();
-//                    app.switchLanguage(selectedLan);
-
-//                    Context context = LocaleHelper.setLocale(LoginActivity.this, "en");
-//                    Resources resources = context.getResources();
                 }
-
 
             }
 
@@ -133,11 +103,6 @@ public class LoginActivity extends BaseActivity {
     public void onConfigurationChanged(@NonNull @NotNull Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
     }
-
-    //    @Override
-//    public void onConfigurationChanged(@NonNull @NotNull Configuration newConfig) {
-//        super.onConfigurationChanged(newConfig);
-//    }
 
     private void login(User user) {
 

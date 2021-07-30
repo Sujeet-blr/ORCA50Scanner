@@ -69,7 +69,7 @@ public class ScanInventoryActivity extends BaseActivity implements View.OnClickL
 
         laboratory = (DepartmentResponse.Child) getIntent().getSerializableExtra("laboratory");
         if (laboratory != null) {
-            setTitle(getResources().getString(R.string.you_are_in) + laboratory.getName());
+            setTitle(getResources().getString(R.string.label_you_are_in) + laboratory.getName());
             logger.i(TAG, "lab selected " + laboratory.getName() + "\t" + laboratory.getId());
         } else {
             logger.e(TAG, "Lab not selected");

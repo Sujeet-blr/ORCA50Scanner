@@ -35,6 +35,7 @@ import in.mobiux.android.orca50scanner.MyApplication;
 import in.mobiux.android.orca50scanner.R;
 import in.mobiux.android.orca50scanner.api.model.Inventory;
 import in.mobiux.android.orca50scanner.util.AppLogger;
+import in.mobiux.android.orca50scanner.util.LanguageUtils;
 import in.mobiux.android.orca50scanner.util.SessionManager;
 
 /**
@@ -57,10 +58,8 @@ public class BaseActivity extends AppCompatActivity {
     private TextView textToolbarTitle;
     private VirtualKeyListenerBroadcastReceiver mVirtualKeyListenerBroadcastReceiver;
 
-    protected String LanEnglish = "en";
-    protected String LanGerman = "de";
-    protected String LanFrench = "fr";
-    protected String LanDutch = "nl";
+    protected LanguageUtils languageUtils;
+    protected LanguageUtils.Language activityLanguage;
 
 
     @Override
@@ -75,7 +74,9 @@ public class BaseActivity extends AppCompatActivity {
 
         logger.i(TAG, "created Activity : " + this.getClass().getCanonicalName());
 
-        switchLanguage(session.getLanguage());
+        languageUtils = new LanguageUtils(getApplicationContext());
+        languageUtils.switchLanguage(this, session.getLanguage());
+        activityLanguage = session.getLanguage();
     }
 
     @Override
@@ -83,6 +84,10 @@ public class BaseActivity extends AppCompatActivity {
         super.onStart();
         if (parentLayout == null) {
             parentLayout = findViewById(android.R.id.content);
+        }
+
+        if (!activityLanguage.equals(session.getLanguage())) {
+            recreate();
         }
     }
 
@@ -94,29 +99,29 @@ public class BaseActivity extends AppCompatActivity {
     }
 
 
-    protected void switchLanguage(String language) {
-        logger.i(TAG, "Language is " + language);
-        Resources resources = getResources();
-        Configuration config = resources.getConfiguration();
-        DisplayMetrics dm = resources.getDisplayMetrics();
-        if (language.equals("en")) {
-            config.locale = Locale.ENGLISH;
-        } else if (language.equals("de")) {
-            config.locale = Locale.GERMAN;
-        } else if (language.equals("fr")) {
-            config.locale = Locale.FRENCH;
-        } else if (language.equals("nl")) {
-            config.locale = new Locale("nl");
-        } else {
-            config.locale = Locale.ENGLISH;
-        }
-        resources.updateConfiguration(config, dm);
-
-        onConfigurationChanged(config);
-
-        session.setLanguage(language);
-//        PreferenceUtil.commitString("language", language);
-    }
+//    protected void switchLanguage(String language) {
+//        logger.i(TAG, "Language is " + language);
+//        Resources resources = getResources();
+//        Configuration config = resources.getConfiguration();
+//        DisplayMetrics dm = resources.getDisplayMetrics();
+//        if (language.equals("en")) {
+//            config.locale = Locale.ENGLISH;
+//        } else if (language.equals("de")) {
+//            config.locale = Locale.GERMAN;
+//        } else if (language.equals("fr")) {
+//            config.locale = Locale.FRENCH;
+//        } else if (language.equals("nl")) {
+//            config.locale = new Locale("nl");
+//        } else {
+//            config.locale = Locale.ENGLISH;
+//        }
+//        resources.updateConfiguration(config, dm);
+//
+//        onConfigurationChanged(config);
+//
+//        session.setLanguage(language);
+////        PreferenceUtil.commitString("language", language);
+//    }
 
     // Function to check and request permission.
     public void checkPermission(BaseActivity activity, String permission, int requestCode) {
@@ -272,5 +277,7 @@ public class BaseActivity extends AppCompatActivity {
     protected void onDestroy() {
         super.onDestroy();
         this.unregisterReceiver(mVirtualKeyListenerBroadcastReceiver);
+
+        app.removeActivity(this);
     }
 }

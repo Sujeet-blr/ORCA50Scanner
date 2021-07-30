@@ -135,6 +135,17 @@
                     android:src="@android:drawable/ic_lock_power_off" />
             </LinearLayout>
         </androidx.cardview.widget.CardView>
+
+
+        <Spinner
+            android:id="@+id/spnrLanguage"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_margin="32dp"
+            android:entries="@array/dummmy_spinner" />
+
+
     </LinearLayout>
 
     <TextView

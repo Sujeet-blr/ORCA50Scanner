@@ -8,6 +8,8 @@ import com.google.gson.Gson;
 
 import in.mobiux.android.orca50scanner.api.model.User;
 
+import static in.mobiux.android.orca50scanner.util.LanguageUtils.Language.ENGLISH;
+
 /**
  * Created by SUJEET KUMAR on 28-Mar-21.
  */
@@ -104,11 +106,11 @@ public class SessionManager {
         setUser(null);
     }
 
-    public String getLanguage() {
-        return preferences.getString("language", "zh");
+    public LanguageUtils.Language getLanguage() {
+        return LanguageUtils.Language.valueByAttr(preferences.getString("language", "en"));
     }
 
-    public void setLanguage(String language) {
-        setValue("language", language);
+    public void setLanguage(LanguageUtils.Language language) {
+        setValue("language", language.getLanguage());
     }
 }

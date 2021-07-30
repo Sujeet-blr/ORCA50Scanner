@@ -12,10 +12,14 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.Spinner;
 import android.widget.TextView;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 
@@ -29,6 +33,7 @@ import in.mobiux.android.orca50scanner.api.model.Laboratory;
 import in.mobiux.android.orca50scanner.core.DataSyncListener;
 import in.mobiux.android.orca50scanner.core.ServerClient;
 import in.mobiux.android.orca50scanner.util.AppUtils;
+import in.mobiux.android.orca50scanner.util.LanguageUtils;
 import in.mobiux.android.orca50scanner.viewmodel.InventoryViewModel;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -47,6 +52,8 @@ public class DeviceSettingsActivity extends BaseActivity {
     private InventoryViewModel viewModel;
     private ServerClient serverClient;
     private int requestCode = 0;
+    private Spinner spnrLanguage;
+    private List<LanguageUtils.Language> languages = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,9 +65,40 @@ public class DeviceSettingsActivity extends BaseActivity {
         cardBuzzer = findViewById(R.id.cardBuzzer);
         cardLogs = findViewById(R.id.cardLogs);
         cardLogout = findViewById(R.id.cardLogout);
+        spnrLanguage = findViewById(R.id.spnrLanguage);
         tvAppVersion = findViewById(R.id.tvAppVersion);
 
         cardBuzzer.setVisibility(View.GONE);
+
+        languages.addAll(Arrays.asList(LanguageUtils.Language.values()));
+        ArrayAdapter<LanguageUtils.Language> arrayAdapter = new ArrayAdapter<LanguageUtils.Language>(DeviceSettingsActivity.this, android.R.layout.simple_spinner_item, languages);
+        arrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spnrLanguage.setAdapter(arrayAdapter);
+
+        LanguageUtils.Language selectedLanguage = session.getLanguage();
+
+        int position = languages.indexOf(selectedLanguage);
+        spnrLanguage.setSelection(position);
+
+        spnrLanguage.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+
+                LanguageUtils.Language language = (LanguageUtils.Language) spnrLanguage.getSelectedItem();
+
+                logger.i(TAG, "selected language is " + language);
+
+                if (!session.getLanguage().equals(language)) {
+                    languageUtils.switchLanguage(DeviceSettingsActivity.this, language);
+                    recreate();
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
 
         tvAppVersion.setText("version " + BuildConfig.VERSION_NAME);
 

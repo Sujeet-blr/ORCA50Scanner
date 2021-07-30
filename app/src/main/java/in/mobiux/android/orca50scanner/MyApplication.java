@@ -1,5 +1,6 @@
 package in.mobiux.android.orca50scanner;
 
+import android.app.Activity;
 import android.app.Application;
 import android.content.res.Configuration;
 import android.content.res.Resources;
@@ -32,7 +33,9 @@ import in.mobiux.android.orca50scanner.database.AppDatabase;
 import in.mobiux.android.orca50scanner.database.InventoryDatabase;
 import in.mobiux.android.orca50scanner.database.LaboratoryDatabase;
 import in.mobiux.android.orca50scanner.util.AppLogger;
+import in.mobiux.android.orca50scanner.util.AppSimulator;
 import in.mobiux.android.orca50scanner.util.DeviceConnector;
+import in.mobiux.android.orca50scanner.util.LanguageUtils;
 import in.mobiux.android.orca50scanner.util.RFIDReaderListener;
 import in.mobiux.android.orca50scanner.util.SessionManager;
 
@@ -48,7 +51,7 @@ public class MyApplication extends Application {
     public ModuleConnector connector = new ReaderConnector();
     private ReaderSetting readerSetting = ReaderSetting.newInstance();
     public RFIDReaderHelper rfidReaderHelper;
-    private RFIDReaderListener listener;
+    public RFIDReaderListener listener;
     boolean connectionStatus = false;
     private Handler mHandler;
     private boolean observerRegistrationStatus = false;
@@ -92,11 +95,7 @@ public class MyApplication extends Application {
         initTimer();
         scanningEndPoint = scanningEndPoint + scanningInterval;
 
-        if (BuildConfig.DEBUG) {
-            activateSimulator();
-        }
-
-        switchLanguage(session.getLanguage());
+        AppSimulator.initSimulator(this);
     }
 
     private RXTXListener rxtxListener = new RXTXListener() {
@@ -344,6 +343,9 @@ public class MyApplication extends Application {
         super.onTerminate();
 
         try {
+            if (!connector.isConnected()) {
+                return;
+            }
             ModuleManager.newInstance().setUHFStatus(false);
             ModuleManager.newInstance().release();
         } catch (Exception e) {
@@ -369,6 +371,10 @@ public class MyApplication extends Application {
 
     public void addActivity(BaseActivity activity) {
         activities.add(activity);
+    }
+
+    public void removeActivity(Activity activity) {
+        activities.remove(activity);
     }
 
     public void clearAllActivity() {
@@ -411,71 +417,6 @@ public class MyApplication extends Application {
         }, 1000, 1000);
     }
 
-    private void activateSimulator() {
-
-        if (!BuildConfig.DEBUG) {
-            return;
-        }
-
-        Timer timer = new Timer();
-        timer.schedule(new TimerTask() {
-            @Override
-            public void run() {
-
-                if (listener != null && session.hasCredentials()) {
-
-                    mHandler.post(new Runnable() {
-                        @Override
-                        public void run() {
-                            listener.onConnection(true);
-                            listener.onScanningStatus(true);
-                        }
-                    });
-                    try {
-                        Thread.sleep(2000);
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
-
-                    mHandler.post(new Runnable() {
-                        @Override
-                        public void run() {
-
-                            Inventory inventory = new Inventory();
-                            inventory.setEpc("AA000004");
-                            int rssi = new Random().nextInt(99);
-                            inventory.setRssi("" + rssi);
-
-                            listener.onInventoryTag(inventory);
-
-                        }
-                    });
-
-
-                    try {
-                        Thread.sleep(500);
-
-                        RXInventoryTag.RXInventoryTagEnd tagEnd = new RXInventoryTag.RXInventoryTagEnd();
-                        tagEnd.mReadRate = 33;
-                        tagEnd.mTotalRead = 44;
-                        tagEnd.mTagCount = 55;
-
-                        mHandler.post(new Runnable() {
-                            @Override
-                            public void run() {
-                                listener.onScanningStatus(false);
-                                listener.onInventoryTagEnd(tagEnd);
-                            }
-                        });
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
-                }
-            }
-        }, 30000, 30000);
-
-    }
-
     public void switchLanguage(String language) {
         logger.i(TAG, "Language is " + language);
         Resources resources = getApplicationContext().getResources();
@@ -492,11 +433,11 @@ public class MyApplication extends Application {
         } else {
             config.locale = Locale.ENGLISH;
         }
+
         resources.updateConfiguration(config, dm);
 
         onConfigurationChanged(config);
 
-        session.setLanguage(language);
-//        PreferenceUtil.commitString("language", language);
+        session.setLanguage(LanguageUtils.Language.valueOf(language));
     }
 }

@@ -1,6 +1,7 @@
 package in.mobiux.android.orca50scanner.core;
 
 import android.content.Context;
+import android.content.Intent;
 
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
@@ -11,6 +12,7 @@ import java.util.List;
 
 import in.mobiux.android.orca50scanner.MyApplication;
 import in.mobiux.android.orca50scanner.activity.BaseActivity;
+import in.mobiux.android.orca50scanner.activity.LoginActivity;
 import in.mobiux.android.orca50scanner.activity.SystemLogsManagementActivity;
 import in.mobiux.android.orca50scanner.api.ApiClient;
 import in.mobiux.android.orca50scanner.api.model.AssetHistory;
@@ -27,6 +29,9 @@ import in.mobiux.android.orca50scanner.viewmodel.InventoryViewModel;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+
+import static in.mobiux.android.orca50scanner.api.model.AppResponse.HTTP_401;
+import static in.mobiux.android.orca50scanner.api.model.AppResponse.HTTP_403;
 
 /**
  * Created by SUJEET KUMAR on 13-Jul-21.
@@ -112,6 +117,8 @@ public class ServerClient {
                     if (syncListener != null) {
                         syncListener.onSyncFailed();
                     }
+
+                    checkResponse(response);
                 }
             }
 
@@ -177,6 +184,8 @@ public class ServerClient {
                     if (syncListener != null) {
                         syncListener.onSyncFailed();
                     }
+
+                    checkResponse(response);
                 }
             }
 
@@ -231,6 +240,8 @@ public class ServerClient {
                     if (syncListener != null) {
                         syncListener.onSyncFailed();
                     }
+
+                    checkResponse(response);
                 }
             }
 
@@ -273,6 +284,7 @@ public class ServerClient {
                     logger.i(TAG, "logs uploaded succes & clear");
                 } else {
                     logger.i(TAG, "logs upload failed");
+                    checkResponse(response);
                 }
             }
 
@@ -281,5 +293,14 @@ public class ServerClient {
                 logger.i(TAG, "logs upload Failed " + t.getLocalizedMessage());
             }
         });
+    }
+
+    private void checkResponse(Response response) {
+
+        if (response.code() == HTTP_403 || response.code() == HTTP_401) {
+            Intent intent = new Intent(context, LoginActivity.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            context.startActivity(intent);
+        }
     }
 }

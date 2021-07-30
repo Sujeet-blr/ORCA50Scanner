@@ -17,7 +17,7 @@
         android:id="@+id/lltBody"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_above="@id/btnSave"
+        android:layout_above="@id/lltFooter1"
         android:layout_below="@+id/toolbar"
         android:orientation="vertical">
 
@@ -30,7 +30,7 @@
 
             <TextView
                 android:id="@+id/tvCount"
-                style="@style/TextAppearance.MaterialComponents.Headline6"
+                style="@style/TextAppearance.MaterialComponents.Button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="- Pcs"
@@ -64,6 +64,7 @@
     </LinearLayout>
 
     <LinearLayout
+        android:id="@+id/lltFooter1"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_above="@id/footer"

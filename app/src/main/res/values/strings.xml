@@ -20,6 +20,7 @@
     <string name="label_system_logs_management">System Logs Management...</string>
     <string name="label_rf_power_output">RF Power Output</string>
     <string name="label_verification">"Verification"</string>
+    <string name="label_you_are_in">"You are in "</string>
     <string name="sync_with_server_to_proceed">Sync with server to proceed</string>
 
     <string name="camera_permission_granted">Camera Permission Granted</string>
@@ -44,7 +45,6 @@
     <string name="choose_an_option_to_update">Choose any option to update</string>
     <string name="saved_success">Saved Success</string>
     <string name="lab_not_selected">Lab not selected</string>
-    <string name="you_are_in">You are in </string>
     <string name="saving">Saving</string>
     <string name="rf_power_output_set_to">RF Power Output set to </string>
     <string name="invalid_credentials">Invalid Credentials</string>
