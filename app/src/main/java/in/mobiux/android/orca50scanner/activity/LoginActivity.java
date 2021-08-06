@@ -22,6 +22,7 @@ import in.mobiux.android.orca50scanner.BuildConfig;
 import in.mobiux.android.orca50scanner.R;
 import in.mobiux.android.orca50scanner.api.ApiClient;
 import in.mobiux.android.orca50scanner.api.model.User;
+import in.mobiux.android.orca50scanner.util.AppConfig;
 import in.mobiux.android.orca50scanner.util.LanguageUtils;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -46,6 +47,12 @@ public class LoginActivity extends BaseActivity {
         edtPassword = findViewById(R.id.edtPassword);
         btnLogin = findViewById(R.id.btnLogin);
         spnrLanguage = findViewById(R.id.spnrLanguage);
+
+        if (AppConfig.MULTI_LANGUAGE) {
+            spnrLanguage.setVisibility(View.VISIBLE);
+        } else {
+            spnrLanguage.setVisibility(View.GONE);
+        }
 
         languages.addAll(Arrays.asList(LanguageUtils.Language.values()));
 

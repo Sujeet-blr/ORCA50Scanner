@@ -32,6 +32,7 @@ import in.mobiux.android.orca50scanner.api.model.Inventory;
 import in.mobiux.android.orca50scanner.api.model.Laboratory;
 import in.mobiux.android.orca50scanner.core.DataSyncListener;
 import in.mobiux.android.orca50scanner.core.ServerClient;
+import in.mobiux.android.orca50scanner.util.AppConfig;
 import in.mobiux.android.orca50scanner.util.AppUtils;
 import in.mobiux.android.orca50scanner.util.LanguageUtils;
 import in.mobiux.android.orca50scanner.viewmodel.InventoryViewModel;
@@ -69,6 +70,12 @@ public class DeviceSettingsActivity extends BaseActivity {
         tvAppVersion = findViewById(R.id.tvAppVersion);
 
         cardBuzzer.setVisibility(View.GONE);
+
+        if (AppConfig.MULTI_LANGUAGE) {
+            spnrLanguage.setVisibility(View.VISIBLE);
+        } else {
+            spnrLanguage.setVisibility(View.GONE);
+        }
 
         languages.addAll(Arrays.asList(LanguageUtils.Language.values()));
         ArrayAdapter<LanguageUtils.Language> arrayAdapter = new ArrayAdapter<LanguageUtils.Language>(DeviceSettingsActivity.this, android.R.layout.simple_spinner_item, languages);
