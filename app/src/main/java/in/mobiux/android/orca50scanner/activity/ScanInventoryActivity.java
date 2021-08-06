@@ -4,6 +4,7 @@ import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.Manifest;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
@@ -28,6 +29,8 @@ import in.mobiux.android.orca50scanner.api.model.AssetHistory;
 import in.mobiux.android.orca50scanner.api.model.DepartmentResponse;
 import in.mobiux.android.orca50scanner.api.model.Inventory;
 import in.mobiux.android.orca50scanner.util.AppUtils;
+import in.mobiux.android.orca50scanner.util.Common;
+import in.mobiux.android.orca50scanner.util.PdfUtils;
 import in.mobiux.android.orca50scanner.util.RFIDReaderListener;
 import in.mobiux.android.orca50scanner.viewmodel.InventoryViewModel;
 
@@ -64,7 +67,7 @@ public class ScanInventoryActivity extends BaseActivity implements View.OnClickL
         btnSave.setOnClickListener(this);
         btnClear.setOnClickListener(this);
         btnPrint.setOnClickListener(this);
-        btnPrint.setVisibility(View.GONE);
+//        btnPrint.setVisibility(View.GONE);
         txtIndicator.setTag(startButtonStatus);
 
         laboratory = (DepartmentResponse.Child) getIntent().getSerializableExtra("laboratory");
@@ -156,9 +159,11 @@ public class ScanInventoryActivity extends BaseActivity implements View.OnClickL
             case R.id.btnPrint:
                 logger.i(TAG, "print");
 
-                Intent intent = getIntent();
-                finish();
-                startActivity(intent);
+                checkPermission(ScanInventoryActivity.this, Manifest.permission.WRITE_EXTERNAL_STORAGE, STORAGE_PERMISSION_CODE);
+
+                PdfUtils pdfUtils = new PdfUtils(ScanInventoryActivity.this);
+                pdfUtils.createPdfFile(PdfUtils.getPdfPath(ScanInventoryActivity.this));
+
                 break;
         }
     }
