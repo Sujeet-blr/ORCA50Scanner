@@ -18,7 +18,7 @@ public class WatermarkPageEvent extends PdfPageEventHelper {
 //        super.onEndPage(writer, document);
 
         ColumnText.showTextAligned(writer.getDirectContentUnder(),
-                Element.ALIGN_CENTER, new Phrase("Footprints.com", FONT),
+                Element.ALIGN_CENTER, new Phrase(PdfUtils.PDF_WATERMARK_TEXT, FONT),
                 297.5f, 421, writer.getPageNumber() % 2 == 1 ? 45 : -45);
     }
 }

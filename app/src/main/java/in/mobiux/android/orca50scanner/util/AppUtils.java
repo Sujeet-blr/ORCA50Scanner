@@ -22,11 +22,25 @@ import okhttp3.RequestBody;
 public class AppUtils {
 
     public static final String TAG = AppUtils.class.getCanonicalName();
-    static SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS'Z'");
-    static String format;
+//    static SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS'Z'");
+//    static String format;
 
     public static String getFormattedTimestamp() {
 
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS'Z'");
+        String format = null;
+
+        try {
+            format = simpleDateFormat.format(new Date());
+        } catch (Exception e) {
+            return "" + format;
+        }
+        return format;
+    }
+
+    public static String getFormattedTimestampUpToSeconds() {
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        String format = null;
         try {
             format = simpleDateFormat.format(new Date());
         } catch (Exception e) {

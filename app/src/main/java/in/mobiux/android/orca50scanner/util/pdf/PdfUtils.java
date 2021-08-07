@@ -24,6 +24,7 @@ import java.util.List;
 
 import in.mobiux.android.orca50scanner.api.model.Inventory;
 import in.mobiux.android.orca50scanner.util.AppLogger;
+import in.mobiux.android.orca50scanner.util.AppUtils;
 import in.mobiux.android.orca50scanner.util.Common;
 
 public class PdfUtils {
@@ -36,6 +37,7 @@ public class PdfUtils {
     private static final String PRINT_JOB_NAME = "footprints documents";
     private static final String PDF_AUTHOR = "Footprints";
     private static final String PDF_CREATER = "SGUL";
+    public static final String PDF_WATERMARK_TEXT = "Footprints.com";
 
 
     public PdfUtils(Context context) {
@@ -49,18 +51,17 @@ public class PdfUtils {
         if (new File(context.getFilesDir(), path).exists()) {
             new File(context.getFilesDir(), path).delete();
         }
-        logger.i(TAG, "" + path);
 
         try {
 
             Document document = new Document();
 //            save
 //            FileOutputStream out = context.openFileOutput(path, Context.MODE_PRIVATE);
-            PdfWriter.getInstance(document, new FileOutputStream(path)).setPageEvent(new WatermarkPageEvent());
+            PdfWriter pdfWriter = PdfWriter.getInstance(document, new FileOutputStream(path));
+//            Adding watermark in pdf
+            pdfWriter.setPageEvent(new WatermarkPageEvent());
 //            open to write
             document.open();
-
-            logger.i(TAG, "document is open for write");
 
 //            settings
             document.setPageSize(PageSize.A4);
@@ -69,24 +70,23 @@ public class PdfUtils {
             document.addCreator(PDF_CREATER);
 
 
-//            addNewItem(document, "SGUL", Element.ALIGN_CENTER);
+//            Adding header
             addHeaderTitle(document, "SGUL");
             addLineSpace(document);
+
             addNewItem(document, title, Element.ALIGN_CENTER);
+            addNewItem(document, "created At : " + AppUtils.getFormattedTimestampUpToSeconds(), Element.ALIGN_RIGHT);
 
             addLineSeparator(document);
             addLineSpace(document);
 
-//            adding header
 
             PdfPTable table = new PdfPTable(4);
-
 
             table.addCell("Asset Name");
             table.addCell("Barcode");
             table.addCell("RFID");
             table.addCell("Status");
-
 
             for (Inventory i : list) {
 

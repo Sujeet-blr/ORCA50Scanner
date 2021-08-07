@@ -63,7 +63,7 @@ public class ScanInventoryActivity extends BaseActivity implements View.OnClickL
         btnSave.setOnClickListener(this);
         btnClear.setOnClickListener(this);
         btnPrint.setOnClickListener(this);
-//        btnPrint.setVisibility(View.GONE);
+        btnPrint.setVisibility(View.GONE);
         txtIndicator.setTag(startButtonStatus);
 
         laboratory = (DepartmentResponse.Child) getIntent().getSerializableExtra("laboratory");
@@ -99,13 +99,14 @@ public class ScanInventoryActivity extends BaseActivity implements View.OnClickL
                     logger.i(TAG, "lab id " + inventory.getLabId());
                     inventories.put(inventory.getEpc(), inventory);
 
-                    if (laboratory.getId() == inventory.getLabId()) {
+                    Inventory matching = AppUtils.getMatchingInventory(inventory.getFormattedEPC(), scannedInventories);
+
+                    if (laboratory.getId() == inventory.getLabId() && matching == null) {
                         scannedInventories.add(inventory);
                     }
                 }
 
-
-//                scannedInventories.addAll(inventories.values());
+                arrangeScannedList();
                 tvCount.setText(adapter.getItemCount() + " Pcs");
                 adapter.notifyDataSetChanged();
                 logger.i(TAG, "list fetched" + inventories.size());
@@ -194,22 +195,41 @@ public class ScanInventoryActivity extends BaseActivity implements View.OnClickL
             logger.i(TAG, "Scanned tag is not found in database " + inventory.getEpc());
         }
 
-        HashMap<String, Inventory> m = new HashMap<>();
+//        HashMap<String, Inventory> map = new HashMap<>();
+//        for (Inventory i : scannedInventories) {
+//            map.put(i.getFormattedEPC(), i);
+//        }
+//
+//        scannedInventories.clear();
+//        for (Inventory i : map.values()) {
+//            if (i.isScanStatus()) {
+//                scannedInventories.add(0, i);
+//            } else {
+//                scannedInventories.add(i);
+//            }
+//        }
+
+        arrangeScannedList();
+
+        adapter.notifyDataSetChanged();
+        tvCount.setText(adapter.getItemCount() + " PCS");
+    }
+
+    private void arrangeScannedList(){
+
+        HashMap<String, Inventory> map = new HashMap<>();
         for (Inventory i : scannedInventories) {
-            m.put(i.getFormattedEPC(), i);
+            map.put(i.getFormattedEPC(), i);
         }
 
         scannedInventories.clear();
-        for (Inventory i : m.values()) {
+        for (Inventory i : map.values()) {
             if (i.isScanStatus()) {
                 scannedInventories.add(0, i);
             } else {
                 scannedInventories.add(i);
             }
         }
-
-        adapter.notifyDataSetChanged();
-        tvCount.setText(adapter.getItemCount() + " PCS");
     }
 
     @Override
