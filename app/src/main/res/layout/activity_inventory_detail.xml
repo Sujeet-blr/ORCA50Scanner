@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".activity.InventoryDetailActivity">
+    tools:context=".dev.InventoryDetailActivity">
 
     <include
         layout="@layout/action_bar_app"
@@ -144,7 +144,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="4"
             android:gravity="center"
-            android:text="Return To Inventory" />
+            android:text="@string/return_to_inventory" />
 
         <View
             android:layout_width="1dp"
@@ -158,7 +158,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:gravity="center"
-            android:text="Close" />
+            android:text="@string/close" />
     </LinearLayout>
 
 </RelativeLayout>

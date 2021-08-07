@@ -12,37 +12,37 @@
         layout="@layout/action_bar_app"
         android:layout_alignParentTop="true" />
 
-    <TextView
-        android:id="@+id/txtIndicator"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/toolbar"
-        android:layout_centerHorizontal="true"
-        android:layout_margin="@dimen/margin_horizontal"
-        android:text="@string/scanning"
-        android:textColor="@color/orange" />
 
     <LinearLayout
         android:id="@+id/lltBody"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_above="@id/btnSave"
-        android:layout_below="@id/txtIndicator"
+        android:layout_above="@id/lltFooter1"
+        android:layout_below="@+id/toolbar"
         android:orientation="vertical">
 
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/margin_horizontal"
+            android:layout_marginTop="8dp"
             android:layout_marginRight="@dimen/margin_horizontal">
 
             <TextView
                 android:id="@+id/tvCount"
-                style="@style/TextAppearance.MaterialComponents.Headline6"
+                style="@style/TextAppearance.MaterialComponents.Button"
                 android:layout_width="wrap_content"
-                android:textAllCaps="false"
                 android:layout_height="wrap_content"
-                android:text="67 Pcs" />
+                android:text="- Pcs"
+                android:textAllCaps="false" />
+
+            <TextView
+                android:id="@+id/txtIndicator"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:text="@string/scanning"
+                android:textColor="@color/orange" />
 
             <Button
                 android:id="@+id/btnClear"
@@ -51,7 +51,7 @@
                 android:layout_height="wrap_content"
                 android:layout_alignBaseline="@id/tvCount"
                 android:layout_alignParentRight="true"
-                android:text="Clear Data"
+                android:text="@string/clear"
                 android:textColor="@color/orange" />
         </RelativeLayout>
 
@@ -63,14 +63,35 @@
 
     </LinearLayout>
 
-    <Button
-        android:id="@+id/btnSave"
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:id="@+id/lltFooter1"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_above="@id/footer"
-        android:layout_centerHorizontal="true"
-        android:backgroundTint="@color/black"
-        android:text="@string/save_data_exit_laboratory" />
+        android:gravity="center"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/btnSave"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="5dp"
+            android:layout_weight="1"
+            android:backgroundTint="@color/black"
+            android:text="@string/save_data_exit_laboratory" />
+
+        <Button
+            android:id="@+id/btnPrint"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="8dp"
+            android:layout_weight="1"
+            android:backgroundTint="@color/black"
+            android:text="@string/print" />
+
+    </LinearLayout>
 
     <include
         android:id="@+id/footer"

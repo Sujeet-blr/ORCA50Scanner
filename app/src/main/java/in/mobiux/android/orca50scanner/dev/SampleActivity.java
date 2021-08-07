@@ -1,6 +1,4 @@
-package in.mobiux.android.orca50scanner.activity;
-
-import androidx.appcompat.app.AppCompatActivity;
+package in.mobiux.android.orca50scanner.dev;
 
 import in.mobiux.android.orca50scanner.R;
 
@@ -12,8 +10,8 @@ import android.widget.Button;
 
 import java.io.File;
 
+import in.mobiux.android.orca50scanner.activity.BaseActivity;
 import in.mobiux.android.orca50scanner.api.ApiClient;
-import in.mobiux.android.orca50scanner.util.AppLogger;
 import in.mobiux.android.orca50scanner.util.AppUtils;
 import retrofit2.Call;
 import retrofit2.Callback;

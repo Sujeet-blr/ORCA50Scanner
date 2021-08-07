@@ -8,6 +8,8 @@ import com.google.gson.Gson;
 
 import in.mobiux.android.orca50scanner.api.model.User;
 
+import static in.mobiux.android.orca50scanner.util.LanguageUtils.Language.ENGLISH;
+
 /**
  * Created by SUJEET KUMAR on 28-Mar-21.
  */
@@ -17,6 +19,7 @@ public class SessionManager {
     private Context context;
     private SharedPreferences preferences;
     private static SessionManager INSTANCE;
+    private static String KEY_TOKEN = "token";
 
     public static SessionManager getInstance(Context context) {
         if (INSTANCE == null) {
@@ -41,9 +44,11 @@ public class SessionManager {
 
     public void setUser(User user) {
         Gson gson = new Gson();
-        String str = gson.toJson(user).toString();
+        String str;
         if (user == null) {
             str = "";
+        } else {
+            str = gson.toJson(user).toString();
         }
 
         Log.i(TAG, "saved user is : " + str);
@@ -73,16 +78,16 @@ public class SessionManager {
 
     public void saveToken(String token) {
         SharedPreferences.Editor editor = preferences.edit();
-        editor.putString("token", token);
+        editor.putString(KEY_TOKEN, token);
         editor.apply();
     }
 
     public String token() {
-        return "Token " + preferences.getString("token", "");
+        return "Token " + preferences.getString(KEY_TOKEN, "");
     }
 
     public String rawToken() {
-        return preferences.getString("token", "");
+        return preferences.getString(KEY_TOKEN, "");
     }
 
     public void setValue(String key, String value) {
@@ -94,5 +99,18 @@ public class SessionManager {
 
     public String getValue(String key) {
         return preferences.getString(key, "");
+    }
+
+    public void logout() {
+        saveToken("");
+        setUser(null);
+    }
+
+    public LanguageUtils.Language getLanguage() {
+        return LanguageUtils.Language.valueByAttr(preferences.getString("language", "en"));
+    }
+
+    public void setLanguage(LanguageUtils.Language language) {
+        setValue("language", language.getLanguage());
     }
 }

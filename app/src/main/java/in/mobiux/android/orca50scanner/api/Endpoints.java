@@ -12,12 +12,14 @@ public class Endpoints {
     public static final String BASE_URL_LOCAL = "https://172.21.78.80/api/v1/";
 
 
-    public static final String BASE_URL = BASE_URL_LOCAL;
+    public static final String BASE_URL = BASE_URL_STAGING;
 
     public static final String LOGIN = "auth/login/";
     public static final String DEPARTMENTS = "units/all/?flat_list=false";
     public static final String ASSETS = "assets/?rfid=True";
     public static final String UPDATE_ASSETS = "assets/device-scan/";
+
+    public static final String UPDATE_ASSETS_NEW = "assets/device-scan/";
 
     public static final String LOGS = "tracking/device-log/";
 

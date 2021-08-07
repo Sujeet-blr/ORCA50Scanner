@@ -1,15 +1,16 @@
 package in.mobiux.android.orca50scanner.activity;
 
-import android.app.ActionBar;
 import android.app.ProgressDialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.pm.PackageManager;
+import android.content.res.Configuration;
+import android.content.res.Resources;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Environment;
+import android.util.DisplayMetrics;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
@@ -23,18 +24,18 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.core.content.FileProvider;
 
-import com.nativec.tools.ModuleManager;
+
+import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
 import java.util.List;
+import java.util.Locale;
 
 import in.mobiux.android.orca50scanner.MyApplication;
 import in.mobiux.android.orca50scanner.R;
 import in.mobiux.android.orca50scanner.api.model.Inventory;
 import in.mobiux.android.orca50scanner.util.AppLogger;
+import in.mobiux.android.orca50scanner.util.LanguageUtils;
 import in.mobiux.android.orca50scanner.util.SessionManager;
 
 /**
@@ -57,6 +58,9 @@ public class BaseActivity extends AppCompatActivity {
     private TextView textToolbarTitle;
     private VirtualKeyListenerBroadcastReceiver mVirtualKeyListenerBroadcastReceiver;
 
+    protected LanguageUtils languageUtils;
+    protected LanguageUtils.Language activityLanguage;
+
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -69,6 +73,10 @@ public class BaseActivity extends AppCompatActivity {
         registerVirtualKeyListener();
 
         logger.i(TAG, "created Activity : " + this.getClass().getCanonicalName());
+
+        languageUtils = new LanguageUtils(getApplicationContext());
+        languageUtils.switchLanguage(this, session.getLanguage());
+        activityLanguage = session.getLanguage();
     }
 
     @Override
@@ -77,7 +85,43 @@ public class BaseActivity extends AppCompatActivity {
         if (parentLayout == null) {
             parentLayout = findViewById(android.R.id.content);
         }
+
+        if (!activityLanguage.equals(session.getLanguage())) {
+            recreate();
+        }
     }
+
+    @Override
+    public void onConfigurationChanged(@NonNull @NotNull Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+
+        logger.i(TAG, "onConfiguration Changed");
+    }
+
+
+//    protected void switchLanguage(String language) {
+//        logger.i(TAG, "Language is " + language);
+//        Resources resources = getResources();
+//        Configuration config = resources.getConfiguration();
+//        DisplayMetrics dm = resources.getDisplayMetrics();
+//        if (language.equals("en")) {
+//            config.locale = Locale.ENGLISH;
+//        } else if (language.equals("de")) {
+//            config.locale = Locale.GERMAN;
+//        } else if (language.equals("fr")) {
+//            config.locale = Locale.FRENCH;
+//        } else if (language.equals("nl")) {
+//            config.locale = new Locale("nl");
+//        } else {
+//            config.locale = Locale.ENGLISH;
+//        }
+//        resources.updateConfiguration(config, dm);
+//
+//        onConfigurationChanged(config);
+//
+//        session.setLanguage(language);
+////        PreferenceUtil.commitString("language", language);
+//    }
 
     // Function to check and request permission.
     public void checkPermission(BaseActivity activity, String permission, int requestCode) {
@@ -107,21 +151,21 @@ public class BaseActivity extends AppCompatActivity {
             if (grantResults.length > 0
                     && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 Toast.makeText(this,
-                        "Camera Permission Granted",
+                        R.string.camera_permission_granted,
                         Toast.LENGTH_SHORT)
                         .show();
             } else {
                 Toast.makeText(this,
-                        "Camera Permission Denied",
+                        R.string.camera_permission_denied,
                         Toast.LENGTH_SHORT)
                         .show();
             }
         } else if (requestCode == STORAGE_PERMISSION_CODE) {
             if (grantResults.length > 0
                     && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                logger.i(TAG, "Storage Permission Granted");
+                logger.i(TAG, getResources().getString(R.string.storage_permission_granted));
             } else {
-                logger.e(TAG, "Storage Permission Denied");
+                logger.e(TAG, getResources().getString(R.string.storage_permission_denied));
             }
         }
     }
@@ -132,7 +176,7 @@ public class BaseActivity extends AppCompatActivity {
 //        data.append("")
 
         for (Inventory inventory : list) {
-            data.append("\n" + inventory.getInventoryId() + "," + inventory.getEpc() + "," + String.valueOf(inventory.getQuantity()));
+            data.append("\n" + inventory.getInventoryId() + "," + inventory.getEpc() + "," + inventory.getQuantity());
         }
 
         try {
@@ -167,7 +211,7 @@ public class BaseActivity extends AppCompatActivity {
     }
 
     protected void syncRequired() {
-        Toast.makeText(app, "Sync required to proceed", Toast.LENGTH_SHORT).show();
+        Toast.makeText(app, R.string.sync_required, Toast.LENGTH_SHORT).show();
     }
 
     protected void setTitle(String title) {
@@ -233,5 +277,7 @@ public class BaseActivity extends AppCompatActivity {
     protected void onDestroy() {
         super.onDestroy();
         this.unregisterReceiver(mVirtualKeyListenerBroadcastReceiver);
+
+        app.removeActivity(this);
     }
 }

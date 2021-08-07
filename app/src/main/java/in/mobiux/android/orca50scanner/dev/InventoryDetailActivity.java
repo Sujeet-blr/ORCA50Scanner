@@ -1,4 +1,4 @@
-package in.mobiux.android.orca50scanner.activity;
+package in.mobiux.android.orca50scanner.dev;
 
 import android.os.Bundle;
 import android.os.Handler;
@@ -11,12 +11,12 @@ import com.module.interaction.ModuleConnector;
 import com.module.interaction.RXTXListener;
 import com.nativec.tools.ModuleManager;
 import com.rfid.RFIDReaderHelper;
-import com.rfid.config.CMD;
 import com.rfid.rxobserver.RXObserver;
 import com.rfid.rxobserver.ReaderSetting;
 import com.rfid.rxobserver.bean.RXInventoryTag;
 
 import in.mobiux.android.orca50scanner.R;
+import in.mobiux.android.orca50scanner.activity.BaseActivity;
 import in.mobiux.android.orca50scanner.api.model.Inventory;
 import in.mobiux.android.orca50scanner.util.DeviceConnector;
 

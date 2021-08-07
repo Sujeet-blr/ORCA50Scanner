@@ -12,8 +12,9 @@ android {
         applicationId "in.mobiux.android.orca50scanner"
         minSdkVersion 19
         targetSdkVersion 30
-        versionCode 24
+        versionCode 28
         versionName "A01"
+        multiDexEnabled true
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -76,4 +77,7 @@ dependencies {
     // When using the BoM, you don't specify versions in Firebase library dependencies
     implementation 'com.google.firebase:firebase-crashlytics'
     implementation 'com.google.firebase:firebase-analytics'
+
+//    for pdf & print
+    implementation 'com.itextpdf:itextg:5.5.10'
 }

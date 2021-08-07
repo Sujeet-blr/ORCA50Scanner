@@ -4,7 +4,9 @@
         <shape>
             <solid android:color="@color/seekbar_default" />
             <size android:height="120dp" />
-            <stroke android:color="@color/white" android:width="2dp"/>
+            <stroke
+                android:width="2dp"
+                android:color="@color/white" />
             <corners android:radius="8dp" />
             <!--            <gradient-->
             <!--                android:angle="180"-->

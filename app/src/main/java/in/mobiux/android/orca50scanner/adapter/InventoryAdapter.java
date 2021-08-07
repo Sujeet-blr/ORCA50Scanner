@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -48,7 +49,17 @@ public class InventoryAdapter extends RecyclerView.Adapter<InventoryAdapter.Recy
 
         holder.tvID.setText("" + inventory.getName());
         holder.tvName.setText("" + inventory.getEpc());
-        holder.tvQty.setText("" + inventory.getRssi() + context.getResources().getString(R.string.rssi_unit));
+        if (inventory.getBarcode() == null || inventory.getBarcode().isEmpty()) {
+            holder.tvQty.setText("Not available");
+        } else {
+            holder.tvQty.setText("" + inventory.getBarcode());
+        }
+
+        if (inventory.isScanStatus()) {
+            holder.ivStatus.setImageResource(R.drawable.ic_check_circle_24);
+        } else {
+            holder.ivStatus.setImageResource(R.drawable.icon_cancel);
+        }
 
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -68,6 +79,7 @@ public class InventoryAdapter extends RecyclerView.Adapter<InventoryAdapter.Recy
     class RecyclerViewHolder extends RecyclerView.ViewHolder {
 
         private TextView tvID, tvName, tvQty;
+        private ImageView ivStatus;
 
         public RecyclerViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -75,6 +87,7 @@ public class InventoryAdapter extends RecyclerView.Adapter<InventoryAdapter.Recy
             tvID = itemView.findViewById(R.id.tvId);
             tvName = itemView.findViewById(R.id.tvName);
             tvQty = itemView.findViewById(R.id.tvQty);
+            ivStatus = itemView.findViewById(R.id.ivStatus);
         }
     }
 

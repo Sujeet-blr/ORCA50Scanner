@@ -2,12 +2,11 @@ package in.mobiux.android.orca50scanner;
 
 import android.app.Activity;
 import android.app.Application;
+import android.content.res.Configuration;
+import android.content.res.Resources;
 import android.media.MediaPlayer;
 import android.os.Handler;
-import android.widget.Toast;
-
-import androidx.lifecycle.ViewModelProvider;
-import androidx.room.Room;
+import android.util.DisplayMetrics;
 
 import com.module.interaction.ModuleConnector;
 import com.module.interaction.RXTXListener;
@@ -21,25 +20,24 @@ import com.rfid.rxobserver.bean.RXInventoryTag;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
+import java.util.Random;
 import java.util.Timer;
 import java.util.TimerTask;
 
 import in.mobiux.android.orca50scanner.activity.BaseActivity;
-import in.mobiux.android.orca50scanner.api.ApiClient;
+import in.mobiux.android.orca50scanner.activity.LoginActivity;
 import in.mobiux.android.orca50scanner.api.Presenter;
-import in.mobiux.android.orca50scanner.api.model.AssetResponse;
 import in.mobiux.android.orca50scanner.api.model.Inventory;
 import in.mobiux.android.orca50scanner.database.AppDatabase;
 import in.mobiux.android.orca50scanner.database.InventoryDatabase;
 import in.mobiux.android.orca50scanner.database.LaboratoryDatabase;
 import in.mobiux.android.orca50scanner.util.AppLogger;
+import in.mobiux.android.orca50scanner.util.AppSimulator;
 import in.mobiux.android.orca50scanner.util.DeviceConnector;
+import in.mobiux.android.orca50scanner.util.LanguageUtils;
 import in.mobiux.android.orca50scanner.util.RFIDReaderListener;
 import in.mobiux.android.orca50scanner.util.SessionManager;
-import in.mobiux.android.orca50scanner.viewmodel.LaboratoryViewModel;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 
 /**
  * Created by SUJEET KUMAR on 08-Mar-21.
@@ -53,8 +51,7 @@ public class MyApplication extends Application {
     public ModuleConnector connector = new ReaderConnector();
     private ReaderSetting readerSetting = ReaderSetting.newInstance();
     public RFIDReaderHelper rfidReaderHelper;
-    private RFIDReaderListener listener;
-    boolean connectionStatus = false;
+    public RFIDReaderListener listener;
     private Handler mHandler;
     private boolean observerRegistrationStatus = false;
     public boolean scanningStatus = false;
@@ -96,6 +93,8 @@ public class MyApplication extends Application {
 
         initTimer();
         scanningEndPoint = scanningEndPoint + scanningInterval;
+
+        AppSimulator.initSimulator(this);
     }
 
     private RXTXListener rxtxListener = new RXTXListener() {
@@ -220,8 +219,11 @@ public class MyApplication extends Application {
         }
     };
 
-
     public void connectRFID() {
+
+        if (BuildConfig.DEBUG) {
+            return;
+        }
 
         try {
             if (connector.connectCom(DeviceConnector.PORT, DeviceConnector.BOUD_RATE)) {
@@ -243,7 +245,6 @@ public class MyApplication extends Application {
                     int beeperResult = -1;
                     beeperResult = rfidReaderHelper.setBeeperMode(ReaderSetting.newInstance().btReadId, (byte) 2);
                     logger.i(TAG, "beeper result value " + beeperResult);
-//                    Toast.makeText(this, "beeper value " + beeperResult, Toast.LENGTH_SHORT).show();
 
                     ReaderSetting.newInstance().btBeeperMode = ((byte) 2);
 
@@ -270,6 +271,11 @@ public class MyApplication extends Application {
     }
 
     public void reconnectRFID() {
+
+        if (BuildConfig.DEBUG) {
+            return;
+        }
+
         logger.i(TAG, "reconnecting rfid");
         if (connector.isConnected() && rfidReaderHelper != null) {
             rfidReaderHelper.startWith();
@@ -293,7 +299,6 @@ public class MyApplication extends Application {
             beeperResult = rfidReaderHelper.setBeeperMode(ReaderSetting.newInstance().btReadId, (byte) 2);
 
             logger.i(TAG, "beeper result rec " + beeperResult);
-//            Toast.makeText(this, "beeper result rec " + beeperResult, Toast.LENGTH_SHORT).show();
             ReaderSetting.newInstance().btBeeperMode = ((byte) 2);
 
             logger.i(TAG, "beeper result recc " + beeperResult);
@@ -335,8 +340,16 @@ public class MyApplication extends Application {
     public void onTerminate() {
         super.onTerminate();
 
-        ModuleManager.newInstance().setUHFStatus(false);
-        ModuleManager.newInstance().release();
+        try {
+            if (!connector.isConnected()) {
+                return;
+            }
+            ModuleManager.newInstance().setUHFStatus(false);
+            ModuleManager.newInstance().release();
+        } catch (Exception e) {
+            e.printStackTrace();
+            logger.e(TAG, "" + e.getLocalizedMessage());
+        }
 
         if (observerRegistrationStatus) {
             rfidReaderHelper.unRegisterObserver(rxObserver);
@@ -357,6 +370,25 @@ public class MyApplication extends Application {
     public void addActivity(BaseActivity activity) {
         activities.add(activity);
     }
+
+    public void removeActivity(Activity activity) {
+        activities.remove(activity);
+    }
+
+    public void clearAllActivity() {
+        for (BaseActivity activity : activities) {
+            activity.finish();
+        }
+    }
+
+    public void clearStackOnSignOut() {
+        for (BaseActivity activity : activities) {
+            if (!(activity instanceof LoginActivity)) {
+                activity.finish();
+            }
+        }
+    }
+
 
     private void initTimer() {
         timer.schedule(new TimerTask() {

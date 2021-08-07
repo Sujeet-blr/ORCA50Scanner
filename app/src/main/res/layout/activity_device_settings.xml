@@ -35,7 +35,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:padding="8dp"
-                    android:text="RF Output Power" />
+                    android:text="@string/rf_power_output" />
 
                 <ImageView
                     android:layout_width="wrap_content"
@@ -65,7 +65,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:padding="8dp"
-                    android:text="Buzzer Behavior" />
+                    android:text="@string/buzzer_behavior" />
 
                 <ImageView
                     android:layout_width="wrap_content"
@@ -95,7 +95,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:padding="8dp"
-                    android:text="System Logs Management" />
+                    android:text="@string/system_logs_management" />
 
                 <ImageView
                     android:layout_width="wrap_content"
@@ -106,6 +106,46 @@
 
             </LinearLayout>
         </androidx.cardview.widget.CardView>
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/cardLogout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="4dp"
+            app:cardCornerRadius="@dimen/cardview_default_radius">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:padding="8dp"
+                    android:text="@string/logout" />
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="end"
+                    android:padding="8dp"
+                    android:src="@android:drawable/ic_lock_power_off" />
+            </LinearLayout>
+        </androidx.cardview.widget.CardView>
+
+
+        <Spinner
+            android:id="@+id/spnrLanguage"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_margin="32dp"
+            android:entries="@array/dummmy_spinner" />
+
+
     </LinearLayout>
 
     <TextView
