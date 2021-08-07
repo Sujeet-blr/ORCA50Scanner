@@ -6,7 +6,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.Manifest;
 import android.app.ProgressDialog;
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -16,8 +15,6 @@ import com.nativec.tools.ModuleManager;
 import com.rfid.rxobserver.bean.RXInventoryTag;
 
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -29,8 +26,7 @@ import in.mobiux.android.orca50scanner.api.model.AssetHistory;
 import in.mobiux.android.orca50scanner.api.model.DepartmentResponse;
 import in.mobiux.android.orca50scanner.api.model.Inventory;
 import in.mobiux.android.orca50scanner.util.AppUtils;
-import in.mobiux.android.orca50scanner.util.Common;
-import in.mobiux.android.orca50scanner.util.PdfUtils;
+import in.mobiux.android.orca50scanner.util.pdf.PdfUtils;
 import in.mobiux.android.orca50scanner.util.RFIDReaderListener;
 import in.mobiux.android.orca50scanner.viewmodel.InventoryViewModel;
 
@@ -144,13 +140,18 @@ public class ScanInventoryActivity extends BaseActivity implements View.OnClickL
                 for (Inventory inventory : scannedInventories) {
                     inventory.setLabId(laboratory.getId());
                     inventory.setLaboratoryName(laboratory.getName());
-                    inventory.setSyncRequired(true);
+                    if (inventory.isScanStatus()) {
+                        inventory.setSyncRequired(true);
+                    }
+
                     viewModel.update(inventory);
 
-                    AssetHistory history = new AssetHistory();
-                    history.setEpc(inventory.getFormattedEPC());
-                    history.setDepartment(laboratory.getId());
-                    viewModel.insertAssetHistory(history);
+                    if (inventory.isScanStatus()) {
+                        AssetHistory history = new AssetHistory();
+                        history.setEpc(inventory.getFormattedEPC());
+                        history.setDepartment(laboratory.getId());
+                        viewModel.insertAssetHistory(history);
+                    }
                 }
 
                 progressDialog.dismiss();
@@ -162,7 +163,9 @@ public class ScanInventoryActivity extends BaseActivity implements View.OnClickL
                 checkPermission(ScanInventoryActivity.this, Manifest.permission.WRITE_EXTERNAL_STORAGE, STORAGE_PERMISSION_CODE);
 
                 PdfUtils pdfUtils = new PdfUtils(ScanInventoryActivity.this);
-                pdfUtils.createPdfFile(PdfUtils.getPdfPath(ScanInventoryActivity.this));
+
+                String title = "Department : " + laboratory.getName();
+                pdfUtils.createPdfFile(PdfUtils.getPdfPath(ScanInventoryActivity.this), scannedInventories, title);
 
                 break;
         }

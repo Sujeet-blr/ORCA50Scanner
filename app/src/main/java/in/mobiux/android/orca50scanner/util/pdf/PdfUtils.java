@@ -1,4 +1,4 @@
-package in.mobiux.android.orca50scanner.util;
+package in.mobiux.android.orca50scanner.util.pdf;
 
 import android.content.Context;
 import android.print.PrintAttributes;
@@ -10,14 +10,21 @@ import com.itextpdf.text.Chunk;
 import com.itextpdf.text.Document;
 import com.itextpdf.text.DocumentException;
 import com.itextpdf.text.Element;
+import com.itextpdf.text.Font;
 import com.itextpdf.text.PageSize;
 import com.itextpdf.text.Paragraph;
+import com.itextpdf.text.pdf.PdfPTable;
 import com.itextpdf.text.pdf.PdfWriter;
 import com.itextpdf.text.pdf.draw.LineSeparator;
 
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.util.List;
+
+import in.mobiux.android.orca50scanner.api.model.Inventory;
+import in.mobiux.android.orca50scanner.util.AppLogger;
+import in.mobiux.android.orca50scanner.util.Common;
 
 public class PdfUtils {
 
@@ -29,7 +36,6 @@ public class PdfUtils {
     private static final String PRINT_JOB_NAME = "footprints documents";
     private static final String PDF_AUTHOR = "Footprints";
     private static final String PDF_CREATER = "SGUL";
-    
 
 
     public PdfUtils(Context context) {
@@ -37,6 +43,75 @@ public class PdfUtils {
         logger = AppLogger.getInstance(context);
     }
 
+    //    path ~ "file_name.pdf"
+    public void createPdfFile(String path, List<Inventory> list, String title) {
+
+        if (new File(context.getFilesDir(), path).exists()) {
+            new File(context.getFilesDir(), path).delete();
+        }
+        logger.i(TAG, "" + path);
+
+        try {
+
+            Document document = new Document();
+//            save
+//            FileOutputStream out = context.openFileOutput(path, Context.MODE_PRIVATE);
+            PdfWriter.getInstance(document, new FileOutputStream(path)).setPageEvent(new WatermarkPageEvent());
+//            open to write
+            document.open();
+
+            logger.i(TAG, "document is open for write");
+
+//            settings
+            document.setPageSize(PageSize.A4);
+            document.addCreationDate();
+            document.addAuthor(PDF_AUTHOR);
+            document.addCreator(PDF_CREATER);
+
+
+//            addNewItem(document, "SGUL", Element.ALIGN_CENTER);
+            addHeaderTitle(document, "SGUL");
+            addLineSpace(document);
+            addNewItem(document, title, Element.ALIGN_CENTER);
+
+            addLineSeparator(document);
+            addLineSpace(document);
+
+//            adding header
+
+            PdfPTable table = new PdfPTable(4);
+
+
+            table.addCell("Asset Name");
+            table.addCell("Barcode");
+            table.addCell("RFID");
+            table.addCell("Status");
+
+
+            for (Inventory i : list) {
+
+                table.addCell(i.getName());
+                table.addCell(i.getBarcode());
+                table.addCell(i.getEpc());
+                if (i.isScanStatus()) {
+                    table.addCell("Scanned");
+                } else {
+                    table.addCell("n/a");
+                }
+
+            }
+
+            document.add(table);
+
+            document.close();
+            printPDF();
+
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (DocumentException e) {
+            e.printStackTrace();
+        }
+    }
 
     //    path ~ "file_name.pdf"
     public void createPdfFile(String path) {
@@ -63,18 +138,14 @@ public class PdfUtils {
             document.addAuthor(PDF_AUTHOR);
             document.addCreator(PDF_CREATER);
 
-//            font settings
-            BaseColor colorAccent = new BaseColor(0, 153, 204, 255);
-            float fontSize = 20.0f;
-            float valueFontSize = 26.0f;
-
-//            custom font
 
             addNewItem(document, "some text here", Element.ALIGN_CENTER);
 
             addLineSeparator(document);
 
-            addNewItem(document, "some text here 2", Element.ALIGN_LEFT);
+            for (int i = 0; i < 250; i++) {
+                addNewItem(document, i + " some text here " + i, Element.ALIGN_LEFT);
+            }
 
             document.close();
             printPDF();
@@ -94,6 +165,22 @@ public class PdfUtils {
             PrintDocumentAdapter printDocumentAdapter = new PdfDocumentAdapter(context, getPdfPath(context));
             printManager.print(PRINT_JOB_NAME, printDocumentAdapter, new PrintAttributes.Builder().build());
         } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+
+    private void addHeaderTitle(Document document, String text) {
+
+        Font blue = new Font(Font.FontFamily.HELVETICA, 20, Font.BOLD, BaseColor.ORANGE);
+
+        Chunk chunk = new Chunk(text, blue);
+        Paragraph paragraph = new Paragraph(chunk);
+        paragraph.setAlignment(Element.ALIGN_CENTER);
+
+        try {
+            document.add(paragraph);
+        } catch (DocumentException e) {
             e.printStackTrace();
         }
     }
@@ -119,7 +206,7 @@ public class PdfUtils {
     }
 
     private void addLineSpace(Document document) throws DocumentException {
-        document.add(new Paragraph(""));
+        document.add(new Paragraph(" "));
     }
 
     public static final String getAppPath(Context context) {

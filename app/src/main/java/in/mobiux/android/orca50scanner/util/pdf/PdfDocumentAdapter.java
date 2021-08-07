@@ -1,7 +1,6 @@
-package in.mobiux.android.orca50scanner.util;
+package in.mobiux.android.orca50scanner.util.pdf;
 
 import android.content.Context;
-import android.net.Uri;
 import android.os.Bundle;
 import android.os.CancellationSignal;
 import android.os.ParcelFileDescriptor;
@@ -10,15 +9,13 @@ import android.print.PrintAttributes;
 import android.print.PrintDocumentAdapter;
 import android.print.PrintDocumentInfo;
 
-import androidx.core.content.FileProvider;
-
-import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+
+import in.mobiux.android.orca50scanner.util.AppLogger;
 
 public class PdfDocumentAdapter extends PrintDocumentAdapter {
 

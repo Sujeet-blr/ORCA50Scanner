@@ -66,7 +66,6 @@ public class AppSimulator {
 
 
                             Inventory inventory = new Inventory();
-//                            inventory.setEpc("AA000004");
                             inventory.setEpc("AA000003");
                             int rssi = new Random().nextInt(99);
                             inventory.setRssi("" + rssi);
@@ -74,21 +73,18 @@ public class AppSimulator {
                             app.logger.i(TAG, "Asset generated " + inventory.getFormattedEPC());
 
                             Inventory inventory1 = new Inventory();
-//                            inventory.setEpc("AA000004");
                             inventory1.setEpc("AA000004");
                             rssi = new Random().nextInt(99);
                             inventory1.setRssi("" + rssi);
 
 
                             Inventory inventory2 = new Inventory();
-//                            inventory.setEpc("AA000004");
                             inventory2.setEpc("123456789123456789123456");
                             rssi = new Random().nextInt(99);
                             inventory2.setRssi("" + rssi);
 
 
                             Inventory inventory3 = new Inventory();
-//                            inventory.setEpc("AA000004");
                             inventory3.setEpc("AA000005");
                             rssi = new Random().nextInt(99);
                             inventory3.setRssi("" + rssi);
@@ -96,7 +92,7 @@ public class AppSimulator {
 
                             app.listener.onInventoryTag(inventory);
                             app.listener.onInventoryTag(inventory1);
-                            app.listener.onInventoryTag(inventory2);
+//                            app.listener.onInventoryTag(inventory2);
                             app.listener.onInventoryTag(inventory3);
 
                         }
