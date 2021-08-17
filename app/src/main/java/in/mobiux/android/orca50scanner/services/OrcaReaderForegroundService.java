@@ -12,24 +12,36 @@ import android.os.IBinder;
 import androidx.annotation.Nullable;
 import androidx.core.app.NotificationCompat;
 
+import com.module.interaction.ModuleConnector;
+import com.nativec.tools.ModuleManager;
+import com.rfid.rxobserver.bean.RXInventoryTag;
+
+import in.mobiux.android.orca50scanner.BuildConfig;
+import in.mobiux.android.orca50scanner.MyApplication;
 import in.mobiux.android.orca50scanner.R;
 import in.mobiux.android.orca50scanner.activity.HomeActivity;
+import in.mobiux.android.orca50scanner.api.model.Inventory;
 import in.mobiux.android.orca50scanner.util.AppLogger;
+import in.mobiux.android.orca50scanner.util.RFIDReaderListener;
 import in.mobiux.android.orca50scanner.util.SessionManager;
 
-public class OrcaReaderForegroundService extends Service {
+public class OrcaReaderForegroundService extends Service implements RFIDReaderListener {
 
     private static final String TAG = OrcaReaderForegroundService.class.getCanonicalName();
     private static final String CHANNEL_ID = "foregroundservice";
     private Context context;
     private SessionManager session;
     private AppLogger logger;
+    private ModuleConnector connector;
+    private MyApplication app;
+
 
     @Override
     public void onCreate() {
         super.onCreate();
 
         context = getApplicationContext();
+        app = (MyApplication) context;
         session = SessionManager.getInstance(context);
         logger = AppLogger.getInstance(context);
     }
@@ -44,11 +56,26 @@ public class OrcaReaderForegroundService extends Service {
 
         Notification notification = new NotificationCompat.Builder(this, CHANNEL_ID)
                 .setContentTitle(getResources().getString(R.string.app_name))
-                .setContentText("running")
+                .setContentText("Service is running")
+                .setSmallIcon(R.mipmap.ic_launcher)
                 .setContentIntent(pendingIntent)
                 .build();
 
         startForeground(1, notification);
+
+        if (BuildConfig.DEBUG) {
+
+        } else {
+            if (!connector.isConnected()) {
+                app.connectRFID();
+                ModuleManager.newInstance().setUHFStatus(true);
+            } else {
+                ModuleManager.newInstance().setUHFStatus(true);
+                logger.i(TAG, "connected");
+            }
+        }
+
+        app.setOnRFIDListener(this);
 
         return START_STICKY;
     }
@@ -59,7 +86,6 @@ public class OrcaReaderForegroundService extends Service {
         return null;
     }
 
-
     private void createNotificationChannel() {
 
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
@@ -68,5 +94,25 @@ public class OrcaReaderForegroundService extends Service {
             NotificationManager notificationManager = getSystemService(NotificationManager.class);
             notificationManager.createNotificationChannel(notificationChannel);
         }
+    }
+
+    @Override
+    public void onInventoryTag(Inventory inventory) {
+        logger.i(TAG, "" + inventory.getEpc());
+    }
+
+    @Override
+    public void onScanningStatus(boolean status) {
+        logger.i(TAG, "Scan status " + status);
+    }
+
+    @Override
+    public void onInventoryTagEnd(RXInventoryTag.RXInventoryTagEnd tagEnd) {
+        logger.i(TAG, "onInventory End " + tagEnd.mTotalRead);
+    }
+
+    @Override
+    public void onConnection(boolean status) {
+        logger.i(TAG, "Connection Status " + status);
     }
 }

@@ -8,9 +8,12 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/Users/Sujeet/AndroidStudioProjects/Mobiux/ORCA50Scanner/app/src/main/res/drawable/key_background.xml" value="0.415625" />
+        <entry key="..\:/Users/Sujeet/AndroidStudioProjects/Mobiux/ORCA50Scanner/app/src/main/res/drawable/normal.xml" value="0.415625" />
         <entry key="..\:/Users/Sujeet/AndroidStudioProjects/Mobiux/ORCA50Scanner/app/src/main/res/font/roboto.xml" value="0.43671875" />
         <entry key="..\:/Users/Sujeet/AndroidStudioProjects/Mobiux/ORCA50Scanner/app/src/main/res/layout/activity_login.xml" value="0.30739299610894943" />
         <entry key="..\:/Users/Sujeet/AndroidStudioProjects/Mobiux/ORCA50Scanner/app/src/main/res/layout/activity_scan_inventory.xml" value="0.37265625" />
+        <entry key="..\:/Users/Sujeet/AndroidStudioProjects/Mobiux/ORCA50Scanner/app/src/main/res/layout/key_preview.xml" value="0.39140625" />
       </map>
     </option>
   </component>

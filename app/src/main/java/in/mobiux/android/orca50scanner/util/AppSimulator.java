@@ -92,7 +92,7 @@ public class AppSimulator {
 
                             app.listener.onInventoryTag(inventory);
                             app.listener.onInventoryTag(inventory1);
-//                            app.listener.onInventoryTag(inventory2);
+                            app.listener.onInventoryTag(inventory2);
                             app.listener.onInventoryTag(inventory3);
 
                         }
@@ -119,7 +119,7 @@ public class AppSimulator {
                     }
                 }
             }
-        }, 30000, 30000);
+        }, 30000, 3000);
 
     }
 }

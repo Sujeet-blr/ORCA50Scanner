@@ -16,6 +16,7 @@ import java.util.List;
 import in.mobiux.android.orca50scanner.R;
 import in.mobiux.android.orca50scanner.api.model.Inventory;
 import in.mobiux.android.orca50scanner.api.model.User;
+import in.mobiux.android.orca50scanner.services.OrcaReaderForegroundService;
 import in.mobiux.android.orca50scanner.viewmodel.InventoryViewModel;
 
 public class HomeActivity extends BaseActivity implements View.OnClickListener {
@@ -66,6 +67,8 @@ public class HomeActivity extends BaseActivity implements View.OnClickListener {
         } catch (Exception e) {
             logger.e(TAG, "" + e.getLocalizedMessage());
         }
+
+        startService(new Intent(this, OrcaReaderForegroundService.class));
     }
 
     @Override
@@ -122,5 +125,10 @@ public class HomeActivity extends BaseActivity implements View.OnClickListener {
     protected void onDestroy() {
         super.onDestroy();
         app.onTerminate();
+    }
+
+    public void stopService() {
+        Intent serviceIntent = new Intent(this, OrcaReaderForegroundService.class);
+        stopService(serviceIntent);
     }
 }

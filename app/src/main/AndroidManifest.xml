@@ -72,6 +72,24 @@
             </intent-filter>
         </activity>
 
+        <service
+            android:name=".services.OrcaReaderForegroundService"
+            android:enabled="true"
+            android:exported="true" />
+
+        <service
+            android:name=".keyboard.OrcaKeyboardService"
+            android:label="OrcaKeyboard"
+            android:permission="android.permission.BIND_INPUT_METHOD">
+            <meta-data
+                android:name="android.view.im"
+                android:resource="@xml/method" />
+
+            <intent-filter>
+                <action android:name="android.view.InputMethod" />
+            </intent-filter>
+        </service>
+
         <provider
             android:name="androidx.core.content.FileProvider"
             android:authorities="in.mobiux.android.orca50scanner.fileprovider"
