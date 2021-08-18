@@ -25,7 +25,7 @@ import in.mobiux.android.orca50scanner.util.AppLogger;
 import in.mobiux.android.orca50scanner.util.RFIDReaderListener;
 import in.mobiux.android.orca50scanner.util.SessionManager;
 
-public class OrcaReaderForegroundService extends Service implements RFIDReaderListener {
+public class OrcaReaderForegroundService extends Service {
 
     private static final String TAG = OrcaReaderForegroundService.class.getCanonicalName();
     private static final String CHANNEL_ID = "foregroundservice";
@@ -75,8 +75,6 @@ public class OrcaReaderForegroundService extends Service implements RFIDReaderLi
             }
         }
 
-        app.setOnRFIDListener(this);
-
         return START_STICKY;
     }
 
@@ -94,25 +92,5 @@ public class OrcaReaderForegroundService extends Service implements RFIDReaderLi
             NotificationManager notificationManager = getSystemService(NotificationManager.class);
             notificationManager.createNotificationChannel(notificationChannel);
         }
-    }
-
-    @Override
-    public void onInventoryTag(Inventory inventory) {
-        logger.i(TAG, "" + inventory.getEpc());
-    }
-
-    @Override
-    public void onScanningStatus(boolean status) {
-        logger.i(TAG, "Scan status " + status);
-    }
-
-    @Override
-    public void onInventoryTagEnd(RXInventoryTag.RXInventoryTagEnd tagEnd) {
-        logger.i(TAG, "onInventory End " + tagEnd.mTotalRead);
-    }
-
-    @Override
-    public void onConnection(boolean status) {
-        logger.i(TAG, "Connection Status " + status);
     }
 }

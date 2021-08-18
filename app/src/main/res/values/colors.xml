@@ -20,7 +20,7 @@
     <color name="seekbar_default">#E5E8ED</color>
 
     <!--    keyboard-->
-    <color name="colorPrimaryDark">#ECF1FA</color>
+    <color name="colorPrimaryDark">#222323</color>
     <color name="keyboard_background_color">#34495e</color>
     <color name="keyboard_divider">#234465</color>
     <color name="keyboard_pressed">#222323</color>

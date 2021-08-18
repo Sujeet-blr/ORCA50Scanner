@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.Application;
 import android.content.res.Configuration;
 import android.content.res.Resources;
+import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.os.Handler;
 import android.util.DisplayMetrics;
@@ -18,6 +19,7 @@ import com.rfid.rxobserver.RXObserver;
 import com.rfid.rxobserver.ReaderSetting;
 import com.rfid.rxobserver.bean.RXInventoryTag;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
@@ -26,6 +28,7 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 import in.mobiux.android.orca50scanner.activity.BaseActivity;
+import in.mobiux.android.orca50scanner.activity.BaseActivity.ACTIVITY_STATE;
 import in.mobiux.android.orca50scanner.activity.LoginActivity;
 import in.mobiux.android.orca50scanner.api.Presenter;
 import in.mobiux.android.orca50scanner.api.model.Inventory;
@@ -65,9 +68,7 @@ public class MyApplication extends Application {
     long scanningInterval = 500;
 
     public List<BaseActivity> activities = new ArrayList<>();
-
     private MediaPlayer mediaPlayer;
-
 
     @Override
     public void onCreate() {
@@ -187,6 +188,7 @@ public class MyApplication extends Application {
 
             scanningEndPoint = System.currentTimeMillis() + scanningInterval;
 
+
             if (listener != null) {
                 mHandler.post(new Runnable() {
                     @Override
@@ -206,7 +208,7 @@ public class MyApplication extends Application {
 
             scanningEndPoint = System.currentTimeMillis() + scanningInterval;
 
-            mediaPlayer.start();
+            playBeep();
 
             if (listener != null) {
                 mHandler.post(new Runnable() {
@@ -218,6 +220,14 @@ public class MyApplication extends Application {
             }
         }
     };
+
+    public void playBeep() {
+
+        logger.i(TAG, "playing beep");
+        mediaPlayer = MediaPlayer.create(this, R.raw.beeper_short);
+        mediaPlayer.start();
+
+    }
 
     public void connectRFID() {
 
@@ -387,6 +397,15 @@ public class MyApplication extends Application {
                 activity.finish();
             }
         }
+    }
+
+    public boolean isAppInForeground() {
+        for (BaseActivity activity : activities) {
+            if (activity.state == ACTIVITY_STATE.ACTIVE) {
+                return true;
+            }
+        }
+        return false;
     }
 
 

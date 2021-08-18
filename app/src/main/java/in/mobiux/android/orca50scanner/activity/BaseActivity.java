@@ -43,6 +43,12 @@ import in.mobiux.android.orca50scanner.util.SessionManager;
  */
 public class BaseActivity extends AppCompatActivity {
 
+    public enum ACTIVITY_STATE {
+        ACTIVE, INACTIVE, FINISHED
+    }
+
+    public ACTIVITY_STATE state = ACTIVITY_STATE.INACTIVE;
+
     protected AppLogger logger;
     public View parentLayout;
     public static int STORAGE_PERMISSION_CODE = 121;
@@ -60,7 +66,6 @@ public class BaseActivity extends AppCompatActivity {
 
     protected LanguageUtils languageUtils;
     protected LanguageUtils.Language activityLanguage;
-
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -89,6 +94,14 @@ public class BaseActivity extends AppCompatActivity {
         if (!activityLanguage.equals(session.getLanguage())) {
             recreate();
         }
+
+        setActivityState(ACTIVITY_STATE.ACTIVE);
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        setActivityState(ACTIVITY_STATE.INACTIVE);
     }
 
     @Override
@@ -98,30 +111,6 @@ public class BaseActivity extends AppCompatActivity {
         logger.i(TAG, "onConfiguration Changed");
     }
 
-
-//    protected void switchLanguage(String language) {
-//        logger.i(TAG, "Language is " + language);
-//        Resources resources = getResources();
-//        Configuration config = resources.getConfiguration();
-//        DisplayMetrics dm = resources.getDisplayMetrics();
-//        if (language.equals("en")) {
-//            config.locale = Locale.ENGLISH;
-//        } else if (language.equals("de")) {
-//            config.locale = Locale.GERMAN;
-//        } else if (language.equals("fr")) {
-//            config.locale = Locale.FRENCH;
-//        } else if (language.equals("nl")) {
-//            config.locale = new Locale("nl");
-//        } else {
-//            config.locale = Locale.ENGLISH;
-//        }
-//        resources.updateConfiguration(config, dm);
-//
-//        onConfigurationChanged(config);
-//
-//        session.setLanguage(language);
-////        PreferenceUtil.commitString("language", language);
-//    }
 
     // Function to check and request permission.
     public void checkPermission(BaseActivity activity, String permission, int requestCode) {
@@ -279,5 +268,11 @@ public class BaseActivity extends AppCompatActivity {
         this.unregisterReceiver(mVirtualKeyListenerBroadcastReceiver);
 
         app.removeActivity(this);
+
+        setActivityState(ACTIVITY_STATE.FINISHED);
+    }
+
+    private void setActivityState(ACTIVITY_STATE state) {
+        this.state = state;
     }
 }

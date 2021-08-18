@@ -2,7 +2,7 @@
 <Keyboard xmlns:android="http://schemas.android.com/apk/res/android"
     android:horizontalGap="0px"
     android:keyWidth="10%p"
-    android:keyHeight="60dp"
+    android:keyHeight="50dp"
     android:verticalGap="0px">
 
     <Row>
@@ -75,15 +75,130 @@
             android:keyLabel="p" />
     </Row>
 
+    <Row>
+        <Key
+            android:codes="97"
+            android:keyLabel="a" />
+        <Key
+            android:codes="115"
+            android:keyLabel="s" />
+        <Key
+            android:codes="100"
+            android:keyLabel="d" />
+        <Key
+            android:codes="102"
+            android:keyLabel="f" />
+        <Key
+            android:codes="103"
+            android:keyLabel="g" />
+        <Key
+            android:codes="104"
+            android:keyLabel="h" />
+        <Key
+            android:codes="106"
+            android:keyLabel="j" />
+        <Key
+            android:codes="107"
+            android:keyLabel="k" />
+        <Key
+            android:codes="108"
+            android:keyLabel="l" />
+
+        <Key
+            android:codes="-5"
+            android:iconPreview="@android:drawable/ic_input_delete"
+            android:keyEdgeFlags="right"
+            android:keyIcon="@android:drawable/ic_input_delete" />
+
+    </Row>
+
+    <Row>
+        <Key
+            android:codes="-1"
+            android:keyWidth="15%p"
+            android:keyEdgeFlags="left"
+            android:keyLabel="CAPS" />
+        <Key
+            android:codes="122"
+            android:keyLabel="z" />
+        <Key
+            android:codes="120"
+            android:keyLabel="x" />
+        <Key
+            android:codes="99"
+            android:keyLabel="c" />
+        <Key
+            android:codes="118"
+            android:keyLabel="v" />
+        <Key
+            android:codes="98"
+            android:keyLabel="b" />
+        <Key
+            android:codes="110"
+            android:keyLabel="n" />
+        <Key
+            android:codes="109"
+            android:keyEdgeFlags="right"
+            android:keyLabel="m" />
+<!--        <Key-->
+<!--            android:keyWidth="15%p"-->
+<!--            android:codes="76"-->
+<!--            android:iconPreview="@android:drawable/ic_input_delete"-->
+<!--            android:keyEdgeFlags="right"-->
+<!--            android:keyIcon="@android:drawable/ic_input_delete" />-->
+        <Key
+            android:codes="44"
+            android:keyWidth="10%p"
+            android:keyLabel="," />
+
+        <Key
+            android:keyEdgeFlags="right"
+            android:codes="46"
+            android:keyWidth="10%p"
+            android:keyLabel="." />
+    </Row>
+
     <Row android:rowEdgeFlags="bottom">
         <Key
             android:codes="201"
+            android:keyWidth="20%p"
             android:keyEdgeFlags="left"
-            android:keyLabel="Rfid" />
+            android:keyLabel="RFID" />
         <Key
             android:codes="202"
+            android:keyWidth="20%p"
+            android:keyLabel="BARCODE" />
+        <Key
+            android:codes="32"
+            android:isRepeatable="true"
+            android:keyWidth="40%p"
+            android:keyLabel="SPACE" />
+<!--        <Key-->
+<!--            android:codes="44"-->
+<!--            android:keyWidth="10%p"-->
+<!--            android:keyLabel="," />-->
+
+<!--        <Key-->
+<!--            android:codes="44"-->
+<!--            android:keyWidth="10%p"-->
+<!--            android:keyLabel="." />-->
+        <Key
+            android:codes="-4"
+            android:keyWidth="20%p"
             android:keyEdgeFlags="right"
-            android:keyLabel="Barcode" />
+            android:keyLabel="DONE" />
+
     </Row>
 
 </Keyboard>
+
+    <!--        <Key-->
+    <!--            android:codes="201"-->
+    <!--            android:keyEdgeFlags="left"-->
+    <!--            android:keyLabel="Rfid" />-->
+    <!--        <Key-->
+    <!--            android:codes="202"-->
+    <!--            android:keyEdgeFlags="right"-->
+    <!--            android:keyLabel="Barcode" />-->
+    <!--        <Key android:keyLabel="/" android:codes="47" android:keyWidth="10%p"/>-->
+    <!--        <Key android:keyLabel="DEl" android:codes="-5" android:keyWidth="20%p" android:isRepeatable="true"/>-->

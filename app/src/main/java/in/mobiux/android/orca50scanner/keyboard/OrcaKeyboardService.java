@@ -8,6 +8,7 @@ import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.inputmethod.InputConnection;
+import android.widget.Toast;
 
 import com.rfid.rxobserver.bean.RXInventoryTag;
 
@@ -39,6 +40,7 @@ public class OrcaKeyboardService extends InputMethodService implements KeyboardV
 
         app = (MyApplication) getApplicationContext();
         logger = AppLogger.getInstance(getApplicationContext());
+        logger.i(TAG, "keyboard is created");
 
         kv = (KeyboardView) getLayoutInflater().inflate(R.layout.keyboard, null);
         keyboard = new Keyboard(this, R.xml.qwerty);
@@ -87,7 +89,8 @@ public class OrcaKeyboardService extends InputMethodService implements KeyboardV
                 ic.commitText(rfid, 1);
                 break;
             case 202:
-                ic.commitText(barcode, 1);
+                Toast.makeText(getApplicationContext(), R.string.not_implemented, Toast.LENGTH_SHORT).show();
+//                ic.commitText(barcode, 1);
                 break;
             default:
                 char code = (char) i;
@@ -142,6 +145,7 @@ public class OrcaKeyboardService extends InputMethodService implements KeyboardV
     public void swipeUp() {
 
     }
+
 
     @Override
     public void onInventoryTag(Inventory inventory) {
