@@ -66,7 +66,7 @@ public class OrcaReaderForegroundService extends Service {
         if (BuildConfig.DEBUG) {
 
         } else {
-            if (!connector.isConnected()) {
+            if (connector != null && !connector.isConnected()) {
                 app.connectRFID();
                 ModuleManager.newInstance().setUHFStatus(true);
             } else {
