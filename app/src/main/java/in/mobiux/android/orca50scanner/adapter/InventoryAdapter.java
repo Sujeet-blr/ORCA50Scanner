@@ -47,13 +47,8 @@ public class InventoryAdapter extends RecyclerView.Adapter<InventoryAdapter.Recy
 
         Inventory inventory = inventories.get(position);
 
-        holder.tvID.setText("" + inventory.getName());
+        holder.tvRssi.setText("" + inventory.getRssi());
         holder.tvName.setText("" + inventory.getEpc());
-        if (inventory.getBarcode() == null || inventory.getBarcode().isEmpty()) {
-            holder.tvQty.setText("Not available");
-        } else {
-            holder.tvQty.setText("" + inventory.getBarcode());
-        }
 
         if (inventory.isScanStatus()) {
             holder.ivStatus.setImageResource(R.drawable.ic_check_circle_24);
@@ -78,16 +73,16 @@ public class InventoryAdapter extends RecyclerView.Adapter<InventoryAdapter.Recy
 
     class RecyclerViewHolder extends RecyclerView.ViewHolder {
 
-        private TextView tvID, tvName, tvQty;
+        private TextView tvRssi, tvName;
         private ImageView ivStatus;
 
         public RecyclerViewHolder(@NonNull View itemView) {
             super(itemView);
 
-            tvID = itemView.findViewById(R.id.tvId);
+            tvRssi = itemView.findViewById(R.id.tvRSSI);
             tvName = itemView.findViewById(R.id.tvName);
-            tvQty = itemView.findViewById(R.id.tvQty);
             ivStatus = itemView.findViewById(R.id.ivStatus);
+            ivStatus.setVisibility(View.GONE);
         }
     }
 

@@ -45,7 +45,7 @@ public class AppSimulator {
             @Override
             public void run() {
 
-                if (app.listener != null && app.session.hasCredentials()) {
+                if (app.listener != null) {
 
                     handler.post(new Runnable() {
                         @Override
@@ -121,7 +121,7 @@ public class AppSimulator {
                     }
                 }
             }
-        }, 30000, 3000);
+        }, 3000, 3000);
 
     }
 }

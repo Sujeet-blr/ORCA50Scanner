@@ -13,7 +13,8 @@
         android:layout_height="wrap_content"
         android:layout_centerVertical="true"
         android:padding="16dp"
-        android:src="@drawable/ic_arrow_back_24" />
+        android:src="@drawable/ic_arrow_back_24"
+        android:visibility="gone" />
 
     <TextView
         android:id="@+id/textToolbarTitle"

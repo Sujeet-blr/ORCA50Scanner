@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">SO Inventory</string>
+    <string name="app_name">SO RFID Reader</string>
 
     <string name="rfid_tag_dummy">E2 80 68 94 00 00 40 06FC 91 FD 26</string>
     <string name="save_data_exit_laboratory">Save Data &amp; \nExit Department</string>
@@ -68,7 +68,7 @@
         \nTel.:
         +44 (0)845 249 0068
         +44 (0)1352 752044"</string>
-    <string name="print">Print</string>
+    <string name="print">Export / Print</string>
     <string name="selected_department_is">Selected department is : </string>
     <string name="proceed_to_nscan_inventory">Proceed to \n Scan Inventory</string>
     <string name="quiet">Quiet</string>

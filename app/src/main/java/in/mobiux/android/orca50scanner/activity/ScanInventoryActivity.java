@@ -1,7 +1,5 @@
 package in.mobiux.android.orca50scanner.activity;
 
-import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.Manifest;
@@ -25,9 +23,8 @@ import in.mobiux.android.orca50scanner.adapter.InventoryAdapter;
 import in.mobiux.android.orca50scanner.api.model.AssetHistory;
 import in.mobiux.android.orca50scanner.api.model.DepartmentResponse;
 import in.mobiux.android.orca50scanner.api.model.Inventory;
-import in.mobiux.android.orca50scanner.util.AppUtils;
-import in.mobiux.android.orca50scanner.util.pdf.PdfUtils;
 import in.mobiux.android.orca50scanner.util.RFIDReaderListener;
+import in.mobiux.android.orca50scanner.util.pdf.PdfUtils;
 import in.mobiux.android.orca50scanner.viewmodel.InventoryViewModel;
 
 public class ScanInventoryActivity extends BaseActivity implements View.OnClickListener, RFIDReaderListener {
@@ -37,7 +34,7 @@ public class ScanInventoryActivity extends BaseActivity implements View.OnClickL
     private RecyclerView recyclerView;
     private DepartmentResponse.Child laboratory;
     private List<Inventory> scannedInventories = new ArrayList<>();
-    private Map<String, Inventory> inventories = new HashMap<>();
+    private Map<String, Inventory> inventoriesMap = new HashMap<>();
     private InventoryAdapter adapter;
     boolean startButtonStatus = false;
 
@@ -48,7 +45,8 @@ public class ScanInventoryActivity extends BaseActivity implements View.OnClickL
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_scan_inventory);
 
-        setTitle("");
+        setTitle("Sensing Object");
+        setHomeButtonEnable(false);
 
         tvCount = findViewById(R.id.tvCount);
         txtIndicator = findViewById(R.id.txtIndicator);
@@ -61,20 +59,11 @@ public class ScanInventoryActivity extends BaseActivity implements View.OnClickL
         txtIndicator.setText("");
 
         btnSave.setOnClickListener(this);
+        btnSave.setVisibility(View.GONE);
         btnClear.setOnClickListener(this);
         btnPrint.setOnClickListener(this);
-        btnPrint.setVisibility(View.GONE);
         txtIndicator.setTag(startButtonStatus);
 
-        laboratory = (DepartmentResponse.Child) getIntent().getSerializableExtra("laboratory");
-        if (laboratory != null) {
-            setTitle(getResources().getString(R.string.label_you_are_in) + laboratory.getName());
-            logger.i(TAG, "lab selected " + laboratory.getName() + "\t" + laboratory.getId());
-        } else {
-            logger.e(TAG, "Lab not selected");
-            showToast(getResources().getString(R.string.lab_not_selected));
-            finish();
-        }
 
         if (BuildConfig.DEBUG) {
 
@@ -91,27 +80,6 @@ public class ScanInventoryActivity extends BaseActivity implements View.OnClickL
         recyclerView.setAdapter(adapter);
         tvCount.setText(adapter.getItemCount() + " Pcs");
 
-        viewModel = new ViewModelProvider(this).get(InventoryViewModel.class);
-        viewModel.getAllInventory().observe(this, new Observer<List<Inventory>>() {
-            @Override
-            public void onChanged(List<Inventory> list) {
-                for (Inventory inventory : list) {
-                    logger.i(TAG, "lab id " + inventory.getLabId());
-                    inventories.put(inventory.getEpc(), inventory);
-
-                    Inventory matching = AppUtils.getMatchingInventory(inventory.getFormattedEPC(), scannedInventories);
-
-                    if (laboratory.getId() == inventory.getLabId() && matching == null) {
-                        scannedInventories.add(inventory);
-                    }
-                }
-
-                arrangeScannedList();
-                tvCount.setText(adapter.getItemCount() + " Pcs");
-                adapter.notifyDataSetChanged();
-                logger.i(TAG, "list fetched" + inventories.size());
-            }
-        });
     }
 
     @Override
@@ -127,6 +95,7 @@ public class ScanInventoryActivity extends BaseActivity implements View.OnClickL
             case R.id.btnClear:
                 logger.i(TAG, "Clear");
                 scannedInventories.clear();
+                inventoriesMap.clear();
                 adapter.notifyDataSetChanged();
                 tvCount.setText(adapter.getItemCount() + " Pcs");
                 break;
@@ -165,7 +134,7 @@ public class ScanInventoryActivity extends BaseActivity implements View.OnClickL
 
                 PdfUtils pdfUtils = new PdfUtils(ScanInventoryActivity.this);
 
-                String title = "Department : " + laboratory.getName();
+                String title = "Sensing Object Rfid Reader";
                 pdfUtils.createPdfFile(PdfUtils.getPdfPath(ScanInventoryActivity.this), scannedInventories, title);
 
                 break;
@@ -175,39 +144,15 @@ public class ScanInventoryActivity extends BaseActivity implements View.OnClickL
     @Override
     public void onInventoryTag(Inventory inventory) {
 
-        Inventory matchingAsset = inventories.get(inventory.getFormattedEPC());
-        if (matchingAsset != null) {
-            logger.i(TAG, "Matching found");
-            matchingAsset.setRssi(inventory.getRssi());
+        Inventory matchingAsset = inventoriesMap.get(inventory.getFormattedEPC());
 
-            Inventory m = AppUtils.getMatchingInventory(inventory.getEpc(), scannedInventories);
-            if (m != null) {
-                logger.i(TAG, "existing in Scanned list " + m.getEpc());
-                m.setRssi(inventory.getRssi());
-                m.setScanStatus(true);
-            } else {
-                matchingAsset.setScanStatus(true);
-                scannedInventories.add(matchingAsset);
-                logger.i(TAG, "added to scanned list " + inventory.getEpc());
-            }
-
-        } else {
-            logger.i(TAG, "Scanned tag is not found in database " + inventory.getEpc());
+        if (matchingAsset == null) {
+            matchingAsset = inventory;
+            inventoriesMap.put(matchingAsset.getEpc(), matchingAsset);
+            scannedInventories.add(matchingAsset);
         }
 
-//        HashMap<String, Inventory> map = new HashMap<>();
-//        for (Inventory i : scannedInventories) {
-//            map.put(i.getFormattedEPC(), i);
-//        }
-//
-//        scannedInventories.clear();
-//        for (Inventory i : map.values()) {
-//            if (i.isScanStatus()) {
-//                scannedInventories.add(0, i);
-//            } else {
-//                scannedInventories.add(i);
-//            }
-//        }
+        matchingAsset.setRssi(inventory.getRssi());
 
         arrangeScannedList();
 
@@ -215,7 +160,7 @@ public class ScanInventoryActivity extends BaseActivity implements View.OnClickL
         tvCount.setText(adapter.getItemCount() + " PCS");
     }
 
-    private void arrangeScannedList(){
+    private void arrangeScannedList() {
 
         HashMap<String, Inventory> map = new HashMap<>();
         for (Inventory i : scannedInventories) {
@@ -252,5 +197,11 @@ public class ScanInventoryActivity extends BaseActivity implements View.OnClickL
     public void onConnection(boolean status) {
         if (!status)
             app.reconnectRFID();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        app.onTerminate();
     }
 }
