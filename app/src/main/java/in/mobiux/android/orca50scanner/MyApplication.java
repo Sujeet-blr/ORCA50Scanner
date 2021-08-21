@@ -208,13 +208,14 @@ public class MyApplication extends Application {
 
             scanningEndPoint = System.currentTimeMillis() + scanningInterval;
 
-            playBeep();
+//            playBeep();
 
             if (listener != null) {
                 mHandler.post(new Runnable() {
                     @Override
                     public void run() {
                         listener.onInventoryTagEnd(tagEnd);
+                        listener.onScanningStatus(false);
                     }
                 });
             }
@@ -281,6 +282,8 @@ public class MyApplication extends Application {
     }
 
     public void reconnectRFID() {
+
+        logger.i(TAG, "Initializing connection");
 
         if (BuildConfig.DEBUG) {
             return;
@@ -350,15 +353,25 @@ public class MyApplication extends Application {
     public void onTerminate() {
         super.onTerminate();
 
+        releaseResources();
+        System.exit(0);
+    }
+
+    public void releaseResources() {
+
+        logger.i(TAG, "releasing resources");
+
         try {
             if (!connector.isConnected()) {
                 return;
             }
-            ModuleManager.newInstance().setUHFStatus(false);
-            ModuleManager.newInstance().release();
+
         } catch (Exception e) {
             e.printStackTrace();
             logger.e(TAG, "" + e.getLocalizedMessage());
+        } finally {
+            ModuleManager.newInstance().setUHFStatus(false);
+            ModuleManager.newInstance().release();
         }
 
         if (observerRegistrationStatus) {

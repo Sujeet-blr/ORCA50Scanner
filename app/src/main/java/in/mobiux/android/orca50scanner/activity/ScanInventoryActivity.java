@@ -59,7 +59,7 @@ public class ScanInventoryActivity extends BaseActivity implements View.OnClickL
         txtIndicator.setText("");
 
         btnSave.setOnClickListener(this);
-        btnSave.setVisibility(View.GONE);
+//        btnSave.setVisibility(View.GONE);
         btnClear.setOnClickListener(this);
         btnPrint.setOnClickListener(this);
         txtIndicator.setTag(startButtonStatus);
@@ -102,30 +102,7 @@ public class ScanInventoryActivity extends BaseActivity implements View.OnClickL
             case R.id.btnSave:
                 logger.i(TAG, "Save");
 
-                progressDialog = new ProgressDialog(ScanInventoryActivity.this);
-                progressDialog.setMessage(getResources().getString(R.string.saving));
-                progressDialog.setIndeterminate(true);
-                progressDialog.show();
-
-                for (Inventory inventory : scannedInventories) {
-                    inventory.setLabId(laboratory.getId());
-                    inventory.setLaboratoryName(laboratory.getName());
-                    if (inventory.isScanStatus()) {
-                        inventory.setSyncRequired(true);
-                    }
-
-                    viewModel.update(inventory);
-
-                    if (inventory.isScanStatus()) {
-                        AssetHistory history = new AssetHistory();
-                        history.setEpc(inventory.getFormattedEPC());
-                        history.setDepartment(laboratory.getId());
-                        viewModel.insertAssetHistory(history);
-                    }
-                }
-
-                progressDialog.dismiss();
-                finish();
+                logger.createAndExportLogs(ScanInventoryActivity.this);
                 break;
             case R.id.btnPrint:
                 logger.i(TAG, "print");
@@ -155,10 +132,7 @@ public class ScanInventoryActivity extends BaseActivity implements View.OnClickL
         matchingAsset.setRssi(inventory.getRssi());
         matchingAsset.setScanStatus(true);
 
-        arrangeScannedList();
-
-        adapter.notifyDataSetChanged();
-        tvCount.setText(adapter.getItemCount() + " PCS");
+//        arrangeScannedList();
     }
 
     private void arrangeScannedList() {
@@ -192,12 +166,14 @@ public class ScanInventoryActivity extends BaseActivity implements View.OnClickL
     @Override
     public void onInventoryTagEnd(RXInventoryTag.RXInventoryTagEnd tagEnd) {
         logger.i(TAG, "Tag count " + tagEnd.mTagCount);
+
+        tvCount.setText(adapter.getItemCount() + " PCS");
+        adapter.notifyDataSetChanged();
+        app.playBeep();
     }
 
     @Override
     public void onConnection(boolean status) {
-        if (!status)
-            app.reconnectRFID();
     }
 
     @Override

@@ -95,7 +95,7 @@ public class AppSimulator {
                             app.listener.onInventoryTag(inventory2);
                             app.listener.onInventoryTag(inventory3);
 
-                            app.playBeep();
+//                            app.playBeep();
 
                         }
                     });

@@ -1,13 +1,11 @@
 package in.mobiux.android.orca50scanner.activity;
 
-import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 
 import in.mobiux.android.orca50scanner.R;
-import in.mobiux.android.orca50scanner.api.Presenter;
 
 public class SplashActivity extends BaseActivity {
 
