@@ -153,6 +153,7 @@ public class ScanInventoryActivity extends BaseActivity implements View.OnClickL
         }
 
         matchingAsset.setRssi(inventory.getRssi());
+        matchingAsset.setScanStatus(true);
 
         arrangeScannedList();
 

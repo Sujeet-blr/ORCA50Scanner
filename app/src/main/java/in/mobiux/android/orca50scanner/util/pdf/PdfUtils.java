@@ -36,7 +36,7 @@ public class PdfUtils {
     private static final String PDF_FILE_NAME = "footprints.pdf";
     private static final String PRINT_JOB_NAME = "footprints documents";
     private static final String PDF_AUTHOR = "Footprints";
-    private static final String PDF_CREATER = "SGUL";
+    private static final String PDF_CREATOR = "Sensing Object";
     public static final String PDF_WATERMARK_TEXT = "Footprints.com";
 
 
@@ -67,11 +67,11 @@ public class PdfUtils {
             document.setPageSize(PageSize.A4);
             document.addCreationDate();
             document.addAuthor(PDF_AUTHOR);
-            document.addCreator(PDF_CREATER);
+            document.addCreator(PDF_CREATOR);
 
 
 //            Adding header
-            addHeaderTitle(document, "SGUL");
+            addHeaderTitle(document, "Sensing Object");
             addLineSpace(document);
 
             addNewItem(document, title, Element.ALIGN_CENTER);
@@ -81,18 +81,16 @@ public class PdfUtils {
             addLineSpace(document);
 
 
-            PdfPTable table = new PdfPTable(4);
+            PdfPTable table = new PdfPTable(3);
 
-            table.addCell("Asset Name");
-            table.addCell("Barcode");
-            table.addCell("RFID");
+            table.addCell("RFID Tag");
+            table.addCell("RSSI");
             table.addCell("Status");
 
             for (Inventory i : list) {
 
-                table.addCell(i.getName());
-                table.addCell(i.getBarcode());
                 table.addCell(i.getEpc());
+                table.addCell(i.getRssi());
                 if (i.isScanStatus()) {
                     table.addCell("Scanned");
                 } else {
@@ -136,7 +134,7 @@ public class PdfUtils {
             document.setPageSize(PageSize.A4);
             document.addCreationDate();
             document.addAuthor(PDF_AUTHOR);
-            document.addCreator(PDF_CREATER);
+            document.addCreator(PDF_CREATOR);
 
 
             addNewItem(document, "some text here", Element.ALIGN_CENTER);
