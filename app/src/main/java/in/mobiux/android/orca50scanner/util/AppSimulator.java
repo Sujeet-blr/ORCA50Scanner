@@ -17,8 +17,10 @@ public class AppSimulator {
 
     private static final String TAG = AppSimulator.class.getCanonicalName();
     MyApplication app;
-    private static AppSimulator simulator;
+    public static AppSimulator simulator;
     private Handler handler;
+
+    private RFIDReaderListener rfidReaderListener;
 
     public static void initSimulator(Context context) {
 
@@ -38,6 +40,10 @@ public class AppSimulator {
         handler = new Handler(context.getMainLooper());
     }
 
+    public void activateRFIDSimulation(RFIDReaderListener listener) {
+        this.rfidReaderListener = listener;
+    }
+
     private void activateSimulator() {
 
         Timer timer = new Timer();
@@ -45,13 +51,18 @@ public class AppSimulator {
             @Override
             public void run() {
 
-                if (app.listener != null) {
+
+                app.logger.i(TAG, "tick");
+
+//                For RFID tags
+//                if app.listener is register in any class then it will generate rfid tags
+                if (rfidReaderListener != null) {
 
                     handler.post(new Runnable() {
                         @Override
                         public void run() {
-                            app.listener.onConnection(true);
-                            app.listener.onScanningStatus(true);
+                            rfidReaderListener.onConnection(true);
+                            rfidReaderListener.onScanningStatus(true);
                         }
                     });
                     try {
@@ -66,6 +77,7 @@ public class AppSimulator {
 
 
                             Inventory inventory = new Inventory();
+//                            inventory.setEpc("AA000004");
                             inventory.setEpc("AA000003");
                             int rssi = new Random().nextInt(99);
                             inventory.setRssi("" + rssi);
@@ -73,30 +85,30 @@ public class AppSimulator {
                             app.logger.i(TAG, "Asset generated " + inventory.getFormattedEPC());
 
                             Inventory inventory1 = new Inventory();
+//                            inventory.setEpc("AA000004");
                             inventory1.setEpc("AA000004");
                             rssi = new Random().nextInt(99);
                             inventory1.setRssi("" + rssi);
 
 
                             Inventory inventory2 = new Inventory();
+//                            inventory.setEpc("AA000004");
                             inventory2.setEpc("123456789123456789123456");
                             rssi = new Random().nextInt(99);
                             inventory2.setRssi("" + rssi);
 
 
                             Inventory inventory3 = new Inventory();
-                            inventory3.setEpc("AA000005");
+//                            inventory.setEpc("AA000004");
+                            inventory3.setEpc("AA000005"+new Random().nextInt(99));
                             rssi = new Random().nextInt(99);
                             inventory3.setRssi("" + rssi);
 
 
-                            app.listener.onInventoryTag(inventory);
-                            app.listener.onInventoryTag(inventory1);
-                            app.listener.onInventoryTag(inventory2);
-                            app.listener.onInventoryTag(inventory3);
-
-//                            app.playBeep();
-
+//                            rfidReaderListener.onInventoryTag(inventory);
+//                            rfidReaderListener.onInventoryTag(inventory1);
+//                            rfidReaderListener.onInventoryTag(inventory2);
+                            rfidReaderListener.onInventoryTag(inventory3);
                         }
                     });
 
@@ -112,16 +124,17 @@ public class AppSimulator {
                         handler.post(new Runnable() {
                             @Override
                             public void run() {
-                                app.listener.onScanningStatus(false);
-                                app.listener.onInventoryTagEnd(tagEnd);
+                                rfidReaderListener.onScanningStatus(false);
+                                rfidReaderListener.onInventoryTagEnd(tagEnd);
                             }
                         });
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     }
                 }
+
             }
-        }, 3000, 3000);
+        }, 3000, 5000);
 
     }
 }

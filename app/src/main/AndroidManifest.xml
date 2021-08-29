@@ -37,29 +37,8 @@
         android:theme="@style/Theme.AppTheme.NoActionBar"
         android:usesCleartextTraffic="true">
 
-        <activity android:name=".activity.LicenseActivity"></activity>
-        <activity android:name=".activity.AboutUsActivity" />
-        <activity android:name=".dev.SampleActivity" />
-        <activity android:name=".activity.SystemLogsManagementActivity" />
-        <activity android:name=".activity.BuzzerSettingActivity" />
-        <activity android:name=".activity.DeviceSettingsActivity" />
-        <activity android:name=".activity.RFOutputPowerSettingActivity" />
-        <activity
-            android:name=".activity.LoginActivity"
-            android:windowSoftInputMode="stateHidden" />
-        <activity
-            android:name=".activity.DataSyncSettingActivity"
-            android:label="@string/label_data_sync" />
-        <activity
-            android:name=".activity.TransferAndAssignActivity"
-            android:label="@string/label_transfer_assign" />
-        <activity
-            android:name=".activity.LocateAssetActivity"
-            android:label="@string/label_locate_asset" />
         <activity android:name=".activity.ScanInventoryActivity" />
-        <activity android:name=".activity.AssetInventoryActivity" />
-        <activity android:name=".activity.HomeActivity" /> <!-- <activity android:name=".activity.SplashActivity" /> -->
-        <activity android:name=".dev.InventoryDetailActivity" />
+        <!-- <activity android:name=".activity.SplashActivity" /> -->
         <activity
             android:name=".activity.SplashActivity"
             android:theme="@style/orca_fullscreen">
@@ -67,7 +46,6 @@
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
-                <category android:name="android.intent.category.HOME" />
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>

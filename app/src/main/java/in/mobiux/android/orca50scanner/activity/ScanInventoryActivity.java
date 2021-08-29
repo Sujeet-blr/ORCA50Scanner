@@ -23,22 +23,25 @@ import in.mobiux.android.orca50scanner.adapter.InventoryAdapter;
 import in.mobiux.android.orca50scanner.api.model.AssetHistory;
 import in.mobiux.android.orca50scanner.api.model.DepartmentResponse;
 import in.mobiux.android.orca50scanner.api.model.Inventory;
+import in.mobiux.android.orca50scanner.core.DeviceReader;
+import in.mobiux.android.orca50scanner.core.RFIDReader;
 import in.mobiux.android.orca50scanner.util.RFIDReaderListener;
 import in.mobiux.android.orca50scanner.util.pdf.PdfUtils;
 import in.mobiux.android.orca50scanner.viewmodel.InventoryViewModel;
 
-public class ScanInventoryActivity extends BaseActivity implements View.OnClickListener, RFIDReaderListener {
+public class ScanInventoryActivity extends BaseActivity implements View.OnClickListener {
 
     private Button btnSave, btnClear, btnPrint;
     private TextView tvCount, txtIndicator;
     private RecyclerView recyclerView;
-    private DepartmentResponse.Child laboratory;
     private List<Inventory> scannedInventories = new ArrayList<>();
     private Map<String, Inventory> inventoriesMap = new HashMap<>();
     private InventoryAdapter adapter;
     boolean startButtonStatus = false;
 
-    private InventoryViewModel viewModel;
+    private RFIDReader rfidReader;
+    private RFIDReaderListener rfidReaderListener;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,17 +67,10 @@ public class ScanInventoryActivity extends BaseActivity implements View.OnClickL
         btnPrint.setOnClickListener(this);
         txtIndicator.setTag(startButtonStatus);
 
+        rfidReader = new RFIDReader(getApplicationContext());
+        rfidReader.connect(DeviceReader.ReaderType.RFID);
 
-        if (BuildConfig.DEBUG) {
-
-        } else {
-            if (app.connector.isConnected()) {
-                logger.i(TAG, "Connected");
-                ModuleManager.newInstance().setUHFStatus(true);
-            } else {
-                app.connectRFID();
-            }
-        }
+        registerRFIDListener();
 
         adapter = new InventoryAdapter(ScanInventoryActivity.this, scannedInventories);
         recyclerView.setAdapter(adapter);
@@ -82,10 +78,53 @@ public class ScanInventoryActivity extends BaseActivity implements View.OnClickL
 
     }
 
-    @Override
-    protected void onStart() {
-        super.onStart();
-        app.setOnRFIDListener(this);
+    private void registerRFIDListener() {
+        rfidReaderListener = new RFIDReaderListener() {
+            @Override
+            public void onInventoryTag(Inventory inventory) {
+
+                Inventory matchingAsset = inventoriesMap.get(inventory.getFormattedEPC());
+
+                if (matchingAsset == null) {
+                    matchingAsset = inventory;
+                    inventoriesMap.put(matchingAsset.getEpc(), matchingAsset);
+                    scannedInventories.add(matchingAsset);
+                }
+
+                matchingAsset.setRssi(inventory.getRssi());
+                matchingAsset.setScanStatus(true);
+
+            }
+
+            @Override
+            public void onScanningStatus(boolean status) {
+
+                if (status) {
+                    txtIndicator.setText(getResources().getString(R.string.scanning));
+                    txtIndicator.setTag(true);
+                } else {
+                    txtIndicator.setText(getResources().getString(R.string.start_scan));
+                    txtIndicator.setTag(false);
+                }
+            }
+
+            @Override
+            public void onInventoryTagEnd(RXInventoryTag.RXInventoryTagEnd tagEnd) {
+                logger.i(TAG, "Tag count " + tagEnd.mTagCount);
+
+                tvCount.setText(adapter.getItemCount() + " PCS");
+                adapter.notifyDataSetChanged();
+                app.playBeep();
+
+            }
+
+            @Override
+            public void onConnection(boolean status) {
+                logger.i(TAG, "Connection status " + status);
+            }
+        };
+
+        rfidReader.setOnRFIDReaderListener(rfidReaderListener);
     }
 
     @Override
@@ -118,23 +157,6 @@ public class ScanInventoryActivity extends BaseActivity implements View.OnClickL
         }
     }
 
-    @Override
-    public void onInventoryTag(Inventory inventory) {
-
-        Inventory matchingAsset = inventoriesMap.get(inventory.getFormattedEPC());
-
-        if (matchingAsset == null) {
-            matchingAsset = inventory;
-            inventoriesMap.put(matchingAsset.getEpc(), matchingAsset);
-            scannedInventories.add(matchingAsset);
-        }
-
-        matchingAsset.setRssi(inventory.getRssi());
-        matchingAsset.setScanStatus(true);
-
-//        arrangeScannedList();
-    }
-
     private void arrangeScannedList() {
 
         HashMap<String, Inventory> map = new HashMap<>();
@@ -152,33 +174,12 @@ public class ScanInventoryActivity extends BaseActivity implements View.OnClickL
         }
     }
 
-    @Override
-    public void onScanningStatus(boolean status) {
-        if (status) {
-            txtIndicator.setText(getResources().getString(R.string.scanning));
-            txtIndicator.setTag(true);
-        } else {
-            txtIndicator.setText(getResources().getString(R.string.start_scan));
-            txtIndicator.setTag(false);
-        }
-    }
-
-    @Override
-    public void onInventoryTagEnd(RXInventoryTag.RXInventoryTagEnd tagEnd) {
-        logger.i(TAG, "Tag count " + tagEnd.mTagCount);
-
-        tvCount.setText(adapter.getItemCount() + " PCS");
-        adapter.notifyDataSetChanged();
-        app.playBeep();
-    }
-
-    @Override
-    public void onConnection(boolean status) {
-    }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
+
+        rfidReader.releaseResources();
         app.onTerminate();
     }
 }

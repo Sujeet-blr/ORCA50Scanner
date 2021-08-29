@@ -248,11 +248,11 @@ public class BaseActivity extends AppCompatActivity {
                 if (systemReason != null) {
                     if (systemReason.equals(SYSTEM_HOME_KEY)) {
                         System.out.println("Press HOME key");
-                        for (BaseActivity activity : app.activities) {
-                            if (!(activity instanceof HomeActivity)) {
-                                activity.finish();
-                            }
-                        }
+//                        for (BaseActivity activity : app.activities) {
+////                            if (!(activity instanceof HomeActivity)) {
+////                                activity.finish();
+////                            }
+//                        }
                     } else if (systemReason.equals(SYSTEM_RECENT_APPS)) {
                         System.out.println("Press RECENT_APPS key");
 
