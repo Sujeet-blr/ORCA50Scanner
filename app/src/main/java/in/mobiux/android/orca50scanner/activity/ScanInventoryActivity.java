@@ -82,6 +82,7 @@ public class ScanInventoryActivity extends BaseActivity implements View.OnClickL
         rfidReaderListener = new RFIDReaderListener() {
             @Override
             public void onInventoryTag(Inventory inventory) {
+                logger.i(TAG, "scanned inventory " + inventory.getEpc());
 
                 Inventory matchingAsset = inventoriesMap.get(inventory.getFormattedEPC());
 
@@ -98,6 +99,7 @@ public class ScanInventoryActivity extends BaseActivity implements View.OnClickL
 
             @Override
             public void onScanningStatus(boolean status) {
+                logger.i(TAG, "Scanning status " + status);
 
                 if (status) {
                     txtIndicator.setText(getResources().getString(R.string.scanning));

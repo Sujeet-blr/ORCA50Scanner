@@ -7,8 +7,10 @@ import android.content.res.Resources;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.os.Handler;
+
 import java.util.ArrayList;
 import java.util.List;
+
 import in.mobiux.android.orca50scanner.activity.BaseActivity;
 import in.mobiux.android.orca50scanner.api.Presenter;
 import in.mobiux.android.orca50scanner.database.AppDatabase;
@@ -52,11 +54,15 @@ public class MyApplication extends Application {
     public void playBeep() {
 
         logger.i(TAG, "playing beep");
-        if (mediaPlayer == null) {
-            mediaPlayer = MediaPlayer.create(this, R.raw.beeper_short);
+        try {
+            if (mediaPlayer == null) {
+                mediaPlayer = MediaPlayer.create(this, R.raw.beeper_short);
+            }
+            if (mediaPlayer != null)
+                mediaPlayer.start();
+        } catch (Exception e) {
+            logger.e(TAG, "Error is playing beep " + e.getLocalizedMessage());
         }
-        if (mediaPlayer != null)
-            mediaPlayer.start();
 
     }
 
