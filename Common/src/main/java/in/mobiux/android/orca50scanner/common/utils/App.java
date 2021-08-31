@@ -1,41 +1,26 @@
-package in.mobiux.android.orca50scanner;
+package in.mobiux.android.orca50scanner.common.utils;
 
-import static android.os.Looper.getMainLooper;
-
-import android.app.Activity;
 import android.app.Application;
-import android.content.res.Configuration;
-import android.content.res.Resources;
-import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.os.Handler;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import in.mobiux.android.orca50scanner.activity.BaseActivity;
-import in.mobiux.android.orca50scanner.api.Presenter;
-import in.mobiux.android.orca50scanner.common.utils.App;
-import in.mobiux.android.orca50scanner.database.AppDatabase;
-import in.mobiux.android.orca50scanner.util.AppLogger;
-import in.mobiux.android.orca50scanner.util.AppSimulator;
-import in.mobiux.android.orca50scanner.util.SessionManager;
+import in.mobiux.android.orca50scanner.common.R;
+import in.mobiux.android.orca50scanner.common.activity.BaseActivity;
+import in.mobiux.android.orca50scanner.reader.simulator.AppSimulator;
 
-/**
- * Created by SUJEET KUMAR on 08-Mar-21.
- */
-public class MyApplication extends App {
+public class App extends Application {
 
-    private String TAG = MyApplication.class.getName();
+    private static final String TAG = App.class.getCanonicalName();
 
-    public AppDatabase db;
-    public AppLogger logger;
-
-    private Handler mHandler;
-    public SessionManager session;
-
-    private List<BaseActivity> activities = new ArrayList<>();
+    private AppLogger logger;
+    private SessionManager session;
     private MediaPlayer mediaPlayer;
+    private List<BaseActivity> activities = new ArrayList<>();
+    private Handler mHandler;
+    private boolean debugBuild = false;
 
     @Override
     public void onCreate() {
@@ -44,13 +29,11 @@ public class MyApplication extends App {
         logger = AppLogger.getInstance(getApplicationContext());
         logger.i(TAG, "= App Started =\n");
         mHandler = new Handler(getMainLooper());
-        Presenter.init(getApplicationContext());
         session = SessionManager.getInstance(getApplicationContext());
 
         mediaPlayer = MediaPlayer.create(this, R.raw.beeper_short);
 
-        setDebugBuild(BuildConfig.DEBUG);
-
+        setDebugBuild(debugBuild);
         AppSimulator.initSimulator(this);
     }
 
@@ -70,6 +53,13 @@ public class MyApplication extends App {
 
     }
 
+    public boolean isDebugBuild() {
+        return debugBuild;
+    }
+
+    public void setDebugBuild(boolean debugBuild) {
+        this.debugBuild = debugBuild;
+    }
 
     @Override
     public void onTerminate() {
