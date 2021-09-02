@@ -6,12 +6,10 @@ import androidx.room.Delete;
 import androidx.room.Insert;
 import androidx.room.OnConflictStrategy;
 import androidx.room.Query;
-import androidx.room.Update;
 
 import java.util.List;
 
 import in.mobiux.android.orca50scanner.api.model.AssetHistory;
-import in.mobiux.android.orca50scanner.api.model.Inventory;
 
 /**
  * Created by SUJEET KUMAR on 08-Mar-21.

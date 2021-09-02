@@ -6,18 +6,12 @@ import android.os.AsyncTask;
 
 import androidx.lifecycle.LiveData;
 
-import com.rfid.rxobserver.RXObserver;
-
 import java.util.List;
-import java.util.Timer;
-import java.util.TimerTask;
 
 import in.mobiux.android.orca50scanner.MyApplication;
-import in.mobiux.android.orca50scanner.api.model.Inventory;
 import in.mobiux.android.orca50scanner.api.model.Laboratory;
-import in.mobiux.android.orca50scanner.database.dao.InventoryDao;
+import in.mobiux.android.orca50scanner.common.utils.AppLogger;
 import in.mobiux.android.orca50scanner.database.dao.LaboratoryDao;
-import in.mobiux.android.orca50scanner.util.AppLogger;
 
 /**
  * Created by SUJEET KUMAR on 09-Mar-21.

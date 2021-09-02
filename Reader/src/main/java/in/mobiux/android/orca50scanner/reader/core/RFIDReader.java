@@ -12,9 +12,10 @@ import com.rfid.rxobserver.RXObserver;
 import com.rfid.rxobserver.ReaderSetting;
 import com.rfid.rxobserver.bean.RXInventoryTag;
 
+import in.mobiux.android.orca50scanner.common.utils.App;
+import in.mobiux.android.orca50scanner.common.utils.AppBuildConfig;
 import in.mobiux.android.orca50scanner.common.utils.AppLogger;
 import in.mobiux.android.orca50scanner.common.utils.SessionManager;
-import in.mobiux.android.orca50scanner.reader.MyApplication;
 import in.mobiux.android.orca50scanner.reader.model.Inventory;
 import in.mobiux.android.orca50scanner.reader.simulator.AppSimulator;
 
@@ -26,7 +27,7 @@ public class RFIDReader implements Reader {
     private final AppLogger logger;
     private final Handler mHandler;
 
-    private MyApplication app;
+    private App app;
     public static String PORT = "dev/ttyS4";
     public static int BAUD_RATE = 115200;
 
@@ -130,7 +131,7 @@ public class RFIDReader implements Reader {
             int tagReadingSpeed = tagEnd.mReadRate;
             logger.i(TAG, "Read Rate " + tagReadingSpeed);
 
-            app.playBeep();
+//            app.playBeep();
 
             if (listener != null) {
                 mHandler.post(new Runnable() {
@@ -145,7 +146,7 @@ public class RFIDReader implements Reader {
 
     public RFIDReader(Context context) {
         this.context = context;
-        app = (MyApplication) context;
+        app = (App) context;
         logger = AppLogger.getInstance(context);
         session = SessionManager.getInstance(context);
         mHandler = new Handler(context.getMainLooper());
@@ -163,7 +164,7 @@ public class RFIDReader implements Reader {
 
     private void initConnection() {
 
-        if (app.isDebugBuild()) {
+        if (AppBuildConfig.DEBUG) {
 
             if (listener != null) {
                 mHandler.post(new Runnable() {
@@ -267,7 +268,7 @@ public class RFIDReader implements Reader {
     public void setOnRFIDReaderListener(RFIDReaderListener listener) {
         this.listener = listener;
 
-        if (app.isDebugBuild() && AppSimulator.simulator != null) {
+        if (AppBuildConfig.DEBUG && AppSimulator.simulator != null) {
             AppSimulator.simulator.activateRFIDSimulation(listener);
         }
     }

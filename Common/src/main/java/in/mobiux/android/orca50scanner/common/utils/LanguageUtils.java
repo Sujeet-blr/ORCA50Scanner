@@ -1,19 +1,13 @@
-package in.mobiux.android.orca50scanner.util;
+package in.mobiux.android.orca50scanner.common.utils;
 
 import android.content.Context;
 import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.util.DisplayMetrics;
-import android.util.Log;
 
 import java.util.Locale;
 
-import in.mobiux.android.orca50scanner.activity.BaseActivity;
-
-import static in.mobiux.android.orca50scanner.util.LanguageUtils.Language.DUTCH;
-import static in.mobiux.android.orca50scanner.util.LanguageUtils.Language.ENGLISH;
-import static in.mobiux.android.orca50scanner.util.LanguageUtils.Language.FRENCH;
-import static in.mobiux.android.orca50scanner.util.LanguageUtils.Language.GERMAN;
+import in.mobiux.android.orca50scanner.common.activity.AppActivity;
 
 public class LanguageUtils {
 
@@ -55,19 +49,19 @@ public class LanguageUtils {
         session = SessionManager.getInstance(context);
     }
 
-    public void switchLanguage(BaseActivity activity, Language language) {
+    public void switchLanguage(AppActivity activity, Language language) {
 
         logger.i(TAG, "Switching Language to " + language);
         Resources resources = context.getApplicationContext().getResources();
         Configuration config = resources.getConfiguration();
         DisplayMetrics dm = resources.getDisplayMetrics();
-        if (language.equals(ENGLISH)) {
+        if (language.equals(Language.ENGLISH)) {
             config.locale = Locale.ENGLISH;
-        } else if (language.equals(GERMAN)) {
+        } else if (language.equals(Language.GERMAN)) {
             config.locale = Locale.GERMAN;
-        } else if (language.equals(FRENCH)) {
+        } else if (language.equals(Language.FRENCH)) {
             config.locale = Locale.FRENCH;
-        } else if (language.equals(DUTCH)) {
+        } else if (language.equals(Language.DUTCH)) {
             config.locale = new Locale("nl");
         } else {
             config.locale = Locale.ENGLISH;

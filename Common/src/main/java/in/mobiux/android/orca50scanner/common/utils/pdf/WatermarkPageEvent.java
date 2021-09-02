@@ -1,4 +1,4 @@
-package in.mobiux.android.orca50scanner.util.pdf;
+package in.mobiux.android.orca50scanner.common.utils.pdf;
 
 import com.itextpdf.text.Document;
 import com.itextpdf.text.Element;

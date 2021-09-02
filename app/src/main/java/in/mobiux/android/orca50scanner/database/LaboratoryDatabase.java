@@ -9,9 +9,7 @@ import androidx.room.RoomDatabase;
 import androidx.room.TypeConverters;
 import androidx.sqlite.db.SupportSQLiteDatabase;
 
-import in.mobiux.android.orca50scanner.api.model.Inventory;
 import in.mobiux.android.orca50scanner.api.model.Laboratory;
-import in.mobiux.android.orca50scanner.database.dao.InventoryDao;
 import in.mobiux.android.orca50scanner.database.dao.LaboratoryDao;
 import in.mobiux.android.orca50scanner.util.Converters;
 

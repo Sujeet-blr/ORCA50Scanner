@@ -1,5 +1,6 @@
 package in.mobiux.android.orca50scanner.common.utils;
 
+import android.app.Activity;
 import android.app.Application;
 import android.media.MediaPlayer;
 import android.os.Handler;
@@ -8,19 +9,17 @@ import java.util.ArrayList;
 import java.util.List;
 
 import in.mobiux.android.orca50scanner.common.R;
-import in.mobiux.android.orca50scanner.common.activity.BaseActivity;
-import in.mobiux.android.orca50scanner.reader.simulator.AppSimulator;
 
 public class App extends Application {
 
     private static final String TAG = App.class.getCanonicalName();
 
-    private AppLogger logger;
-    private SessionManager session;
+    protected AppLogger logger;
+    protected SessionManager session;
     private MediaPlayer mediaPlayer;
-    private List<BaseActivity> activities = new ArrayList<>();
-    private Handler mHandler;
-    private boolean debugBuild = false;
+    private List<Activity> activities = new ArrayList<>();
+    protected Handler mHandler;
+    public static AppBuildConfig AppBuildConfig;
 
     @Override
     public void onCreate() {
@@ -33,8 +32,6 @@ public class App extends Application {
 
         mediaPlayer = MediaPlayer.create(this, R.raw.beeper_short);
 
-        setDebugBuild(debugBuild);
-        AppSimulator.initSimulator(this);
     }
 
 
@@ -54,11 +51,15 @@ public class App extends Application {
     }
 
     public boolean isDebugBuild() {
-        return debugBuild;
+        return AppBuildConfig.DEBUG;
     }
 
-    public void setDebugBuild(boolean debugBuild) {
-        this.debugBuild = debugBuild;
+    public AppBuildConfig getBuildConfig() {
+        return AppBuildConfig;
+    }
+
+    public void setBuildConfig(AppBuildConfig appBuildConfig) {
+        this.AppBuildConfig = appBuildConfig;
     }
 
     @Override
@@ -69,11 +70,11 @@ public class App extends Application {
         System.exit(0);
     }
 
-    public void addActivity(BaseActivity activity) {
+    public void addActivity(Activity activity) {
         activities.add(activity);
     }
 
-    public void removeActivity(BaseActivity activity) {
+    public void removeActivity(Activity activity) {
         activities.remove(activity);
     }
 }

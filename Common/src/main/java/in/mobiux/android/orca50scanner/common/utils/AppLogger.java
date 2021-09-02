@@ -17,7 +17,6 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import in.mobiux.android.orca50scanner.BuildConfig;
 
 /**
  * Created by SUJEET KUMAR on 10-Mar-21.
@@ -45,7 +44,7 @@ public class AppLogger {
 
     public synchronized void i(String tag, String msg) {
         Log.i(tag, msg);
-        data = new StringBuilder(("\n" + BuildConfig.VERSION_CODE + tag + "\t, " + msg + "\t," + String.valueOf(AppUtils.getFormattedTimestamp())));
+        data = new StringBuilder(("\n" + AppBuildConfig.VERSION_CODE + tag + "\t, " + msg + "\t," + String.valueOf(AppUtils.getFormattedTimestamp())));
         logs.add(data.toString());
         appendToLogs(logs);
     }

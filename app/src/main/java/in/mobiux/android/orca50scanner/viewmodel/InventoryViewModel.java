@@ -9,9 +9,9 @@ import androidx.lifecycle.LiveData;
 import java.util.List;
 
 import in.mobiux.android.orca50scanner.api.model.AssetHistory;
-import in.mobiux.android.orca50scanner.api.model.Inventory;
 import in.mobiux.android.orca50scanner.database.AssetHistoryRepository;
 import in.mobiux.android.orca50scanner.database.InventoryRepository;
+import in.mobiux.android.orca50scanner.reader.model.Inventory;
 
 /**
  * Created by SUJEET KUMAR on 09-Mar-21.

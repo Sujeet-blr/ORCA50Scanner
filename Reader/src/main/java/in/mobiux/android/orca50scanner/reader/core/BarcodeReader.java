@@ -16,9 +16,9 @@ import java.util.List;
 import java.util.Observable;
 import java.util.Observer;
 
+import in.mobiux.android.orca50scanner.common.utils.AppBuildConfig;
 import in.mobiux.android.orca50scanner.common.utils.AppLogger;
 import in.mobiux.android.orca50scanner.common.utils.SessionManager;
-import in.mobiux.android.orca50scanner.reader.MyApplication;
 import in.mobiux.android.orca50scanner.reader.model.Barcode;
 import in.mobiux.android.orca50scanner.reader.simulator.AppSimulator;
 
@@ -42,7 +42,6 @@ public class BarcodeReader implements Reader {
     private String txtString = "";
     private BarcodeReaderListener listener;
     private boolean connectionStatus = false;
-    private MyApplication app;
 
     RXTXListener rxtxListener = new RXTXListener() {
         @Override
@@ -144,7 +143,6 @@ public class BarcodeReader implements Reader {
 
     public BarcodeReader(Context context) {
         this.context = context;
-        app = (MyApplication) context;
         logger = AppLogger.getInstance(context);
         session = SessionManager.getInstance(context);
     }
@@ -162,7 +160,7 @@ public class BarcodeReader implements Reader {
 
     private void initConnection() {
 
-        if (app.isDebugBuild()) {
+        if (AppBuildConfig.DEBUG) {
 
             connectionStatus = true;
             if (listener != null) {
@@ -231,7 +229,7 @@ public class BarcodeReader implements Reader {
                         public void run() {
                             listener.onScanSuccess(barcode);
                             listener.onScanningStatus(false);
-                            app.playBeep();
+//                            app.playBeep();
                         }
                     });
                 }
@@ -244,7 +242,7 @@ public class BarcodeReader implements Reader {
     }
 
     public void releaseResources() {
-        if (app.isDebugBuild()) {
+        if (AppBuildConfig.DEBUG) {
             return;
         }
 
@@ -260,7 +258,7 @@ public class BarcodeReader implements Reader {
     public void setOnBarcodeReaderListener(BarcodeReaderListener listener) {
         this.listener = listener;
 
-        if (app.isDebugBuild() && AppSimulator.simulator != null) {
+        if (AppBuildConfig.DEBUG && AppSimulator.simulator != null) {
             AppSimulator.simulator.activateODSSimulation(listener);
         }
     }

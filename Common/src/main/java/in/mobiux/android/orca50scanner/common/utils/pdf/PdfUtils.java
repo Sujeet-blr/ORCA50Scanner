@@ -1,4 +1,4 @@
-package in.mobiux.android.orca50scanner.util.pdf;
+package in.mobiux.android.orca50scanner.common.utils.pdf;
 
 import android.content.Context;
 import android.print.PrintAttributes;
@@ -22,10 +22,9 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.util.List;
 
-import in.mobiux.android.orca50scanner.api.model.Inventory;
-import in.mobiux.android.orca50scanner.util.AppLogger;
-import in.mobiux.android.orca50scanner.util.AppUtils;
-import in.mobiux.android.orca50scanner.util.Common;
+import in.mobiux.android.orca50scanner.common.utils.AppLogger;
+import in.mobiux.android.orca50scanner.common.utils.AppUtils;
+import in.mobiux.android.orca50scanner.common.utils.Common;
 
 public class PdfUtils {
 
@@ -46,7 +45,73 @@ public class PdfUtils {
     }
 
     //    path ~ "file_name.pdf"
-    public void createPdfFile(String path, List<Inventory> list, String title) {
+//    public void createPdfFile(String path, List<Inventory> list, String title) {
+//
+//        if (new File(context.getFilesDir(), path).exists()) {
+//            new File(context.getFilesDir(), path).delete();
+//        }
+//
+//        try {
+//
+//            Document document = new Document();
+////            save
+////            FileOutputStream out = context.openFileOutput(path, Context.MODE_PRIVATE);
+//            PdfWriter pdfWriter = PdfWriter.getInstance(document, new FileOutputStream(path));
+////            Adding watermark in pdf
+//            pdfWriter.setPageEvent(new WatermarkPageEvent());
+////            open to write
+//            document.open();
+//
+////            settings
+//            document.setPageSize(PageSize.A4);
+//            document.addCreationDate();
+//            document.addAuthor(PDF_AUTHOR);
+//            document.addCreator(PDF_CREATOR);
+//
+//
+////            Adding header
+//            addHeaderTitle(document, "Sensing Object");
+//            addLineSpace(document);
+//
+//            addNewItem(document, title, Element.ALIGN_CENTER);
+//            addNewItem(document, "created At : " + AppUtils.getFormattedTimestampUpToSeconds(), Element.ALIGN_RIGHT);
+//
+//            addLineSeparator(document);
+//            addLineSpace(document);
+//
+//
+//            PdfPTable table = new PdfPTable(3);
+//
+//            table.addCell("RFID Tag");
+//            table.addCell("RSSI");
+//            table.addCell("Status");
+//
+//            for (Inventory i : list) {
+//
+//                table.addCell(i.getEpc());
+//                table.addCell(i.getRssi());
+//                if (i.isScanStatus()) {
+//                    table.addCell("Scanned");
+//                } else {
+//                    table.addCell("n/a");
+//                }
+//
+//            }
+//
+//            document.add(table);
+//
+//            document.close();
+//            printPDF();
+//
+//        } catch (FileNotFoundException e) {
+//            e.printStackTrace();
+//        } catch (DocumentException e) {
+//            e.printStackTrace();
+//        }
+//    }
+
+    //    path ~ "file_name.pdf"
+    public void createPdfFile(String path, PdfTable pdfTable, String title) {
 
         if (new File(context.getFilesDir(), path).exists()) {
             new File(context.getFilesDir(), path).delete();
@@ -81,23 +146,7 @@ public class PdfUtils {
             addLineSpace(document);
 
 
-            PdfPTable table = new PdfPTable(3);
-
-            table.addCell("RFID Tag");
-            table.addCell("RSSI");
-            table.addCell("Status");
-
-            for (Inventory i : list) {
-
-                table.addCell(i.getEpc());
-                table.addCell(i.getRssi());
-                if (i.isScanStatus()) {
-                    table.addCell("Scanned");
-                } else {
-                    table.addCell("n/a");
-                }
-
-            }
+            PdfPTable table = pdfTable;
 
             document.add(table);
 
@@ -167,7 +216,6 @@ public class PdfUtils {
         }
     }
 
-
     private void addHeaderTitle(Document document, String text) {
 
         Font blue = new Font(Font.FontFamily.HELVETICA, 20, Font.BOLD, BaseColor.ORANGE);
@@ -217,5 +265,17 @@ public class PdfUtils {
 
     public static final String getPdfFileName() {
         return PDF_FILE_NAME;
+    }
+
+    public static class PdfTable extends PdfPTable {
+
+        public PdfTable(String[] colHeaders) {
+            super(colHeaders.length);
+
+//            adding table column headers
+            for (String col : colHeaders) {
+                addCell(col);
+            }
+        }
     }
 }

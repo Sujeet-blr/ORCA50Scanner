@@ -6,13 +6,9 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.pm.PackageManager;
-import android.content.res.Configuration;
-import android.net.Uri;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.ImageView;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -20,29 +16,24 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
-import androidx.core.content.FileProvider;
-
-
-import java.io.File;
-import java.util.List;
 
 import in.mobiux.android.orca50scanner.common.R;
 import in.mobiux.android.orca50scanner.common.utils.App;
 import in.mobiux.android.orca50scanner.common.utils.AppLogger;
+import in.mobiux.android.orca50scanner.common.utils.LanguageUtils;
 import in.mobiux.android.orca50scanner.common.utils.SessionManager;
-import in.mobiux.android.orca50scanner.reader.model.Inventory;
 
 
 /**
  * Created by SUJEET KUMAR on 08-Mar-21.
  */
-public class BaseActivity extends AppCompatActivity {
+public class AppActivity extends AppCompatActivity {
 
     public enum ACTIVITY_STATE {
-        ACTIVE, INACTIVE, FINISHED
+        CREATED, ACTIVE, INACTIVE, FINISHED
     }
 
-    public ACTIVITY_STATE state = ACTIVITY_STATE.INACTIVE;
+    public ACTIVITY_STATE state = ACTIVITY_STATE.FINISHED;
 
     protected AppLogger logger;
     public View parentLayout;
@@ -51,32 +42,38 @@ public class BaseActivity extends AppCompatActivity {
 
     protected App app;
 
-    protected static String TAG = BaseActivity.class.getCanonicalName();
+    protected static String TAG = AppActivity.class.getCanonicalName();
     protected SessionManager session;
 
     protected ProgressDialog progressDialog;
-    private ImageView ivHome;
-    private TextView textToolbarTitle;
     private VirtualKeyListenerBroadcastReceiver mVirtualKeyListenerBroadcastReceiver;
 
     protected LanguageUtils languageUtils;
     protected LanguageUtils.Language activityLanguage;
 
+    private Toast toast;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         logger = AppLogger.getInstance(getApplicationContext());
         app = (App) getApplicationContext();
         session = SessionManager.getInstance(getApplicationContext());
         app.addActivity(this);
+
         TAG = this.getClass().getCanonicalName();
+
         registerVirtualKeyListener();
 
         logger.i(TAG, "created Activity : " + this.getClass().getCanonicalName());
 
-//        languageUtils = new LanguageUtils(getApplicationContext());
-//        languageUtils.switchLanguage(this, session.getLanguage());
-//        activityLanguage = session.getLanguage();
+        languageUtils = new LanguageUtils(getApplicationContext());
+        languageUtils.switchLanguage(this, session.getLanguage());
+        activityLanguage = session.getLanguage();
+
+        toast = new Toast(this);
+        setActivityState(ACTIVITY_STATE.CREATED);
     }
 
     @Override
@@ -86,9 +83,9 @@ public class BaseActivity extends AppCompatActivity {
             parentLayout = findViewById(android.R.id.content);
         }
 
-//        if (!activityLanguage.equals(session.getLanguage())) {
-//            recreate();
-//        }
+        if (!activityLanguage.equals(session.getLanguage())) {
+            recreate();
+        }
 
         setActivityState(ACTIVITY_STATE.ACTIVE);
     }
@@ -99,21 +96,14 @@ public class BaseActivity extends AppCompatActivity {
         setActivityState(ACTIVITY_STATE.INACTIVE);
     }
 
-    @Override
-    public void onConfigurationChanged(@NonNull @NotNull Configuration newConfig) {
-        super.onConfigurationChanged(newConfig);
-
-        logger.i(TAG, "onConfiguration Changed");
-    }
-
 
     // Function to check and request permission.
-    public void checkPermission(BaseActivity activity, String permission, int requestCode) {
-        if (ContextCompat.checkSelfPermission(BaseActivity.this, permission)
+    public void checkPermission(AppActivity activity, String permission, int requestCode) {
+        if (ContextCompat.checkSelfPermission(AppActivity.this, permission)
                 == PackageManager.PERMISSION_DENIED) {
 
             // Requesting the permission
-            ActivityCompat.requestPermissions(BaseActivity.this,
+            ActivityCompat.requestPermissions(AppActivity.this,
                     new String[]{permission},
                     requestCode);
         } else {
@@ -154,34 +144,6 @@ public class BaseActivity extends AppCompatActivity {
         }
     }
 
-    protected void exportToCSV(List<Inventory> list) {
-
-        StringBuilder data = new StringBuilder();
-//        data.append("")
-
-        for (Inventory inventory : list) {
-            data.append("\n" + inventory.getInventoryId() + "," + inventory.getEpc() + "," + inventory.getQuantity());
-        }
-
-        try {
-
-            Context context = getApplicationContext();
-
-            File fileLocation = new File(getFilesDir(), "data.csv");
-            Uri path = FileProvider.getUriForFile(context, "in.mobiux.android.orca50scanner.fileprovider", fileLocation);
-            Intent fileIntent = new Intent(Intent.ACTION_SEND);
-            fileIntent.setType("text/csv");
-            fileIntent.putExtra(Intent.EXTRA_SUBJECT, "Exported Data");
-            fileIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-            fileIntent.putExtra(Intent.EXTRA_STREAM, path);
-            startActivity(Intent.createChooser(fileIntent, "Export"));
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
-
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         if (item.getItemId() == android.R.id.home) {
@@ -194,34 +156,16 @@ public class BaseActivity extends AppCompatActivity {
         return true;
     }
 
-    protected void syncRequired() {
-        Toast.makeText(app, R.string.sync_required, Toast.LENGTH_SHORT).show();
+    protected void showToast(String message) {
+        toast.setText(message);
+        toast.setDuration(Toast.LENGTH_SHORT);
+        toast.show();
     }
 
-    protected void setTitle(String title) {
-        textToolbarTitle = findViewById(R.id.textToolbarTitle);
-        textToolbarTitle.setText(title);
-        setHomeButtonEnable(true);
-    }
-
-    protected void setHomeButtonEnable(boolean enable) {
-        ivHome = findViewById(R.id.ivHome);
-        if (enable) {
-            ivHome.setVisibility(View.VISIBLE);
-        } else {
-            ivHome.setVisibility(View.GONE);
-        }
-
-        ivHome.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                finish();
-            }
-        });
-    }
-
-    public void showToast(String message) {
-        Toast.makeText(app, "" + message, Toast.LENGTH_SHORT).show();
+    protected void showToast(int resId) {
+        toast.setText(resId);
+        toast.setDuration(Toast.LENGTH_SHORT);
+        toast.show();
     }
 
     private void registerVirtualKeyListener() {

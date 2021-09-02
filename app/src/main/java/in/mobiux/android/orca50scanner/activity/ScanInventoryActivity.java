@@ -3,31 +3,26 @@ package in.mobiux.android.orca50scanner.activity;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.Manifest;
-import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
-import com.nativec.tools.ModuleManager;
 import com.rfid.rxobserver.bean.RXInventoryTag;
+import com.rfid.rxobserver.bean.RXOperationTag;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import in.mobiux.android.orca50scanner.BuildConfig;
 import in.mobiux.android.orca50scanner.R;
 import in.mobiux.android.orca50scanner.adapter.InventoryAdapter;
-import in.mobiux.android.orca50scanner.api.model.AssetHistory;
-import in.mobiux.android.orca50scanner.api.model.DepartmentResponse;
-import in.mobiux.android.orca50scanner.api.model.Inventory;
-import in.mobiux.android.orca50scanner.core.DeviceReader;
-import in.mobiux.android.orca50scanner.core.RFIDReader;
-import in.mobiux.android.orca50scanner.util.RFIDReaderListener;
-import in.mobiux.android.orca50scanner.util.pdf.PdfUtils;
-import in.mobiux.android.orca50scanner.viewmodel.InventoryViewModel;
+import in.mobiux.android.orca50scanner.common.utils.pdf.PdfUtils;
+import in.mobiux.android.orca50scanner.reader.core.RFIDReader;
+import in.mobiux.android.orca50scanner.reader.core.RFIDReaderListener;
+import in.mobiux.android.orca50scanner.reader.core.Reader;
+import in.mobiux.android.orca50scanner.reader.model.Inventory;
 
 public class ScanInventoryActivity extends BaseActivity implements View.OnClickListener {
 
@@ -68,7 +63,7 @@ public class ScanInventoryActivity extends BaseActivity implements View.OnClickL
         txtIndicator.setTag(startButtonStatus);
 
         rfidReader = new RFIDReader(getApplicationContext());
-        rfidReader.connect(DeviceReader.ReaderType.RFID);
+        rfidReader.connect(Reader.ReaderType.RFID);
 
         registerRFIDListener();
 
@@ -94,6 +89,11 @@ public class ScanInventoryActivity extends BaseActivity implements View.OnClickL
 
                 matchingAsset.setRssi(inventory.getRssi());
                 matchingAsset.setScanStatus(true);
+
+            }
+
+            @Override
+            public void onOperationTag(RXOperationTag operationTag) {
 
             }
 
@@ -153,7 +153,20 @@ public class ScanInventoryActivity extends BaseActivity implements View.OnClickL
                 PdfUtils pdfUtils = new PdfUtils(ScanInventoryActivity.this);
 
                 String title = "Sensing Object Rfid Reader";
-                pdfUtils.createPdfFile(PdfUtils.getPdfPath(ScanInventoryActivity.this), scannedInventories, title);
+
+                String[] columns = {"Rfid", "Rssi"};
+                PdfUtils.PdfTable table = new PdfUtils.PdfTable(columns);
+                for (Inventory i : scannedInventories) {
+                    table.addCell(i.getEpc());
+                    table.addCell(i.getRssi());
+                    if (i.isScanStatus()) {
+                        table.addCell("Scanned");
+                    } else {
+                        table.addCell("n/a");
+                    }
+                }
+
+                pdfUtils.createPdfFile(PdfUtils.getPdfPath(ScanInventoryActivity.this), table, title);
 
                 break;
         }

@@ -13,7 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.List;
 
 import in.mobiux.android.orca50scanner.R;
-import in.mobiux.android.orca50scanner.api.model.Inventory;
+import in.mobiux.android.orca50scanner.reader.model.Inventory;
 
 /**
  * Created by SUJEET KUMAR on 09-Mar-21.

@@ -7,10 +7,8 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.pm.PackageManager;
 import android.content.res.Configuration;
-import android.content.res.Resources;
 import android.net.Uri;
 import android.os.Bundle;
-import android.util.DisplayMetrics;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
@@ -19,7 +17,6 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.core.content.FileProvider;
@@ -29,79 +26,39 @@ import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
 import java.util.List;
-import java.util.Locale;
 
-import in.mobiux.android.orca50scanner.MyApplication;
 import in.mobiux.android.orca50scanner.R;
-import in.mobiux.android.orca50scanner.api.model.Inventory;
-import in.mobiux.android.orca50scanner.util.AppLogger;
-import in.mobiux.android.orca50scanner.util.LanguageUtils;
-import in.mobiux.android.orca50scanner.util.SessionManager;
+import in.mobiux.android.orca50scanner.common.activity.AppActivity;
+import in.mobiux.android.orca50scanner.reader.model.Inventory;
 
 /**
  * Created by SUJEET KUMAR on 08-Mar-21.
  */
-public class BaseActivity extends AppCompatActivity {
+public class BaseActivity extends AppActivity {
 
-    public enum ACTIVITY_STATE {
-        ACTIVE, INACTIVE, FINISHED
-    }
-
-    public ACTIVITY_STATE state = ACTIVITY_STATE.INACTIVE;
-
-    protected AppLogger logger;
-    public View parentLayout;
     public static int STORAGE_PERMISSION_CODE = 121;
     public static int CAMERA_PERMISSION_CODE = 123;
 
-    protected MyApplication app;
-
     protected static String TAG = BaseActivity.class.getCanonicalName();
-    protected SessionManager session;
 
     protected ProgressDialog progressDialog;
     private ImageView ivHome;
     private TextView textToolbarTitle;
     private VirtualKeyListenerBroadcastReceiver mVirtualKeyListenerBroadcastReceiver;
 
-    protected LanguageUtils languageUtils;
-    protected LanguageUtils.Language activityLanguage;
+//    protected LanguageUtils languageUtils;
+//    protected LanguageUtils.Language activityLanguage;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        logger = AppLogger.getInstance(getApplicationContext());
-        app = (MyApplication) getApplicationContext();
-        session = SessionManager.getInstance(getApplicationContext());
-        app.addActivity(this);
-        TAG = this.getClass().getCanonicalName();
+
         registerVirtualKeyListener();
 
         logger.i(TAG, "created Activity : " + this.getClass().getCanonicalName());
 
-        languageUtils = new LanguageUtils(getApplicationContext());
         languageUtils.switchLanguage(this, session.getLanguage());
         activityLanguage = session.getLanguage();
-    }
-
-    @Override
-    protected void onStart() {
-        super.onStart();
-        if (parentLayout == null) {
-            parentLayout = findViewById(android.R.id.content);
-        }
-
-        if (!activityLanguage.equals(session.getLanguage())) {
-            recreate();
-        }
-
-        setActivityState(ACTIVITY_STATE.ACTIVE);
-    }
-
-    @Override
-    protected void onStop() {
-        super.onStop();
-        setActivityState(ACTIVITY_STATE.INACTIVE);
     }
 
     @Override
@@ -255,7 +212,6 @@ public class BaseActivity extends AppCompatActivity {
 //                        }
                     } else if (systemReason.equals(SYSTEM_RECENT_APPS)) {
                         System.out.println("Press RECENT_APPS key");
-
                     }
                 }
             }
@@ -266,13 +222,5 @@ public class BaseActivity extends AppCompatActivity {
     protected void onDestroy() {
         super.onDestroy();
         this.unregisterReceiver(mVirtualKeyListenerBroadcastReceiver);
-
-        app.removeActivity(this);
-
-        setActivityState(ACTIVITY_STATE.FINISHED);
-    }
-
-    private void setActivityState(ACTIVITY_STATE state) {
-        this.state = state;
     }
 }

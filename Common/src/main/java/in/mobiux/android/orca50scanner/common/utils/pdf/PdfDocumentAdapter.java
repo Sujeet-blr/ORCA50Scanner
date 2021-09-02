@@ -1,4 +1,4 @@
-package in.mobiux.android.orca50scanner.util.pdf;
+package in.mobiux.android.orca50scanner.common.utils.pdf;
 
 import android.content.Context;
 import android.os.Bundle;
@@ -15,7 +15,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 
-import in.mobiux.android.orca50scanner.util.AppLogger;
+import in.mobiux.android.orca50scanner.common.utils.AppLogger;
+
 
 public class PdfDocumentAdapter extends PrintDocumentAdapter {
 

@@ -8,9 +8,7 @@ import androidx.lifecycle.LiveData;
 
 import java.util.List;
 
-import in.mobiux.android.orca50scanner.api.model.Inventory;
 import in.mobiux.android.orca50scanner.api.model.Laboratory;
-import in.mobiux.android.orca50scanner.database.InventoryRepository;
 import in.mobiux.android.orca50scanner.database.LaboratoryRepository;
 
 /**

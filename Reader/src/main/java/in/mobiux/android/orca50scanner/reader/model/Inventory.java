@@ -9,6 +9,7 @@ import com.google.gson.annotations.SerializedName;
 import com.rfid.rxobserver.bean.RXInventoryTag;
 
 import java.io.Serializable;
+import java.util.List;
 
 /**
  * Created by SUJEET KUMAR on 08-Mar-21.
@@ -178,6 +179,16 @@ public class Inventory extends RXInventoryTag implements Serializable {
 
     public String getFormattedEPC() {
         return getEpc().replace(" ", "");
+    }
+
+    public static Inventory getMatchingInventory(String strEPC, List<Inventory> list) {
+        String formattedEPC = strEPC.replace(" ", "");
+        for (Inventory inventory : list) {
+            if (formattedEPC.equals(inventory.getFormattedEPC())) {
+                return inventory;
+            }
+        }
+        return null;
     }
 
     @Override

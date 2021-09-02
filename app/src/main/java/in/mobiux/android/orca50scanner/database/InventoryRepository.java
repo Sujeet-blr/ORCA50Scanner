@@ -8,17 +8,14 @@ import androidx.lifecycle.LiveData;
 
 import com.rfid.rxobserver.RXObserver;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Observable;
 import java.util.Timer;
 import java.util.TimerTask;
-import java.util.UUID;
 
 import in.mobiux.android.orca50scanner.MyApplication;
-import in.mobiux.android.orca50scanner.api.model.Inventory;
+import in.mobiux.android.orca50scanner.common.utils.AppLogger;
 import in.mobiux.android.orca50scanner.database.dao.InventoryDao;
-import in.mobiux.android.orca50scanner.util.AppLogger;
+import in.mobiux.android.orca50scanner.reader.model.Inventory;
 
 /**
  * Created by SUJEET KUMAR on 09-Mar-21.

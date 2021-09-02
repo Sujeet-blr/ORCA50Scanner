@@ -1,12 +1,5 @@
 package in.mobiux.android.orca50scanner;
 
-import static android.os.Looper.getMainLooper;
-
-import android.app.Activity;
-import android.app.Application;
-import android.content.res.Configuration;
-import android.content.res.Resources;
-import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.os.Handler;
 
@@ -16,10 +9,9 @@ import java.util.List;
 import in.mobiux.android.orca50scanner.activity.BaseActivity;
 import in.mobiux.android.orca50scanner.api.Presenter;
 import in.mobiux.android.orca50scanner.common.utils.App;
+import in.mobiux.android.orca50scanner.common.utils.AppBuildConfig;
 import in.mobiux.android.orca50scanner.database.AppDatabase;
-import in.mobiux.android.orca50scanner.util.AppLogger;
-import in.mobiux.android.orca50scanner.util.AppSimulator;
-import in.mobiux.android.orca50scanner.util.SessionManager;
+import in.mobiux.android.orca50scanner.reader.simulator.AppSimulator;
 
 /**
  * Created by SUJEET KUMAR on 08-Mar-21.
@@ -29,10 +21,9 @@ public class MyApplication extends App {
     private String TAG = MyApplication.class.getName();
 
     public AppDatabase db;
-    public AppLogger logger;
 
     private Handler mHandler;
-    public SessionManager session;
+
 
     private List<BaseActivity> activities = new ArrayList<>();
     private MediaPlayer mediaPlayer;
@@ -41,17 +32,28 @@ public class MyApplication extends App {
     public void onCreate() {
         super.onCreate();
 
-        logger = AppLogger.getInstance(getApplicationContext());
+
         logger.i(TAG, "= App Started =\n");
         mHandler = new Handler(getMainLooper());
         Presenter.init(getApplicationContext());
-        session = SessionManager.getInstance(getApplicationContext());
 
         mediaPlayer = MediaPlayer.create(this, R.raw.beeper_short);
 
-        setDebugBuild(BuildConfig.DEBUG);
-
+        setBuildConfig(appBuildConfig());
         AppSimulator.initSimulator(this);
+    }
+
+    private AppBuildConfig appBuildConfig() {
+
+        AppBuildConfig appBuildConfig = new AppBuildConfig();
+
+        appBuildConfig.DEBUG = BuildConfig.DEBUG;
+        appBuildConfig.APPLICATION_ID = BuildConfig.APPLICATION_ID;
+        appBuildConfig.BUILD_TYPE = BuildConfig.BUILD_TYPE;
+        appBuildConfig.VERSION_CODE = BuildConfig.VERSION_CODE;
+        appBuildConfig.VERSION_NAME = BuildConfig.VERSION_NAME;
+
+        return appBuildConfig;
     }
 
 

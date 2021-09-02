@@ -10,6 +10,7 @@ import java.util.Random;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import in.mobiux.android.orca50scanner.common.utils.AppLogger;
 import in.mobiux.android.orca50scanner.reader.core.BarcodeReaderListener;
 import in.mobiux.android.orca50scanner.reader.core.RFIDReaderListener;
 import in.mobiux.android.orca50scanner.reader.model.Inventory;
@@ -20,6 +21,7 @@ public class AppSimulator {
     private Context context;
     public static AppSimulator simulator;
     private Handler handler;
+    private AppLogger logger;
 
     private RFIDReaderListener rfidReaderListener;
     private BarcodeReaderListener barcodeReaderListener;
@@ -36,6 +38,9 @@ public class AppSimulator {
     private AppSimulator(Context context) {
         this.context = context.getApplicationContext();
         handler = new Handler(context.getMainLooper());
+        logger = AppLogger.getInstance(context);
+
+        logger.i(TAG, "AppSimulator is Created");
     }
 
     public void activateODSSimulation(BarcodeReaderListener listener) {
