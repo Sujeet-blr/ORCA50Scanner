@@ -11,8 +11,11 @@ import com.itextpdf.text.Document;
 import com.itextpdf.text.DocumentException;
 import com.itextpdf.text.Element;
 import com.itextpdf.text.Font;
+import com.itextpdf.text.Image;
 import com.itextpdf.text.PageSize;
 import com.itextpdf.text.Paragraph;
+import com.itextpdf.text.Phrase;
+import com.itextpdf.text.pdf.PdfPCell;
 import com.itextpdf.text.pdf.PdfPTable;
 import com.itextpdf.text.pdf.PdfWriter;
 import com.itextpdf.text.pdf.draw.LineSeparator;
@@ -269,6 +272,8 @@ public class PdfUtils {
 
     public static class PdfTable extends PdfPTable {
 
+        PdfPTable table;
+
         public PdfTable(String[] colHeaders) {
             super(colHeaders.length);
 
@@ -276,6 +281,12 @@ public class PdfUtils {
             for (String col : colHeaders) {
                 addCell(col);
             }
+
+            table = this;
+        }
+
+        public void cell(String text) {
+            table.addCell(text);
         }
     }
 }

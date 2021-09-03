@@ -2,3 +2,6 @@ include ':app'
 rootProject.name = "ORCA50Scanner"
 include ':Reader'
 include ':Common'
+include ':sensingobjectkeyboard'
+include ':sorfidtobarcode'
+include ':sensingobjectbarcode'

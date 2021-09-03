@@ -13,6 +13,7 @@ import java.util.TimerTask;
 import in.mobiux.android.orca50scanner.common.utils.AppLogger;
 import in.mobiux.android.orca50scanner.reader.core.BarcodeReaderListener;
 import in.mobiux.android.orca50scanner.reader.core.RFIDReaderListener;
+import in.mobiux.android.orca50scanner.reader.model.Barcode;
 import in.mobiux.android.orca50scanner.reader.model.Inventory;
 
 public class AppSimulator {
@@ -73,7 +74,7 @@ public class AppSimulator {
                         }
                     });
                     try {
-                        Thread.sleep(2000);
+                        Thread.sleep(500);
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     }
@@ -115,6 +116,28 @@ public class AppSimulator {
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     }
+                }
+
+
+                if (barcodeReaderListener != null) {
+                    Barcode barcode = new Barcode();
+                    barcode.setName("123456" + new Random().nextInt(999));
+                    logger.i(TAG, "barcode generated");
+
+                    handler.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            barcodeReaderListener.onScanningStatus(true);
+                            try {
+                                Thread.sleep(500);
+                            } catch (InterruptedException e) {
+                                e.printStackTrace();
+                            }
+
+                            barcodeReaderListener.onScanSuccess(barcode);
+                            barcodeReaderListener.onScanningStatus(false);
+                        }
+                    });
                 }
 
             }

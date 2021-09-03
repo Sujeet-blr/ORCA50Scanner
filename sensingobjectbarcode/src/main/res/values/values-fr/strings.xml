@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">SO Inventory</string>
+    <string name="print">french</string>
+    <string name="label_license">french</string>
+    <string name="label_verification">French</string>
+    <string name="label_transfer_assign">French</string>
+    <string name="label_data_sync">French</string>
+    <string name="label_device_settings">French</string>
+    <string name="label_asset_inventory">French</string>
+    <string name="label_locate_asset">French</string>
+    <string name="label_about_us">French</string>
+    <string name="lab_equipment_inventory_mangement_system">French</string>
+</resources>

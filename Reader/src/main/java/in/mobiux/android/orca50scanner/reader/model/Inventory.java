@@ -16,7 +16,8 @@ import java.util.List;
  */
 
 @Entity(tableName = "inventory")
-public class Inventory extends RXInventoryTag implements Serializable {
+//public class Inventory extends RXInventoryTag implements Serializable {
+public class Inventory implements Serializable {
 
 //    @PrimaryKey(autoGenerate = true)
 //    @NonNull
