@@ -1,3 +1,33 @@
 <resources>
     <string name="app_name">Sensing Object Keyboard</string>
+
+    <string name="camera_permission_granted">Camera Permission Granted</string>
+    <string name="camera_permission_denied">Camera Permission Denied</string>
+    <string name="storage_permission_granted">Storage Permission Granted</string>
+    <string name="storage_permission_denied">Storage Permission Denied</string>
+
+    <string name="sync_required">Sync required to proceed</string>
+    <string name="buzzer_mode_set_to">Buzzer Mode set to : </string>
+    <string name="select_option">Select a option to set</string>
+    <string name="ok">OK</string>
+    <string name="start_scan">Start Scan</string>
+    <string name="stop_scan">Stop Scan</string>
+    <string name="scanning">Scanning in progress</string>
+    <string name="asset_not_selected">Asset not selected</string>
+    <string name="sync_success">Sync Success</string>
+    <string name="sync_failed">Sync Failed</string>
+    <string name="asset">Asset</string>
+    <string name="not_implemented">Feature coming soon</string>
+    <string name="rssi_unit">dBm</string>
+    <string name="something_went_wrong">Something went wrong. Please try again</string>
+    <string name="choose_an_option_to_update">Choose any option to update</string>
+    <string name="saved_success">Saved Success</string>
+    <string name="lab_not_selected">Lab not selected</string>
+    <string name="saving">Saving</string>
+    <string name="rf_power_output_set_to">RF Power Output set to </string>
+    <string name="invalid_credentials">Invalid Credentials</string>
+    <string name="connected">Connected</string>
+    <string name="connection_lost">Connection Lost</string>
+    <string name="you_are_logged_in_as">You are logged in as : </string>
+    <string name="syncing_with_server">Syncing with Server</string>
 </resources>
