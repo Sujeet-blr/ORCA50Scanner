@@ -137,7 +137,8 @@ public class RFIDReader implements Reader {
                 mHandler.post(new Runnable() {
                     @Override
                     public void run() {
-                        listener.onInventoryTagEnd(tagEnd);
+
+                        listener.onInventoryTagEnd(new Inventory.InventoryTagEnd(tagEnd));
                     }
                 });
             }

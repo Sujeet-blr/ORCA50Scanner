@@ -1,10 +1,11 @@
-package in.mobiux.android.orca50scanner.sensingobjectkeyboard;
+package in.mobiux.android.orca50scanner.sensingobjectkeyboard.activity;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
 
 import in.mobiux.android.orca50scanner.common.utils.App;
+import in.mobiux.android.orca50scanner.sensingobjectkeyboard.R;
 import in.mobiux.android.orca50scanner.sensingobjectkeyboard.activity.BaseActivity;
 
 public class MainActivity extends BaseActivity {

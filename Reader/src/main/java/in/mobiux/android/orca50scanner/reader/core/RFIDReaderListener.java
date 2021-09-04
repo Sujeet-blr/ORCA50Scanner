@@ -4,6 +4,7 @@ import com.rfid.rxobserver.bean.RXInventoryTag;
 import com.rfid.rxobserver.bean.RXOperationTag;
 
 import in.mobiux.android.orca50scanner.reader.model.Inventory;
+import in.mobiux.android.orca50scanner.reader.model.OperationTag;
 
 
 /**
@@ -15,9 +16,9 @@ public interface RFIDReaderListener {
 
     void onInventoryTag(Inventory inventory);
 
-    void onOperationTag(RXOperationTag operationTag);
+    void onOperationTag(OperationTag operationTag);
 
-    void onInventoryTagEnd(RXInventoryTag.RXInventoryTagEnd tagEnd);
+    void onInventoryTagEnd(Inventory.InventoryTagEnd tagEnd);
 
     void onConnection(boolean status);
 }

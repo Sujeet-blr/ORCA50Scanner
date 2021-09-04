@@ -110,7 +110,7 @@ public class AppSimulator {
                             @Override
                             public void run() {
                                 rfidReaderListener.onScanningStatus(false);
-                                rfidReaderListener.onInventoryTagEnd(tagEnd);
+                                rfidReaderListener.onInventoryTagEnd(new Inventory.InventoryTagEnd(tagEnd));
                             }
                         });
                     } catch (InterruptedException e) {

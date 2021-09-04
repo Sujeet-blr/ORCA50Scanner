@@ -23,6 +23,7 @@ import in.mobiux.android.orca50scanner.reader.core.RFIDReader;
 import in.mobiux.android.orca50scanner.reader.core.RFIDReaderListener;
 import in.mobiux.android.orca50scanner.reader.core.Reader;
 import in.mobiux.android.orca50scanner.reader.model.Inventory;
+import in.mobiux.android.orca50scanner.reader.model.OperationTag;
 
 public class ScanInventoryActivity extends BaseActivity implements View.OnClickListener {
 
@@ -93,7 +94,7 @@ public class ScanInventoryActivity extends BaseActivity implements View.OnClickL
             }
 
             @Override
-            public void onOperationTag(RXOperationTag operationTag) {
+            public void onOperationTag(OperationTag operationTag) {
 
             }
 
@@ -111,7 +112,7 @@ public class ScanInventoryActivity extends BaseActivity implements View.OnClickL
             }
 
             @Override
-            public void onInventoryTagEnd(RXInventoryTag.RXInventoryTagEnd tagEnd) {
+            public void onInventoryTagEnd(Inventory.InventoryTagEnd tagEnd) {
                 logger.i(TAG, "Tag count " + tagEnd.mTagCount);
 
                 tvCount.setText(adapter.getItemCount() + " PCS");

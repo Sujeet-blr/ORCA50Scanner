@@ -196,5 +196,24 @@ public class Inventory implements Serializable {
     public String toString() {
         return "" + name;
     }
+
+    public static class InventoryTagEnd {
+        public int mCurrentAnt = 0;
+        public int mTagCount = 0;
+        public int mReadRate = 0;
+        public int mTotalRead = 0;
+        public byte cmd = 0;
+
+        public InventoryTagEnd() {
+        }
+
+        public InventoryTagEnd(RXInventoryTag.RXInventoryTagEnd tagEnd) {
+            mCurrentAnt = tagEnd.mCurrentAnt;
+            mTagCount = tagEnd.mTagCount;
+            mReadRate = tagEnd.mReadRate;
+            mTotalRead = tagEnd.mTotalRead;
+            cmd = tagEnd.cmd;
+        }
+    }
 }
 
