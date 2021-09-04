@@ -30,4 +30,28 @@
     <string name="connection_lost">Connection Lost</string>
     <string name="you_are_logged_in_as">You are logged in as : </string>
     <string name="syncing_with_server">Syncing with Server</string>
+
+
+    <string name="close">Close</string>
+    <string name="verify_to_proceed">Verify to proceed</string>
+    <string name="login">Login</string>
+    <string name="clear">Clear</string>
+    <string name="send_logs_to_server_and_clear_from_device">Send logs to server and clear from device</string>
+    <string name="clear_logs_from_device_only">Clear logs from device only</string>
+    <string name="save">Save</string>
+    <string name="select_asset_to_transfer">Select asset to transfer</string>
+    <string name="department_where_the_asset_should_be">Department where the asset should be:</string>
+    <string name="transfer_asset_to">Transfer Asset To :</string>
+
+    <string name="msg_rfid_selection_required">RFID or Barcode selection required</string>
+    <string name="msg_rfid_connect_initiated">RFID Reader Connect Initiated</string>
+    <string name="msg_rfid_connected">RFID Reader Connected</string>
+    <string name="msg_rfid_already_connected">RFID Reader Already Connected</string>
+    <string name="msg_rfid_scanning">Scanning RFID</string>
+    <string name="msg_barcode_initiated">Barcode Reader Connect Initiated</string>
+    <string name="msg_barcode_connected">Barcode Reader Connected</string>
+    <string name="msg_barcode_already_connected">Barcode Reader Already Connected</string>
+    <string name="msg_barcode_scanning">Scanning Barcode</string>
+    <string name="msg_scanned">Scanned</string>
+
 </resources>

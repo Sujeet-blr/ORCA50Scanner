@@ -145,6 +145,7 @@ public class BarcodeReader implements Reader {
         this.context = context;
         logger = AppLogger.getInstance(context);
         session = SessionManager.getInstance(context);
+        handler = new Handler(context.getMainLooper());
     }
 
     @Override
@@ -159,6 +160,8 @@ public class BarcodeReader implements Reader {
 
 
     private void initConnection() {
+
+        handler = new Handler(context.getMainLooper());
 
         if (AppBuildConfig.DEBUG) {
 

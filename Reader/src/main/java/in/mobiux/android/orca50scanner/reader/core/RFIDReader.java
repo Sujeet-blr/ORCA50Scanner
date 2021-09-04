@@ -250,7 +250,7 @@ public class RFIDReader implements Reader {
             e.printStackTrace();
             logger.e(TAG, "" + e.getLocalizedMessage());
         } finally {
-            if (connector != null) {
+            if (connector != null && connector.isConnected()) {
                 ModuleManager.newInstance().setUHFStatus(false);
                 ModuleManager.newInstance().release();
             }
