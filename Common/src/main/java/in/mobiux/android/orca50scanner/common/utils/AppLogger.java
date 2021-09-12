@@ -29,10 +29,14 @@ public class AppLogger {
     private List<String> logs = new ArrayList<>();
     FileOutputStream out;
 
+    private String appName = "";
+    private String logFileName = "";
+
     private AppLogger(Context context) {
         this.context = context;
         data = new StringBuilder();
-
+        appName = context.getPackageManager().getApplicationLabel(context.getApplicationInfo()).toString();
+        logFileName = appName + "_logs.csv";
     }
 
     public static AppLogger getInstance(Context context) {
@@ -69,11 +73,11 @@ public class AppLogger {
 //            out.flush();
 
 
-            File fileLocation = new File(context.getFilesDir(), "logs.csv");
+            File fileLocation = new File(context.getFilesDir(), logFileName);
             Uri path = FileProvider.getUriForFile(context, "in.mobiux.android.orca50scanner.fileprovider", fileLocation);
             Intent fileIntent = new Intent(Intent.ACTION_SEND);
             fileIntent.setType("text/csv");
-            fileIntent.putExtra(Intent.EXTRA_SUBJECT, "Logs Data");
+            fileIntent.putExtra(Intent.EXTRA_SUBJECT, appName + "_logs");
             fileIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
             fileIntent.putExtra(Intent.EXTRA_STREAM, path);
             context.startActivity(Intent.createChooser(fileIntent, "Export logs"));
@@ -94,7 +98,7 @@ public class AppLogger {
 
             String s = iterator.next();
             try {
-                out = context.openFileOutput("logs.csv", Context.MODE_APPEND);
+                out = context.openFileOutput(logFileName, Context.MODE_APPEND);
                 out.write(s.getBytes());
                 out.close();
             } catch (IOException e) {

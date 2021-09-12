@@ -144,6 +144,7 @@ public class ScanInventoryActivity extends BaseActivity implements View.OnClickL
             case R.id.btnSave:
                 logger.i(TAG, "Save");
 
+                checkPermission(ScanInventoryActivity.this, Manifest.permission.WRITE_EXTERNAL_STORAGE, STORAGE_PERMISSION_CODE);
                 logger.createAndExportLogs(ScanInventoryActivity.this);
                 break;
             case R.id.btnPrint:

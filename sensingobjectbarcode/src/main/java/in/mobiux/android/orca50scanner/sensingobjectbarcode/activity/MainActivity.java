@@ -98,7 +98,11 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
 
             @Override
             public void onScanningStatus(boolean status) {
-
+                if (status){
+                   txtIndicator.setVisibility(View.VISIBLE);
+                }else {
+                    txtIndicator.setVisibility(View.GONE);
+                }
             }
         };
 
@@ -119,7 +123,8 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
             case R.id.btnSave:
                 logger.i(TAG, "Save");
 
-//                logger.createAndExportLogs(ScanInventoryActivity.this);
+                checkPermission(MainActivity.this, Manifest.permission.WRITE_EXTERNAL_STORAGE, STORAGE_PERMISSION_CODE);
+                logger.createAndExportLogs(MainActivity.this);
                 break;
             case R.id.btnPrint:
                 logger.i(TAG, "print");
