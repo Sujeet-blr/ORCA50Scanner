@@ -75,6 +75,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         barcodeReaderListener = new BarcodeReaderListener() {
             @Override
             public void onConnection(boolean status) {
+                logger.i(TAG, "connection status " + status);
                 if (status) {
                     showToast("Connected");
                 } else {
@@ -84,6 +85,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
 
             @Override
             public void onScanSuccess(Barcode barcode) {
+                logger.i(TAG, "scannned success " + barcode.getName());
                 barcodes.add(barcode);
                 map.put(barcode.getName(), barcode);
 
@@ -93,16 +95,18 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
 
             @Override
             public void onScanFailed(Object o) {
-
+                logger.e(TAG, "Scanned Failed");
             }
 
             @Override
             public void onScanningStatus(boolean status) {
-                if (status){
-                   txtIndicator.setVisibility(View.VISIBLE);
-                }else {
+                if (status) {
+                    txtIndicator.setVisibility(View.VISIBLE);
+                } else {
                     txtIndicator.setVisibility(View.GONE);
                 }
+
+                logger.i(TAG, "Scanning Status " + status);
             }
         };
 

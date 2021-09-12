@@ -2,6 +2,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="in.mobiux.android.orca50scanner.sensingobjectkeyboard">
 
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+
     <application
         android:name=".MyApplication"
         android:allowBackup="true"
@@ -11,18 +13,21 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.ORCA50Scanner">
         <activity
-            android:name=".activity.SettingsActivity"
+            android:name=".activity.RequestPermissionActivity"
+            android:label="Request Permission"
             android:exported="true" />
+        <activity android:name=".activity.SettingsActivity" />
         <activity
             android:name=".activity.MainActivity"
             android:exported="true">
-<!--            <intent-filter>-->
-<!--                <action android:name="android.intent.action.MAIN" />-->
 
-<!--                <category android:name="android.intent.category.LAUNCHER" />-->
-<!--            </intent-filter>-->
+            <!-- <intent-filter> -->
+            <!-- <action android:name="android.intent.action.MAIN" /> -->
+
+
+            <!-- <category android:name="android.intent.category.LAUNCHER" /> -->
+            <!-- </intent-filter> -->
         </activity>
-
 
         <service
             android:name=".service.OrcaKeyboardService"
@@ -39,14 +44,13 @@
 
         <provider
             android:name="androidx.core.content.FileProvider"
-            android:authorities="in.mobiux.android.orca50scanner.fileprovider"
+            android:authorities="${applicationId}.fileprovider"
             android:exported="false"
             android:grantUriPermissions="true">
             <meta-data
                 android:name="android.support.FILE_PROVIDER_PATHS"
                 android:resource="@xml/provider_paths" />
         </provider>
-
     </application>
 
 </manifest>

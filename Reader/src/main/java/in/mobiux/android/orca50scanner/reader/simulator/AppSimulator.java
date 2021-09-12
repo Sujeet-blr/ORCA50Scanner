@@ -46,10 +46,12 @@ public class AppSimulator {
 
     public void activateODSSimulation(BarcodeReaderListener listener) {
         this.barcodeReaderListener = listener;
+        logger.i(TAG, "Barcode simulator activated");
     }
 
     public void activateRFIDSimulation(RFIDReaderListener listener) {
         this.rfidReaderListener = listener;
+        logger.i(TAG, "RFID Simulator activated");
     }
 
     private void activateSimulator() {

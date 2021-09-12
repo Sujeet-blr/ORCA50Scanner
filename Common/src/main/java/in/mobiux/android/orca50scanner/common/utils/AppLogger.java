@@ -1,5 +1,7 @@
 package in.mobiux.android.orca50scanner.common.utils;
 
+import static android.content.Intent.FLAG_ACTIVITY_NEW_TASK;
+
 import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
@@ -74,8 +76,9 @@ public class AppLogger {
 
 
             File fileLocation = new File(context.getFilesDir(), logFileName);
-            Uri path = FileProvider.getUriForFile(context, "in.mobiux.android.orca50scanner.fileprovider", fileLocation);
+            Uri path = FileProvider.getUriForFile(context, context.getPackageName() + ".fileprovider", fileLocation);
             Intent fileIntent = new Intent(Intent.ACTION_SEND);
+            fileIntent.setFlags(FLAG_ACTIVITY_NEW_TASK);
             fileIntent.setType("text/csv");
             fileIntent.putExtra(Intent.EXTRA_SUBJECT, appName + "_logs");
             fileIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);

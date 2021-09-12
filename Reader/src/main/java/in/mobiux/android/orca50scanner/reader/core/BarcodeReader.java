@@ -256,6 +256,8 @@ public class BarcodeReader implements Reader {
         odScannerHelper.setRunFlag(true);
         connector.disConnect();
         odScannerHelper.signOut();
+
+        logger.i(TAG, "Resources released");
     }
 
     public void setOnBarcodeReaderListener(BarcodeReaderListener listener) {
@@ -264,5 +266,7 @@ public class BarcodeReader implements Reader {
         if (AppBuildConfig.DEBUG && AppSimulator.simulator != null) {
             AppSimulator.simulator.activateODSSimulation(listener);
         }
+        logger.i(TAG, "Barcode listener registered");
+
     }
 }
