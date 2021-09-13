@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">SO RfidToBarcode</string>
+    <string name="app_name">SO BarcodeToRfid</string>
 
     <string name="rfid_tag_dummy">E2 80 68 94 00 00 40 06FC 91 FD 26</string>
     <string name="save_data_exit_laboratory">Save Data &amp; \nExit Department</string>

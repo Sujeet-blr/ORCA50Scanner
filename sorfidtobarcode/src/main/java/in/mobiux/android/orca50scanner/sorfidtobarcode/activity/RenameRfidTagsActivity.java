@@ -39,7 +39,7 @@ public class RenameRfidTagsActivity extends BaseActivity {
 
             @Override
             public void onInventoryTag(Inventory inventory) {
-                
+
             }
 
             @Override
