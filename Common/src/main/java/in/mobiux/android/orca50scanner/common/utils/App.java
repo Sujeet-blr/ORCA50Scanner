@@ -12,7 +12,7 @@ import in.mobiux.android.orca50scanner.common.R;
 
 public class App extends Application {
 
-    private static final String TAG = App.class.getCanonicalName();
+    private static String TAG = App.class.getCanonicalName();
 
     protected AppLogger logger;
     protected SessionManager session;
@@ -24,6 +24,8 @@ public class App extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
+
+        TAG = this.getClass().getCanonicalName();
 
         logger = AppLogger.getInstance(getApplicationContext());
         logger.i(TAG, "= App Started =\n");

@@ -8,4 +8,13 @@
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
     <color name="colorPrimaryDark">#444444</color>
+
+    <color name="grey">#F7EAE8E8</color>
+
+    <color name="screen_background">#ECF1FA</color>
+    <color name="orange">#ED7D31</color>
+    <color name="black_text">#1C1C1C</color>
+    <color name="black_button">#2B2B2B</color>
+    <color name="seekbar_progress_background">#DCE5F4</color>
+    <color name="seekbar_default">#E5E8ED</color>
 </resources>

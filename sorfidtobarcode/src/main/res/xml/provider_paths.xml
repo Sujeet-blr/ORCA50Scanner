@@ -1,0 +1,12 @@
+<paths xmlns:tools="http://schemas.android.com/tools"
+    tools:ignore="MissingDefaultResource">
+    <files-path
+        name="data"
+        path="." />
+    <files-path
+        name="logs"
+        path="." />
+    <external-path
+        name="files"
+        path="Android/data/in.mobiux.android.orca50scanner.sorfidtobarcode/files/Documents" />
+</paths>

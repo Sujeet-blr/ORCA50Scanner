@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="the_barcode_read_is">The Barcode read is</string>
+    <string name="data_written_to_rfid_is">Data written to RFID is</string>
+    <string name="barcode_is_read_in_ascii">Barcode is read in ASCII format, encoded into HEX format and stored in the EPC memory of RFID Tag</string>
+    <string name="next_barcode">Next Barcode</string>
+</resources>

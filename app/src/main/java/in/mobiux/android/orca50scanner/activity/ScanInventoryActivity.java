@@ -8,9 +8,6 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
-import com.rfid.rxobserver.bean.RXInventoryTag;
-import com.rfid.rxobserver.bean.RXOperationTag;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -30,7 +27,7 @@ public class ScanInventoryActivity extends BaseActivity implements View.OnClickL
     private Button btnSave, btnClear, btnPrint;
     private TextView tvCount, txtIndicator;
     private RecyclerView recyclerView;
-    private List<Inventory> scannedInventories = new ArrayList<>();
+    private List<Inventory> scannedInventories = new ArrayList<Inventory>();
     private Map<String, Inventory> inventoriesMap = new HashMap<>();
     private InventoryAdapter adapter;
     boolean startButtonStatus = false;

@@ -1,6 +1,5 @@
 package in.mobiux.android.orca50scanner.sensingobjectkeyboard.activity;
 
-import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
 
@@ -15,5 +14,6 @@ public class MainActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
     }
 }

@@ -4,6 +4,7 @@ import android.media.MediaPlayer;
 import android.os.Handler;
 
 import in.mobiux.android.orca50scanner.common.utils.App;
+import in.mobiux.android.orca50scanner.common.utils.AppBuildConfig;
 import in.mobiux.android.orca50scanner.common.utils.AppLogger;
 import in.mobiux.android.orca50scanner.common.utils.SessionManager;
 import in.mobiux.android.orca50scanner.reader.core.RFIDReader;
@@ -34,6 +35,21 @@ public class MyApplication extends App {
 
 
         AppSimulator.initSimulator(this);
+
+        setBuildConfig(appBuildConfig());
+    }
+
+    private AppBuildConfig appBuildConfig() {
+
+        AppBuildConfig appBuildConfig = new AppBuildConfig();
+
+        appBuildConfig.DEBUG = BuildConfig.DEBUG;
+        appBuildConfig.APPLICATION_ID = BuildConfig.APPLICATION_ID;
+        appBuildConfig.BUILD_TYPE = BuildConfig.BUILD_TYPE;
+        appBuildConfig.VERSION_CODE = BuildConfig.VERSION_CODE;
+        appBuildConfig.VERSION_NAME = BuildConfig.VERSION_NAME;
+
+        return appBuildConfig;
     }
 
     public void playBeep() {

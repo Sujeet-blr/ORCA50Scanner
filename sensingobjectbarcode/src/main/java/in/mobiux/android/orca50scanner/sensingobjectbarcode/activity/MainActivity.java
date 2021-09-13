@@ -85,7 +85,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
 
             @Override
             public void onScanSuccess(Barcode barcode) {
-                logger.i(TAG, "scannned success " + barcode.getName());
+                logger.i(TAG, "scanned success " + barcode.getName());
                 barcodes.add(barcode);
                 map.put(barcode.getName(), barcode);
 
