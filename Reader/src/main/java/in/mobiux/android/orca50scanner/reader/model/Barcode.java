@@ -11,6 +11,9 @@ public class Barcode extends BaseModel {
     @SerializedName("name")
     @Expose
     private String name;
+    @SerializedName("hex")
+    @Expose
+    private String hex;
 
     public String getName() {
         return name;
@@ -18,6 +21,14 @@ public class Barcode extends BaseModel {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getHex() {
+        return hex;
+    }
+
+    public void setHex(String hex) {
+        this.hex = hex;
     }
 
     @Override

@@ -2,6 +2,7 @@ package in.mobiux.android.orca50scanner.reader.core;
 
 import android.content.Context;
 import android.os.Handler;
+import android.view.View;
 
 import com.module.interaction.ModuleConnector;
 import com.module.interaction.RXTXListener;
@@ -11,11 +12,16 @@ import com.rfid.ReaderConnector;
 import com.rfid.rxobserver.RXObserver;
 import com.rfid.rxobserver.ReaderSetting;
 import com.rfid.rxobserver.bean.RXInventoryTag;
+import com.util.StringTool;
+
+import java.nio.charset.StandardCharsets;
+import java.util.Arrays;
 
 import in.mobiux.android.orca50scanner.common.utils.App;
 import in.mobiux.android.orca50scanner.common.utils.AppBuildConfig;
 import in.mobiux.android.orca50scanner.common.utils.AppLogger;
 import in.mobiux.android.orca50scanner.common.utils.SessionManager;
+import in.mobiux.android.orca50scanner.reader.model.Barcode;
 import in.mobiux.android.orca50scanner.reader.model.Inventory;
 import in.mobiux.android.orca50scanner.reader.simulator.AppSimulator;
 
@@ -229,12 +235,124 @@ public class RFIDReader implements Reader {
         connectionStatus = connector.isConnected();
     }
 
-    public int selectAccessEpcMatch(byte selectedTagLength, byte[] btAryEpc) {
-        return rfidReaderHelper.setAccessEpcMatch(ReaderSetting.newInstance().btReadId, selectedTagLength, btAryEpc);
+    public int selectAccessEpcMatch(String tagEPC) {
+
+        //        setting the selected rfid tag
+        String[] tagResult = StringTool.stringToStringArray(tagEPC.replace(" ", "").toUpperCase(), 2);
+        logger.i(TAG, "selected epc " + tagEPC);
+        logger.i(TAG, "selected tag stringArray " + Arrays.toString(tagResult));
+        byte[] btAryEpc = StringTool.stringToByteArray(tagEPC);
+        btAryEpc = StringTool.stringArrayToByteArray(tagResult, tagResult.length);
+        byte selectedTagLength = (byte) (btAryEpc.length & 0xFF);
+        logger.i(TAG, "selected tag length " + selectedTagLength);
+        logger.i(TAG, "selected tag byteArray " + Arrays.toString(btAryEpc));
+
+        if (app.isDebugBuild())
+            return 0;
+
+        int selectStatus = rfidReaderHelper.setAccessEpcMatch(ReaderSetting.newInstance().btReadId, selectedTagLength, btAryEpc);
+
+        if (selectStatus == 0) {
+            logger.i(TAG, "rfid tag selected");
+        } else {
+            logger.e(TAG, "rfid tag not selected");
+        }
+
+        return selectStatus;
     }
 
-    public int writeToTag(byte[] btAryPassWord, byte btMemBank, byte btWordAdd, byte btWordCnt, byte[] btAryData) {
-        return rfidReaderHelper.writeTag(ReaderSetting.newInstance().btReadId, btAryPassWord, btMemBank, btWordAdd, btWordCnt, btAryData);
+//    public int writeToTag(byte[] btAryPassWord, byte btMemBank, byte btWordAdd, byte btWordCnt, byte[] btAryData) {
+//
+//        int writeStatus = rfidReaderHelper.writeTag(ReaderSetting.newInstance().btReadId, btAryPassWord, btMemBank, btWordAdd, btWordCnt, btAryData);
+//        if (writeStatus == 0) {
+//            logger.i(TAG, "write is success");
+//
+//        } else {
+//            logger.e(TAG, "write is failed");
+//        }
+//
+//        return writeStatus;
+//    }
+
+    public int writeToTag(Barcode barcode, Inventory selectedInventory) {
+
+        int writeStatus = 1; // 0 = success , 1 = failed
+
+        if (barcode == null || selectedInventory == null) {
+            logger.e(TAG, "Barcode or Selected Epc is null");
+            return writeStatus;
+        }
+
+        byte btMemBank = 0x00;
+        byte btWordAdd = 0x00;
+        byte btWordCnt = 0x00;
+        byte[] btAryPassWord = null;
+
+        btMemBank = 0x01;
+
+        try {
+            btWordAdd = (byte) Integer.parseInt("02");
+        } catch (Exception e) {
+            logger.e(TAG, "Invalid word add " + e.getLocalizedMessage());
+//            showToast("Invalid word add " + e.getLocalizedMessage());
+            return writeStatus;
+        }
+
+        try {
+            String[] reslut = StringTool.stringToStringArray("00000000", 2);
+            btAryPassWord = StringTool.stringArrayToByteArray(reslut, 4);
+        } catch (Exception e) {
+            logger.e(TAG, "Invalid password length " + btAryPassWord);
+            return writeStatus;
+        }
+
+        byte[] btAryData = null;
+        String[] result = null;
+
+        try {
+            result = StringTool.stringToStringArray(barcode.getHex().toUpperCase(), 2);
+            logger.i(TAG, "barcode stringArray" + Arrays.toString(result));
+            btAryData = StringTool.stringArrayToByteArray(result, result.length);
+
+            logger.i(TAG, "data " + new String(btAryData, StandardCharsets.UTF_8));
+
+//            String hex = Arrays.toString(btAryData);
+//            logger.i(TAG, "barcode byteArray " + hex);
+//            selectedBarcode.setHex(hex);
+
+            btWordCnt = (byte) ((result.length / 2 + result.length % 2) & 0xFF);
+        } catch (Exception e) {
+            logger.e(TAG, "barcode Data error " + btAryData);
+//            showToast("barcode Data error");
+            return writeStatus;
+        }
+
+        if (btAryData == null || btAryData.length <= 0) {
+//            showToast("Invalid data error");
+            logger.e(TAG, "Invalid data error");
+            return writeStatus;
+        }
+
+        if (btAryPassWord == null || btAryPassWord.length < 4) {
+//            showToast("Password data error");
+            logger.e(TAG, "Password data error");
+            return writeStatus;
+        }
+
+        logger.i(TAG, "pwd " + btAryPassWord + " membank " + btMemBank + " wordadd " + btWordAdd + " wordcount " + btWordCnt + " data array " + Arrays.toString(btAryData));
+
+        if (app.isDebugBuild())
+            return 0;
+
+        writeStatus = rfidReaderHelper.writeTag(ReaderSetting.newInstance().btReadId, btAryPassWord, btMemBank, btWordAdd, btWordCnt, btAryData);
+        if (writeStatus == 0) {
+            logger.i(TAG, "write is success");
+
+        } else {
+            logger.e(TAG, "write is failed");
+        }
+
+        return writeStatus;
     }
 
     public void releaseResources() {
