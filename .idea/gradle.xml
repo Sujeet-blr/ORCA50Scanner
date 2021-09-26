@@ -14,10 +14,12 @@
             <option value="$PROJECT_DIR$/Common" />
             <option value="$PROJECT_DIR$/Reader" />
             <option value="$PROJECT_DIR$/app" />
+            <option value="$PROJECT_DIR$/rfidtagtester" />
             <option value="$PROJECT_DIR$/sensingobjectbarcode" />
             <option value="$PROJECT_DIR$/sensingobjectkeyboard" />
             <option value="$PROJECT_DIR$/sensingobjectrfidreader" />
             <option value="$PROJECT_DIR$/sorfidtobarcode" />
+            <option value="$PROJECT_DIR$/writetorfidtags" />
           </set>
         </option>
         <option name="resolveModulePerSourceSet" value="false" />

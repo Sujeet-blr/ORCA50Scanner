@@ -72,7 +72,8 @@ public class AppActivity extends AppCompatActivity {
         languageUtils.switchLanguage(this, session.getLanguage());
         activityLanguage = session.getLanguage();
 
-        toast = new Toast(this);
+//        toast = new Toast(this);
+        toast = Toast.makeText(this, "", Toast.LENGTH_SHORT);
         setActivityState(ACTIVITY_STATE.CREATED);
     }
 
