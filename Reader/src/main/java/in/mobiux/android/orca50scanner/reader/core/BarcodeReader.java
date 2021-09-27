@@ -252,10 +252,12 @@ public class BarcodeReader implements Reader {
         ModuleManager.newInstance().setScanStatus(false);
         ModuleManager.newInstance().setUHFStatus(true);
 //        odScannerHelper.unRegisterObserver(observer);
-        odScannerHelper.unRegisterObservers();
-        odScannerHelper.setRunFlag(true);
-        connector.disConnect();
-        odScannerHelper.signOut();
+//        if(odScannerHelper != null) {
+            odScannerHelper.unRegisterObservers();
+            odScannerHelper.setRunFlag(true);
+            connector.disConnect();
+            odScannerHelper.signOut();
+//        }
 
         logger.i(TAG, "Resources released");
     }

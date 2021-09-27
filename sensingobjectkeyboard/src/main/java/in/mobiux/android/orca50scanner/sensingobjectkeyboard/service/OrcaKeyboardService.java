@@ -80,9 +80,11 @@ public class OrcaKeyboardService extends InputMethodService implements KeyboardV
         kv.setOnKeyboardActionListener(this);
 
         barcodeReader = new BarcodeReader(getApplicationContext());
+        barcodeReader.connect(Reader.ReaderType.BARCODE);
         registerBarcodeReaderListener();
 
         rfidReader = new RFIDReader(getApplicationContext());
+        rfidReader.connect(Reader.ReaderType.RFID);
         registerRFIDReaderListener();
 
         ic = this.getCurrentInputConnection();
@@ -136,7 +138,6 @@ public class OrcaKeyboardService extends InputMethodService implements KeyboardV
                     showToast(app.getResources().getString(R.string.msg_rfid_connect_initiated));
                     rfidReader.connect(Reader.ReaderType.RFID);
                 }
-
                 break;
             case KEYCODE_BARCODE:
                 SELECTED_READER = KEYCODE_BARCODE;
@@ -312,6 +313,7 @@ public class OrcaKeyboardService extends InputMethodService implements KeyboardV
 
             @Override
             public void onInventoryTagEnd(Inventory.InventoryTagEnd tagEnd) {
+                app.playBeep();
                 logger.i(TAG, "on Inventory End");
 
                 if (isKeyboardActive == false)
@@ -329,7 +331,8 @@ public class OrcaKeyboardService extends InputMethodService implements KeyboardV
                     ic.sendKeyEvent(eventEnter);
                 }
 
-                showToast(R.string.msg_scanned);
+//                showToast(R.string.msg_scanned);
+
             }
 
             @Override
