@@ -77,7 +77,12 @@ public class MainActivity extends BaseActivity {
             @Override
             public void run() {
                 if ((System.currentTimeMillis() - timestamp) > 2) {
-                    ivIndicator.setVisibility(View.GONE);
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            ivIndicator.setVisibility(View.GONE);
+                        }
+                    });
                 }
             }
         }, 1000);
