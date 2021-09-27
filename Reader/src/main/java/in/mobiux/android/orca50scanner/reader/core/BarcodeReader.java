@@ -163,7 +163,7 @@ public class BarcodeReader implements Reader {
 
         handler = new Handler(context.getMainLooper());
 
-        if (AppBuildConfig.DEBUG) {
+        if (AppBuildConfig.isDEBUG()) {
 
             connectionStatus = true;
             if (listener != null) {
@@ -245,7 +245,7 @@ public class BarcodeReader implements Reader {
     }
 
     public void releaseResources() {
-        if (AppBuildConfig.DEBUG) {
+        if (AppBuildConfig.isDEBUG()) {
             return;
         }
 
@@ -263,7 +263,7 @@ public class BarcodeReader implements Reader {
     public void setOnBarcodeReaderListener(BarcodeReaderListener listener) {
         this.listener = listener;
 
-        if (AppBuildConfig.DEBUG && AppSimulator.simulator != null) {
+        if (AppBuildConfig.isDEBUG() && AppSimulator.simulator != null) {
             AppSimulator.simulator.activateODSSimulation(listener);
         }
         logger.i(TAG, "Barcode listener registered");

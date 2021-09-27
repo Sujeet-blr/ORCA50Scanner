@@ -8,5 +8,9 @@ public class AppBuildConfig {
     public static int VERSION_CODE = 28;
     public static String VERSION_NAME = "A01_RFID_Reader";
 
+    public static boolean isDEBUG() {
+//        return DEBUG;
+        return false;
+    }
 
 }

@@ -169,9 +169,10 @@ public class RFIDReader implements Reader {
         return connectionStatus;
     }
 
+
     private void initConnection() {
 
-        if (AppBuildConfig.DEBUG) {
+        if (AppBuildConfig.isDEBUG()) {
 
             if (listener != null) {
                 mHandler.post(new Runnable() {
@@ -387,7 +388,7 @@ public class RFIDReader implements Reader {
     public void setOnRFIDReaderListener(RFIDReaderListener listener) {
         this.listener = listener;
 
-        if (AppBuildConfig.DEBUG && AppSimulator.simulator != null) {
+        if (AppBuildConfig.isDEBUG() && AppSimulator.simulator != null) {
             AppSimulator.simulator.activateRFIDSimulation(listener);
         }
     }
