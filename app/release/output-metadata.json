@@ -1,20 +1,18 @@
 {
-  "version": 3,
+  "version": 2,
   "artifactType": {
     "type": "APK",
     "kind": "Directory"
   },
-  "applicationId": "in.mobiux.android.orca50scanner",
+  "applicationId": "in.mobiux.android.orca50scanner.sensingobjectbarcode",
   "variantName": "release",
   "elements": [
     {
       "type": "SINGLE",
       "filters": [],
-      "attributes": [],
-      "versionCode": 28,
-      "versionName": "A01_RFID_Reader",
-      "outputFile": "app-release.apk"
+      "versionCode": 1,
+      "versionName": "barcode1.0",
+      "outputFile": "sensingobjectbarcode-release.apk"
     }
-  ],
-  "elementType": "File"
+  ]
 }

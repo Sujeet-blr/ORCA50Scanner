@@ -18,6 +18,7 @@ import in.mobiux.android.orca50scanner.common.utils.pdf.PdfUtils;
 import in.mobiux.android.orca50scanner.reader.core.BarcodeReader;
 import in.mobiux.android.orca50scanner.reader.core.BarcodeReaderListener;
 import in.mobiux.android.orca50scanner.reader.core.Reader;
+import in.mobiux.android.orca50scanner.reader.core.barcode.BarcodeReaderOrca;
 import in.mobiux.android.orca50scanner.reader.model.Barcode;
 import in.mobiux.android.orca50scanner.sensingobjectbarcode.R;
 import in.mobiux.android.orca50scanner.sensingobjectbarcode.adapter.BarcodeAdapter;
@@ -32,7 +33,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
     private Map<String, Barcode> map = new HashMap<>();
     private BarcodeAdapter adapter;
 
-    private BarcodeReader barcodeReader;
+    private BarcodeReaderOrca barcodeReader;
     private BarcodeReaderListener barcodeReaderListener;
 
     @Override
@@ -59,7 +60,8 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         btnPrint.setOnClickListener(this);
 //        txtIndicator.setTag(startButtonStatus);
 
-        barcodeReader = new BarcodeReader(getApplicationContext());
+//        barcodeReader = new BarcodeReader(getApplicationContext());
+        barcodeReader = new BarcodeReaderOrca(getApplicationContext());
         barcodeReader.connect(Reader.ReaderType.BARCODE);
 
         registerBarcodeListener();

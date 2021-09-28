@@ -40,4 +40,11 @@ dependencies {
     implementation fileTree(dir: 'libs', include: ['*.aar', '*.jar'], exclude: [])
     implementation files('libs/Serialport-module.jar', 'libs/RFID-1DScanner.jar')
 
+//    dependencies for barcode reader
+    implementation files('libs/cpdetector_1.0.10.jar')
+    implementation files('libs/chardet-1.0.jar')
+    implementation files('libs/antlr-2.7.4.jar')
+    implementation files('libs/jargs-1.0.jar')
+    implementation files('libs/juniversalchardet-1.0.3.jar')
+
 }

@@ -2,6 +2,7 @@ package in.mobiux.android.orca50scanner.reader.core;
 
 import android.content.Context;
 import android.os.Handler;
+import android.widget.Toast;
 
 import com.module.interaction.ModuleConnector;
 import com.module.interaction.RXTXListener;
@@ -57,6 +58,7 @@ public class BarcodeReader implements Reader {
                     @Override
                     public void run() {
                         listener.onScanningStatus(true);
+                        Toast.makeText(context, "scanning recivedData", Toast.LENGTH_SHORT).show();
                     }
                 });
             }
@@ -71,6 +73,7 @@ public class BarcodeReader implements Reader {
                     @Override
                     public void run() {
                         listener.onScanningStatus(true);
+                        Toast.makeText(context, "Scanning SendData", Toast.LENGTH_SHORT).show();
                     }
                 });
             }
@@ -86,6 +89,7 @@ public class BarcodeReader implements Reader {
                     @Override
                     public void run() {
                         listener.onConnection(connectionStatus);
+                        Toast.makeText(context, "Connection Status " + connectionStatus, Toast.LENGTH_SHORT).show();
                     }
                 });
             }
@@ -96,6 +100,9 @@ public class BarcodeReader implements Reader {
     Observer observer = new Observer() {
         @Override
         public void update(Observable observable, Object arg) {
+
+            Toast.makeText(context, "recived data is Observer", Toast.LENGTH_SHORT).show();
+
             logger.i(TAG, "observer data received");
             if (arg instanceof String) {
                 String result = (String) arg;
@@ -177,6 +184,9 @@ public class BarcodeReader implements Reader {
             return;
         }
 
+        ModuleManager.newInstance().setUHFStatus(false);
+        ModuleManager.newInstance().setScanStatus(true);
+
         connector.connectCom(PORT, BAUD_RATE);
 
         if (connector.isConnected()) {
@@ -190,7 +200,10 @@ public class BarcodeReader implements Reader {
             ModuleManager.newInstance().setScanStatus(true);
             //Must set the flag that the UHF is running,as it will effect 1D scanner when UHF is running.
             //so you should set like this when the UHF no Running.
-//            odScannerHelper.setRunFlag(false);
+            odScannerHelper.setRunFlag(false);
+            odScannerHelper.setScanEnable();
+            odScannerHelper.setLedOn();
+            odScannerHelper.startWith();
 
 //            app.readerType = ReaderType.BARCODE;
 
@@ -244,6 +257,13 @@ public class BarcodeReader implements Reader {
         prStr = s;
     }
 
+    public void switchToBarcode() {
+
+        ModuleManager.newInstance().setUHFStatus(false);
+        ModuleManager.newInstance().setScanStatus(true);
+        odScannerHelper.setRunFlag(true);
+    }
+
     public void releaseResources() {
         if (AppBuildConfig.isDEBUG()) {
             return;
@@ -253,17 +273,17 @@ public class BarcodeReader implements Reader {
         ModuleManager.newInstance().setUHFStatus(true);
 //        odScannerHelper.unRegisterObserver(observer);
 //        if(odScannerHelper != null) {
-            odScannerHelper.unRegisterObservers();
-            odScannerHelper.setRunFlag(true);
-            connector.disConnect();
-            odScannerHelper.signOut();
+        odScannerHelper.unRegisterObservers();
+        odScannerHelper.setRunFlag(true);
+        connector.disConnect();
+        odScannerHelper.signOut();
 //        }
 
         logger.i(TAG, "Resources released");
     }
 
-    public void setOnBarcodeReaderListener(BarcodeReaderListener listener) {
-        this.listener = listener;
+    public void setOnBarcodeReaderListener(BarcodeReaderListener barcodeReaderListener) {
+        this.listener = barcodeReaderListener;
 
         if (AppBuildConfig.isDEBUG() && AppSimulator.simulator != null) {
             AppSimulator.simulator.activateODSSimulation(listener);
