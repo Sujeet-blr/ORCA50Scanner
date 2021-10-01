@@ -10,7 +10,7 @@
     {
       "type": "SINGLE",
       "filters": [],
-      "versionCode": 1,
+      "versionCode": 3,
       "versionName": "barcode1.0",
       "outputFile": "sensingobjectbarcode-release.apk"
     }

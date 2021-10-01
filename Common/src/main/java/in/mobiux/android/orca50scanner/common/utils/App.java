@@ -5,8 +5,14 @@ import android.app.Application;
 import android.media.MediaPlayer;
 import android.os.Handler;
 
+import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import in.mobiux.android.orca50scanner.common.R;
 
@@ -34,6 +40,9 @@ public class App extends Application {
 
         mediaPlayer = MediaPlayer.create(this, R.raw.beeper_short);
 
+//        System.out.println(getApplicationContext().getApplicationInfo().nativeLibraryDir);
+        logger.i(TAG, "native library " + getApplicationContext().getApplicationInfo().nativeLibraryDir);
+        checkNativeLibrary();
     }
 
 
@@ -78,5 +87,32 @@ public class App extends Application {
 
     public void removeActivity(Activity activity) {
         activities.remove(activity);
+    }
+
+    private void checkNativeLibrary() {
+
+        try {
+            Set<String> libs = new HashSet<String>();
+            String mapsFile = "/proc/" + android.os.Process.myPid() + "/maps";
+            BufferedReader reader = new BufferedReader(new FileReader(mapsFile));
+            String line;
+            while ((line = reader.readLine()) != null) {
+                if (line.endsWith(".so")) {
+                    int n = line.lastIndexOf(" ");
+                    libs.add(line.substring(n + 1));
+                }
+            }
+
+            logger.i(TAG, libs.size() + " libraries:");
+            for (String lib : libs) {
+                logger.i(TAG, lib);
+            }
+        } catch (FileNotFoundException e) {
+            logger.e(TAG, "" + e.getLocalizedMessage());
+            // Do some error handling...
+        } catch (IOException e) {
+            // Do some error handling...
+            logger.e(TAG, "" + e.getLocalizedMessage());
+        }
     }
 }

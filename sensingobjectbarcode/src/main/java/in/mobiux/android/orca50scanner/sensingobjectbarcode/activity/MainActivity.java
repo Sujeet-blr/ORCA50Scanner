@@ -2,11 +2,13 @@ package in.mobiux.android.orca50scanner.sensingobjectbarcode.activity;
 
 import android.Manifest;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.recyclerview.widget.RecyclerView;
+
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -15,10 +17,8 @@ import java.util.Map;
 
 import in.mobiux.android.orca50scanner.common.utils.AppUtils;
 import in.mobiux.android.orca50scanner.common.utils.pdf.PdfUtils;
-import in.mobiux.android.orca50scanner.reader.core.BarcodeReader;
 import in.mobiux.android.orca50scanner.reader.core.BarcodeReaderListener;
 import in.mobiux.android.orca50scanner.reader.core.Reader;
-import in.mobiux.android.orca50scanner.reader.core.barcode.BarcodeReaderOrca;
 import in.mobiux.android.orca50scanner.reader.model.Barcode;
 import in.mobiux.android.orca50scanner.sensingobjectbarcode.R;
 import in.mobiux.android.orca50scanner.sensingobjectbarcode.adapter.BarcodeAdapter;
@@ -33,8 +33,22 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
     private Map<String, Barcode> map = new HashMap<>();
     private BarcodeAdapter adapter;
 
-    private BarcodeReaderOrca barcodeReader;
+    //    private BarcodeReaderOrca barcodeReader;
     private BarcodeReaderListener barcodeReaderListener;
+
+//    static {
+//        System.loadLibrary("IAL");
+//        System.loadLibrary("SDL");
+//
+//        if (android.os.Build.VERSION.SDK_INT >= 19)
+//            System.loadLibrary("barcodereader44"); // Android 4.4
+//        else if (android.os.Build.VERSION.SDK_INT >= 18)
+//            System.loadLibrary("barcodereader43"); // Android 4.3
+//        else
+//            System.loadLibrary("barcodereader");   // Android 2.3 - Android 4.2
+//
+//        Log.i(TAG, "Library loaded Successfully");
+//    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,6 +57,8 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
 
         setTitle("Sensing Object");
         setHomeButtonEnable(false);
+
+//        barcodeReader = new BarcodeReaderOrca(getApplicationContext());
 
         tvCount = findViewById(R.id.tvCount);
         txtIndicator = findViewById(R.id.txtIndicator);
@@ -61,14 +77,15 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
 //        txtIndicator.setTag(startButtonStatus);
 
 //        barcodeReader = new BarcodeReader(getApplicationContext());
-        barcodeReader = new BarcodeReaderOrca(getApplicationContext());
-        barcodeReader.connect(Reader.ReaderType.BARCODE);
+//        barcodeReader = new BarcodeReaderOrca(getApplicationContext());
+//        barcodeReader.connect(Reader.ReaderType.BARCODE);
 
         registerBarcodeListener();
 
         adapter = new BarcodeAdapter(MainActivity.this, barcodes);
         recyclerView.setAdapter(adapter);
         tvCount.setText(adapter.getItemCount() + " Pcs");
+
 
     }
 
@@ -112,7 +129,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
             }
         };
 
-        barcodeReader.setOnBarcodeReaderListener(barcodeReaderListener);
+//        barcodeReader.setOnBarcodeReaderListener(barcodeReaderListener);
     }
 
     @Override
@@ -159,7 +176,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
     protected void onDestroy() {
         super.onDestroy();
 
-        barcodeReader.releaseResources();
+//        barcodeReader.releaseResources();
         app.onTerminate();
     }
 }

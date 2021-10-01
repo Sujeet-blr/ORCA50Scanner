@@ -6,7 +6,7 @@
  *	Copyright (C) 2016 Zebra Technologies
  */
 
-package in.mobiux.android.orca50scanner.reader.core.barcode;
+package com.zebra.adc.decoder;
 
 import android.content.Context;
 import android.graphics.ImageFormat;
@@ -23,6 +23,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.StringTokenizer;
+
+import in.mobiux.android.orca50scanner.common.utils.AppLogger;
 
 /**
  * The BarCodeReader class is used to set bar code reader settings, start/stop preview,
@@ -64,6 +66,8 @@ import java.util.StringTokenizer;
 
 public class BarCodeReader {
     private static final String TAG = "BarCodeReader";
+
+    private static AppLogger logger;
 
     // These match the enums in frameworks/base/include/bcreader/BCReader.h
     private static final int BCRDR_MSG_ERROR = 0x000001;
@@ -555,7 +559,7 @@ public class BarCodeReader {
     public static class ReaderInfo {
         /*
          * The facing of the reader is opposite to that of the screen.
-		 */
+         */
         public static final int BCRDR_FACING_BACK = 0;
 
         /**
@@ -928,6 +932,10 @@ public class BarCodeReader {
      *                          example, if the reader is in use by another process).
      */
     public static BarCodeReader open(int readerId) {
+
+        if (logger != null) {
+            logger.i(TAG, "Barcode is connecting with readerId only " + readerId);
+        }
         return (new BarCodeReader(readerId));
     }
 
@@ -938,6 +946,9 @@ public class BarCodeReader {
      * @see #open(int)
      */
     public static BarCodeReader open() {
+        if (logger != null) {
+            logger.i(TAG, "barcode open()");
+        }
         ReaderInfo readerInfo;
 
         int iIdx;
@@ -980,6 +991,8 @@ public class BarCodeReader {
      *                          example, if the reader is in use by another process).
      */
     public static BarCodeReader open(int readerId, Context context) {
+        logger = AppLogger.getInstance(context);
+        logger.i(TAG, "BarcodeReader Connecting with readerId & context" + readerId);
         return (new BarCodeReader(readerId, context));
     }
 
@@ -991,6 +1004,9 @@ public class BarCodeReader {
      * @see #open(int)
      */
     public static BarCodeReader open(Context context) {
+        if (logger != null) {
+            logger.i(TAG, "open(context)");
+        }
         ReaderInfo readerInfo;
 
         int iIdx;
@@ -1062,6 +1078,9 @@ public class BarCodeReader {
      */
     public final void release() {
         native_release();
+        if (logger != null) {
+            logger.i(TAG, "BarcodeReader is released");
+        }
     }
 
     /**
@@ -1237,6 +1256,9 @@ public class BarCodeReader {
      *           decode request or null to stop receiving decode callbacks.
      */
     public final void setDecodeCallback(DecodeCallback cb) {
+        if (logger != null) {
+            logger.i(TAG, "setting setDecodeCallback");
+        }
         mDecodeCallback = cb;
     }
 
@@ -1386,35 +1408,61 @@ public class BarCodeReader {
 
         @Override
         public void handleMessage(Message msg) {
+
+            if (logger != null) {
+                logger.i(TAG, "handleMessage " + String.format("Event message: %X, arg1=%d, arg2=%d", msg.what, msg.arg1, msg.arg2));
+            }
+
             Log.i(TAG, String.format("Event message: %X, arg1=%d, arg2=%d", msg.what, msg.arg1, msg.arg2));
             switch (msg.what) {
                 case BCRDR_MSG_DECODE_COMPLETE:
+                    if (logger != null) {
+                        logger.i(TAG, "BCRDR_MSG_DECODE_COMPLETE");
+                    }
                     if (mDecodeCallback != null) {
                         mDecodeCallback.onDecodeComplete(msg.arg1, msg.arg2, (byte[]) msg.obj, mReader);
                     }
                     return;
 
                 case BCRDR_MSG_DECODE_TIMEOUT:
+                    if (logger != null) {
+                        logger.i(TAG, "BCRDR_MSG_DECODE_TIMEOUT");
+                    }
                     if (mDecodeCallback != null) {
                         mDecodeCallback.onDecodeComplete(0, 0, (byte[]) msg.obj, mReader);
                     }
                     return;
 
                 case BCRDR_MSG_DECODE_CANCELED:
+                    if (logger != null) {
+                        logger.i(TAG, "BCRDR_MSG_DECODE_CANCELED");
+                    }
                     if (mDecodeCallback != null) {
                         mDecodeCallback.onDecodeComplete(0, DECODE_STATUS_CANCELED, (byte[]) msg.obj, mReader);
                     }
                     return;
 
                 case BCRDR_MSG_FRAME_ERROR:
-                    // TODO:
+                    if (logger != null) {
+                        logger.i(TAG, "BCRDR_MSG_FRAME_ERROR");
+                    }
+                    break;
+                // TODO:
                 case BCRDR_MSG_DECODE_ERROR:
+                    if (logger != null) {
+                        logger.i(TAG, "BCRDR_MSG_DECODE_ERROR");
+                    }
                     if (mDecodeCallback != null) {
                         mDecodeCallback.onDecodeComplete(0, DECODE_STATUS_ERROR, (byte[]) msg.obj, mReader);
                     }
                     return;
 
                 case BCRDR_MSG_DECODE_EVENT:
+
+                    if (logger != null) {
+                        logger.i(TAG, "BCRDR_MSG_DECODE_EVENT");
+                    }
+
                     if (mDecodeCallback != null) {
                         mDecodeCallback.onEvent(msg.arg1, msg.arg2, (byte[]) msg.obj, mReader);
                     }
@@ -1425,6 +1473,10 @@ public class BarCodeReader {
                     return;
 
                 case BCRDR_MSG_COMPRESSED_IMAGE:
+                    if (logger != null) {
+                        logger.i(TAG, "BCRDR_MSG_COMPRESSED_IMAGE");
+                    }
+
                     if (mSnapshotCallback != null) {
                         int iCX;
                         int iCY;
@@ -1438,6 +1490,10 @@ public class BarCodeReader {
                     return;
 
                 case BCRDR_MSG_VIDEO_FRAME:
+
+                    if (logger != null) {
+                        logger.i(TAG, "BCRDR_MSG_VIDEO_FRAME");
+                    }
                     if (mVideoCallback != null) {
                         int iCX;
                         int iCY;
@@ -1451,6 +1507,9 @@ public class BarCodeReader {
                     return;
 
                 case BCRDR_MSG_PREVIEW_FRAME:
+                    if (logger != null) {
+                        logger.i(TAG, "BCRDR_MSG_PREVIEW_FRAME");
+                    }
                     if (mPreviewCallback != null) {
                         PreviewCallback cb = mPreviewCallback;
                         if (mOneShot) {
@@ -1469,18 +1528,27 @@ public class BarCodeReader {
                     return;
 
                 case BCRDR_MSG_FOCUS:
+                    if (logger != null) {
+                        logger.i(TAG, "BCRDR_MSG_FOCUS");
+                    }
                     if (mAutoFocusCallback != null) {
                         mAutoFocusCallback.onAutoFocus(msg.arg1 == 0 ? false : true, mReader);
                     }
                     return;
 
                 case BCRDR_MSG_ZOOM:
+                    if (logger != null) {
+                        logger.i(TAG, "BCRDR_MSG_ZOOM");
+                    }
                     if (mZoomListener != null) {
                         mZoomListener.onZoomChange(msg.arg1, msg.arg2 != 0, mReader);
                     }
                     return;
 
                 case BCRDR_MSG_ERROR:
+                    if (logger != null) {
+                        logger.i(TAG, "BCRDR_MSG_ERROR");
+                    }
                     Log.e(TAG, "Error " + msg.arg1);
                     if (mErrorCallback != null) {
                         mErrorCallback.onError(msg.arg1, mReader);
@@ -1488,12 +1556,19 @@ public class BarCodeReader {
                     return;
 
                 case BCRDR_MSG_DEC_COUNT:
+                    if (logger != null) {
+                        logger.i(TAG, "BCRDR_MSG_DEC_COUNT");
+                    }
                     if (mDecodeCallback != null) {
                         mDecodeCallback.onDecodeComplete(msg.arg1, DECODE_STATUS_MULTI_DEC_COUNT, (byte[]) msg.obj, mReader);
                     }
                     return;
 
                 default:
+
+                    if (logger != null) {
+                        logger.i(TAG, "default : Unknown message type " + msg.what);
+                    }
                     Log.e(TAG, "Unknown message type " + msg.what);
                     return;
             }
@@ -1570,6 +1645,9 @@ public class BarCodeReader {
      * @param cb The callback to run
      */
     public final void setErrorCallback(ErrorCallback cb) {
+        if (logger != null) {
+            logger.i(TAG, "setting setErrorCallback");
+        }
         mErrorCallback = cb;
     }
 

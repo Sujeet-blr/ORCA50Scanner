@@ -10,6 +10,8 @@
 
     <include
         layout="@layout/action_bar_app"
+        android:layout_width="match_parent"
+        android:layout_height="?android:attr/actionBarSize"
         android:layout_alignParentTop="true" />
 
 
@@ -79,7 +81,8 @@
             android:layout_marginRight="5dp"
             android:layout_weight="1"
             android:backgroundTint="@color/black"
-            android:text="export logs" />
+            android:text="export logs"
+            android:textColor="@color/white" />
 
         <Button
             android:id="@+id/btnPrint"
@@ -89,7 +92,8 @@
             android:layout_marginRight="8dp"
             android:layout_weight="1"
             android:backgroundTint="@color/black"
-            android:text="@string/print" />
+            android:text="@string/print"
+            android:textColor="@color/white" />
 
     </LinearLayout>
 
