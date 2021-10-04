@@ -1,0 +1,213 @@
+{
+  "project_info": {
+    "project_number": "952765744815",
+    "project_id": "orca50scanner",
+    "storage_bucket": "orca50scanner.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:952765744815:android:fa9b05698b4ca5bc82b65a",
+        "android_client_info": {
+          "package_name": "in.mobiux.android.orca50scanner"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "952765744815-1ue27qhcif4mel5888u6lhts3doihmnr.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyARfhStUnCGGqKJHmzfGdZvdvhrCHlAAFU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "952765744815-1ue27qhcif4mel5888u6lhts3doihmnr.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:952765744815:android:408d38407f42c40d82b65a",
+        "android_client_info": {
+          "package_name": "in.mobiux.android.orca50scanner.sample"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "952765744815-1ue27qhcif4mel5888u6lhts3doihmnr.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyARfhStUnCGGqKJHmzfGdZvdvhrCHlAAFU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "952765744815-1ue27qhcif4mel5888u6lhts3doihmnr.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:952765744815:android:ac05377da8ec41fe82b65a",
+        "android_client_info": {
+          "package_name": "in.mobiux.android.orca50scanner.sensingobjectbarcode"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "952765744815-1ue27qhcif4mel5888u6lhts3doihmnr.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyARfhStUnCGGqKJHmzfGdZvdvhrCHlAAFU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "952765744815-1ue27qhcif4mel5888u6lhts3doihmnr.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:952765744815:android:ee335803fa8e21e982b65a",
+        "android_client_info": {
+          "package_name": "in.mobiux.android.orca50scanner.sensingobjectkeyboard"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "952765744815-1ue27qhcif4mel5888u6lhts3doihmnr.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyARfhStUnCGGqKJHmzfGdZvdvhrCHlAAFU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "952765744815-1ue27qhcif4mel5888u6lhts3doihmnr.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:952765744815:android:1df80b549b4dbb7f82b65a",
+        "android_client_info": {
+          "package_name": "in.mobiux.android.orca50scanner.sensingobjectrfidkeyboard"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "952765744815-1ue27qhcif4mel5888u6lhts3doihmnr.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyARfhStUnCGGqKJHmzfGdZvdvhrCHlAAFU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "952765744815-1ue27qhcif4mel5888u6lhts3doihmnr.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:952765744815:android:a8dc2806a9306b9682b65a",
+        "android_client_info": {
+          "package_name": "in.mobiux.android.orca50scanner.sensingobjectrfidreader"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "952765744815-1ue27qhcif4mel5888u6lhts3doihmnr.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyARfhStUnCGGqKJHmzfGdZvdvhrCHlAAFU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "952765744815-1ue27qhcif4mel5888u6lhts3doihmnr.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:952765744815:android:a15e8f6a3749a02082b65a",
+        "android_client_info": {
+          "package_name": "in.mobiux.android.orca50scanner.sorfidtobarcode"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "952765744815-1ue27qhcif4mel5888u6lhts3doihmnr.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyARfhStUnCGGqKJHmzfGdZvdvhrCHlAAFU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "952765744815-1ue27qhcif4mel5888u6lhts3doihmnr.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

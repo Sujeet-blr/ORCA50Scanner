@@ -42,7 +42,7 @@ public class App extends Application {
 
 //        System.out.println(getApplicationContext().getApplicationInfo().nativeLibraryDir);
         logger.i(TAG, "native library " + getApplicationContext().getApplicationInfo().nativeLibraryDir);
-        checkNativeLibrary();
+//        checkNativeLibrary();
     }
 
 

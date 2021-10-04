@@ -1,0 +1,14 @@
+<resources>
+    <string name="app_name">Sensing Object RFID Keyboard</string>
+
+    <string name="msg_rfid_selection_required">RFID or Barcode selection required</string>
+    <string name="msg_rfid_connect_initiated">RFID Reader Connect Initiated</string>
+    <string name="msg_rfid_connected">RFID Reader Connected</string>
+    <string name="msg_rfid_already_connected">RFID Reader Already Connected</string>
+    <string name="msg_rfid_scanning">Scanning RFID</string>
+    <string name="msg_barcode_initiated">Barcode Reader Connect Initiated</string>
+    <string name="msg_barcode_connected">Barcode Reader Connected</string>
+    <string name="msg_barcode_already_connected">Barcode Reader Already Connected</string>
+    <string name="msg_barcode_scanning">Scanning Barcode</string>
+    <string name="msg_scanned">Scanned</string>
+</resources>

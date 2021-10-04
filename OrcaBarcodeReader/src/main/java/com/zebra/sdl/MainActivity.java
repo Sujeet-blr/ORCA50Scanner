@@ -175,15 +175,18 @@ public class MainActivity extends Activity implements
             if (android.os.Build.VERSION.SDK_INT >= 18) {
                 bcr = BarCodeReader.open(num, getApplicationContext()); // Android 4.3 and above
                 logger.i(TAG, "BarCodeReader.open Android 4.3 and above");
+                Toast.makeText(this, "Barcode device is Connected", Toast.LENGTH_SHORT).show();
             } else {
                 bcr = BarCodeReader.open(num); // Android 2.3
                 logger.i(TAG, "BarCodeReader.open Android 2.3");
+                Toast.makeText(this, "Barcode device is Connected 2.3", Toast.LENGTH_SHORT).show();
             }
 
             if (bcr == null) {
 
                 logger.e(TAG, "BarcodeReader not connected");
                 dspErr("open failed");
+                Toast.makeText(this, "Failed to Connect Barcode ", Toast.LENGTH_SHORT).show();
                 return;
             }
 

@@ -24,6 +24,7 @@ import in.mobiux.android.orca50scanner.common.utils.SessionManager;
 import in.mobiux.android.orca50scanner.reader.model.Barcode;
 import in.mobiux.android.orca50scanner.reader.model.Inventory;
 import in.mobiux.android.orca50scanner.reader.simulator.AppSimulator;
+import in.mobiux.android.orca50scanner.reader.utils.BeeperHelper;
 
 public class RFIDReader implements Reader {
 
@@ -44,6 +45,7 @@ public class RFIDReader implements Reader {
     private boolean connectionStatus = false;
     private boolean observerRegistrationStatus = false;
     private boolean scanningStatus = false;
+    private String prefs_beep_key = "";
 
     private final RXTXListener rxtxListener = new RXTXListener() {
         @Override
@@ -138,6 +140,7 @@ public class RFIDReader implements Reader {
             logger.i(TAG, "Read Rate " + tagReadingSpeed);
 
 //            app.playBeep();
+            beep();
 
             if (listener != null) {
                 mHandler.post(new Runnable() {
@@ -157,6 +160,8 @@ public class RFIDReader implements Reader {
         logger = AppLogger.getInstance(context);
         session = SessionManager.getInstance(context);
         mHandler = new Handler(context.getMainLooper());
+        prefs_beep_key = context.getPackageName() + "_beep";
+        BeeperHelper.init(context);
     }
 
     @Override
@@ -383,6 +388,8 @@ public class RFIDReader implements Reader {
         if (rfidReaderHelper != null) {
             rfidReaderHelper.signOut();
         }
+
+        BeeperHelper.release();
     }
 
     public void setOnRFIDReaderListener(RFIDReaderListener listener) {
@@ -391,5 +398,23 @@ public class RFIDReader implements Reader {
         if (AppBuildConfig.isDEBUG() && AppSimulator.simulator != null) {
             AppSimulator.simulator.activateRFIDSimulation(listener);
         }
+    }
+
+    private void beep() {
+        String str = session.getValue(prefs_beep_key);
+        if (str.equals("true")) {
+            logger.i(TAG, "playing beep");
+            BeeperHelper.beep(BeeperHelper.SOUND_FILE_TYPE_NORMAL);
+        } else {
+            logger.i(TAG, "beeper is disabled");
+        }
+    }
+
+    public void enableBeep() {
+        session.setValue(prefs_beep_key, "true");
+    }
+
+    public void disableBeep() {
+        session.getValue(prefs_beep_key);
     }
 }

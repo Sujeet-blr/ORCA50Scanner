@@ -1,4 +1,4 @@
-package in.mobiux.android.orca50scanner.reader.core.barcode;
+package in.mobiux.android.orca50scanner.reader.utils;
 
 import android.content.Context;
 import android.media.AudioAttributes;

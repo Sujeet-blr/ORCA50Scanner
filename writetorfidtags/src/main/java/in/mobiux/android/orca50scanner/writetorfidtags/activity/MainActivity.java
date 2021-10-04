@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.DocumentsContract;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -31,6 +32,7 @@ import java.util.List;
 import in.mobiux.android.orca50scanner.reader.core.RFIDReader;
 import in.mobiux.android.orca50scanner.reader.core.RFIDReaderListener;
 import in.mobiux.android.orca50scanner.reader.core.Reader;
+import in.mobiux.android.orca50scanner.reader.model.Barcode;
 import in.mobiux.android.orca50scanner.reader.model.Inventory;
 import in.mobiux.android.orca50scanner.reader.model.OperationTag;
 import in.mobiux.android.orca50scanner.writetorfidtags.R;
@@ -50,6 +52,9 @@ public class MainActivity extends BaseActivity {
 
     private RFIDReader rfidReader;
     private RFIDReaderListener rfidReaderListener;
+    private int selectStatus = 1;
+    private String selectedLabel = "";
+    private Inventory selectedInventory;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,10 +66,12 @@ public class MainActivity extends BaseActivity {
         btnAssign = findViewById(R.id.btnAssign);
         spnrLabels = findViewById(R.id.spnrLabels);
         spnrTags = findViewById(R.id.spnrTags);
+        btnAssign.setVisibility(View.GONE);
 
 
         rfidReader = new RFIDReader(getApplicationContext());
         rfidReader.connect(Reader.ReaderType.RFID);
+        rfidReader.enableBeep();
 
         registerRfidListener();
 
@@ -72,6 +79,25 @@ public class MainActivity extends BaseActivity {
             @Override
             public void onClick(View view) {
                 showFileChooser();
+            }
+        });
+
+        btnAssign.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                if (TextUtils.isEmpty(selectedLabel) || selectedInventory == null || selectStatus == 1) {
+                    showToast("Select Label & Tags properly to proceed");
+                    return;
+                }
+
+                if (selectStatus == 0) {
+                    Barcode barcode = new Barcode();
+                    barcode.setName(selectedLabel);
+                    rfidReader.writeToTag(barcode, selectedInventory);
+                } else {
+                    showToast("RFID tag is not selected");
+                }
             }
         });
 
@@ -86,7 +112,7 @@ public class MainActivity extends BaseActivity {
         spnrLabels.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-
+                selectedLabel = spnrLabels.getSelectedItem().toString();
             }
 
             @Override
@@ -99,16 +125,18 @@ public class MainActivity extends BaseActivity {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 if (rfidReader.isConnected()) {
-                    Inventory inventory = tagList.get(spnrTags.getSelectedItemPosition());
-                    int selectStatus = rfidReader.selectAccessEpcMatch(inventory.getEpc());
+                    selectedInventory = tagList.get(spnrTags.getSelectedItemPosition());
+                    selectStatus = rfidReader.selectAccessEpcMatch(selectedInventory.getEpc());
 
                     if (selectStatus == 0) {
-                        tvMessage.setText("Selected RFID Tag is " + inventory.getEpc());
+                        tvMessage.setText("Selected RFID Tag is " + selectedInventory.getEpc());
                         btnAssign.setVisibility(View.VISIBLE);
                     } else {
                         tvMessage.setText("RFID tag is not selected, pls repeat");
                         btnAssign.setVisibility(View.GONE);
                     }
+                } else {
+                    showToast("Reader is not connected");
                 }
             }
 
