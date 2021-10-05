@@ -15,7 +15,9 @@ import com.rfid.rxobserver.bean.RXInventoryTag;
 import com.util.StringTool;
 
 import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 import in.mobiux.android.orca50scanner.common.utils.App;
 import in.mobiux.android.orca50scanner.common.utils.AppBuildConfig;
@@ -46,6 +48,8 @@ public class RFIDReader implements Reader {
     private boolean observerRegistrationStatus = false;
     private boolean scanningStatus = false;
     private String prefs_beep_key = "";
+
+    private List<RFIDReaderListener> listeners = new ArrayList<>();
 
     private final RXTXListener rxtxListener = new RXTXListener() {
         @Override
@@ -105,9 +109,13 @@ public class RFIDReader implements Reader {
             mHandler.post(new Runnable() {
                 @Override
                 public void run() {
-                    if (listener != null) {
-                        scanningStatus = true;
-                        listener.onScanningStatus(scanningStatus);
+//                    if (listener != null) {
+//                        scanningStatus = true;
+//                        listener.onScanningStatus(scanningStatus);
+//                    }
+                    scanningStatus = true;
+                    for (RFIDReaderListener l : listeners) {
+                        l.onScanningStatus(scanningStatus);
                     }
                 }
             });
@@ -121,15 +129,25 @@ public class RFIDReader implements Reader {
             inventory.setEpc(tag.strEPC);
             inventory.setRssi(tag.strRSSI);
 
-            if (listener != null) {
-                mHandler.post(new Runnable() {
-                    @Override
-                    public void run() {
-                        listener.onScanningStatus(true);
-                        listener.onInventoryTag(inventory);
+            mHandler.post(new Runnable() {
+                @Override
+                public void run() {
+                    for (RFIDReaderListener l : listeners) {
+                        l.onScanningStatus(true);
+                        l.onInventoryTag(inventory);
                     }
-                });
-            }
+                }
+            });
+
+//            if (listener != null) {
+//                mHandler.post(new Runnable() {
+//                    @Override
+//                    public void run() {
+//                        listener.onScanningStatus(true);
+//                        listener.onInventoryTag(inventory);
+//                    }
+//                });
+//            }
         }
 
         @Override
@@ -142,15 +160,24 @@ public class RFIDReader implements Reader {
 //            app.playBeep();
             beep();
 
-            if (listener != null) {
-                mHandler.post(new Runnable() {
-                    @Override
-                    public void run() {
-
-                        listener.onInventoryTagEnd(new Inventory.InventoryTagEnd(tagEnd));
+            mHandler.post(new Runnable() {
+                @Override
+                public void run() {
+                    for (RFIDReaderListener l : listeners) {
+                        l.onInventoryTagEnd(new Inventory.InventoryTagEnd(tagEnd));
                     }
-                });
-            }
+                }
+            });
+
+//            if (listener != null) {
+//                mHandler.post(new Runnable() {
+//                    @Override
+//                    public void run() {
+//
+//                        listener.onInventoryTagEnd(new Inventory.InventoryTagEnd(tagEnd));
+//                    }
+//                });
+//            }
         }
     };
 
@@ -193,7 +220,15 @@ public class RFIDReader implements Reader {
         logger.i(TAG, "Connecting to RFID");
 
         try {
-            if (connector.connectCom(PORT, BAUD_RATE)) {
+
+            if (connector.isConnected()) {
+                connectionStatus = connector.isConnected();
+            } else {
+                connectionStatus = connector.connectCom(PORT, BAUD_RATE);
+            }
+
+
+            if (isConnected()) {
                 logger.i(TAG, "CONNECTION SUCCESS");
 
                 connectionStatus = true;
@@ -389,16 +424,31 @@ public class RFIDReader implements Reader {
             rfidReaderHelper.signOut();
         }
 
+        listeners.clear();
+
         BeeperHelper.release();
+    }
+
+    public void activateRfidReader() {
+        logger.i(TAG, "Activating Rfid Reader");
+        if (connector != null && connector.isConnected()) {
+            ModuleManager.newInstance().setUHFStatus(true);
+        }
     }
 
     public void setOnRFIDReaderListener(RFIDReaderListener listener) {
         this.listener = listener;
+        listeners.add(listener);
 
         if (AppBuildConfig.isDEBUG() && AppSimulator.simulator != null) {
             AppSimulator.simulator.activateRFIDSimulation(listener);
         }
     }
+
+    public void unregisterListener(RFIDReaderListener l) {
+        listeners.remove(l);
+    }
+
 
     private void beep() {
         String str = session.getValue(prefs_beep_key);

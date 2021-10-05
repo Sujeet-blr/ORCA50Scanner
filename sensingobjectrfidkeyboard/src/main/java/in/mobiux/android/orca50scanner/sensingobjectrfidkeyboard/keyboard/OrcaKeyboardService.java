@@ -1,8 +1,6 @@
 package in.mobiux.android.orca50scanner.sensingobjectrfidkeyboard.keyboard;
 
-import android.content.Context;
 import android.content.Intent;
-import android.content.res.Configuration;
 import android.inputmethodservice.InputMethodService;
 import android.inputmethodservice.Keyboard;
 import android.inputmethodservice.KeyboardView;
@@ -11,22 +9,19 @@ import android.util.Log;
 import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.View;
-import android.view.inputmethod.EditorInfo;
-import android.view.inputmethod.InputBinding;
+
 import android.view.inputmethod.InputConnection;
 import android.widget.Toast;
-
 
 import in.mobiux.android.orca50scanner.common.activity.ExportLogsActivity;
 import in.mobiux.android.orca50scanner.common.utils.AppLogger;
 import in.mobiux.android.orca50scanner.reader.core.RFIDReader;
 import in.mobiux.android.orca50scanner.reader.core.RFIDReaderListener;
 import in.mobiux.android.orca50scanner.reader.core.Reader;
-import in.mobiux.android.orca50scanner.reader.model.Barcode;
 import in.mobiux.android.orca50scanner.reader.model.Inventory;
 import in.mobiux.android.orca50scanner.reader.model.OperationTag;
+import in.mobiux.android.orca50scanner.reader.utils.BeeperHelper;
 import in.mobiux.android.orca50scanner.sensingobjectrfidkeyboard.R;
-import in.mobiux.android.orca50scanner.sensingobjectrfidkeyboard.util.BeeperHelper;
 import in.mobiux.android.orca50scanner.sensingobjectrfidkeyboard.util.MyApplication;
 
 
@@ -49,11 +44,10 @@ public class OrcaKeyboardService extends InputMethodService implements KeyboardV
     public static final int KEYCODE_RFID = 201;
     public static final int KEYCODE_BARCODE = 202;
     public static final int KEYCODE_LOGO = 204;
-    //    private ODScannerUtils odScannerUtils;
 
 
     private RFIDReader rfidReader;
-    private RFIDReaderListener rfidReaderListener;
+    private RFIDReaderListener rfidReaderListener = null;
 
     private Reader.ReaderType readerType = Reader.ReaderType.RFID;
 
@@ -76,6 +70,11 @@ public class OrcaKeyboardService extends InputMethodService implements KeyboardV
         kv.setOnKeyboardActionListener(this);
 
         rfidReader = new RFIDReader(getApplicationContext());
+
+        if (rfidReader.isConnected()) {
+            rfidReader.releaseResources();
+        }
+
         rfidReader.connect(Reader.ReaderType.RFID);
         ic = this.getCurrentInputConnection();
 
@@ -86,9 +85,6 @@ public class OrcaKeyboardService extends InputMethodService implements KeyboardV
 
     @Override
     public void onPress(int i) {
-        if (ic == null) {
-            ic = getCurrentInputConnection();
-        }
         logger.i(TAG, "onPress " + i);
     }
 
@@ -100,8 +96,8 @@ public class OrcaKeyboardService extends InputMethodService implements KeyboardV
     @Override
     public void onKey(int i, int[] ints) {
         logger.i(TAG, "onKey " + i + " " + ints);
-        if (ic == null)
-            ic = getCurrentInputConnection();
+
+        ic = getCurrentInputConnection();
 
         playClick(i);
 
@@ -127,13 +123,14 @@ public class OrcaKeyboardService extends InputMethodService implements KeyboardV
 
                 if (rfidReader.isConnected()) {
                     logger.i(TAG, "Rfid is already connected");
-//                    rfidReader.activateRfidReader();
+                    rfidReader.activateRfidReader();
                     showToast(app.getResources().getString(R.string.msg_rfid_already_connected));
 
                 } else {
+                    logger.i(TAG, "RFID Connection initializing");
                     showToast(app.getResources().getString(R.string.msg_rfid_connect_initiated));
                     rfidReader.connect(Reader.ReaderType.RFID);
-//                    registerRFIDReaderListener();
+                    registerRFIDReaderListener();
                 }
 
                 break;
@@ -161,10 +158,6 @@ public class OrcaKeyboardService extends InputMethodService implements KeyboardV
 
             default:
                 logger.i(TAG, "key press " + KEYCODE_PRESSED);
-
-                if (ic == null) {
-                    ic = getCurrentInputConnection();
-                }
 
                 char code = (char) i;
                 Log.i(TAG, String.valueOf(code));
@@ -229,15 +222,9 @@ public class OrcaKeyboardService extends InputMethodService implements KeyboardV
             public void onScanningStatus(boolean status) {
                 logger.i(TAG, "Scanning Status " + status);
 
-//                if (ic != null) {
-//                    KeyEvent event = new KeyEvent(KeyEvent.ACTION_DOWN, 209);
-//                    ic.sendKeyEvent(new KeyEvent(KeyEvent.ACTION_DOWN, 209));
-//                }
 
                 if (status) {
                     showToast(app.getResources().getString(R.string.msg_rfid_scanning));
-                } else {
-//                    showToast(app.getResources().getString(R.string.msg_barcode_scanning));
                 }
             }
 
@@ -258,17 +245,16 @@ public class OrcaKeyboardService extends InputMethodService implements KeyboardV
                 beep();
                 logger.i(TAG, "on Inventory End");
 
-//                if (isKeyboardActive == false)
-//                    return;
-
-                if (ic == null) {
-                    ic = getCurrentInputConnection();
-                }
+                ic = getCurrentInputConnection();
 
                 if (ic != null) {
-                    ic.deleteSurroundingText(255, 0);
-                    ic.commitText(rfid, 1);
+                    ic.deleteSurroundingText(255, 255);
+                    boolean status = ic.commitText(rfid, 1);
+                    logger.i(TAG, "Status " + status);
 
+                    ic.finishComposingText();
+
+                    logger.i(TAG, "rfid data is dispatched to text field");
                     KeyEvent eventEnter = new KeyEvent(KeyEvent.ACTION_DOWN, KeyEvent.KEYCODE_ENTER);
                     ic.sendKeyEvent(eventEnter);
                 }
@@ -301,26 +287,16 @@ public class OrcaKeyboardService extends InputMethodService implements KeyboardV
         if (rfidReader != null) {
             logger.i(TAG, "releasing rfid reader");
             rfidReader.releaseResources();
+            rfidReader.unregisterListener(rfidReaderListener);
         }
 
         showToast("keyboard closed");
         app.onTerminate();
     }
 
-    @Override
-    public boolean onKeyDown(int keyCode, KeyEvent event) {
-        logger.i(TAG, "onKeyDown " + keyCode + " " + event.toString());
-        if (ic == null && keyCode != KeyEvent.KEYCODE_BACK) {
-            ic = getCurrentInputConnection();
-        }
-
-        return super.onKeyDown(keyCode, event);
-    }
-
     private void createToast() {
         toast = Toast.makeText(getApplicationContext(), "", Toast.LENGTH_LONG);
         toast.setGravity(Gravity.CENTER_VERTICAL, 0, 0);
-        logger.i(TAG, "toast initalized");
     }
 
     private void showToast(CharSequence message) {

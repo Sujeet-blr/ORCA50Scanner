@@ -20,7 +20,7 @@
 <!--            </intent-filter>-->
 <!--        </activity>-->
 
-<!--        keyboard service-->
+        <!--        keyboard service-->
         <service
             android:name="in.mobiux.android.orca50scanner.sensingobjectrfidkeyboard.keyboard.OrcaKeyboardService"
             android:label="Sensing Object Keyboard"
