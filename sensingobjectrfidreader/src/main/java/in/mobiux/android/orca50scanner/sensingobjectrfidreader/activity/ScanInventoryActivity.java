@@ -63,6 +63,7 @@ public class ScanInventoryActivity extends BaseActivity implements View.OnClickL
 
         rfidReader = new RFIDReader(getApplicationContext());
         rfidReader.connect(Reader.ReaderType.RFID);
+        rfidReader.enableBeep();
 
         registerRFIDListener();
 
@@ -82,7 +83,7 @@ public class ScanInventoryActivity extends BaseActivity implements View.OnClickL
 
                 if (matchingAsset == null) {
                     matchingAsset = inventory;
-                    inventoriesMap.put(matchingAsset.getEpc(), matchingAsset);
+                    inventoriesMap.put(matchingAsset.getFormattedEPC(), matchingAsset);
                     scannedInventories.add(matchingAsset);
                 }
 

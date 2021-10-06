@@ -4,15 +4,15 @@
     "type": "APK",
     "kind": "Directory"
   },
-  "applicationId": "in.mobiux.android.orca50scanner.sensingobjectrfidkeyboard",
+  "applicationId": "in.mobiux.android.orca50scanner.sensingobjectrfidreader",
   "variantName": "release",
   "elements": [
     {
       "type": "SINGLE",
       "filters": [],
       "versionCode": 1,
-      "versionName": "1.0",
-      "outputFile": "sensingobjectrfidkeyboard-release.apk"
+      "versionName": "RfidReader1.0",
+      "outputFile": "sensingobjectrfidreader-release.apk"
     }
   ]
 }
