@@ -30,6 +30,7 @@ public class MainActivity extends BaseActivity {
     private RFIDReader rfidReader;
     private RFIDReaderListener rfidReaderListener;
     private long timestamp = System.currentTimeMillis();
+    private Timer timer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,6 +44,7 @@ public class MainActivity extends BaseActivity {
 
         rfidReader = new RFIDReader(getApplicationContext());
         rfidReader.connect(Reader.ReaderType.RFID);
+        rfidReader.enableBeep();
         registerRfidListener();
 
         startTimer();
@@ -71,21 +73,27 @@ public class MainActivity extends BaseActivity {
 
     }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+
+        rfidReader.releaseResources();
+        timer.cancel();
+    }
+
     private void startTimer() {
-        Timer timer = new Timer();
+        timer = new Timer();
         timer.schedule(new TimerTask() {
             @Override
             public void run() {
-                if ((System.currentTimeMillis() - timestamp) > 2) {
-                    runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            ivIndicator.setVisibility(View.GONE);
-                        }
-                    });
-                }
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        ivIndicator.setVisibility(View.GONE);
+                    }
+                });
             }
-        }, 1000);
+        }, 0, 2000);
     }
 
     private void registerRfidListener() {

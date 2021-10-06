@@ -4,15 +4,15 @@
     "type": "APK",
     "kind": "Directory"
   },
-  "applicationId": "in.mobiux.android.orca50scanner.sensingobjectrfidreader",
+  "applicationId": "in.mobiux.android.orca50scanner.rfidtagtester",
   "variantName": "release",
   "elements": [
     {
       "type": "SINGLE",
       "filters": [],
       "versionCode": 1,
-      "versionName": "RfidReader1.0",
-      "outputFile": "sensingobjectrfidreader-release.apk"
+      "versionName": "1.0",
+      "outputFile": "rfidtagtester-release.apk"
     }
   ]
 }
