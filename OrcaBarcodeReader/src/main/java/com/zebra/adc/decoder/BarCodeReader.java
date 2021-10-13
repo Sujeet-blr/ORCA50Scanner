@@ -69,7 +69,7 @@ public class BarCodeReader {
 
     private static AppLogger logger;
 
-    // These match the enums in frameworks/base/include/bcreader/BCReader.h
+    // These match the enums in frameworks/base/include/bcreader/BCReader.h56y7
     private static final int BCRDR_MSG_ERROR = 0x000001;
     private static final int BCRDR_MSG_SHUTTER = 0x000002;
     private static final int BCRDR_MSG_FOCUS = 0x000004;

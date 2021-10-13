@@ -5,7 +5,6 @@ import java.util.Date;
 import java.util.List;
 
 
-
 /**
  * Created by SUJEET KUMAR on 10-Mar-21.
  */
@@ -39,19 +38,33 @@ public class AppUtils {
     }
 
     public static String decimalToHex(String value) {
+        value = value.replace(" ", "");
+        value = value.replace(".", "");
+
         long l = Long.parseLong(value);
         return Long.toHexString(l).toUpperCase();
     }
 
-    public static String hexToDecimal(String string) {
-        try {
-            return "" + Long.parseLong(string, 16);
-        } catch (Exception e) {
-            e.printStackTrace();
+    public static String stringToHex(String value) {
+        StringBuffer sb = new StringBuffer();
+        //Converting string to character array
+        char ch[] = value.toCharArray();
+        for (int i = 0; i < ch.length; i++) {
+            String hexString = Integer.toHexString(ch[i]);
+            sb.append(hexString);
         }
-
-        return null;
+        String result = sb.toString();
+        return result;
     }
+
+    public static int byteArrayToInt(byte[] bytes) {
+        int result = 0;
+        for (int i = 0; i < 4; i++) {
+            result = (result << 8) - Byte.MIN_VALUE + (int) bytes[i];
+        }
+        return result;
+    }
+
 
     public static String getFormattedTimestampUpToSeconds() {
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");

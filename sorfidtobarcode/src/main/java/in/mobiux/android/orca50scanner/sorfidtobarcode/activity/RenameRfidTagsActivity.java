@@ -12,6 +12,8 @@ import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import com.zebra.model.Barcode;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -20,7 +22,6 @@ import in.mobiux.android.orca50scanner.common.utils.AppUtils;
 import in.mobiux.android.orca50scanner.reader.core.RFIDReader;
 import in.mobiux.android.orca50scanner.reader.core.RFIDReaderListener;
 import in.mobiux.android.orca50scanner.reader.core.Reader;
-import in.mobiux.android.orca50scanner.reader.model.Barcode;
 import in.mobiux.android.orca50scanner.reader.model.Inventory;
 import in.mobiux.android.orca50scanner.reader.model.OperationTag;
 import in.mobiux.android.orca50scanner.sorfidtobarcode.R;
@@ -63,6 +64,7 @@ public class RenameRfidTagsActivity extends BaseActivity {
         lltWrite = findViewById(R.id.lltWrite);
         lltWriteSuccess = findViewById(R.id.lltWriteSuccess);
 
+        btnConfirmSelect.setVisibility(View.GONE);
         ivRFIDStatus.setVisibility(View.GONE);
         ivRFIDSWritetatus.setVisibility(View.GONE);
         lltWrite.setVisibility(View.GONE);
@@ -82,7 +84,8 @@ public class RenameRfidTagsActivity extends BaseActivity {
 
             showToast("Invalid barcode");
         } else {
-            barcode.setHex(AppUtils.decimalToHex(barcode.getName()));
+            logger.i(TAG, "barcode is " + barcode.getName());
+            barcode.setHex(AppUtils.stringToHex(barcode.getName()));
             tvBarcode.setText(barcode.getName());
         }
 
@@ -107,7 +110,7 @@ public class RenameRfidTagsActivity extends BaseActivity {
 
             @Override
             public void onNothingSelected(AdapterView<?> adapterView) {
-
+                logger.i(TAG, "spnrRfids Nothing selected");
             }
         });
 
@@ -134,7 +137,9 @@ public class RenameRfidTagsActivity extends BaseActivity {
         btnAssign.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                int writeStatus = rfidReader.writeToTag(barcode, selectedInventory);
+                in.mobiux.android.orca50scanner.reader.model.Barcode b = new in.mobiux.android.orca50scanner.reader.model.Barcode();
+                b.setName(barcode.getName());
+                int writeStatus = rfidReader.writeToTag(b, selectedInventory);
                 logger.i(TAG, "write status " + writeStatus);
 
                 if (writeStatus == 0) {
@@ -240,5 +245,11 @@ public class RenameRfidTagsActivity extends BaseActivity {
         };
 
         rfidReader.setOnRFIDReaderListener(rfidReaderListener);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        rfidReader.releaseResources();
     }
 }

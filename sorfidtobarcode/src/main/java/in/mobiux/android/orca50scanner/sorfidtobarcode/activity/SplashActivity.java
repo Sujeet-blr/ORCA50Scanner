@@ -1,10 +1,15 @@
 package in.mobiux.android.orca50scanner.sorfidtobarcode.activity;
 
-import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
+
+
+//import com.zebra.sdl.BarcodeScanActivity;
+//import com.zebra.sdl.SDLguiActivity;
+
+import com.zebra.model.Barcode;
 
 import in.mobiux.android.orca50scanner.sorfidtobarcode.R;
 
@@ -18,9 +23,12 @@ public class SplashActivity extends BaseActivity {
         new Handler(getMainLooper()).postDelayed(new Runnable() {
             @Override
             public void run() {
-                startActivity(new Intent(getApplicationContext(), BarcodeScannerActivity.class));
+
+                Intent intent = new Intent(getApplicationContext(), BarcodeScanActivity.class);
+                startActivity(intent);
                 finish();
             }
         }, 3000);
+
     }
 }

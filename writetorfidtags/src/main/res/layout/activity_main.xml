@@ -6,8 +6,17 @@
     android:layout_height="match_parent"
     tools:context=".activity.MainActivity">
 
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentTop="true"
+        android:src="@drawable/ic_baseline_settings_24"
+        android:padding="8dp"
+        android:id="@+id/ivSettings"/>
 
     <LinearLayout
+        android:layout_below="@id/ivSettings"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical">
@@ -76,6 +85,7 @@
             android:text="Pull the trigger to scan rfid tags" />
 
     </LinearLayout>
+
 
     <Button
         android:id="@+id/btnAssign"

@@ -16,6 +16,8 @@ android {
         versionName "rfidToBarcode1.0"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+
+        multiDexEnabled true
     }
 
     buildTypes {
@@ -39,6 +41,7 @@ dependencies {
     implementation project(path: ':Common')
     implementation project(path: ':Reader')
     implementation 'org.jetbrains:annotations:15.0'
+    implementation project(path: ':OrcaBarcodeReader')
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.3'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.4.0'
@@ -51,4 +54,6 @@ dependencies {
     // When using the BoM, you don't specify versions in Firebase library dependencies
     implementation 'com.google.firebase:firebase-crashlytics'
     implementation 'com.google.firebase:firebase-analytics'
+
+    implementation 'androidx.multidex:multidex:2.0.1'
 }

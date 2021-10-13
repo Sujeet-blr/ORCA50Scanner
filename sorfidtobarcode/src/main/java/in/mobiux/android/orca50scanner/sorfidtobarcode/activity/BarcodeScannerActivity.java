@@ -13,12 +13,14 @@ import android.widget.TextView;
 
 import java.io.Serializable;
 
+import in.mobiux.android.orca50scanner.common.activity.ExportLogsActivity;
 import in.mobiux.android.orca50scanner.reader.core.BarcodeReader;
 import in.mobiux.android.orca50scanner.reader.core.BarcodeReaderListener;
 import in.mobiux.android.orca50scanner.reader.core.Reader;
 import in.mobiux.android.orca50scanner.reader.model.Barcode;
 import in.mobiux.android.orca50scanner.sorfidtobarcode.R;
 
+//this is previous code , which was working with old Orca device.
 public class BarcodeScannerActivity extends BaseActivity {
 
     private BarcodeReader barcodeReader;
@@ -26,7 +28,7 @@ public class BarcodeScannerActivity extends BaseActivity {
     private Barcode barcode;
 
     private TextView tvMessage;
-    private Button btnConfirmBarcode;
+    private Button btnConfirmBarcode, btnExportLogs;
     private ImageView ivBarcodeStatus;
 
     private AlertDialog alertDialog;
@@ -39,6 +41,7 @@ public class BarcodeScannerActivity extends BaseActivity {
         tvMessage = findViewById(R.id.tvMessage);
         ivBarcodeStatus = findViewById(R.id.ivBarcodeStatus);
         btnConfirmBarcode = findViewById(R.id.btnConfirmBarcode);
+        btnExportLogs = findViewById(R.id.btnExportLogs);
 
         ivBarcodeStatus.setVisibility(View.GONE);
         btnConfirmBarcode.setVisibility(View.GONE);
@@ -67,6 +70,13 @@ public class BarcodeScannerActivity extends BaseActivity {
                 Intent intent = new Intent(app, RenameRfidTagsActivity.class);
                 intent.putExtra("barcode", (Serializable) barcode);
                 startActivityForResult(intent, 101);
+            }
+        });
+
+        btnExportLogs.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(getApplicationContext(), ExportLogsActivity.class));
             }
         });
     }

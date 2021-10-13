@@ -59,6 +59,8 @@ public class AppLogger {
         i("ERROR " + tag, msg);
     }
 
+
+    //    instead of calling this method - open 'ExportLogsActivity.class' to export logs.
     public void createAndExportLogs(Context context) {
 //        must check storage permission before calling this method
 

@@ -3,14 +3,18 @@ package com.zebra.sdl;
 import android.content.Context;
 import android.util.Log;
 import android.view.KeyEvent;
+import android.view.inputmethod.InputMethodManager;
 
 import com.zebra.adc.decoder.BarCodeReader;
 import com.zebra.util.BeeperHelper;
 
 import in.mobiux.android.orca50scanner.common.utils.AppLogger;
 
+
+//this is NOT working
+//todo
 public class BarcodeReaderOrca implements
-        BarCodeReader.DecodeCallback, BarCodeReader.ErrorCallback {
+        BarCodeReader.DecodeCallback, BarCodeReader.ErrorCallback, KeyEvent.Callback {
 
     private static final String TAG = BarcodeReaderOrca.class.getCanonicalName();
     private Context context;
@@ -133,6 +137,27 @@ public class BarcodeReaderOrca implements
     @Override
     public void onError(int error, BarCodeReader reader) {
 
+    }
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        Log.i(TAG, "key is pressed " + keyCode);
+        return false;
+    }
+
+    @Override
+    public boolean onKeyLongPress(int keyCode, KeyEvent event) {
+        return false;
+    }
+
+    @Override
+    public boolean onKeyUp(int keyCode, KeyEvent event) {
+        return false;
+    }
+
+    @Override
+    public boolean onKeyMultiple(int keyCode, int count, KeyEvent event) {
+        return false;
     }
 
 //    @Override

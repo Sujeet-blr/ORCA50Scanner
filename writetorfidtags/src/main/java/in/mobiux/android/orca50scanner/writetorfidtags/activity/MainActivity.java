@@ -1,7 +1,6 @@
 package in.mobiux.android.orca50scanner.writetorfidtags.activity;
 
 import android.app.Activity;
-import android.content.ContentResolver;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -11,17 +10,13 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
-
-import androidx.annotation.Nullable;
 
 import com.opencsv.CSVReader;
 import com.opencsv.exceptions.CsvValidationException;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -29,6 +24,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import in.mobiux.android.orca50scanner.reader.activity.SettingsActivity;
 import in.mobiux.android.orca50scanner.reader.core.RFIDReader;
 import in.mobiux.android.orca50scanner.reader.core.RFIDReaderListener;
 import in.mobiux.android.orca50scanner.reader.core.Reader;
@@ -42,6 +38,7 @@ public class MainActivity extends BaseActivity {
     private Button btnUpload, btnAssign;
     private Spinner spnrLabels, spnrTags;
     private TextView tvMessage;
+    private ImageView ivSettings;
 
     private List<String> labels = new ArrayList<>();
     private HashMap<String, Inventory> tags = new HashMap<>();
@@ -65,15 +62,23 @@ public class MainActivity extends BaseActivity {
         btnUpload = findViewById(R.id.btnUpload);
         btnAssign = findViewById(R.id.btnAssign);
         spnrLabels = findViewById(R.id.spnrLabels);
+        ivSettings = findViewById(R.id.ivSettings);
         spnrTags = findViewById(R.id.spnrTags);
         btnAssign.setVisibility(View.GONE);
 
 
         rfidReader = new RFIDReader(getApplicationContext());
         rfidReader.connect(Reader.ReaderType.RFID);
-        rfidReader.enableBeep();
 
         registerRfidListener();
+
+        ivSettings.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getApplicationContext(), SettingsActivity.class);
+                startActivity(intent);
+            }
+        });
 
         btnUpload.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -125,6 +130,7 @@ public class MainActivity extends BaseActivity {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 if (rfidReader.isConnected()) {
+                    showToast("Selecting Tag to write");
                     selectedInventory = tagList.get(spnrTags.getSelectedItemPosition());
                     selectStatus = rfidReader.selectAccessEpcMatch(selectedInventory.getEpc());
 
@@ -145,8 +151,6 @@ public class MainActivity extends BaseActivity {
                 btnAssign.setVisibility(View.GONE);
             }
         });
-
-
     }
 
     private void registerRfidListener() {
@@ -163,6 +167,7 @@ public class MainActivity extends BaseActivity {
 
             @Override
             public void onInventoryTag(Inventory inventory) {
+                inventory.setName(inventory.getFormattedEPC());
                 tags.put(inventory.getFormattedEPC(), inventory);
             }
 
@@ -260,5 +265,12 @@ public class MainActivity extends BaseActivity {
                 }
             }
         }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+
+        rfidReader.releaseResources();
     }
 }

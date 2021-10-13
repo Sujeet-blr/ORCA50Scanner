@@ -1,18 +1,19 @@
 package in.mobiux.android.orca50scanner.rfidtagtester.activity;
 
 import android.Manifest;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Timer;
 import java.util.TimerTask;
 
 import in.mobiux.android.orca50scanner.common.utils.pdf.PdfUtils;
+import in.mobiux.android.orca50scanner.reader.activity.SettingsActivity;
 import in.mobiux.android.orca50scanner.reader.core.RFIDReader;
 import in.mobiux.android.orca50scanner.reader.core.RFIDReaderListener;
 import in.mobiux.android.orca50scanner.reader.core.Reader;
@@ -22,7 +23,7 @@ import in.mobiux.android.orca50scanner.rfidtagtester.R;
 
 public class MainActivity extends BaseActivity {
 
-    private ImageView ivIndicator;
+    private ImageView ivIndicator, ivSettings;
     private TextView tvCount;
     private Button btnCreate, btnReset;
 
@@ -41,10 +42,11 @@ public class MainActivity extends BaseActivity {
         tvCount = findViewById(R.id.tvCount);
         btnCreate = findViewById(R.id.btnCreate);
         btnReset = findViewById(R.id.btnReset);
+        ivSettings = findViewById(R.id.ivSettings);
 
         rfidReader = new RFIDReader(getApplicationContext());
         rfidReader.connect(Reader.ReaderType.RFID);
-        rfidReader.enableBeep();
+//        rfidReader.enableBeep();
         registerRfidListener();
 
         startTimer();
@@ -66,8 +68,16 @@ public class MainActivity extends BaseActivity {
                 tags.clear();
                 tvCount.setText("Count : " + tags.size());
 
-                checkPermission(MainActivity.this, Manifest.permission.WRITE_EXTERNAL_STORAGE, STORAGE_PERMISSION_CODE);
-                logger.createAndExportLogs(MainActivity.this);
+//                checkPermission(MainActivity.this, Manifest.permission.WRITE_EXTERNAL_STORAGE, STORAGE_PERMISSION_CODE);
+//                logger.createAndExportLogs(MainActivity.this);
+            }
+        });
+
+        ivSettings.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getApplicationContext(), SettingsActivity.class);
+                startActivity(intent);
             }
         });
 

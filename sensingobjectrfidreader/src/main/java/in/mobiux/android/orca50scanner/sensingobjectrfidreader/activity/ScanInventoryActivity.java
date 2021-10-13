@@ -63,7 +63,6 @@ public class ScanInventoryActivity extends BaseActivity implements View.OnClickL
 
         rfidReader = new RFIDReader(getApplicationContext());
         rfidReader.connect(Reader.ReaderType.RFID);
-        rfidReader.enableBeep();
 
         registerRFIDListener();
 

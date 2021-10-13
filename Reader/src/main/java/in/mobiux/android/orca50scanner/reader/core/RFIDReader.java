@@ -2,7 +2,6 @@ package in.mobiux.android.orca50scanner.reader.core;
 
 import android.content.Context;
 import android.os.Handler;
-import android.view.View;
 
 import com.module.interaction.ModuleConnector;
 import com.module.interaction.RXTXListener;
@@ -22,6 +21,7 @@ import java.util.List;
 import in.mobiux.android.orca50scanner.common.utils.App;
 import in.mobiux.android.orca50scanner.common.utils.AppBuildConfig;
 import in.mobiux.android.orca50scanner.common.utils.AppLogger;
+import in.mobiux.android.orca50scanner.common.utils.AppUtils;
 import in.mobiux.android.orca50scanner.common.utils.SessionManager;
 import in.mobiux.android.orca50scanner.reader.model.Barcode;
 import in.mobiux.android.orca50scanner.reader.model.Inventory;
@@ -31,10 +31,11 @@ import in.mobiux.android.orca50scanner.reader.utils.BeeperHelper;
 public class RFIDReader implements Reader {
 
     public static final String TAG = RFIDReader.class.getCanonicalName();
-    private final Context context;
+    private Context context;
     private final SessionManager session;
     private final AppLogger logger;
     private final Handler mHandler;
+    public static RFIDReader INSTANCE = null;
 
     private App app;
     public static String PORT = "dev/ttyS4";
@@ -47,14 +48,13 @@ public class RFIDReader implements Reader {
     private boolean connectionStatus = false;
     private boolean observerRegistrationStatus = false;
     private boolean scanningStatus = false;
-    private String prefs_beep_key = "";
 
     private List<RFIDReaderListener> listeners = new ArrayList<>();
 
     private final RXTXListener rxtxListener = new RXTXListener() {
         @Override
         public void reciveData(byte[] bytes) {
-            logger.i(TAG, "receiveData " + bytes);
+            logger.i(TAG, "receiveData " + Arrays.toString(bytes));
             if (listener != null) {
                 mHandler.post(new Runnable() {
                     @Override
@@ -67,7 +67,7 @@ public class RFIDReader implements Reader {
 
         @Override
         public void sendData(byte[] bytes) {
-            logger.i(TAG, "send Data " + bytes);
+            logger.i(TAG, "send Data " + Arrays.toString(bytes));
             if (listener != null) {
                 mHandler.post(new Runnable() {
                     @Override
@@ -97,9 +97,10 @@ public class RFIDReader implements Reader {
 
         @Override
         protected void refreshSetting(ReaderSetting readerSetting) {
-            logger.i(TAG, "Setting Refresh ");
+            logger.i(TAG, "Setting Refresh output power is : " + Arrays.toString(readerSetting.btAryOutputPower));
 
-            session.setValue("rssi", String.valueOf(rfidReaderHelper.getOutputPower(readerSetting.btReadId)));
+            int rssiValue = AppUtils.byteArrayToInt(readerSetting.btAryOutputPower);
+            session.setInt(session.KEY_RF_OUTPUT_POWER, rssiValue);
         }
 
         @Override
@@ -109,10 +110,6 @@ public class RFIDReader implements Reader {
             mHandler.post(new Runnable() {
                 @Override
                 public void run() {
-//                    if (listener != null) {
-//                        scanningStatus = true;
-//                        listener.onScanningStatus(scanningStatus);
-//                    }
                     scanningStatus = true;
                     for (RFIDReaderListener l : listeners) {
                         l.onScanningStatus(scanningStatus);
@@ -138,16 +135,6 @@ public class RFIDReader implements Reader {
                     }
                 }
             });
-
-//            if (listener != null) {
-//                mHandler.post(new Runnable() {
-//                    @Override
-//                    public void run() {
-//                        listener.onScanningStatus(true);
-//                        listener.onInventoryTag(inventory);
-//                    }
-//                });
-//            }
         }
 
         @Override
@@ -157,7 +144,6 @@ public class RFIDReader implements Reader {
             int tagReadingSpeed = tagEnd.mReadRate;
             logger.i(TAG, "Read Rate " + tagReadingSpeed);
 
-//            app.playBeep();
             beep();
 
             mHandler.post(new Runnable() {
@@ -168,18 +154,10 @@ public class RFIDReader implements Reader {
                     }
                 }
             });
-
-//            if (listener != null) {
-//                mHandler.post(new Runnable() {
-//                    @Override
-//                    public void run() {
-//
-//                        listener.onInventoryTagEnd(new Inventory.InventoryTagEnd(tagEnd));
-//                    }
-//                });
-//            }
         }
     };
+
+
 
     public RFIDReader(Context context) {
         this.context = context;
@@ -187,8 +165,9 @@ public class RFIDReader implements Reader {
         logger = AppLogger.getInstance(context);
         session = SessionManager.getInstance(context);
         mHandler = new Handler(context.getMainLooper());
-        prefs_beep_key = context.getPackageName() + "_beep";
         BeeperHelper.init(context);
+
+        INSTANCE = this;
     }
 
     @Override
@@ -255,8 +234,13 @@ public class RFIDReader implements Reader {
                     logger.i(TAG, "beeper result " + beeperResult);
 
                     rfidReaderHelper.setTrigger(true);
-//                    setOutputPower("5");
-                    session.setValue("rssi", String.valueOf(rfidReaderHelper.getOutputPower(readerSetting.btReadId)));
+
+                    int rssiValue = session.getInt(session.KEY_RF_OUTPUT_POWER, 0);
+                    if (rssiValue == 0) {
+                        session.setInt(session.KEY_RF_OUTPUT_POWER, AppUtils.byteArrayToInt(readerSetting.btAryOutputPower));
+                    } else {
+                        setRFOutputPower(rssiValue);
+                    }
 
                 } catch (Exception e) {
                     logger.i(TAG, "Exception " + e.getLocalizedMessage());
@@ -425,7 +409,6 @@ public class RFIDReader implements Reader {
         }
 
         listeners.clear();
-
         BeeperHelper.release();
     }
 
@@ -451,8 +434,7 @@ public class RFIDReader implements Reader {
 
 
     private void beep() {
-        String str = session.getValue(prefs_beep_key);
-        if (str.equals("true")) {
+        if (session.getBooleanValue(session.KEY_BEEP)) {
             logger.i(TAG, "playing beep");
             BeeperHelper.beep(BeeperHelper.SOUND_FILE_TYPE_NORMAL);
         } else {
@@ -461,10 +443,31 @@ public class RFIDReader implements Reader {
     }
 
     public void enableBeep() {
-        session.setValue(prefs_beep_key, "true");
+        session.setBooleanValue(session.KEY_BEEP, true);
     }
 
     public void disableBeep() {
-        session.getValue(prefs_beep_key);
+        session.setBooleanValue(session.KEY_BEEP, false);
+    }
+
+
+    //    methods for RF Output Power
+    public int setRFOutputPower(int value) {
+        logger.i(TAG, "Setting RSSI value " + value);
+        if (INSTANCE != null && isConnected()) {
+            byte val = (byte) value;
+            int status = rfidReaderHelper.setOutputPower(ReaderSetting.newInstance().btReadId, val);
+            if (status == 0) {
+                beep();
+                logger.i(TAG, "rf output power set success " + value);
+                session.setInt(session.KEY_RF_OUTPUT_POWER, value);
+            } else {
+                logger.i(TAG, "rf output power set Failed " + status);
+            }
+            return status;
+        } else {
+            logger.e(TAG, "RFID Reader is not connected");
+            return 1;
+        }
     }
 }

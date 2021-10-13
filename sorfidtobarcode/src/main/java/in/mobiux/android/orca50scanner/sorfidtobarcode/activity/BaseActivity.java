@@ -54,6 +54,8 @@ public class BaseActivity extends AppActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        TAG = this.getClass().getCanonicalName();
+
         registerVirtualKeyListener();
 
         logger.i(TAG, "created Activity : " + this.getClass().getCanonicalName());

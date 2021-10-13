@@ -136,6 +136,8 @@
     <string name="msg_barcode_scanning">Scanning Barcode</string>
     <string name="msg_scanned">Scanned</string>
 
+    <string name="the_barcode_read_is">The Barcode read is</string>
+
     <string-array name="dummmy_spinner">
         <item>item1</item>
         <item>item2</item>

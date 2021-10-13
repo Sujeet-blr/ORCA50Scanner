@@ -15,6 +15,19 @@ public class SessionManager {
     private static SessionManager INSTANCE;
     private static String KEY_TOKEN = "token";
 
+
+    public String KEY_BEEP = "";
+    public String KEY_RF_OUTPUT_POWER = "";
+    public String KEY_APP_LANGUAGE = "";
+
+    private void initKeys(Context context) {
+        String appName = context.getPackageName();
+
+        KEY_BEEP = appName + "__beep";
+        KEY_RF_OUTPUT_POWER = "rf_output_power";
+        KEY_APP_LANGUAGE = "app_language";
+    }
+
     public static SessionManager getInstance(Context context) {
         if (INSTANCE == null) {
             INSTANCE = new SessionManager(context);
@@ -25,43 +38,8 @@ public class SessionManager {
     private SessionManager(Context context) {
         this.context = context;
         preferences = context.getSharedPreferences("session", Context.MODE_PRIVATE);
-
-//        setting initial default value
-        if (getValue("rssi").isEmpty()) {
-            setValue("rssi", "30");
-        }
-        if (getValue("beeperMode").isEmpty()) {
-            setValue("beeperMode", "1");
-        }
+        initKeys(context);
     }
-
-
-//    public void setUser(User user) {
-//        Gson gson = new Gson();
-//        String str;
-//        if (user == null) {
-//            str = "";
-//        } else {
-//            str = gson.toJson(user).toString();
-//        }
-//
-//        Log.i(TAG, "saved user is : " + str);
-//        SharedPreferences.Editor editor = preferences.edit();
-//        editor.putString("user", str);
-//        editor.apply();
-//    }
-//
-//    public User getUser() {
-//        Gson gson = new Gson();
-//        String str = preferences.getString("user", "");
-//        if (str.isEmpty()) {
-//            Log.i(TAG, str);
-//            return null;
-//        }
-//        User user = gson.fromJson(str, User.class);
-//        Log.i(TAG, str);
-//        return user;
-//    }
 
     public boolean hasCredentials() {
         if (!rawToken().isEmpty()) {
@@ -84,15 +62,37 @@ public class SessionManager {
         return preferences.getString(KEY_TOKEN, "");
     }
 
-    public void setValue(String key, String value) {
+    public void setStringValue(String key, String value) {
         SharedPreferences.Editor editor = preferences.edit();
         editor.putString(key, value);
         editor.apply();
         AppLogger.getInstance(context).i(TAG, "Saved as key :" + key + " value : " + value);
     }
 
-    public String getValue(String key) {
+    public String getStringValue(String key) {
         return preferences.getString(key, "");
+    }
+
+    public void setInt(String key, int value) {
+        SharedPreferences.Editor editor = preferences.edit();
+        editor.putInt(key, value);
+        editor.apply();
+        AppLogger.getInstance(context).i(TAG, "Saved as key :" + key + " value : " + value);
+    }
+
+    public int getInt(String key, int defaultValue) {
+        return preferences.getInt(key, defaultValue);
+    }
+
+    public void setBooleanValue(String key, boolean value) {
+        SharedPreferences.Editor editor = preferences.edit();
+        editor.putBoolean(key, value);
+        editor.apply();
+        AppLogger.getInstance(context).i(TAG, "Saved as key :" + key + " value : " + value);
+    }
+
+    public Boolean getBooleanValue(String key) {
+        return preferences.getBoolean(key, true);
     }
 
     public void logout() {
@@ -101,10 +101,12 @@ public class SessionManager {
     }
 
     public LanguageUtils.Language getLanguage() {
-        return LanguageUtils.Language.valueByAttr(preferences.getString("language", "en"));
+        return LanguageUtils.Language.valueByAttr(preferences.getString(KEY_APP_LANGUAGE, "en"));
     }
 
     public void setLanguage(LanguageUtils.Language language) {
-        setValue("language", language.getLanguage());
+        setStringValue(KEY_APP_LANGUAGE, language.getLanguage());
     }
+
+
 }
