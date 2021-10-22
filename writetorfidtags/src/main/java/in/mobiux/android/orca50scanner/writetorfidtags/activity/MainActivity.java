@@ -66,7 +66,7 @@ public class MainActivity extends BaseActivity {
         ivSettings = findViewById(R.id.ivSettings);
         spnrTags = findViewById(R.id.spnrTags);
         btnAssign.setVisibility(View.GONE);
-        
+
         ivSettings.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
