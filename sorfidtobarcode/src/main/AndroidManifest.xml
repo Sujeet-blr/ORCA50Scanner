@@ -21,7 +21,6 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.AppTheme.NoActionBar">
-        <activity android:name=".activity.OrcaBarcodeActivity"></activity>
         <activity
             android:name=".activity.SplashActivity"
             android:exported="true">

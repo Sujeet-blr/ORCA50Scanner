@@ -3,6 +3,7 @@ package in.mobiux.android.orca50scanner.activity;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.Manifest;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -16,6 +17,7 @@ import java.util.Map;
 import in.mobiux.android.orca50scanner.R;
 import in.mobiux.android.orca50scanner.adapter.InventoryAdapter;
 import in.mobiux.android.orca50scanner.common.utils.pdf.PdfUtils;
+import in.mobiux.android.orca50scanner.reader.activity.SettingsActivity;
 import in.mobiux.android.orca50scanner.reader.core.RFIDReader;
 import in.mobiux.android.orca50scanner.reader.core.RFIDReaderListener;
 import in.mobiux.android.orca50scanner.reader.core.Reader;
@@ -140,9 +142,8 @@ public class ScanInventoryActivity extends BaseActivity implements View.OnClickL
                 break;
             case R.id.btnSave:
                 logger.i(TAG, "Save");
+                SettingsActivity.launchActivity(getApplicationContext());
 
-                checkPermission(ScanInventoryActivity.this, Manifest.permission.WRITE_EXTERNAL_STORAGE, STORAGE_PERMISSION_CODE);
-                logger.createAndExportLogs(ScanInventoryActivity.this);
                 break;
             case R.id.btnPrint:
                 logger.i(TAG, "print");

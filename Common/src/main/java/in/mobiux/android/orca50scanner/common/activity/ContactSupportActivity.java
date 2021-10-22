@@ -35,6 +35,8 @@ public class ContactSupportActivity extends AppActivity {
 
         edtSubject.setText(getResources().getString(R.string.app_name));
 
+        setToolbarTitle(getResources().getString(R.string.contact_support));
+
         btnSubmit.setOnClickListener(view -> {
             ContactSupport support = new ContactSupport();
 

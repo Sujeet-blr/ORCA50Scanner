@@ -46,6 +46,7 @@ import java.util.Map;
 import in.mobiux.android.orca50scanner.common.utils.AppLogger;
 import in.mobiux.android.orca50scanner.common.utils.AppUtils;
 import in.mobiux.android.orca50scanner.common.utils.pdf.PdfUtils;
+import in.mobiux.android.orca50scanner.reader.activity.SettingsActivity;
 
 import static in.mobiux.android.orca50scanner.common.activity.AppActivity.CAMERA_PERMISSION_CODE;
 import static in.mobiux.android.orca50scanner.common.activity.AppActivity.STORAGE_PERMISSION_CODE;
@@ -305,14 +306,9 @@ public class MainActivity extends Activity implements
             }
         });
 
-        btnSave.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                logger.i(TAG, "Save");
-
-                checkPermission(MainActivity.this, Manifest.permission.WRITE_EXTERNAL_STORAGE, STORAGE_PERMISSION_CODE);
-                logger.createAndExportLogs(MainActivity.this);
-            }
+        btnSave.setOnClickListener(view->{
+            logger.i(TAG, "Save");
+            SettingsActivity.launchActivity(getApplicationContext());
         });
 
         btnPrint.setOnClickListener(new OnClickListener() {

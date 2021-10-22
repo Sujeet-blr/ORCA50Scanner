@@ -4,20 +4,68 @@ import android.os.Bundle;
 
 import androidx.annotation.Nullable;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import in.mobiux.android.orca50scanner.reader.core.RFIDReader;
 import in.mobiux.android.orca50scanner.reader.core.RFIDReaderListener;
 import in.mobiux.android.orca50scanner.reader.core.Reader;
+import in.mobiux.android.orca50scanner.reader.model.Inventory;
+import in.mobiux.android.orca50scanner.reader.model.OperationTag;
 
-public class RFIDReaderBaseActivity extends BaseActivity {
+public class RFIDReaderBaseActivity extends BaseActivity implements RFIDReaderListener {
 
     private RFIDReader rfidReader;
-    private RFIDReaderListener rfidReaderListener;
+    protected Map<String, Inventory> tags = new HashMap<>();
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         rfidReader = new RFIDReader(getApplicationContext());
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        logger.i(TAG, "onResume");
+
         rfidReader.connect(Reader.ReaderType.RFID);
+        rfidReader.setOnRFIDReaderListener(this);
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        logger.i(TAG, "onPause");
+        rfidReader.releaseResources();
+        rfidReader.unregisterListener(this);
+    }
+
+
+    @Override
+    public void onScanningStatus(boolean status) {
+        logger.i(TAG, "Scanning Status " + status);
+    }
+
+    @Override
+    public void onInventoryTag(Inventory inventory) {
+        logger.i(TAG, "onInventoryTag " + inventory.getEpc());
+        tags.put(inventory.getFormattedEPC(), inventory);
+    }
+
+    @Override
+    public void onOperationTag(OperationTag operationTag) {
+        logger.i(TAG, "onOperationTag " + operationTag.strEPC);
+    }
+
+    @Override
+    public void onInventoryTagEnd(Inventory.InventoryTagEnd tagEnd) {
+        logger.i(TAG, "Scan End " + tagEnd.mTagCount);
+    }
+
+    @Override
+    public void onConnection(boolean status) {
+        logger.i(TAG, "Connection Status " + status);
     }
 }

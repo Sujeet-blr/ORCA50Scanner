@@ -2,6 +2,7 @@ package in.mobiux.android.orca50scanner.reader.activity;
 
 import androidx.cardview.widget.CardView;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -32,6 +33,8 @@ public class SettingsActivity extends BaseActivity {
         cardExportLogs = findViewById(R.id.cardExportLogs);
         cardContactSupports = findViewById(R.id.cardContactSupports);
 
+        setToolbarTitle("Settings");
+
         toggleBeep.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
@@ -39,30 +42,21 @@ public class SettingsActivity extends BaseActivity {
             }
         });
 
-        cardRFPowerOutput.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(getApplicationContext(), RFOutputPowerActivity.class);
-                startActivity(intent);
-            }
+        cardRFPowerOutput.setOnClickListener(view -> {
+            Intent intent = new Intent(getApplicationContext(), RFOutputPowerActivity.class);
+            startActivity(intent);
         });
 
-        cardExportLogs.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(getApplicationContext(), ExportLogsActivity.class);
-                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                startActivity(intent);
-            }
+        cardExportLogs.setOnClickListener(view -> {
+            Intent intent = new Intent(getApplicationContext(), ExportLogsActivity.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            startActivity(intent);
         });
 
-        cardContactSupports.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(getApplicationContext(), ContactSupportActivity.class);
-                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                startActivity(intent);
-            }
+        cardContactSupports.setOnClickListener(view -> {
+            Intent intent = new Intent(getApplicationContext(), ContactSupportActivity.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            startActivity(intent);
         });
     }
 
@@ -71,8 +65,19 @@ public class SettingsActivity extends BaseActivity {
         super.onResume();
 
         toggleBeep.setChecked(session.getBooleanValue(session.KEY_BEEP));
-        tvRFOutputPower.setText("" + session.getInt(session.KEY_RF_OUTPUT_POWER, 0));
+        int rssi = session.getInt(session.KEY_RF_OUTPUT_POWER, 0);
+        if (rssi == 0) {
+            tvRFOutputPower.setText("-");
+        } else {
+            tvRFOutputPower.setText("" + rssi);
+        }
+
+        logger.i(TAG, "rssi is " + rssi);
     }
 
-
+    public static void launchActivity(Context context) {
+        Intent intent = new Intent(context, SettingsActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        context.startActivity(intent);
+    }
 }

@@ -8,6 +8,10 @@ import android.text.TextWatcher;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
+
+import java.util.Timer;
+import java.util.TimerTask;
 
 import in.mobiux.android.orca50scanner.reader.R;
 import in.mobiux.android.orca50scanner.reader.core.RFIDReader;
@@ -17,11 +21,13 @@ public class RFOutputPowerActivity extends BaseActivity {
 
     private EditText edtRFOutput;
     private Button btnGet, btnSet;
+    private TextView tvStatus;
     private int rfOutputPower = 0;
     private int RF_MIN_VALUE = 3;
     private int RF_MAX_VALUE = 80;
 
     private RFIDReader rfidReader;
+    private boolean isFreshConnection = true;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,27 +37,30 @@ public class RFOutputPowerActivity extends BaseActivity {
         edtRFOutput = findViewById(R.id.edtRFOutput);
         btnGet = findViewById(R.id.btnGet);
         btnSet = findViewById(R.id.btnSet);
+        tvStatus = findViewById(R.id.tvStatus);
 
         rfOutputPower = session.getInt(session.KEY_RF_OUTPUT_POWER, rfOutputPower);
         edtRFOutput.setText("" + rfOutputPower);
 
-        if (RFIDReader.INSTANCE == null) {
-            rfidReader = new RFIDReader(getApplicationContext());
-        } else {
-            rfidReader = RFIDReader.INSTANCE;
-        }
+        setToolbarTitle("RF Output Power");
 
-        if (!rfidReader.isConnected()) {
+        rfidReader = new RFIDReader(getApplicationContext());
+        rfidReader.connect(Reader.ReaderType.RFID);
+
+        if (rfidReader.isConnected()) {
+            tvStatus.setText("Connected");
+        } else {
+            tvStatus.setText("Not Connected");
             rfidReader.connect(Reader.ReaderType.RFID);
         }
 
         btnGet.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (rfidReader.isConnected()){
+                if (rfidReader.isConnected()) {
                     rfOutputPower = session.getInt(session.KEY_RF_OUTPUT_POWER, rfOutputPower);
                     edtRFOutput.setText("" + rfOutputPower);
-                }else {
+                } else {
                     showToast("RFID Reader is not connected");
                 }
             }
@@ -69,7 +78,7 @@ public class RFOutputPowerActivity extends BaseActivity {
                 rfOutputPower = Integer.valueOf(edtRFOutput.getText().toString());
 
                 if (rfidReader.isConnected()) {
-                    int status = RFIDReader.INSTANCE.setRFOutputPower(rfOutputPower);
+                    int status = rfidReader.setRFOutputPower(rfOutputPower);
                     if (status == 0) {
                         showToast("RF Output Power set to " + rfOutputPower);
                         finish();
@@ -112,11 +121,29 @@ public class RFOutputPowerActivity extends BaseActivity {
 
             }
         });
+
+        Timer timer = new Timer();
+        timer.scheduleAtFixedRate(new TimerTask() {
+            @Override
+            public void run() {
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        if (rfidReader.isConnected()) {
+                            tvStatus.setText("Connected");
+                        } else {
+                            tvStatus.setText("Not Connected");
+                        }
+                    }
+                });
+            }
+        }, 1000, 1000);
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
+
         rfidReader.releaseResources();
     }
 }

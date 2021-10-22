@@ -16,6 +16,8 @@ android {
         versionName "1.0"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+
+        multiDexEnabled true
     }
 
     buildTypes {
@@ -38,6 +40,7 @@ dependencies {
     implementation project(path: ':Common')
     implementation 'org.jetbrains:annotations:15.0'
     implementation project(path: ':Reader')
+    implementation project(path: ':OrcaBarcodeReader')
     testImplementation 'junit:junit:4.+'
     androidTestImplementation 'androidx.test.ext:junit:1.1.3'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.4.0'
@@ -52,4 +55,6 @@ dependencies {
 
 //    for pdf & print
     implementation 'com.itextpdf:itextg:5.5.10'
+
+    implementation 'androidx.multidex:multidex:2.0.1'
 }

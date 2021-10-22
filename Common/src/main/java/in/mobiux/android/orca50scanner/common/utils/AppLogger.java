@@ -55,8 +55,12 @@ public class AppLogger {
         appendToLogs(logs);
     }
 
+    public void d(String tag, String msg) {
+        i(tag, msg);
+    }
+
     public void e(String tag, String msg) {
-        i("ERROR " + tag, msg);
+        i(tag + " ERROR", msg);
     }
 
 

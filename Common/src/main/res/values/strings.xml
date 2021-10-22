@@ -22,6 +22,7 @@
     <string name="label_verification">"Verification"</string>
     <string name="label_you_are_in">"You are in "</string>
     <string name="sync_with_server_to_proceed">Sync with server to proceed</string>
+    <string name="contact_support">Contact Support</string>
 
     <string name="camera_permission_granted">Camera Permission Granted</string>
     <string name="camera_permission_denied">Camera Permission Denied</string>

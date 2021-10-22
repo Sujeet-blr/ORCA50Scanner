@@ -8,8 +8,11 @@
     <application
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name">
-        <activity android:name=".activity.ContactSupportActivity" android:windowSoftInputMode="stateHidden"/>
-        <activity android:name=".activity.ExportLogsActivity" />
+        <activity
+            android:name=".activity.ContactSupportActivity"
+            android:theme="@style/Theme.AppTheme.NoActionBar"
+            android:windowSoftInputMode="stateHidden" />
+        <activity android:name=".activity.ExportLogsActivity" android:theme="@style/Theme.AppTheme.NoActionBar"/>
 
         <provider
             android:name="androidx.core.content.FileProvider"

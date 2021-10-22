@@ -11,6 +11,7 @@ import com.rfid.ReaderConnector;
 import com.rfid.rxobserver.RXObserver;
 import com.rfid.rxobserver.ReaderSetting;
 import com.rfid.rxobserver.bean.RXInventoryTag;
+import com.rfid.rxobserver.bean.RXOperationTag;
 import com.util.StringTool;
 
 import java.nio.charset.StandardCharsets;
@@ -25,6 +26,7 @@ import in.mobiux.android.orca50scanner.common.utils.AppUtils;
 import in.mobiux.android.orca50scanner.common.utils.SessionManager;
 import in.mobiux.android.orca50scanner.reader.model.Barcode;
 import in.mobiux.android.orca50scanner.reader.model.Inventory;
+import in.mobiux.android.orca50scanner.reader.model.OperationTag;
 import in.mobiux.android.orca50scanner.reader.simulator.AppSimulator;
 import in.mobiux.android.orca50scanner.reader.utils.BeeperHelper;
 
@@ -35,14 +37,13 @@ public class RFIDReader implements Reader {
     private final SessionManager session;
     private final AppLogger logger;
     private final Handler mHandler;
-    public static RFIDReader INSTANCE = null;
+    private static RFIDReader INSTANCE = null;
 
     private App app;
     public static String PORT = "dev/ttyS4";
     public static int BAUD_RATE = 115200;
 
     public ModuleConnector connector = new ReaderConnector();
-    private ReaderSetting readerSetting = ReaderSetting.newInstance();
     public RFIDReaderHelper rfidReaderHelper;
     public RFIDReaderListener listener;
     private boolean connectionStatus = false;
@@ -54,7 +55,7 @@ public class RFIDReader implements Reader {
     private final RXTXListener rxtxListener = new RXTXListener() {
         @Override
         public void reciveData(byte[] bytes) {
-            logger.i(TAG, "receiveData " + Arrays.toString(bytes));
+//            logger.i(TAG, "receiveData " + Arrays.toString(bytes));
             if (listener != null) {
                 mHandler.post(new Runnable() {
                     @Override
@@ -67,7 +68,7 @@ public class RFIDReader implements Reader {
 
         @Override
         public void sendData(byte[] bytes) {
-            logger.i(TAG, "send Data " + Arrays.toString(bytes));
+//            logger.i(TAG, "send Data " + Arrays.toString(bytes));
             if (listener != null) {
                 mHandler.post(new Runnable() {
                     @Override
@@ -99,8 +100,7 @@ public class RFIDReader implements Reader {
         protected void refreshSetting(ReaderSetting readerSetting) {
             logger.i(TAG, "Setting Refresh output power is : " + Arrays.toString(readerSetting.btAryOutputPower));
 
-            int rssiValue = AppUtils.byteArrayToInt(readerSetting.btAryOutputPower);
-            session.setInt(session.KEY_RF_OUTPUT_POWER, rssiValue);
+//            int rssiValue = AppUtils.byteArrayToInt(readerSetting.btAryOutputPower);
         }
 
         @Override
@@ -120,6 +120,7 @@ public class RFIDReader implements Reader {
 
         @Override
         protected void onInventoryTag(RXInventoryTag tag) {
+            logger.i(TAG, "Scanned epc " + tag.strEPC);
             logger.i(TAG, "onInventoryTag : crc-" + tag.strCRC + "# rssi-" + tag.strRSSI + "# freq-" + tag.strFreq + "#pc-" + tag.strPC + "#btnID-" + tag.btAntId);
 
             Inventory inventory = new Inventory();
@@ -155,8 +156,23 @@ public class RFIDReader implements Reader {
                 }
             });
         }
-    };
 
+        @Override
+        protected void onOperationTag(RXOperationTag tag) {
+            logger.i(TAG, "onOperationTag " + tag.strEPC);
+            beep();
+
+            mHandler.post(new Runnable() {
+                @Override
+                public void run() {
+                    OperationTag operationTag = new OperationTag(tag);
+                    for (RFIDReaderListener lis : listeners) {
+                        lis.onOperationTag(operationTag);
+                    }
+                }
+            });
+        }
+    };
 
 
     public RFIDReader(Context context) {
@@ -221,7 +237,6 @@ public class RFIDReader implements Reader {
                         observerRegistrationStatus = true;
                     }
 
-                    readerSetting = ReaderSetting.newInstance();
                     ModuleManager.newInstance().setUHFStatus(true);
 //                    readerType = DeviceConnector.ReaderType.RFID;
 
@@ -234,16 +249,8 @@ public class RFIDReader implements Reader {
                     logger.i(TAG, "beeper result " + beeperResult);
 
                     rfidReaderHelper.setTrigger(true);
-
-                    int rssiValue = session.getInt(session.KEY_RF_OUTPUT_POWER, 0);
-                    if (rssiValue == 0) {
-                        session.setInt(session.KEY_RF_OUTPUT_POWER, AppUtils.byteArrayToInt(readerSetting.btAryOutputPower));
-                    } else {
-                        setRFOutputPower(rssiValue);
-                    }
-
                 } catch (Exception e) {
-                    logger.i(TAG, "Exception " + e.getLocalizedMessage());
+                    logger.i(TAG, "Exception - " + e.getLocalizedMessage());
                     e.printStackTrace();
                 }
             } else {
@@ -301,6 +308,8 @@ public class RFIDReader implements Reader {
 
     public int writeToTag(Barcode barcode, Inventory selectedInventory) {
 
+        logger.i(TAG, "initializing writeToTag " + barcode.getName() + " hex " + barcode.getHex() + " to epc " + selectedInventory.getEpc());
+
         int writeStatus = 1; // 0 = success , 1 = failed
 
         if (barcode == null || selectedInventory == null) {
@@ -340,26 +349,19 @@ public class RFIDReader implements Reader {
             btAryData = StringTool.stringArrayToByteArray(result, result.length);
 
             logger.i(TAG, "data " + new String(btAryData, StandardCharsets.UTF_8));
-
-//            String hex = Arrays.toString(btAryData);
-//            logger.i(TAG, "barcode byteArray " + hex);
-//            selectedBarcode.setHex(hex);
-
             btWordCnt = (byte) ((result.length / 2 + result.length % 2) & 0xFF);
+
         } catch (Exception e) {
             logger.e(TAG, "barcode Data error " + btAryData);
-//            showToast("barcode Data error");
             return writeStatus;
         }
 
         if (btAryData == null || btAryData.length <= 0) {
-//            showToast("Invalid data error");
             logger.e(TAG, "Invalid data error");
             return writeStatus;
         }
 
         if (btAryPassWord == null || btAryPassWord.length < 4) {
-//            showToast("Password data error");
             logger.e(TAG, "Password data error");
             return writeStatus;
         }
@@ -421,6 +423,8 @@ public class RFIDReader implements Reader {
 
     public void setOnRFIDReaderListener(RFIDReaderListener listener) {
         this.listener = listener;
+
+        listeners.remove(listener);
         listeners.add(listener);
 
         if (AppBuildConfig.isDEBUG() && AppSimulator.simulator != null) {

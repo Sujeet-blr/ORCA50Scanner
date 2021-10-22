@@ -54,17 +54,9 @@ import static in.mobiux.android.orca50scanner.common.activity.AppActivity.STORAG
 public class BarcodeReaderBaseActivity extends Activity implements
         BarCodeReader.DecodeCallback, BarCodeReader.ErrorCallback, BarcodeListener {
 
-
     private static final String TAG = BarcodeReaderBaseActivity.class.getCanonicalName();
 
-    private Button btnSave, btnClear, btnPrint;
-    private TextView tvCount, txtIndicator;
-    private RecyclerView recyclerView;
-
-
-    private List<Barcode> barcodes = new ArrayList<>();
-    private Map<String, Barcode> map = new HashMap<>();
-    private BarcodeAdapter adapter;
+    protected Map<String, Barcode> barcodes = new HashMap<>();
     private Barcode barcode;
     private AppLogger logger;
     private int MESSAGE_TYPE_ERROR = -1;
@@ -131,6 +123,8 @@ public class BarcodeReaderBaseActivity extends Activity implements
         logger = AppLogger.getInstance(getApplicationContext());
         BeeperHelper.init(this);
         barcodeListener = this;
+
+        checkPermission(BarcodeReaderBaseActivity.this, Manifest.permission.CAMERA, CAMERA_PERMISSION_CODE);
     }
 
     @Override
@@ -181,7 +175,7 @@ public class BarcodeReaderBaseActivity extends Activity implements
             if (bcr == null) {
                 logger.e(TAG, "BarcodeReader not connected");
                 dspErr("open failed");
-                onConnection(false);
+                barcodeListener.onConnection(false);
                 Toast.makeText(this, "Failed to Connect Barcode ", Toast.LENGTH_SHORT).show();
                 return;
             }
@@ -245,7 +239,6 @@ public class BarcodeReaderBaseActivity extends Activity implements
     private void dspErr(String s) {
         logger.i(TAG, "dspErr " + s);
 //        tvStat.setText("ERROR" + s);
-        txtIndicator.setText("Error");
         barcodeListener.message(MESSAGE_TYPE_ERROR, s);
     }
 
@@ -318,10 +311,10 @@ public class BarcodeReaderBaseActivity extends Activity implements
     // ----------------------------------------
     // start a decode session
     private void doDecode() {
-        onScanStatus(true);
+        barcodeListener.onScanStatus(true);
         logger.i(TAG, "doDecode()");
         if (setIdle() != STATE_IDLE) {
-            onScanStatus(false);
+            barcodeListener.onScanStatus(false);
             return;
         }
         state = STATE_DECODE;
@@ -377,7 +370,7 @@ public class BarcodeReaderBaseActivity extends Activity implements
                 barcode = new Barcode();
                 barcode.setName(decodeDataString);
 
-                onBarcodeScan(barcode.getName());
+                barcodeListener.onBarcodeScan(barcode.getName());
 
                 logger.i(TAG, "barcode " + decodeDataString);
 
@@ -421,7 +414,7 @@ public class BarcodeReaderBaseActivity extends Activity implements
 
                 barcode = new Barcode();
                 barcode.setName(decodeDataString);
-                onBarcodeScan(barcode.getName());
+                barcodeListener.onBarcodeScan(barcode.getName());
                 logger.i(TAG, "Barcode - " + decodeDataString);
                 //add for test speed
                 mBarcodeCount++;
@@ -474,7 +467,7 @@ public class BarcodeReaderBaseActivity extends Activity implements
         }
         mKeyF4Down = false;
 
-        onScanStatus(false);
+        barcodeListener.onScanStatus(false);
     }
 
     private String byte2hex(byte[] buffer) {
@@ -596,6 +589,7 @@ public class BarcodeReaderBaseActivity extends Activity implements
                         R.string.camera_permission_denied,
                         Toast.LENGTH_SHORT)
                         .show();
+                finish();
             }
         } else if (requestCode == STORAGE_PERMISSION_CODE) {
             if (grantResults.length > 0
@@ -607,24 +601,22 @@ public class BarcodeReaderBaseActivity extends Activity implements
         }
     }
 
-
-    protected void setOnBarcodeListener(BarcodeListener listener) {
-        this.barcodeListener = listener;
-    }
-
     @Override
     public void onBarcodeScan(String barcode) {
         logger.i(TAG, "barcode scanned " + barcode);
+        Barcode b = new Barcode();
+        b.setName(barcode);
+        barcodes.put(barcode, b);
     }
 
     @Override
-    public void onScanStatus(boolean b) {
-        logger.i(TAG, "Scanning status " + b);
+    public void onScanStatus(boolean status) {
+        logger.i(TAG, "Scanning status " + status);
     }
 
     @Override
-    public void onConnection(boolean b) {
-        logger.i(TAG, "Connection Status is " + b);
+    public void onConnection(boolean status) {
+        logger.i(TAG, "Connection Status is " + status);
     }
 
     @Override

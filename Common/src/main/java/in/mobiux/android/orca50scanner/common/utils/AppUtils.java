@@ -1,5 +1,8 @@
 package in.mobiux.android.orca50scanner.common.utils;
 
+import android.text.TextUtils;
+import android.util.Log;
+
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
@@ -55,6 +58,50 @@ public class AppUtils {
         }
         String result = sb.toString();
         return result;
+    }
+
+    //    Mobiux hex is : 6D 6F 62 69 75 78
+//    SO hex is : 53 4F
+    private static String epcHeader = "53 4F ";
+
+    public static String generateHexEPC(String value) {
+
+        StringBuffer sb = new StringBuffer();
+        String hexString = numberToHex(value);
+
+        int zeroRequired = 20 - hexString.length();
+        int zeroAddedCount = 0;
+
+        while (zeroRequired > 0) {
+
+            sb.append(0);
+            zeroRequired--;
+            zeroAddedCount++;
+
+            if (zeroAddedCount % 2 == 0) {
+                sb.append(" ");
+            }
+        }
+
+        hexString = sb + hexString;
+        hexString = epcHeader + hexString;
+        return hexString.toUpperCase();
+    }
+
+    public static String numberToHex(String number) {
+        if (!isNumber(number)) {
+            throw new RuntimeException("value should be number only");
+        }
+        return Long.toHexString(Long.parseLong(number));
+    }
+
+    public static boolean isNumber(String value) {
+        try {
+            Double.parseDouble(value);
+            return true;
+        } catch (Exception e) {
+            return false;
+        }
     }
 
     public static int byteArrayToInt(byte[] bytes) {

@@ -16,6 +16,8 @@ android {
         versionName "RfidReader1.0"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+
+        multiDexEnabled true
     }
 
     buildTypes {
@@ -51,4 +53,6 @@ dependencies {
 
 //    for pdf & print
     implementation 'com.itextpdf:itextg:5.5.10'
+
+    implementation 'androidx.multidex:multidex:2.0.1'
 }

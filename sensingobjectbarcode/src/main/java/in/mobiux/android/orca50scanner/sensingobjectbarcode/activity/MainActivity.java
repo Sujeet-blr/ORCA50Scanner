@@ -33,22 +33,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
     private Map<String, Barcode> map = new HashMap<>();
     private BarcodeAdapter adapter;
 
-    //    private BarcodeReaderOrca barcodeReader;
     private BarcodeReaderListener barcodeReaderListener;
-
-//    static {
-//        System.loadLibrary("IAL");
-//        System.loadLibrary("SDL");
-//
-//        if (android.os.Build.VERSION.SDK_INT >= 19)
-//            System.loadLibrary("barcodereader44"); // Android 4.4
-//        else if (android.os.Build.VERSION.SDK_INT >= 18)
-//            System.loadLibrary("barcodereader43"); // Android 4.3
-//        else
-//            System.loadLibrary("barcodereader");   // Android 2.3 - Android 4.2
-//
-//        Log.i(TAG, "Library loaded Successfully");
-//    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,8 +42,6 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
 
         setTitle("Sensing Object");
         setHomeButtonEnable(false);
-
-//        barcodeReader = new BarcodeReaderOrca(getApplicationContext());
 
         tvCount = findViewById(R.id.tvCount);
         txtIndicator = findViewById(R.id.txtIndicator);
@@ -85,7 +68,6 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         adapter = new BarcodeAdapter(MainActivity.this, barcodes);
         recyclerView.setAdapter(adapter);
         tvCount.setText(adapter.getItemCount() + " Pcs");
-
 
     }
 

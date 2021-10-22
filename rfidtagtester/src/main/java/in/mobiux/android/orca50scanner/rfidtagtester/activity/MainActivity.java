@@ -76,8 +76,7 @@ public class MainActivity extends BaseActivity {
         ivSettings.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(getApplicationContext(), SettingsActivity.class);
-                startActivity(intent);
+                SettingsActivity.launchActivity(getApplicationContext());
             }
         });
 
@@ -88,6 +87,7 @@ public class MainActivity extends BaseActivity {
         super.onDestroy();
 
         rfidReader.releaseResources();
+        rfidReader.unregisterListener(rfidReaderListener);
         timer.cancel();
     }
 

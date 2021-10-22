@@ -85,7 +85,7 @@ public class RenameRfidTagsActivity extends BaseActivity {
             showToast("Invalid barcode");
         } else {
             logger.i(TAG, "barcode is " + barcode.getName());
-            barcode.setHex(AppUtils.stringToHex(barcode.getName()));
+            barcode.setHex(AppUtils.generateHexEPC(barcode.getName()));
             tvBarcode.setText(barcode.getName());
         }
 
@@ -197,7 +197,7 @@ public class RenameRfidTagsActivity extends BaseActivity {
                 logger.i(TAG, "onOperationTag " + operationTag.strEPC);
 
                 if (operationTag.strEPC.equalsIgnoreCase(selectedInventory.getEpc())) {
-                    selectedInventory.setEpc(barcode.getHex().toUpperCase());
+                    selectedInventory.setEpc(barcode.getHex());
                     inventoryAdapter.notifyDataSetChanged();
                     showDialoge("", "RFID tag is renamed successfully");
                     logger.i(TAG, "operation success");
@@ -251,5 +251,6 @@ public class RenameRfidTagsActivity extends BaseActivity {
     protected void onDestroy() {
         super.onDestroy();
         rfidReader.releaseResources();
+        rfidReader.unregisterListener(rfidReaderListener);
     }
 }

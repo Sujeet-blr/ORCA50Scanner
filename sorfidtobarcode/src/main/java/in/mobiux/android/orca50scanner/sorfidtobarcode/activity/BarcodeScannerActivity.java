@@ -13,13 +13,14 @@ import android.widget.TextView;
 
 import java.io.Serializable;
 
-import in.mobiux.android.orca50scanner.common.activity.ExportLogsActivity;
+import in.mobiux.android.orca50scanner.reader.activity.SettingsActivity;
 import in.mobiux.android.orca50scanner.reader.core.BarcodeReader;
 import in.mobiux.android.orca50scanner.reader.core.BarcodeReaderListener;
 import in.mobiux.android.orca50scanner.reader.core.Reader;
 import in.mobiux.android.orca50scanner.reader.model.Barcode;
 import in.mobiux.android.orca50scanner.sorfidtobarcode.R;
 
+// This is NOT WORKING with new Orca Device
 //this is previous code , which was working with old Orca device.
 public class BarcodeScannerActivity extends BaseActivity {
 
@@ -76,7 +77,7 @@ public class BarcodeScannerActivity extends BaseActivity {
         btnExportLogs.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(getApplicationContext(), ExportLogsActivity.class));
+                SettingsActivity.launchActivity(getApplicationContext());
             }
         });
     }

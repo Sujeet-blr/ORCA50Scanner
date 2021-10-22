@@ -24,6 +24,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import in.mobiux.android.orca50scanner.common.utils.AppUtils;
 import in.mobiux.android.orca50scanner.reader.activity.SettingsActivity;
 import in.mobiux.android.orca50scanner.reader.core.RFIDReader;
 import in.mobiux.android.orca50scanner.reader.core.RFIDReaderListener;
@@ -65,18 +66,11 @@ public class MainActivity extends BaseActivity {
         ivSettings = findViewById(R.id.ivSettings);
         spnrTags = findViewById(R.id.spnrTags);
         btnAssign.setVisibility(View.GONE);
-
-
-        rfidReader = new RFIDReader(getApplicationContext());
-        rfidReader.connect(Reader.ReaderType.RFID);
-
-        registerRfidListener();
-
+        
         ivSettings.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(getApplicationContext(), SettingsActivity.class);
-                startActivity(intent);
+                SettingsActivity.launchActivity(getApplicationContext());
             }
         });
 
@@ -90,6 +84,7 @@ public class MainActivity extends BaseActivity {
         btnAssign.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                logger.i(TAG, "clicked on btnAssign");
 
                 if (TextUtils.isEmpty(selectedLabel) || selectedInventory == null || selectStatus == 1) {
                     showToast("Select Label & Tags properly to proceed");
@@ -99,6 +94,7 @@ public class MainActivity extends BaseActivity {
                 if (selectStatus == 0) {
                     Barcode barcode = new Barcode();
                     barcode.setName(selectedLabel);
+                    barcode.setHex(AppUtils.generateHexEPC(barcode.getName()));
                     rfidReader.writeToTag(barcode, selectedInventory);
                 } else {
                     showToast("RFID tag is not selected");
@@ -118,6 +114,8 @@ public class MainActivity extends BaseActivity {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 selectedLabel = spnrLabels.getSelectedItem().toString();
+                logger.i(TAG, "selected barcode is " + selectedLabel);
+                tvMessage.setText("Hex is : " + AppUtils.generateHexEPC(selectedLabel));
             }
 
             @Override
@@ -153,6 +151,29 @@ public class MainActivity extends BaseActivity {
         });
     }
 
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+
+        rfidReader = new RFIDReader(getApplicationContext());
+        rfidReader.connect(Reader.ReaderType.RFID);
+        registerRfidListener();
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+
+        tags.clear();
+        tagList.clear();
+        btnAssign.setVisibility(View.GONE);
+        tagsAdapter.notifyDataSetChanged();
+
+        rfidReader.releaseResources();
+        rfidReader.unregisterListener(rfidReaderListener);
+    }
+
     private void registerRfidListener() {
 
         rfidReaderListener = new RFIDReaderListener() {
@@ -167,13 +188,21 @@ public class MainActivity extends BaseActivity {
 
             @Override
             public void onInventoryTag(Inventory inventory) {
+                logger.i(TAG, "scanned tag is " + inventory.getEpc());
                 inventory.setName(inventory.getFormattedEPC());
                 tags.put(inventory.getFormattedEPC(), inventory);
             }
 
             @Override
             public void onOperationTag(OperationTag operationTag) {
+                logger.i(TAG, "onOperationTag is called " + operationTag.strEPC);
                 tvMessage.setText("Assigned Success to " + operationTag.strEPC);
+                Inventory inventory = new Inventory();
+                inventory.setEpc(operationTag.strEPC);
+                tags.remove(inventory.getFormattedEPC());
+                tagsAdapter.notifyDataSetChanged();
+
+                showToast("Assigned Success to " + operationTag.strEPC);
             }
 
             @Override
@@ -252,8 +281,9 @@ public class MainActivity extends BaseActivity {
 
                     labels.clear();
                     while ((line = dataRead.readNext()) != null) {
-                        logger.i(TAG, "data is " + line[0]);
-                        labels.add(line[0]);
+                        Long barcodeNumber = Long.valueOf(line[0]);
+                        logger.i(TAG, "data is " + barcodeNumber);
+                        labels.add(String.valueOf(barcodeNumber));
                     }
 
                     dataRead.close();
@@ -272,5 +302,6 @@ public class MainActivity extends BaseActivity {
         super.onDestroy();
 
         rfidReader.releaseResources();
+        rfidReader.unregisterListener(rfidReaderListener);
     }
 }

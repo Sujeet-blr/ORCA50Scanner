@@ -6,13 +6,29 @@
     android:layout_height="match_parent"
     tools:context=".activity.RFOutputPowerActivity">
 
+    <include
+        layout="@layout/action_bar_app"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:layout_alignParentTop="true" />
+
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
+        android:layout_below="@+id/toolbar"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="16dp"
         android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/tvStatus"
+            style="@style/TextAppearance.MaterialComponents.Body2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_margin="@dimen/margin_horizontal"
+            android:text="RF Output Power"
+            android:textColor="@color/orange" />
 
         <TextView
             style="@style/TextAppearance.MaterialComponents.Body2"

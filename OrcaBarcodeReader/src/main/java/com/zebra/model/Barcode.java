@@ -3,6 +3,8 @@ package com.zebra.model;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
+import in.mobiux.android.orca50scanner.common.utils.AppUtils;
+
 /**
  * Created by SUJEET KUMAR on 21-May-21.
  */
@@ -24,6 +26,7 @@ public class Barcode extends BaseModel {
     }
 
     public String getHex() {
+        hex = AppUtils.generateHexEPC(getHex());
         return hex;
     }
 

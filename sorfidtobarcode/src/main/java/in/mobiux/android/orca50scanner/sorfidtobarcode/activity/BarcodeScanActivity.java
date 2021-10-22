@@ -20,7 +20,6 @@ import androidx.core.content.ContextCompat;
 
 import com.zebra.adc.decoder.BarCodeReader;
 import com.zebra.model.Barcode;
-import com.zebra.sdl.BarcodeReaderBaseActivity;
 import com.zebra.util.BeeperHelper;
 
 import java.io.Serializable;
@@ -121,12 +120,7 @@ public class BarcodeScanActivity extends BaseActivity implements
         btnExportLogs.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getApplicationContext(), SettingsActivity.class);
-                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                startActivity(intent);
-//                Intent intent = new Intent(getApplicationContext(), ExportLogsActivity.class);
-//                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-//                startActivity(intent);
+                SettingsActivity.launchActivity(getApplicationContext());
             }
         });
 
@@ -607,7 +601,7 @@ public class BarcodeScanActivity extends BaseActivity implements
     }
 
     // Function to check and request permission.
-    public void checkPermission(BarcodeReaderBaseActivity activity, String permission, int requestCode) {
+    public void checkPermission(BarcodeScanActivity activity, String permission, int requestCode) {
         if (ContextCompat.checkSelfPermission(BarcodeScanActivity.this, permission)
                 == PackageManager.PERMISSION_DENIED) {
 

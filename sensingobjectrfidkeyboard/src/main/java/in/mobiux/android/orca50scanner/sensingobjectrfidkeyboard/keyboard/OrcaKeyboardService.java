@@ -13,8 +13,13 @@ import android.view.View;
 import android.view.inputmethod.InputConnection;
 import android.widget.Toast;
 
-import in.mobiux.android.orca50scanner.common.activity.ExportLogsActivity;
+import java.sql.Time;
+import java.util.Random;
+import java.util.Timer;
+import java.util.TimerTask;
+
 import in.mobiux.android.orca50scanner.common.utils.AppLogger;
+import in.mobiux.android.orca50scanner.reader.activity.SettingsActivity;
 import in.mobiux.android.orca50scanner.reader.core.RFIDReader;
 import in.mobiux.android.orca50scanner.reader.core.RFIDReaderListener;
 import in.mobiux.android.orca50scanner.reader.core.Reader;
@@ -146,9 +151,11 @@ public class OrcaKeyboardService extends InputMethodService implements KeyboardV
 
             case KEYCODE_LOGO:
                 logger.i(TAG, "Key Pressed Export Logs");
-                Intent intent = new Intent(app, ExportLogsActivity.class);
-                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                startActivity(intent);
+//                Intent intent = new Intent(app, ExportLogsActivity.class);
+//                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+//                startActivity(intent);
+
+                SettingsActivity.launchActivity(app);
 
                 break;
 
@@ -252,10 +259,11 @@ public class OrcaKeyboardService extends InputMethodService implements KeyboardV
                     boolean status = ic.commitText(rfid, 1);
                     logger.i(TAG, "Status " + status);
 
-                    ic.finishComposingText();
+//                    ic.finishComposingText();
 
                     logger.i(TAG, "rfid data is dispatched to text field");
-                    KeyEvent eventEnter = new KeyEvent(KeyEvent.ACTION_DOWN, KeyEvent.KEYCODE_ENTER);
+                    KeyEvent eventEnter = new KeyEvent(KeyEvent.ACTION_UP, KeyEvent.KEYCODE_ENTER);
+//                    KeyEvent eventEnter = new KeyEvent(KeyEvent.ACTION_DOWN, KeyEvent.KEYCODE_F4);
                     ic.sendKeyEvent(eventEnter);
                 }
             }

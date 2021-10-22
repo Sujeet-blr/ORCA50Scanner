@@ -9,6 +9,7 @@ import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -52,6 +53,7 @@ public class AppActivity extends AppCompatActivity {
     protected LanguageUtils.Language activityLanguage;
 
     private Toast toast;
+    private TextView toolbarTitle;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -77,9 +79,17 @@ public class AppActivity extends AppCompatActivity {
         setActivityState(ACTIVITY_STATE.CREATED);
     }
 
+    protected void setToolbarTitle(String title) {
+        toolbarTitle = findViewById(R.id.textToolbarTitle);
+
+        if (toolbarTitle != null)
+            toolbarTitle.setText(title);
+    }
+
     @Override
     protected void onStart() {
         super.onStart();
+        logger.i(TAG, "onStart ");
         if (parentLayout == null) {
             parentLayout = findViewById(android.R.id.content);
         }
@@ -94,6 +104,7 @@ public class AppActivity extends AppCompatActivity {
     @Override
     protected void onStop() {
         super.onStop();
+        logger.i(TAG, "onStop");
         setActivityState(ACTIVITY_STATE.INACTIVE);
     }
 
