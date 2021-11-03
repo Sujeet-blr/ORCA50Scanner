@@ -33,6 +33,8 @@ public class SettingsActivity extends BaseActivity {
         cardExportLogs = findViewById(R.id.cardExportLogs);
         cardContactSupports = findViewById(R.id.cardContactSupports);
 
+        cardExportLogs.setVisibility(View.GONE);
+
         setToolbarTitle("Settings");
 
         toggleBeep.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {

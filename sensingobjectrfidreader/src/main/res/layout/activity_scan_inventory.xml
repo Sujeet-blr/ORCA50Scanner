@@ -80,8 +80,9 @@
             android:layout_marginLeft="8dp"
             android:layout_marginRight="5dp"
             android:layout_weight="1"
+            android:drawableEnd="@drawable/ic_settings"
             android:backgroundTint="@color/black"
-            android:text="export logs" />
+            android:text="Settings" />
 
         <Button
             android:id="@+id/btnPrint"

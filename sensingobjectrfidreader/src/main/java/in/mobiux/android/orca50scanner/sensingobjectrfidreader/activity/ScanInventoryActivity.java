@@ -62,15 +62,28 @@ public class ScanInventoryActivity extends BaseActivity implements View.OnClickL
         btnPrint.setOnClickListener(this);
         txtIndicator.setTag(startButtonStatus);
 
-        rfidReader = new RFIDReader(getApplicationContext());
-        rfidReader.connect(Reader.ReaderType.RFID);
-
-        registerRFIDListener();
-
         adapter = new InventoryAdapter(ScanInventoryActivity.this, scannedInventories);
         recyclerView.setAdapter(adapter);
         tvCount.setText(adapter.getItemCount() + " Pcs");
 
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+
+        rfidReader = new RFIDReader(getApplicationContext());
+        rfidReader.connect(Reader.ReaderType.RFID);
+
+        registerRFIDListener();
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+
+        rfidReader.releaseResources();
+        rfidReader.unregisterListener(rfidReaderListener);
     }
 
     private void registerRFIDListener() {
@@ -190,11 +203,10 @@ public class ScanInventoryActivity extends BaseActivity implements View.OnClickL
     }
 
 
+
     @Override
     protected void onDestroy() {
         super.onDestroy();
-
-        rfidReader.releaseResources();
         app.onTerminate();
     }
 }
