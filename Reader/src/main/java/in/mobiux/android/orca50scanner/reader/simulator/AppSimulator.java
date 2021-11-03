@@ -62,7 +62,7 @@ public class AppSimulator {
             public void run() {
 
 
-                Log.i(TAG, "tick");
+//                Log.i(TAG, "tick");
 
 //                For RFID tags
 //                if app.listener is register in any class then it will generate rfid tags

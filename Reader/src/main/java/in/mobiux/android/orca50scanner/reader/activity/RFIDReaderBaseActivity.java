@@ -22,7 +22,7 @@ public class RFIDReaderBaseActivity extends BaseActivity implements RFIDReaderLi
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        rfidReader = new RFIDReader(getApplicationContext());
+//        rfidReader = new RFIDReader(getApplicationContext());
     }
 
     @Override
@@ -30,6 +30,7 @@ public class RFIDReaderBaseActivity extends BaseActivity implements RFIDReaderLi
         super.onResume();
         logger.i(TAG, "onResume");
 
+        rfidReader = new RFIDReader(getApplicationContext());
         rfidReader.connect(Reader.ReaderType.RFID);
         rfidReader.setOnRFIDReaderListener(this);
     }
@@ -38,6 +39,7 @@ public class RFIDReaderBaseActivity extends BaseActivity implements RFIDReaderLi
     protected void onPause() {
         super.onPause();
         logger.i(TAG, "onPause");
+
         rfidReader.releaseResources();
         rfidReader.unregisterListener(this);
     }
@@ -45,7 +47,7 @@ public class RFIDReaderBaseActivity extends BaseActivity implements RFIDReaderLi
 
     @Override
     public void onScanningStatus(boolean status) {
-        logger.i(TAG, "Scanning Status " + status);
+//        logger.i(TAG, "Scanning Status " + status);
     }
 
     @Override

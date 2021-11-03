@@ -24,7 +24,7 @@ public class RFOutputPowerActivity extends BaseActivity {
     private TextView tvStatus;
     private int rfOutputPower = 0;
     private int RF_MIN_VALUE = 3;
-    private int RF_MAX_VALUE = 80;
+    private int RF_MAX_VALUE = 50;
 
     private RFIDReader rfidReader;
     private boolean isFreshConnection = true;

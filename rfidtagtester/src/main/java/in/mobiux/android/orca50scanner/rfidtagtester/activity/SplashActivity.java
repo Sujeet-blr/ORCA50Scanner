@@ -17,8 +17,8 @@ public class SplashActivity extends BaseActivity {
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
-//                startActivity(new Intent(app, MainActivity.class));
-                startActivity(new Intent(app, BarcodeScannerActivity.class));
+                startActivity(new Intent(app, MainActivity.class));
+//                startActivity(new Intent(app, BarcodeScannerActivity.class));
                 finish();
             }
         }, 3000);

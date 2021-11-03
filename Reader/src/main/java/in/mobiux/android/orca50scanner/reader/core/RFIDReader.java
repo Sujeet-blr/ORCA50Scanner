@@ -12,8 +12,10 @@ import com.rfid.rxobserver.RXObserver;
 import com.rfid.rxobserver.ReaderSetting;
 import com.rfid.rxobserver.bean.RXInventoryTag;
 import com.rfid.rxobserver.bean.RXOperationTag;
+import com.util.Converter;
 import com.util.StringTool;
 
+import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -100,7 +102,8 @@ public class RFIDReader implements Reader {
         protected void refreshSetting(ReaderSetting readerSetting) {
             logger.i(TAG, "Setting Refresh output power is : " + Arrays.toString(readerSetting.btAryOutputPower));
 
-//            int rssiValue = AppUtils.byteArrayToInt(readerSetting.btAryOutputPower);
+            int rssiValue = byteArrayToInt(readerSetting.btAryOutputPower);
+            session.setInt(session.KEY_RF_OUTPUT_POWER, rssiValue);
         }
 
         @Override
@@ -120,8 +123,7 @@ public class RFIDReader implements Reader {
 
         @Override
         protected void onInventoryTag(RXInventoryTag tag) {
-            logger.i(TAG, "Scanned epc " + tag.strEPC);
-            logger.i(TAG, "onInventoryTag : crc-" + tag.strCRC + "# rssi-" + tag.strRSSI + "# freq-" + tag.strFreq + "#pc-" + tag.strPC + "#btnID-" + tag.btAntId);
+            logger.i(TAG, "onInventoryTag :epc " + tag.strEPC + "\t # crc-" + tag.strCRC + "# rssi-" + tag.strRSSI + "# freq-" + tag.strFreq + "#pc-" + tag.strPC + "#btnID-" + tag.btAntId);
 
             Inventory inventory = new Inventory();
             inventory.setEpc(tag.strEPC);
@@ -141,17 +143,18 @@ public class RFIDReader implements Reader {
         @Override
         protected void onInventoryTagEnd(RXInventoryTag.RXInventoryTagEnd tagEnd) {
             logger.i(TAG, "onInventoryTagEnd " + tagEnd.mTotalRead);
+            scanningStatus = false;
 
-            int tagReadingSpeed = tagEnd.mReadRate;
-            logger.i(TAG, "Read Rate " + tagReadingSpeed);
-
-            beep();
+            if (tagEnd.mTotalRead > 0) {
+                beep();
+            }
 
             mHandler.post(new Runnable() {
                 @Override
                 public void run() {
                     for (RFIDReaderListener l : listeners) {
                         l.onInventoryTagEnd(new Inventory.InventoryTagEnd(tagEnd));
+                        l.onScanningStatus(scanningStatus);
                     }
                 }
             });
@@ -247,8 +250,8 @@ public class RFIDReader implements Reader {
                     ReaderSetting.newInstance().btBeeperMode = ((byte) 2);
 
                     logger.i(TAG, "beeper result " + beeperResult);
-
                     rfidReaderHelper.setTrigger(true);
+
                 } catch (Exception e) {
                     logger.i(TAG, "Exception - " + e.getLocalizedMessage());
                     e.printStackTrace();
@@ -263,6 +266,15 @@ public class RFIDReader implements Reader {
         if (listener != null) {
             listener.onConnection(connector.isConnected());
         }
+
+        mHandler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                if (rfidReaderHelper != null && isConnected()) {
+                    getRFOutputPower();
+                }
+            }
+        }, 500);
 
         connectionStatus = connector.isConnected();
     }
@@ -421,6 +433,13 @@ public class RFIDReader implements Reader {
         }
     }
 
+    public void deactivateRfidReader() {
+        logger.i(TAG, "Activating Rfid Reader");
+        if (connector != null && connector.isConnected()) {
+            ModuleManager.newInstance().setUHFStatus(false);
+        }
+    }
+
     public void setOnRFIDReaderListener(RFIDReaderListener listener) {
         this.listener = listener;
 
@@ -473,5 +492,26 @@ public class RFIDReader implements Reader {
             logger.e(TAG, "RFID Reader is not connected");
             return 1;
         }
+    }
+
+    public int getRFOutputPower() {
+        int value = 0;
+        if (INSTANCE != null && isConnected()) {
+            int status = rfidReaderHelper.getOutputPower(ReaderSetting.newInstance().btReadId);
+        } else {
+            logger.e(TAG, "RFID Reader is not connected");
+            return 1;
+        }
+        return value;
+    }
+
+    private int byteArrayToInt(byte[] bytes) {
+        int rssiValue = 0;
+        String str = Arrays.toString(bytes);
+        str = str.replace("[", "");
+        str = str.replace("]", "");
+        rssiValue = Integer.parseInt(str);
+
+        return rssiValue;
     }
 }

@@ -13,6 +13,7 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 import in.mobiux.android.orca50scanner.common.utils.pdf.PdfUtils;
+import in.mobiux.android.orca50scanner.reader.activity.RFIDReaderBaseActivity;
 import in.mobiux.android.orca50scanner.reader.activity.SettingsActivity;
 import in.mobiux.android.orca50scanner.reader.core.RFIDReader;
 import in.mobiux.android.orca50scanner.reader.core.RFIDReaderListener;
@@ -21,15 +22,13 @@ import in.mobiux.android.orca50scanner.reader.model.Inventory;
 import in.mobiux.android.orca50scanner.reader.model.OperationTag;
 import in.mobiux.android.orca50scanner.rfidtagtester.R;
 
-public class MainActivity extends BaseActivity {
+public class MainActivity extends RFIDReaderBaseActivity {
 
     private ImageView ivIndicator, ivSettings;
-    private TextView tvCount;
+    private TextView tvCount, tvStatus;
     private Button btnCreate, btnReset;
 
     private HashMap<String, Inventory> tags = new HashMap<>();
-    private RFIDReader rfidReader;
-    private RFIDReaderListener rfidReaderListener;
     private long timestamp = System.currentTimeMillis();
     private Timer timer;
 
@@ -40,14 +39,10 @@ public class MainActivity extends BaseActivity {
 
         ivIndicator = findViewById(R.id.ivIndicator);
         tvCount = findViewById(R.id.tvCount);
+        tvStatus = findViewById(R.id.tvStatus);
         btnCreate = findViewById(R.id.btnCreate);
         btnReset = findViewById(R.id.btnReset);
         ivSettings = findViewById(R.id.ivSettings);
-
-        rfidReader = new RFIDReader(getApplicationContext());
-        rfidReader.connect(Reader.ReaderType.RFID);
-//        rfidReader.enableBeep();
-        registerRfidListener();
 
         startTimer();
 
@@ -86,8 +81,6 @@ public class MainActivity extends BaseActivity {
     protected void onDestroy() {
         super.onDestroy();
 
-        rfidReader.releaseResources();
-        rfidReader.unregisterListener(rfidReaderListener);
         timer.cancel();
     }
 
@@ -100,49 +93,55 @@ public class MainActivity extends BaseActivity {
                     @Override
                     public void run() {
                         ivIndicator.setVisibility(View.GONE);
+                        tvStatus.setText("");
                     }
                 });
             }
         }, 0, 2000);
     }
 
-    private void registerRfidListener() {
+    @Override
+    public void onScanningStatus(boolean status) {
+        super.onScanningStatus(status);
 
-        rfidReaderListener = new RFIDReaderListener() {
-            @Override
-            public void onScanningStatus(boolean status) {
-                logger.i(TAG, "Scanning Status " + status);
-            }
+        logger.i(TAG, "Scanning Status " + status);
+        if (status) {
+            tvStatus.setText("Scanning");
+        } else {
+            tvStatus.setText("");
+        }
+    }
 
-            @Override
-            public void onInventoryTag(Inventory inventory) {
-                tags.put(inventory.getFormattedEPC(), inventory);
-                tvCount.setText("Count : " + tags.size());
-                ivIndicator.setVisibility(View.VISIBLE);
-                timestamp = System.currentTimeMillis();
-            }
+    @Override
+    public void onInventoryTag(Inventory inventory) {
+        super.onInventoryTag(inventory);
+        tags.put(inventory.getFormattedEPC(), inventory);
+        tvCount.setText("Count : " + tags.size());
+        ivIndicator.setVisibility(View.VISIBLE);
+        timestamp = System.currentTimeMillis();
 
-            @Override
-            public void onOperationTag(OperationTag operationTag) {
-            }
+    }
 
-            @Override
-            public void onInventoryTagEnd(Inventory.InventoryTagEnd tagEnd) {
-                logger.i(TAG, "Scan End " + tagEnd.mTagCount);
-            }
+    @Override
+    public void onOperationTag(OperationTag operationTag) {
+        super.onOperationTag(operationTag);
+    }
 
-            @Override
-            public void onConnection(boolean status) {
-                logger.i(TAG, "Connection Status " + status);
-                if (status) {
-                    showToast(R.string.connected);
-                } else {
-                    showToast(R.string.connection_lost);
-                }
-            }
-        };
+    @Override
+    public void onInventoryTagEnd(Inventory.InventoryTagEnd tagEnd) {
+        super.onInventoryTagEnd(tagEnd);
+    }
 
-        rfidReader.setOnRFIDReaderListener(rfidReaderListener);
+    @Override
+    public void onConnection(boolean status) {
+        super.onConnection(status);
+
+        logger.i(TAG, "Connection Status " + status);
+        if (status) {
+            showToast(R.string.connected);
+        } else {
+            showToast(R.string.connection_lost);
+        }
     }
 
     private void exportToPdf() {
