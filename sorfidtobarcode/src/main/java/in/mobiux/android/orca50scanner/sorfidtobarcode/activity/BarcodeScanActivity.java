@@ -189,7 +189,7 @@ public class BarcodeScanActivity extends BaseActivity implements
                 decodeDataString += new String(data);
 
                 barcode = new Barcode();
-                barcode.setName(decodeDataString);
+                barcode.setName(decodeDataString.substring(0, length - 1));
                 if (!map.containsKey(barcode.getName())) {
                     barcodes.add(barcode);
                 }
@@ -239,7 +239,7 @@ public class BarcodeScanActivity extends BaseActivity implements
                 decodeDataString += new String(data);
 
                 barcode = new com.zebra.model.Barcode();
-                barcode.setName(decodeDataString);
+                barcode.setName(decodeDataString.substring(0, length - 1));
                 if (!map.containsKey(barcode.getName())) {
                     barcodes.add(barcode);
                 }
@@ -249,7 +249,7 @@ public class BarcodeScanActivity extends BaseActivity implements
 //                adapter.notifyDataSetChanged();
 //                tvCount.setText(adapter.getItemCount() + " Pcs");
 
-                logger.i(TAG, "Barcode - " + decodeDataString);
+                logger.i(TAG, "Barcode - " + barcode.getName());
                 //add for test speed
                 mBarcodeCount++;
                 long consum = System.currentTimeMillis() - mStartTime;
@@ -264,7 +264,7 @@ public class BarcodeScanActivity extends BaseActivity implements
                 dspData(decodeDataString);
 
 
-                logger.i(TAG, "Barcode - " + decodeDataString);
+                logger.i(TAG, "Barcode - " + barcode.getName());
 
                 if (decCount > 1) // Add the next line only if multiple decode
                 {

@@ -26,7 +26,7 @@ public class Barcode extends BaseModel {
     }
 
     public String getHex() {
-        hex = AppUtils.generateHexEPC(getHex());
+        hex = AppUtils.generateHexEPC(getName());
         return hex;
     }
 
