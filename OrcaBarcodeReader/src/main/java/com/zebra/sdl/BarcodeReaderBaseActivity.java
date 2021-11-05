@@ -12,46 +12,31 @@ import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.Matrix;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.KeyEvent;
-import android.view.Menu;
-import android.view.MenuItem;
-import android.view.View;
-import android.view.View.OnClickListener;
-import android.widget.Button;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
-import androidx.recyclerview.widget.RecyclerView;
 
-import com.zebra.adapter.BarcodeAdapter;
 import com.zebra.adc.decoder.BarCodeReader;
 import com.zebra.model.Barcode;
 import com.zebra.util.BarcodeListener;
 import com.zebra.util.BeeperHelper;
 
-import org.mozilla.universalchardet.CharsetListener;
-
-import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
+import in.mobiux.android.orca50scanner.common.activity.AppActivity;
 import in.mobiux.android.orca50scanner.common.utils.AppLogger;
-import in.mobiux.android.orca50scanner.common.utils.AppUtils;
-import in.mobiux.android.orca50scanner.common.utils.pdf.PdfUtils;
 
 import static in.mobiux.android.orca50scanner.common.activity.AppActivity.CAMERA_PERMISSION_CODE;
 import static in.mobiux.android.orca50scanner.common.activity.AppActivity.STORAGE_PERMISSION_CODE;
 
-public class BarcodeReaderBaseActivity extends Activity implements
+public class BarcodeReaderBaseActivity extends AppActivity implements
         BarCodeReader.DecodeCallback, BarCodeReader.ErrorCallback, BarcodeListener {
 
     private static final String TAG = BarcodeReaderBaseActivity.class.getCanonicalName();
@@ -165,18 +150,18 @@ public class BarcodeReaderBaseActivity extends Activity implements
             if (android.os.Build.VERSION.SDK_INT >= 18) {
                 bcr = BarCodeReader.open(num, getApplicationContext()); // Android 4.3 and above
                 logger.i(TAG, "BarCodeReader.open Android 4.3 and above");
-                Toast.makeText(this, "Barcode device is Connected", Toast.LENGTH_SHORT).show();
+//                Toast.makeText(this, "Barcode device is Connected", Toast.LENGTH_SHORT).show();
             } else {
                 bcr = BarCodeReader.open(num); // Android 2.3
                 logger.i(TAG, "BarCodeReader.open Android 2.3");
-                Toast.makeText(this, "Barcode device is Connected 2.3", Toast.LENGTH_SHORT).show();
+//                Toast.makeText(this, "Barcode device is Connected 2.3", Toast.LENGTH_SHORT).show();
             }
 
             if (bcr == null) {
                 logger.e(TAG, "BarcodeReader not connected");
                 dspErr("open failed");
                 barcodeListener.onConnection(false);
-                Toast.makeText(this, "Failed to Connect Barcode ", Toast.LENGTH_SHORT).show();
+//                Toast.makeText(this, "Failed to Connect Barcode ", Toast.LENGTH_SHORT).show();
                 return;
             }
 
@@ -253,7 +238,9 @@ public class BarcodeReaderBaseActivity extends Activity implements
     // -----------------------------------------
     private void beep() {
         logger.i(TAG, "beep()");
-        BeeperHelper.beep(BeeperHelper.SOUND_FILE_TYPE_NORMAL);
+        if (session.getBooleanValue(session.KEY_BEEP)) {
+            BeeperHelper.beep(BeeperHelper.SOUND_FILE_TYPE_NORMAL);
+        }
     }
 
 // ==== SDL methods =====================
