@@ -8,6 +8,7 @@ import com.module.interaction.RXTXListener;
 import com.nativec.tools.ModuleManager;
 import com.rfid.RFIDReaderHelper;
 import com.rfid.ReaderConnector;
+import com.rfid.config.CMD;
 import com.rfid.rxobserver.RXObserver;
 import com.rfid.rxobserver.ReaderSetting;
 import com.rfid.rxobserver.bean.RXInventoryTag;
@@ -291,8 +292,8 @@ public class RFIDReader implements Reader {
         logger.i(TAG, "selected tag length " + selectedTagLength);
         logger.i(TAG, "selected tag byteArray " + Arrays.toString(btAryEpc));
 
-        if (app.isDebugBuild())
-            return 0;
+//        if (app.isDebugBuild())
+//            return 0;
 
         int selectStatus = rfidReaderHelper.setAccessEpcMatch(ReaderSetting.newInstance().btReadId, selectedTagLength, btAryEpc);
 
@@ -360,7 +361,8 @@ public class RFIDReader implements Reader {
             logger.i(TAG, "barcode stringArray" + Arrays.toString(result));
             btAryData = StringTool.stringArrayToByteArray(result, result.length);
 
-            logger.i(TAG, "data " + new String(btAryData, StandardCharsets.UTF_8));
+//            logger.i(TAG, "data " + new String(btAryData, StandardCharsets.UTF_8));
+            logger.i(TAG, "data " + btAryData);
             btWordCnt = (byte) ((result.length / 2 + result.length % 2) & 0xFF);
 
         } catch (Exception e) {
@@ -380,8 +382,8 @@ public class RFIDReader implements Reader {
 
         logger.i(TAG, "pwd " + btAryPassWord + " membank " + btMemBank + " wordadd " + btWordAdd + " wordcount " + btWordCnt + " data array " + Arrays.toString(btAryData));
 
-        if (app.isDebugBuild())
-            return 0;
+//        if (app.isDebugBuild())
+//            return 0;
 
         writeStatus = rfidReaderHelper.writeTag(ReaderSetting.newInstance().btReadId, btAryPassWord, btMemBank, btWordAdd, btWordCnt, btAryData);
         if (writeStatus == 0) {

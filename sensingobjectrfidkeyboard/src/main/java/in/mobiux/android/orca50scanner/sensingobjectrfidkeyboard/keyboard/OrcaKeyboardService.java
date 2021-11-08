@@ -228,11 +228,6 @@ public class OrcaKeyboardService extends InputMethodService implements KeyboardV
             @Override
             public void onScanningStatus(boolean status) {
                 logger.i(TAG, "Scanning Status " + status);
-
-
-                if (status) {
-                    showToast(app.getResources().getString(R.string.msg_rfid_scanning));
-                }
             }
 
             @Override
@@ -250,21 +245,23 @@ public class OrcaKeyboardService extends InputMethodService implements KeyboardV
             public void onInventoryTagEnd(Inventory.InventoryTagEnd tagEnd) {
 
                 beep();
-                logger.i(TAG, "on Inventory End");
+                logger.i(TAG, "on Inventory End " + tagEnd.mTotalRead);
 
                 ic = getCurrentInputConnection();
 
                 if (ic != null) {
                     ic.deleteSurroundingText(255, 255);
-                    boolean status = ic.commitText(rfid, 1);
-                    logger.i(TAG, "Status " + status);
 
-//                    ic.finishComposingText();
-
-                    logger.i(TAG, "rfid data is dispatched to text field");
-                    KeyEvent eventEnter = new KeyEvent(KeyEvent.ACTION_UP, KeyEvent.KEYCODE_ENTER);
+                    if (tagEnd.mTotalRead > 0) {
+                        ic.commitText(rfid, 1);
+                        KeyEvent eventEnter = new KeyEvent(KeyEvent.ACTION_UP, KeyEvent.KEYCODE_ENTER);
 //                    KeyEvent eventEnter = new KeyEvent(KeyEvent.ACTION_DOWN, KeyEvent.KEYCODE_F4);
-                    ic.sendKeyEvent(eventEnter);
+                        ic.sendKeyEvent(eventEnter);
+                    }else {
+                        logger.i(TAG, "NO TAG FOUND");
+                        rfid = "";
+                        ic.commitText(rfid, 1);
+                    }
                 }
             }
 

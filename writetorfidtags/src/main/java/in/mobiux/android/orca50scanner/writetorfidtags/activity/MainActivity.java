@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
 import android.provider.DocumentsContract;
 import android.text.TextUtils;
 import android.view.View;
@@ -92,10 +93,19 @@ public class MainActivity extends BaseActivity {
                 }
 
                 if (selectStatus == 0) {
-                    Barcode barcode = new Barcode();
-                    barcode.setName(selectedLabel);
-                    barcode.setHex(AppUtils.generateHexEPC(barcode.getName()));
-                    rfidReader.writeToTag(barcode, selectedInventory);
+
+                    selectStatus = rfidReader.selectAccessEpcMatch(selectedInventory.getEpc());
+
+                    new Handler(getMainLooper()).postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            Barcode barcode = new Barcode();
+                            barcode.setName(selectedLabel);
+                            barcode.setHex(AppUtils.generateHexEPC(barcode.getName()));
+                            rfidReader.writeToTag(barcode, selectedInventory);
+                        }
+                    }, 500);
+
                 } else {
                     showToast("RFID tag is not selected");
                 }
@@ -191,6 +201,7 @@ public class MainActivity extends BaseActivity {
                 logger.i(TAG, "scanned tag is " + inventory.getEpc());
                 inventory.setName(inventory.getFormattedEPC());
                 tags.put(inventory.getFormattedEPC(), inventory);
+                selectStatus = 0;
             }
 
             @Override
@@ -200,7 +211,9 @@ public class MainActivity extends BaseActivity {
                 Inventory inventory = new Inventory();
                 inventory.setEpc(operationTag.strEPC);
                 tags.remove(inventory.getFormattedEPC());
-                tagsAdapter.notifyDataSetChanged();
+//                tagList.clear();
+//                tagList.addAll(tags.values());
+//                tagsAdapter.notifyDataSetChanged();
 
                 showToast("Assigned Success to " + operationTag.strEPC);
             }
