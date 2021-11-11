@@ -1,6 +1,5 @@
 package in.mobiux.android.orca50scanner.sensingobjectrfidkeyboard.keyboard;
 
-import android.content.Intent;
 import android.inputmethodservice.InputMethodService;
 import android.inputmethodservice.Keyboard;
 import android.inputmethodservice.KeyboardView;
@@ -12,11 +11,6 @@ import android.view.View;
 
 import android.view.inputmethod.InputConnection;
 import android.widget.Toast;
-
-import java.sql.Time;
-import java.util.Random;
-import java.util.Timer;
-import java.util.TimerTask;
 
 import in.mobiux.android.orca50scanner.common.utils.AppLogger;
 import in.mobiux.android.orca50scanner.reader.activity.SettingsActivity;
@@ -227,7 +221,7 @@ public class OrcaKeyboardService extends InputMethodService implements KeyboardV
         rfidReaderListener = new RFIDReaderListener() {
             @Override
             public void onScanningStatus(boolean status) {
-                logger.i(TAG, "Scanning Status " + status);
+//                logger.i(TAG, "Scanning Status " + status);
             }
 
             @Override
