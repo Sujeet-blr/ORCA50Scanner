@@ -4,15 +4,15 @@
     "type": "APK",
     "kind": "Directory"
   },
-  "applicationId": "in.mobiux.android.orca50scanner.sensingobjectrfidkeyboard",
+  "applicationId": "in.mobiux.android.orca50scanner.sorfidtobarcode",
   "variantName": "release",
   "elements": [
     {
       "type": "SINGLE",
       "filters": [],
-      "versionCode": 2,
-      "versionName": "Version 2.0",
-      "outputFile": "sensingobjectrfidkeyboard-release.apk"
+      "versionCode": 1,
+      "versionName": "rfidToBarcode1.0",
+      "outputFile": "sorfidtobarcode-release.apk"
     }
   ]
 }

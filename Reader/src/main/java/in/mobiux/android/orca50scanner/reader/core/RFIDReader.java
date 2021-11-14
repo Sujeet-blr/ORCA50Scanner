@@ -63,7 +63,7 @@ public class RFIDReader implements Reader {
                 mHandler.post(new Runnable() {
                     @Override
                     public void run() {
-                        listener.onScanningStatus(true);
+//                        listener.onScanningStatus(true);
                     }
                 });
             }
@@ -76,7 +76,7 @@ public class RFIDReader implements Reader {
                 mHandler.post(new Runnable() {
                     @Override
                     public void run() {
-                        listener.onScanningStatus(true);
+//                        listener.onScanningStatus(true);
                     }
                 });
             }

@@ -123,4 +123,8 @@ public class AppUtils {
         }
         return format;
     }
+
+    public static String getFormattedEPC(String epc) {
+        return epc.replace(" ", "");
+    }
 }

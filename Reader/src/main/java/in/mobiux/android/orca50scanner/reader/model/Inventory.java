@@ -11,6 +11,8 @@ import com.rfid.rxobserver.bean.RXInventoryTag;
 import java.io.Serializable;
 import java.util.List;
 
+import in.mobiux.android.orca50scanner.common.utils.AppUtils;
+
 /**
  * Created by SUJEET KUMAR on 08-Mar-21.
  */
@@ -179,8 +181,10 @@ public class Inventory implements Serializable {
     }
 
     public String getFormattedEPC() {
-        return getEpc().replace(" ", "");
+//        return getEpc().replace(" ", "");
+        return AppUtils.getFormattedEPC(getEpc());
     }
+
 
     public static Inventory getMatchingInventory(String strEPC, List<Inventory> list) {
         String formattedEPC = strEPC.replace(" ", "");

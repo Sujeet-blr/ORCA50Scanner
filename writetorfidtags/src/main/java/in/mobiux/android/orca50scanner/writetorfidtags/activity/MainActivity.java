@@ -1,6 +1,7 @@
 package in.mobiux.android.orca50scanner.writetorfidtags.activity;
 
 import android.app.Activity;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -14,6 +15,8 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
+
+import androidx.appcompat.app.AlertDialog;
 
 import com.opencsv.CSVReader;
 import com.opencsv.exceptions.CsvValidationException;
@@ -130,28 +133,34 @@ public class MainActivity extends BaseActivity {
 
             @Override
             public void onNothingSelected(AdapterView<?> adapterView) {
-
+                selectedLabel = spnrLabels.getSelectedItem().toString();
+                if (!TextUtils.isEmpty(selectedLabel)) {
+                    logger.i(TAG, "selected barcode is -" + selectedLabel);
+                    tvMessage.setText("Hex is : " + AppUtils.generateHexEPC(selectedLabel));
+                }
             }
         });
 
         spnrTags.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                if (rfidReader.isConnected()) {
-                    showToast("Selecting Tag to write");
-                    selectedInventory = tagList.get(spnrTags.getSelectedItemPosition());
-                    selectStatus = rfidReader.selectAccessEpcMatch(selectedInventory.getEpc());
+//                if (rfidReader.isConnected()) {
+//                    showToast("Selecting Tag to write");
+                selectedInventory = tagList.get(spnrTags.getSelectedItemPosition());
 
-                    if (selectStatus == 0) {
-                        tvMessage.setText("Selected RFID Tag is " + selectedInventory.getEpc());
-                        btnAssign.setVisibility(View.VISIBLE);
-                    } else {
-                        tvMessage.setText("RFID tag is not selected, pls repeat");
-                        btnAssign.setVisibility(View.GONE);
-                    }
-                } else {
-                    showToast("Reader is not connected");
-                }
+//                    selectStatus = rfidReader.selectAccessEpcMatch(selectedInventory.getEpc());
+
+
+//                    if (selectStatus == 0) {
+//                        tvMessage.setText("Selected RFID Tag is " + selectedInventory.getEpc());
+//                        btnAssign.setVisibility(View.VISIBLE);
+//                    } else {
+//                        tvMessage.setText("RFID tag is not selected, pls repeat");
+//                        btnAssign.setVisibility(View.GONE);
+//                    }
+//                } else {
+//                    showToast("Reader is not connected");
+//                }
             }
 
             @Override
@@ -207,15 +216,17 @@ public class MainActivity extends BaseActivity {
             @Override
             public void onOperationTag(OperationTag operationTag) {
                 logger.i(TAG, "onOperationTag is called " + operationTag.strEPC);
-                tvMessage.setText("Assigned Success to " + operationTag.strEPC);
-                Inventory inventory = new Inventory();
-                inventory.setEpc(operationTag.strEPC);
-                tags.remove(inventory.getFormattedEPC());
+//                tvMessage.setText("Assigned Success to " + operationTag.strEPC);
+                Inventory operatedTag = tags.remove(AppUtils.getFormattedEPC(operationTag.strEPC));
+//                operatedTag.setEpc(operationTag.strEPC);
+                tagList.remove(operatedTag);
 //                tagList.clear();
 //                tagList.addAll(tags.values());
-//                tagsAdapter.notifyDataSetChanged();
+                tagsAdapter.notifyDataSetChanged();
 
-                showToast("Assigned Success to " + operationTag.strEPC);
+//                showToast("Assigned Success to " + operationTag.strEPC);
+
+                showMessageDialog("", "Assigned Success to \n\n" + operationTag.strEPC);
             }
 
             @Override
@@ -223,6 +234,15 @@ public class MainActivity extends BaseActivity {
                 tagList.clear();
                 tagList.addAll(tags.values());
                 tagsAdapter.notifyDataSetChanged();
+
+                if (!TextUtils.isEmpty(selectedLabel))
+                    tvMessage.setText("Hex is : " + AppUtils.generateHexEPC(selectedLabel));
+
+                if (tagEnd.mTotalRead > 0) {
+                    btnAssign.setVisibility(View.VISIBLE);
+                } else {
+                    btnAssign.setVisibility(View.GONE);
+                }
             }
 
             @Override
@@ -316,5 +336,22 @@ public class MainActivity extends BaseActivity {
 
         rfidReader.releaseResources();
         rfidReader.unregisterListener(rfidReaderListener);
+    }
+
+
+    protected void showMessageDialog(String title, String message) {
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle(title);
+        builder.setMessage(message);
+
+        builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                dialogInterface.dismiss();
+            }
+        });
+
+        builder.show();
     }
 }
