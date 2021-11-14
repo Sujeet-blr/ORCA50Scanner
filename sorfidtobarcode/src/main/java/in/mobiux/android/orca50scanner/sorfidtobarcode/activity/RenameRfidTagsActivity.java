@@ -128,6 +128,7 @@ public class RenameRfidTagsActivity extends BaseActivity {
                     lltWrite.setVisibility(View.VISIBLE);
 
                     tvBarcodeHEX.setText(barcode.getHex());
+                    btnAssign.setVisibility(View.VISIBLE);
                 } else {
                     logger.e(TAG, "rfid tag not selected");
                 }
@@ -196,8 +197,15 @@ public class RenameRfidTagsActivity extends BaseActivity {
             public void onOperationTag(OperationTag operationTag) {
                 logger.i(TAG, "onOperationTag " + operationTag.strEPC);
 
+                Inventory operatedTag = new Inventory();
+                operatedTag.setEpc(operationTag.strEPC);
+
                 if (operationTag.strEPC.equalsIgnoreCase(selectedInventory.getEpc())) {
-                    selectedInventory.setEpc(barcode.getHex());
+                    operatedTag = inventoryMap.remove(operatedTag.getFormattedEPC());
+                    operatedTag.setEpc(barcode.getHex());
+                    inventories.remove(selectedInventory);
+                    inventoryAdapter.remove(selectedInventory);
+//                    selectedInventory.setEpc(barcode.getHex());
                     inventoryAdapter.notifyDataSetChanged();
                     showDialoge("", "RFID tag is renamed successfully");
                     logger.i(TAG, "operation success");
@@ -229,9 +237,13 @@ public class RenameRfidTagsActivity extends BaseActivity {
 
                 if (inventoryAdapter.getCount() > 0) {
                     ivRFIDStatus.setVisibility(View.VISIBLE);
+                    btnConfirmSelect.setVisibility(View.VISIBLE);
                 } else {
                     ivRFIDStatus.setVisibility(View.GONE);
                 }
+
+                lltWrite.setVisibility(View.GONE);
+                lltWriteSuccess.setVisibility(View.GONE);
             }
 
             @Override

@@ -115,6 +115,10 @@ public class RFIDReader implements Reader {
                 @Override
                 public void run() {
                     scanningStatus = true;
+                    if (cmd == CMD.SET_ACCESS_EPC_MATCH || cmd == CMD.GET_OUTPUT_POWER || cmd == CMD.WRITE_TAG) {
+                        scanningStatus = false;
+                    }
+
                     for (RFIDReaderListener l : listeners) {
                         l.onScanningStatus(scanningStatus);
                     }

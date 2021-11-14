@@ -6,6 +6,7 @@ import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
@@ -111,6 +112,12 @@ public class BarcodeScanActivity extends BaseActivity implements
         btnConfirmBarcode.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
+                if (!TextUtils.isDigitsOnly(barcode.getName())) {
+                    showToast("Barcode is Not a Number");
+                    return;
+                }
+
                 Intent intent = new Intent(app, RenameRfidTagsActivity.class);
                 intent.putExtra("barcode", (Serializable) barcode);
                 startActivityForResult(intent, 101);

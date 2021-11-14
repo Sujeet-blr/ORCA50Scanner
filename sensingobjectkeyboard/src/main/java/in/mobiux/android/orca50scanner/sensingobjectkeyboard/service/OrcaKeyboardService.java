@@ -1,10 +1,5 @@
 package in.mobiux.android.orca50scanner.sensingobjectkeyboard.service;
 
-import static android.content.Intent.FLAG_ACTIVITY_NEW_TASK;
-
-import android.Manifest;
-import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.inputmethodservice.InputMethodService;
 import android.inputmethodservice.Keyboard;
 import android.inputmethodservice.KeyboardView;
@@ -16,7 +11,6 @@ import android.view.View;
 import android.view.inputmethod.InputConnection;
 import android.widget.Toast;
 
-import androidx.core.content.ContextCompat;
 
 import in.mobiux.android.orca50scanner.common.utils.AppLogger;
 import in.mobiux.android.orca50scanner.reader.core.BarcodeReader;
@@ -29,8 +23,6 @@ import in.mobiux.android.orca50scanner.reader.model.Inventory;
 import in.mobiux.android.orca50scanner.reader.model.OperationTag;
 import in.mobiux.android.orca50scanner.sensingobjectkeyboard.MyApplication;
 import in.mobiux.android.orca50scanner.sensingobjectkeyboard.R;
-import in.mobiux.android.orca50scanner.sensingobjectkeyboard.activity.RequestPermissionActivity;
-import in.mobiux.android.orca50scanner.sensingobjectkeyboard.activity.SettingsActivity;
 
 
 public class OrcaKeyboardService extends InputMethodService implements KeyboardView.OnKeyboardActionListener {
