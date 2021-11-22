@@ -1,8 +1,11 @@
 package in.mobiux.android.orca50scanner.reader.activity;
 
 import android.os.Bundle;
+import android.view.KeyEvent;
 
 import androidx.annotation.Nullable;
+
+import com.rfid.rxobserver.ReaderSetting;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -21,8 +24,6 @@ public class RFIDReaderBaseActivity extends BaseActivity implements RFIDReaderLi
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-//        rfidReader = new RFIDReader(getApplicationContext());
     }
 
     @Override
@@ -69,5 +70,31 @@ public class RFIDReaderBaseActivity extends BaseActivity implements RFIDReaderLi
     @Override
     public void onConnection(boolean status) {
         logger.i(TAG, "Connection Status " + status);
+    }
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (keyCode == KeyEvent.KEYCODE_F4) {
+            startScan();
+        }
+
+        return super.onKeyDown(keyCode, event);
+    }
+
+    @Override
+    public boolean onKeyUp(int keyCode, KeyEvent event) {
+        return super.onKeyUp(keyCode, event);
+    }
+
+    @Override
+    public boolean onKeyLongPress(int keyCode, KeyEvent event) {
+        if (keyCode == KeyEvent.KEYCODE_F4) {
+            startScan();
+        }
+        return super.onKeyLongPress(keyCode, event);
+    }
+
+    public void startScan() {
+        rfidReader.startScan();
     }
 }

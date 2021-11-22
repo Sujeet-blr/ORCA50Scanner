@@ -251,7 +251,7 @@ public class OrcaKeyboardService extends InputMethodService implements KeyboardV
                         KeyEvent eventEnter = new KeyEvent(KeyEvent.ACTION_UP, KeyEvent.KEYCODE_ENTER);
 //                    KeyEvent eventEnter = new KeyEvent(KeyEvent.ACTION_DOWN, KeyEvent.KEYCODE_F4);
                         ic.sendKeyEvent(eventEnter);
-                    }else {
+                    } else {
                         logger.i(TAG, "NO TAG FOUND");
                         rfid = "";
                         ic.commitText(rfid, 1);
@@ -306,5 +306,14 @@ public class OrcaKeyboardService extends InputMethodService implements KeyboardV
     private void showToast(int resId) {
         toast.setText(resId);
         toast.show();
+    }
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        logger.i(TAG, "keyDown " + keyCode);
+        if (keyCode == KeyEvent.KEYCODE_F4) {
+            rfidReader.startScan();
+        }
+        return super.onKeyDown(keyCode, event);
     }
 }

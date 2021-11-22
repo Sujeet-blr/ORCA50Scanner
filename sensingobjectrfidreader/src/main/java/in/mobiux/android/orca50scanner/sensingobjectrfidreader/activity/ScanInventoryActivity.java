@@ -2,6 +2,7 @@ package in.mobiux.android.orca50scanner.sensingobjectrfidreader.activity;
 
 import android.Manifest;
 import android.os.Bundle;
+import android.view.KeyEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -167,7 +168,7 @@ public class ScanInventoryActivity extends BaseActivity implements View.OnClickL
 
                 String title = "Sensing Object Rfid Reader";
 
-                String[] columns = {"Rfid", "Rssi"};
+                String[] columns = {"Rfid", "Rssi", "Status"};
                 PdfUtils.PdfTable table = new PdfUtils.PdfTable(columns);
                 for (Inventory i : scannedInventories) {
                     table.addCell(i.getEpc());
@@ -185,24 +186,14 @@ public class ScanInventoryActivity extends BaseActivity implements View.OnClickL
         }
     }
 
-    private void arrangeScannedList() {
-
-        HashMap<String, Inventory> map = new HashMap<>();
-        for (Inventory i : scannedInventories) {
-            map.put(i.getFormattedEPC(), i);
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (keyCode == KeyEvent.KEYCODE_F4) {
+            rfidReader.startScan();
         }
 
-        scannedInventories.clear();
-        for (Inventory i : map.values()) {
-            if (i.isScanStatus()) {
-                scannedInventories.add(0, i);
-            } else {
-                scannedInventories.add(i);
-            }
-        }
+        return super.onKeyDown(keyCode, event);
     }
-
-
 
     @Override
     protected void onDestroy() {

@@ -62,9 +62,6 @@ public class MainActivity extends RFIDReaderBaseActivity {
                 logger.i(TAG, "Reset Clicked");
                 tags.clear();
                 tvCount.setText("Count : " + tags.size());
-
-//                checkPermission(MainActivity.this, Manifest.permission.WRITE_EXTERNAL_STORAGE, STORAGE_PERMISSION_CODE);
-//                logger.createAndExportLogs(MainActivity.this);
             }
         });
 
@@ -151,7 +148,7 @@ public class MainActivity extends RFIDReaderBaseActivity {
 
         String title = "Sensing Object Rfid Reader";
 
-        String[] columns = {"Rfid", "Rssi"};
+        String[] columns = {"Rfid", "Rssi", "Status"};
         PdfUtils.PdfTable table = new PdfUtils.PdfTable(columns);
         for (Inventory i : tags.values()) {
             table.addCell(i.getEpc());

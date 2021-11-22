@@ -5,8 +5,13 @@
     <uses-permission android:name="android.permission.INTERNET" />
 
     <application>
-        <activity android:name=".activity.RFOutputPowerActivity" android:theme="@style/Theme.AppTheme.NoActionBar"></activity>
-        <activity android:name=".activity.SettingsActivity" android:theme="@style/Theme.AppTheme.NoActionBar"/>
+        <activity android:name=".activity.ReaderStatusActivity"></activity>
+        <activity
+            android:name=".activity.RFOutputPowerActivity"
+            android:theme="@style/Theme.AppTheme.NoActionBar" />
+        <activity
+            android:name=".activity.SettingsActivity"
+            android:theme="@style/Theme.AppTheme.NoActionBar" />
 
         <provider
             android:name="androidx.core.content.FileProvider"
@@ -17,7 +22,6 @@
                 android:name="android.support.FILE_PROVIDER_PATHS"
                 android:resource="@xml/provider_paths" />
         </provider>
-
     </application>
 
 </manifest>

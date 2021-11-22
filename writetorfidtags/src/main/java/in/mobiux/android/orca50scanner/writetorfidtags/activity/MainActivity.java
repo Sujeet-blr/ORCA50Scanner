@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.provider.DocumentsContract;
 import android.text.TextUtils;
+import android.view.KeyEvent;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -144,23 +145,7 @@ public class MainActivity extends BaseActivity {
         spnrTags.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-//                if (rfidReader.isConnected()) {
-//                    showToast("Selecting Tag to write");
                 selectedInventory = tagList.get(spnrTags.getSelectedItemPosition());
-
-//                    selectStatus = rfidReader.selectAccessEpcMatch(selectedInventory.getEpc());
-
-
-//                    if (selectStatus == 0) {
-//                        tvMessage.setText("Selected RFID Tag is " + selectedInventory.getEpc());
-//                        btnAssign.setVisibility(View.VISIBLE);
-//                    } else {
-//                        tvMessage.setText("RFID tag is not selected, pls repeat");
-//                        btnAssign.setVisibility(View.GONE);
-//                    }
-//                } else {
-//                    showToast("Reader is not connected");
-//                }
             }
 
             @Override
@@ -216,16 +201,9 @@ public class MainActivity extends BaseActivity {
             @Override
             public void onOperationTag(OperationTag operationTag) {
                 logger.i(TAG, "onOperationTag is called " + operationTag.strEPC);
-//                tvMessage.setText("Assigned Success to " + operationTag.strEPC);
                 Inventory operatedTag = tags.remove(AppUtils.getFormattedEPC(operationTag.strEPC));
-//                operatedTag.setEpc(operationTag.strEPC);
                 tagList.remove(operatedTag);
-//                tagList.clear();
-//                tagList.addAll(tags.values());
                 tagsAdapter.notifyDataSetChanged();
-
-//                showToast("Assigned Success to " + operationTag.strEPC);
-
                 showMessageDialog("", "Assigned Success to \n\n" + operationTag.strEPC);
             }
 
@@ -353,5 +331,13 @@ public class MainActivity extends BaseActivity {
         });
 
         builder.show();
+    }
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (keyCode == KeyEvent.KEYCODE_F4) {
+            rfidReader.startScan();
+        }
+        return super.onKeyDown(keyCode, event);
     }
 }

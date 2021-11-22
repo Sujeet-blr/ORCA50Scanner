@@ -3,6 +3,7 @@ package in.mobiux.android.orca50scanner.sorfidtobarcode.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.KeyEvent;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -43,7 +44,6 @@ public class RenameRfidTagsActivity extends BaseActivity {
 
     private RFIDReader rfidReader;
     private RFIDReaderListener rfidReaderListener;
-    private Inventory inventory;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -264,5 +264,13 @@ public class RenameRfidTagsActivity extends BaseActivity {
         super.onDestroy();
         rfidReader.releaseResources();
         rfidReader.unregisterListener(rfidReaderListener);
+    }
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (keyCode == KeyEvent.KEYCODE_F4) {
+            rfidReader.startScan();
+        }
+        return super.onKeyDown(keyCode, event);
     }
 }

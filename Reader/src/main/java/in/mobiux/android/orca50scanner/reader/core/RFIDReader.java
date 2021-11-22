@@ -2,6 +2,7 @@ package in.mobiux.android.orca50scanner.reader.core;
 
 import android.content.Context;
 import android.os.Handler;
+import android.widget.Toast;
 
 import com.module.interaction.ModuleConnector;
 import com.module.interaction.RXTXListener;
@@ -53,6 +54,8 @@ public class RFIDReader implements Reader {
     private boolean observerRegistrationStatus = false;
     private boolean scanningStatus = false;
 
+    ReaderSetting mReaderSetting = ReaderSetting.newInstance();
+
     private List<RFIDReaderListener> listeners = new ArrayList<>();
 
     private final RXTXListener rxtxListener = new RXTXListener() {
@@ -71,7 +74,7 @@ public class RFIDReader implements Reader {
 
         @Override
         public void sendData(byte[] bytes) {
-//            logger.i(TAG, "send Data " + Arrays.toString(bytes));
+            logger.i(TAG, "send Data " + Arrays.toString(bytes));
             if (listener != null) {
                 mHandler.post(new Runnable() {
                     @Override
@@ -105,6 +108,7 @@ public class RFIDReader implements Reader {
 
             int rssiValue = byteArrayToInt(readerSetting.btAryOutputPower);
             session.setInt(session.KEY_RF_OUTPUT_POWER, rssiValue);
+            mReaderSetting = readerSetting;
         }
 
         @Override
@@ -207,19 +211,6 @@ public class RFIDReader implements Reader {
 
     private void initConnection() {
 
-        if (AppBuildConfig.isDEBUG()) {
-
-            if (listener != null) {
-                mHandler.post(new Runnable() {
-                    @Override
-                    public void run() {
-                        listener.onConnection(true);
-                    }
-                });
-            }
-            return;
-        }
-
         logger.i(TAG, "Connecting to RFID");
 
         try {
@@ -232,7 +223,7 @@ public class RFIDReader implements Reader {
 
 
             if (isConnected()) {
-                logger.i(TAG, "CONNECTION SUCCESS");
+                logger.i(TAG, "RFID READER CONNECTION SUCCESS");
 
                 connectionStatus = true;
 
@@ -249,10 +240,10 @@ public class RFIDReader implements Reader {
 //                    readerType = DeviceConnector.ReaderType.RFID;
 
                     int beeperResult = -1;
-                    beeperResult = rfidReaderHelper.setBeeperMode(ReaderSetting.newInstance().btReadId, (byte) 2);
+                    beeperResult = rfidReaderHelper.setBeeperMode(mReaderSetting.btReadId, (byte) 2);
                     logger.i(TAG, "beeper result value " + beeperResult);
 
-                    ReaderSetting.newInstance().btBeeperMode = ((byte) 2);
+                    mReaderSetting.newInstance().btBeeperMode = ((byte) 2);
 
                     logger.i(TAG, "beeper result " + beeperResult);
                     rfidReaderHelper.setTrigger(true);
@@ -471,14 +462,6 @@ public class RFIDReader implements Reader {
         }
     }
 
-    public void enableBeep() {
-        session.setBooleanValue(session.KEY_BEEP, true);
-    }
-
-    public void disableBeep() {
-        session.setBooleanValue(session.KEY_BEEP, false);
-    }
-
 
     //    methods for RF Output Power
     public int setRFOutputPower(int value) {
@@ -503,7 +486,7 @@ public class RFIDReader implements Reader {
     public int getRFOutputPower() {
         int value = 0;
         if (INSTANCE != null && isConnected()) {
-            int status = rfidReaderHelper.getOutputPower(ReaderSetting.newInstance().btReadId);
+            int status = rfidReaderHelper.getOutputPower(mReaderSetting.btReadId);
         } else {
             logger.e(TAG, "RFID Reader is not connected");
             return 1;
@@ -519,5 +502,44 @@ public class RFIDReader implements Reader {
         rssiValue = Integer.parseInt(str);
 
         return rssiValue;
+    }
+
+    public void startScan() {
+        rfidReaderHelper.realTimeInventory(mReaderSetting.btReadId, (byte) 0x01);
+    }
+
+    public int reset() {
+        int status = -1;
+        if (isConnected()) {
+            status = rfidReaderHelper.reset(mReaderSetting.btReadId);
+        }
+
+        logger.i(TAG, "Resetting reader status (success = 0 ; failed = -1) : " + status);
+        return status;
+    }
+
+    public void getStatus() {
+
+        int c = 119;
+        byte[] cmd = intToBytes(c);
+
+        rfidReaderHelper.sendCommand(cmd);
+    }
+
+    private byte[] intToBytes(final int i) {
+        ByteBuffer bb = ByteBuffer.allocate(4);
+        bb.putInt(i);
+        return bb.array();
+    }
+
+    public void setStatus(int value) {
+
+//        byte btDetectorStatus = 0x00;
+//        try {
+//            btDetectorStatus = (byte) value;
+//        } catch (Exception e) {
+//            logger.e(TAG, "Invaild number! ");
+//            return;
+//        }
     }
 }
