@@ -106,6 +106,12 @@ public class BarCodeReader {
     private boolean mOneShot;
     private boolean mWithBuffer;
 
+    static {
+        System.loadLibrary("IAL");
+        System.loadLibrary("SDL");
+        System.loadLibrary("barcodereader44");
+    }
+
     /////////////////////////////////////////////////////////////////
     // Private native functions
     /////////////////////////////////////////////////////////////////

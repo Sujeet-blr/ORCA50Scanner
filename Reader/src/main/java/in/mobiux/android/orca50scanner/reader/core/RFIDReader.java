@@ -423,10 +423,16 @@ public class RFIDReader implements Reader {
         BeeperHelper.release();
     }
 
-    public void activateRfidReader() {
-        logger.i(TAG, "Activating Rfid Reader");
+    public void enableRfidReader(boolean status) {
+
+        if (status) {
+            logger.i(TAG, "enabling rfid");
+        } else {
+            logger.i(TAG, "disabling rfid");
+        }
+
         if (connector != null && connector.isConnected()) {
-            ModuleManager.newInstance().setUHFStatus(true);
+            ModuleManager.newInstance().setUHFStatus(status);
         }
     }
 
