@@ -128,7 +128,7 @@ public class BarcodeScannerActivity extends BarcodeReaderBaseActivity {
     private void askForNewTask() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("Start New Task");
-        builder.setMessage("Do you want to clear previous data & start a fresh task ?");
+        builder.setMessage("Would you like to clear all data & start a fresh task ?");
 
         builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
             @Override
