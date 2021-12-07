@@ -82,8 +82,9 @@ public class AppActivity extends AppCompatActivity {
     protected void setToolbarTitle(String title) {
         toolbarTitle = findViewById(R.id.textToolbarTitle);
 
-        if (toolbarTitle != null)
+        if (toolbarTitle != null) {
             toolbarTitle.setText(title);
+        }
     }
 
     @Override

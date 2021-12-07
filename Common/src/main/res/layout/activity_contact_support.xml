@@ -26,7 +26,9 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="8dp"
-            android:hint="Name">
+            android:hint="Name"
+            app:boxBackgroundColor="@color/white"
+            app:boxBackgroundMode="outline">
 
             <EditText
                 android:id="@+id/edtName"
@@ -38,7 +40,9 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="8dp"
-            android:hint="Subject">
+            android:hint="Subject"
+            app:boxBackgroundColor="@color/white"
+            app:boxBackgroundMode="outline">
 
             <EditText
                 android:id="@+id/edtSubject"
@@ -50,7 +54,9 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="8dp"
-            android:hint="Message">
+            android:hint="Message"
+            app:boxBackgroundColor="@color/white"
+            app:boxBackgroundMode="outline">
 
             <EditText
                 android:id="@+id/edtMessage"

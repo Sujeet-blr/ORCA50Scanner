@@ -8,12 +8,28 @@
     <string name="read_me_text1">"SO Stock Lite application assists you to take stock of items in your inventory.\n\nThe application assumes that all your items are tagged and identified using UHF RFID tags. The items are assumed to be stored in bins or locations that are tagged and identified using Barcodes or QR codes."</string>
 
     <string name="read_me_text2">
-        •\t Simply go to a bin or location and scan the Barcode or QR code to identify and record the bin that you are about to take stock of.\n
-•\t Confirm the bin identifier and proceed to scan all the items tagged with UHF RFID tags in the bin.\n
-•\t You will see the number of items in the bin.\n
-•\t Confirm, proceed to the next bin location and repeat the process.\n
+        •\t Simply go to a bin or location and scan the Barcode or QR code to identify and record the bin that you are about to take stock of.\n\n
+•\t Confirm the bin identifier and proceed to scan all the items tagged with UHF RFID tags in the bin.\n\n
+•\t You will see the number of items in the bin.\n\n
+•\t Confirm, proceed to the next bin location and repeat the process.\n\n
 •\t Finally export a record of all your stock and save a snapshot with a date and timestamp in a convenient CSV file format.</string>
 
     <string name="read_me_text3">Please note that you can adjust the RF Output Power in the Settings and control the read-range of your Orca UHF RFID reader. See Sensing Objects User Manual for more information on how to adjust the RF Output Power</string>
+
+    <string name="about_us_content">"Sensing Objects powered by Footprints is a suite of innovative solutions to address requirements for traceability of products, assets and processes that are essential for business operations in areas such as within inventory management, manufacturing process management, service and maintenance management and logistic processes. \n
+        \nThe portfolio of solutions is brought to you by RFIDdirect Limited and Hito IT Solutions L.L.C.
+        \nRFIDdirect Limited is a specialist supplier of RFID technology within the European market and operates as a Hardware, Software, Consumables and Bureau Service provider to Industrial, Logistics and Retail customers.
+        \n\nHito IT Solutions L.L.C. is an innovative software solutions provider developing and offering cutting edge technology solutions supporting tracking and traceability requirements of Industrial, Logistics and Retail customers.
+        \n\nPlease visit www.sensingobjects.tech to know more.
+        </string>
+
+    <string name="license_content">"This application is supplied to St. George University of London by RFIDdirect Limited. For detailed terms and conditions for this license, please contact
+        \n\nFrits van Calker
+        fvc@rfiddirect.eu
+        \nRFIDdirect Limited
+        Bromfield Commercial Park, Stephen Gray Road, Unit 1, Office 8, Mold, Flintshire, CH7 1HE. United Kingdom
+        \nTel.:
+        +44 (0)845 249 0068
+        +44 (0)1352 752044"</string>
 
 </resources>
