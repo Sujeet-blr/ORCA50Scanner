@@ -1,3 +1,19 @@
 <resources>
-    <string name="app_name">SO Logistics</string>
+    <string name="app_name">SO Stock Lite</string>
+    <string name="clear_and_re_scan"><![CDATA[Clear & re-scan]]></string>
+    <string name="finish_export_data"><![CDATA[Finish & export data]]></string>
+    <string name="scan_ok_repeat"><![CDATA[Scan ok & repeat]]></string>
+    <string name="clear_re_scan"><![CDATA[Clear & re-scan]]></string>
+    <string name="unit_rssi">dBm</string>
+    <string name="read_me_text1">"SO Stock Lite application assists you to take stock of items in your inventory.\n\nThe application assumes that all your items are tagged and identified using UHF RFID tags. The items are assumed to be stored in bins or locations that are tagged and identified using Barcodes or QR codes."</string>
+
+    <string name="read_me_text2">
+        •\t Simply go to a bin or location and scan the Barcode or QR code to identify and record the bin that you are about to take stock of.\n
+•\t Confirm the bin identifier and proceed to scan all the items tagged with UHF RFID tags in the bin.\n
+•\t You will see the number of items in the bin.\n
+•\t Confirm, proceed to the next bin location and repeat the process.\n
+•\t Finally export a record of all your stock and save a snapshot with a date and timestamp in a convenient CSV file format.</string>
+
+    <string name="read_me_text3">Please note that you can adjust the RF Output Power in the Settings and control the read-range of your Orca UHF RFID reader. See Sensing Objects User Manual for more information on how to adjust the RF Output Power</string>
+
 </resources>

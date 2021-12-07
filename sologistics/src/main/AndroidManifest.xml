@@ -23,11 +23,15 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.ORCA50Scanner"
         tools:replace="android:theme">
-        <activity android:name=".activity.RFIDScannerActivity"></activity>
+        <activity android:name=".activity.LicenseInfoActivity"></activity>
+        <activity android:name=".activity.AboutUsActivity" />
+        <activity android:name=".activity.ReadMeActivity" />
+        <activity android:name=".activity.SettingsActivity" />
+        <activity android:name=".activity.RFIDScannerActivity" />
         <activity android:name=".activity.BarcodeScannerActivity" />
         <activity
             android:name=".SplashActivity"
-            android:theme="@style/Theme.AppTheme.NoActionBar">
+            android:theme="@style/Theme.AppTheme.NoActionBar.FullScreen">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -44,6 +48,10 @@
                 android:name="android.support.FILE_PROVIDER_PATHS"
                 android:resource="@xml/provider_paths" />
         </provider>
+
+        <meta-data
+            android:name="preloaded_fonts"
+            android:resource="@array/preloaded_fonts" />
     </application>
 
 </manifest>

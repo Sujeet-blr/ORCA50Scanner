@@ -12,6 +12,7 @@ import in.mobiux.android.orca50scanner.reader.simulator.AppSimulator;
 import in.mobiux.android.orca50scanner.sologistics.BuildConfig;
 import in.mobiux.android.orca50scanner.sologistics.R;
 import in.mobiux.android.orca50scanner.sologistics.activity.BaseActivity;
+import in.mobiux.android.orca50scanner.sologistics.model.Stock;
 
 /**
  * Created by SUJEET KUMAR on 08-Mar-21.
@@ -21,6 +22,7 @@ public class MyApplication extends App {
     private String TAG = MyApplication.class.getCanonicalName();
 
     private List<BaseActivity> activities = new ArrayList<>();
+    private List<Stock> stocks = new ArrayList<>();
 
     @Override
     public void onCreate() {
@@ -60,5 +62,22 @@ public class MyApplication extends App {
 
     public void removeActivity(BaseActivity activity) {
         activities.remove(activity);
+    }
+
+    public void addStock(Stock stock) {
+        if (!stocks.contains(stock))
+            stocks.add(stock);
+    }
+
+    public void removeStock(Stock stock) {
+        stocks.remove(stock);
+    }
+
+    public List<Stock> getStocks() {
+        return stocks;
+    }
+
+    public void clearStocks() {
+        stocks.clear();
     }
 }

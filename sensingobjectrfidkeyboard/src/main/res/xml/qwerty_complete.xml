@@ -5,7 +5,7 @@
     android:verticalGap="0px">
 
 
-    <Row>
+    <Row android:keyHeight="120px">
         <Key
             android:codes="201"
             android:keyWidth="35%p"
@@ -16,9 +16,9 @@
             android:keyLabel="BARCODE" />
 
         <Key
-            android:codes="-5"
+            android:codes="-3"
             android:keyWidth="30%p"
-            android:keyLabel="Clear Data" />
+            android:keyLabel="CLEAR DATA" />
     </Row>
     <Row>
         <Key

@@ -5,6 +5,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.res.Configuration;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.MenuItem;
@@ -53,6 +55,9 @@ public class BaseActivity extends AppActivity {
 
         languageUtils.switchLanguage(this, session.getLanguage());
         activityLanguage = session.getLanguage();
+
+        if (getSupportActionBar() != null)
+            getSupportActionBar().setBackgroundDrawable(new ColorDrawable(Color.parseColor("#FFFFFF")));
     }
 
     @Override

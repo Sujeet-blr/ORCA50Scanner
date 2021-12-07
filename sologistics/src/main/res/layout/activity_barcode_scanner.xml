@@ -17,7 +17,8 @@
             style="@style/TextAppearance.MaterialComponents.Body1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Scan QR Code" />
+            android:text="Scan QR Code"
+            android:textStyle="bold" />
 
         <TextView
             android:id="@+id/tvBarcode"
@@ -25,7 +26,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/margin_horizontal"
-            android:background="@drawable/shape_box_outline_black"
+            android:background="@drawable/barcode_box"
             android:gravity="center"
             android:padding="8dp"
             android:text="@string/app_name" />
@@ -35,7 +36,7 @@
             style="@style/TextAppearance.MaterialComponents.Caption"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Pull the trigger to Scan" />
+            android:text="Pull the trigger to scan" />
 
     </LinearLayout>
 
@@ -44,15 +45,24 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:gravity="center"
-        android:orientation="horizontal">
+        android:orientation="vertical"
+        android:paddingLeft="@dimen/margin_horizontal"
+        android:paddingRight="@dimen/margin_horizontal">
 
         <Button
             android:id="@+id/btnOK"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:backgroundTint="@color/black"
-            android:text="OK"
-            android:textColor="@color/white" />
+            android:text="Scan ok"
+            android:textAllCaps="false" />
+
+        <Button
+            android:id="@+id/btnClear"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:backgroundTint="@color/button_dark"
+            android:text="@string/clear_and_re_scan"
+            android:textAllCaps="false" />
     </LinearLayout>
 
 </RelativeLayout>

@@ -1,17 +1,22 @@
 package in.mobiux.android.orca50scanner.common.utils;
 
+import android.app.ActivityManager;
+import android.content.Context;
 import android.text.TextUtils;
 import android.util.Log;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
+import java.util.Objects;
 
 
 /**
  * Created by SUJEET KUMAR on 10-Mar-21.
  */
 public class AppUtils {
+
+    private static final String TAG = "AppUtils";
 
     static SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS'Z'");
     static String format;
@@ -126,5 +131,16 @@ public class AppUtils {
 
     public static String getFormattedEPC(String epc) {
         return epc.replace(" ", "");
+    }
+
+    public static List<ActivityManager.RunningTaskInfo> getRunningApps(Context context) {
+        ActivityManager activityManager = (ActivityManager) context.getSystemService(Context.ACTIVITY_SERVICE);
+        List<ActivityManager.RunningTaskInfo> recentTasks = Objects.requireNonNull(activityManager).getRunningTasks(Integer.MAX_VALUE);
+
+        for (ActivityManager.RunningTaskInfo taskInfo : recentTasks) {
+            Log.i(TAG, "getRunningApps: " + taskInfo.baseActivity.getPackageName());
+        }
+
+        return recentTasks;
     }
 }

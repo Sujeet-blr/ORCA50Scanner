@@ -13,12 +13,26 @@
         android:gravity="center"
         android:orientation="vertical">
 
+        <TextView
+            android:id="@+id/tvHeader"
+            style="@style/TextAppearance.MaterialComponents.Body1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/margin_horizontal"
+            android:text="RFID Tags - 0 items" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_below="@id/cardView"
+            android:background="@color/divider" />
+
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recyclerView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:clipToPadding="false"
-            android:paddingBottom="80dp"
+            android:paddingBottom="180dp"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
 
     </LinearLayout>
@@ -30,36 +44,41 @@
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
         android:elevation="-1dp"
-        android:text="Pull the trigger to Scan" />
+        android:text="Pull the trigger to scan" />
 
     <LinearLayout
         android:id="@+id/lltFooter"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:orientation="horizontal">
+        android:orientation="vertical"
+        android:paddingLeft="@dimen/margin_horizontal"
+        android:paddingRight="@dimen/margin_horizontal">
+
+        <Button
+            android:id="@+id/btnRepeat"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:backgroundTint="@color/button_dark"
+            android:text="@string/scan_ok_repeat"
+            android:textAllCaps="false"
+            android:textColor="@color/white" />
 
         <Button
             android:id="@+id/btnReScan"
-            android:layout_width="0dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/margin_horizontal"
-            android:layout_marginRight="8dp"
-            android:layout_weight="1"
-            android:backgroundTint="@color/black"
-            android:text="Re-Scan"
+            android:backgroundTint="@color/button_dark"
+            android:text="@string/clear_re_scan"
             android:textAllCaps="false"
             android:textColor="@color/white" />
 
         <Button
             android:id="@+id/btnExportData"
-            android:layout_width="0dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="8dp"
-            android:layout_marginRight="@dimen/margin_horizontal"
-            android:layout_weight="1"
-            android:backgroundTint="@color/black"
-            android:text="Export Data"
+            android:backgroundTint="@color/button_dark"
+            android:text="@string/finish_export_data"
             android:textAllCaps="false"
             android:textColor="@color/white" />
 

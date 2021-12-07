@@ -19,6 +19,7 @@ public class SessionManager {
     public String KEY_BEEP = "";
     public String KEY_RF_OUTPUT_POWER = "";
     public String KEY_APP_LANGUAGE = "";
+    public String KEY_READER_TYPE = "";
 
     private void initKeys(Context context) {
         String appName = context.getPackageName();
@@ -26,6 +27,7 @@ public class SessionManager {
         KEY_BEEP = appName + "__beep";
         KEY_RF_OUTPUT_POWER = "rf_output_power";
         KEY_APP_LANGUAGE = "app_language";
+        KEY_READER_TYPE = appName + "_reader_type";
     }
 
     public static SessionManager getInstance(Context context) {

@@ -5,12 +5,13 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:animateLayoutChanges="true"
-    android:background="@color/screen_background"
     tools:context=".MainActivity">
 
     <include
         layout="@layout/action_bar_app"
-        android:layout_alignParentTop="true" />
+        android:layout_alignParentTop="true"
+        android:layout_height="?attr/actionBarSize"
+        android:layout_width="match_parent" />
 
 
     <LinearLayout

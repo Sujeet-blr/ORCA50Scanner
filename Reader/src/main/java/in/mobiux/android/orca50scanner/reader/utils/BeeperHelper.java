@@ -93,6 +93,10 @@ public class BeeperHelper {
         }
     }
 
+    public static void beep() {
+        beep(SOUND_FILE_TYPE_SHORT);
+    }
+
     /**
      * 设置蜂鸣类型
      *

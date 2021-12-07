@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="unit_rssi">dBm</string>
+    <string name="read_me_text1">read_me_text1</string>
+</resources>

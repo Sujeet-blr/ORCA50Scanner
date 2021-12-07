@@ -47,6 +47,7 @@ public class InventoryAdapter extends RecyclerView.Adapter<InventoryAdapter.Recy
         Inventory inventory = inventories.get(position);
 
         holder.tvRFID.setText("" + inventory.getEpc());
+        holder.tvRSSI.setText("" + inventory.getRssi() + "dbm");
     }
 
     @Override
@@ -56,11 +57,12 @@ public class InventoryAdapter extends RecyclerView.Adapter<InventoryAdapter.Recy
 
     class RecyclerViewHolder extends RecyclerView.ViewHolder {
 
-        private TextView tvRFID;
+        private TextView tvRFID, tvRSSI;
 
         public RecyclerViewHolder(@NonNull View itemView) {
             super(itemView);
             tvRFID = itemView.findViewById(R.id.tvRFID);
+            tvRSSI = itemView.findViewById(R.id.tvRSSI);
         }
     }
 

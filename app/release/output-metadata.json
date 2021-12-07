@@ -4,15 +4,15 @@
     "type": "APK",
     "kind": "Directory"
   },
-  "applicationId": "in.mobiux.android.orca50scanner.sensingobjectrfidkeyboard",
+  "applicationId": "in.mobiux.android.orca50scanner.sologistics",
   "variantName": "release",
   "elements": [
     {
       "type": "SINGLE",
       "filters": [],
-      "versionCode": 2,
-      "versionName": "Version 2.0",
-      "outputFile": "sensingobjectrfidkeyboard-release.apk"
+      "versionCode": 1,
+      "versionName": "1.0",
+      "outputFile": "sologistics-release.apk"
     }
   ]
 }

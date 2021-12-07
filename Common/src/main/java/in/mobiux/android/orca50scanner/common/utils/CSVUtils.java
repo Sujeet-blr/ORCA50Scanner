@@ -33,7 +33,7 @@ public class CSVUtils {
         logger = AppLogger.getInstance(context);
 
         appName = context.getPackageManager().getApplicationLabel(context.getApplicationInfo()).toString();
-        logFileName = appName + String.valueOf(AppUtils.getFormattedTimestamp()) + "_data.csv";
+        logFileName = appName + "_data_" + String.valueOf(AppUtils.getFormattedTimestamp()) + "_.csv";
     }
 
 

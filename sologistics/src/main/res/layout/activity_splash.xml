@@ -3,36 +3,59 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
+    android:background="@color/white"
     android:layout_height="match_parent"
     tools:context=".SplashActivity">
 
-    <ImageView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
-        android:layout_margin="@dimen/margin_horizontal"
-        android:src="@drawable/object_sensing" />
-
     <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:layout_margin="@dimen/margin_horizontal"
-        android:gravity="center"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         android:orientation="vertical">
 
         <TextView
-            style="@style/TextAppearance.MaterialComponents.Caption"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="@dimen/margin_horizontal"
-            android:text="Powered by" />
+            style="@style/TextAppearance.MaterialComponents.Headline6"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:textStyle="bold"
+            android:layout_centerInParent="true"
+            android:layout_centerHorizontal="true"
+            android:layout_weight="1"
+            android:gravity="center_horizontal|bottom"
+            android:text="@string/app_name"
+            android:textSize="48sp" />
 
         <ImageView
+            android:id="@+id/ivSOLogo"
             android:layout_width="wrap_content"
-            android:layout_height="60dp"
-            android:src="@drawable/footprints" />
+            android:layout_height="0dp"
+            android:layout_marginLeft="@dimen/margin_horizontal"
+            android:layout_marginRight="@dimen/margin_horizontal"
+            android:layout_weight="1"
+            android:gravity="center_horizontal|bottom"
+            android:src="@drawable/object_sensing" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:layout_weight="0.6"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <TextView
+                style="@style/TextAppearance.MaterialComponents.Caption"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/margin_horizontal"
+                android:text="Powered by" />
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="60dp"
+                android:src="@drawable/footprints" />
+        </LinearLayout>
+
     </LinearLayout>
 
 </RelativeLayout>
