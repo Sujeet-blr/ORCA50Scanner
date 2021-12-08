@@ -8,12 +8,12 @@
     <Row>
         <Key
             android:codes="201"
-            android:keyWidth="50%p"
-            android:keyLabel="RFID" />
-        <Key
-            android:codes="202"
-            android:keyWidth="50%p"
-            android:keyLabel="BARCODE" />
+            android:keyWidth="100%p"
+            android:keyLabel="Reconnect" />
+<!--        <Key-->
+<!--            android:codes="202"-->
+<!--            android:keyWidth="50%p"-->
+<!--            android:keyLabel="BARCODE" />-->
     </Row>
 
     <Row android:rowEdgeFlags="bottom">
@@ -22,5 +22,4 @@
             android:keyWidth="100%p"
             android:keyLabel="Clear Data" />
     </Row>
-
 </Keyboard>

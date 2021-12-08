@@ -1,4 +1,4 @@
-package in.mobiux.android.orca50scanner.sensingobjectkeyboard;
+package in.mobiux.android.orca50scanner.sensingobjectkeyboard.util;
 
 import android.media.MediaPlayer;
 import android.os.Handler;
@@ -7,9 +7,8 @@ import in.mobiux.android.orca50scanner.common.utils.App;
 import in.mobiux.android.orca50scanner.common.utils.AppBuildConfig;
 import in.mobiux.android.orca50scanner.common.utils.AppLogger;
 import in.mobiux.android.orca50scanner.common.utils.SessionManager;
-import in.mobiux.android.orca50scanner.reader.core.RFIDReader;
-import in.mobiux.android.orca50scanner.reader.core.RFIDReaderListener;
-import in.mobiux.android.orca50scanner.reader.simulator.AppSimulator;
+import in.mobiux.android.orca50scanner.sensingobjectkeyboard.BuildConfig;
+import in.mobiux.android.orca50scanner.sensingobjectkeyboard.R;
 
 
 /**
@@ -34,7 +33,7 @@ public class MyApplication extends App {
         mediaPlayer = MediaPlayer.create(this, R.raw.beeper_short);
 
 
-        AppSimulator.initSimulator(this);
+//        AppSimulator.initSimulator(this);
 
         setBuildConfig(appBuildConfig());
     }
