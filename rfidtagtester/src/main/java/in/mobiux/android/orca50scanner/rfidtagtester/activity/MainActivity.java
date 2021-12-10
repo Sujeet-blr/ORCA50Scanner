@@ -3,10 +3,16 @@ package in.mobiux.android.orca50scanner.rfidtagtester.activity;
 import android.Manifest;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import androidx.annotation.NonNull;
+
+import org.jetbrains.annotations.NotNull;
 
 import java.util.HashMap;
 import java.util.Timer;
@@ -24,7 +30,7 @@ import in.mobiux.android.orca50scanner.rfidtagtester.R;
 
 public class MainActivity extends RFIDReaderBaseActivity {
 
-    private ImageView ivIndicator, ivSettings;
+    private ImageView ivIndicator;
     private TextView tvCount, tvStatus;
     private Button btnCreate, btnReset;
 
@@ -42,7 +48,6 @@ public class MainActivity extends RFIDReaderBaseActivity {
         tvStatus = findViewById(R.id.tvStatus);
         btnCreate = findViewById(R.id.btnCreate);
         btnReset = findViewById(R.id.btnReset);
-        ivSettings = findViewById(R.id.ivSettings);
 
         startTimer();
 
@@ -64,20 +69,25 @@ public class MainActivity extends RFIDReaderBaseActivity {
                 tvCount.setText("Count : " + tags.size());
             }
         });
+    }
 
-        ivSettings.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                SettingsActivity.launchActivity(getApplicationContext());
-            }
-        });
+    @Override
+    public boolean onPrepareOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.main_menu, menu);
+        return super.onPrepareOptionsMenu(menu);
+    }
 
+    @Override
+    public boolean onOptionsItemSelected(@NonNull @NotNull MenuItem item) {
+        if (item.getItemId() == R.id.action_settings) {
+            SettingsActivity.launchActivity(getApplicationContext());
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
-
         timer.cancel();
     }
 

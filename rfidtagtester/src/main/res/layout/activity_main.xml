@@ -6,16 +6,6 @@
     android:layout_height="match_parent"
     tools:context=".activity.MainActivity">
 
-    <ImageView
-        android:id="@+id/ivSettings"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentRight="true"
-        android:padding="8dp"
-        android:src="@drawable/ic_baseline_settings_24" />
-
-
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -29,15 +19,16 @@
             android:src="@drawable/ic_check_24" />
 
         <TextView
-            android:textColor="@color/orange"
             android:id="@+id/tvStatus"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:text="" />
+            android:text=""
+            android:textColor="@color/orange" />
     </LinearLayout>
 
     <LinearLayout
+        android:layout_margin="@dimen/margin_horizontal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
