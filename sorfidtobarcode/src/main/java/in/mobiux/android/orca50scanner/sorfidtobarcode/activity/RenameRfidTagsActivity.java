@@ -30,11 +30,11 @@ import in.mobiux.android.orca50scanner.sorfidtobarcode.R;
 public class RenameRfidTagsActivity extends BaseActivity {
 
 
-    private TextView txtIndicator, tvBarcode, tvBarcodeHEX;
+    private TextView txtIndicator, tvBarcode, tvBarcodeHEX, textToolbarTitle;
     private Spinner spnrRfids;
     private Button btnAssign, btnConfirmSelect, btnSaveExit, btnNextBarcode;
     private LinearLayout lltWrite, lltWriteSuccess;
-    private ImageView ivRFIDStatus, ivRFIDSWritetatus;
+    private ImageView ivRFIDStatus, ivRFIDSWritetatus, ivHome;
 
     private List<Inventory> inventories = new ArrayList<>();
     private ArrayAdapter<Inventory> inventoryAdapter;
@@ -73,6 +73,7 @@ public class RenameRfidTagsActivity extends BaseActivity {
         txtIndicator.setText("");
 
         setTitle("READ BARCODE & WRITE TO RFID TAG");
+        setHomeButtonEnable(true);
 
         barcode = (Barcode) getIntent().getSerializableExtra("barcode");
 
@@ -272,5 +273,26 @@ public class RenameRfidTagsActivity extends BaseActivity {
             rfidReader.startScan();
         }
         return super.onKeyDown(keyCode, event);
+    }
+
+    protected void setTitle(String title) {
+        textToolbarTitle = findViewById(R.id.textToolbarTitle);
+        textToolbarTitle.setText(title);
+    }
+
+    protected void setHomeButtonEnable(boolean enable) {
+        ivHome = findViewById(R.id.ivHome);
+        if (enable) {
+            ivHome.setVisibility(View.VISIBLE);
+        } else {
+            ivHome.setVisibility(View.GONE);
+        }
+
+        ivHome.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                finish();
+            }
+        });
     }
 }

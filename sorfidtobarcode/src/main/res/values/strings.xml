@@ -101,6 +101,7 @@
     <string name="barcode_is_read_in_ascii">Barcode is read in ASCII format, encoded into HEX format and stored in the EPC memory of RFID Tag</string>
     <string name="save_exit"><![CDATA[Save & Exit]]></string>
     <string name="next_barcode">Next Barcode</string>
+    <string name="home_title"><![CDATA[READ BARCODE & WRITE TO RFID TAG]]></string>
 
     <string-array name="dummmy_spinner">
         <item>item1</item>

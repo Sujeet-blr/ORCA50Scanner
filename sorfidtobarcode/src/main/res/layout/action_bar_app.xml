@@ -17,11 +17,14 @@
         android:visibility="gone" />
 
     <TextView
+        android:textSize="16sp"
         android:id="@+id/textToolbarTitle"
         style="@style/TextAppearance.AppCompat.Widget.ActionBar.Title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
-        android:text="@string/app_name" />
+        android:layout_marginLeft="@dimen/margin_horizontal"
+        android:layout_marginRight="@dimen/margin_horizontal"
+        android:text="@string/home_title" />
 
 </RelativeLayout>

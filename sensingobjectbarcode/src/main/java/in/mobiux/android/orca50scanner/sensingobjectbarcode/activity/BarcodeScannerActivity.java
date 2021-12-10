@@ -58,7 +58,6 @@ public class BarcodeScannerActivity extends BarcodeReaderBaseActivity implements
 
         logger = AppLogger.getInstance(getApplicationContext());
         btnSave.setOnClickListener(this);
-//        btnSave.setVisibility(View.GONE);
         btnClear.setOnClickListener(this);
         btnPrint.setOnClickListener(this);
 
@@ -80,6 +79,8 @@ public class BarcodeScannerActivity extends BarcodeReaderBaseActivity implements
         map.put(bar.getName(), bar);
 
         adapter.notifyDataSetChanged();
+
+        tvCount.setText(adapter.getItemCount() + " Pcs");
     }
 
     @Override
@@ -151,8 +152,5 @@ public class BarcodeScannerActivity extends BarcodeReaderBaseActivity implements
     @Override
     protected void onDestroy() {
         super.onDestroy();
-
-//        barcodeReader.releaseResources();
-//        app.onTerminate();
     }
 }

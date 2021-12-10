@@ -54,14 +54,8 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         txtIndicator.setText("");
 
         btnSave.setOnClickListener(this);
-//        btnSave.setVisibility(View.GONE);
         btnClear.setOnClickListener(this);
         btnPrint.setOnClickListener(this);
-//        txtIndicator.setTag(startButtonStatus);
-
-//        barcodeReader = new BarcodeReader(getApplicationContext());
-//        barcodeReader = new BarcodeReaderOrca(getApplicationContext());
-//        barcodeReader.connect(Reader.ReaderType.BARCODE);
 
         registerBarcodeListener();
 

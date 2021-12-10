@@ -14,9 +14,6 @@ public class SplashActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
 
-        getSupportActionBar().hide();
-
-
         new Handler(getMainLooper()).postDelayed(new Runnable() {
             @Override
             public void run() {

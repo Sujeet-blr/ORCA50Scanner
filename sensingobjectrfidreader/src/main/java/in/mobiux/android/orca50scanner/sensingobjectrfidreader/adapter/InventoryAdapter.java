@@ -47,7 +47,7 @@ public class InventoryAdapter extends RecyclerView.Adapter<InventoryAdapter.Recy
 
         Inventory inventory = inventories.get(position);
 
-        holder.tvRssi.setText("" + inventory.getRssi());
+        holder.tvRssi.setText("" + inventory.getRssi()+" dBm");
         holder.tvName.setText("" + inventory.getEpc());
 
         if (inventory.isScanStatus()) {

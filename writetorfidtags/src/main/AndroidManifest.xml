@@ -14,7 +14,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.ORCA50Scanner">
         <activity android:name=".activity.MainActivity"></activity>
-        <activity android:name=".activity.SplashActivity">
+        <activity android:name=".activity.SplashActivity" android:theme="@style/Theme.AppTheme.NoActionBar.FullScreen">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

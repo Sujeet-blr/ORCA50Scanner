@@ -23,7 +23,8 @@
         android:theme="@style/Theme.AppTheme.NoActionBar">
         <activity
             android:name=".activity.SplashActivity"
-            android:exported="true">
+            android:exported="true"
+            android:theme="@style/Theme.AppTheme.NoActionBar.FullScreen">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

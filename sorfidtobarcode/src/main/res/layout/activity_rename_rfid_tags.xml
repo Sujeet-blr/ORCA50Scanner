@@ -59,7 +59,7 @@
                 android:padding="@dimen/margin_horizontal">
 
                 <TextView
-                    style="@style/TextAppearance.MaterialComponents.Body2"
+                    style="@style/TextAppearance.MaterialComponents.Caption"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/the_barcode_read_is" />
@@ -183,7 +183,7 @@
                     android:padding="@dimen/margin_horizontal">
 
                     <TextView
-                        style="@style/TextAppearance.MaterialComponents.Body2"
+                        style="@style/TextAppearance.MaterialComponents.Caption"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/data_written_to_rfid_is" />
