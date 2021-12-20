@@ -4,7 +4,7 @@
     "type": "APK",
     "kind": "Directory"
   },
-  "applicationId": "in.mobiux.android.orca50scanner.writetorfidtags",
+  "applicationId": "in.mobiux.android.orca50scanner.solocateasset",
   "variantName": "release",
   "elements": [
     {
@@ -12,7 +12,7 @@
       "filters": [],
       "versionCode": 1,
       "versionName": "1.0",
-      "outputFile": "writetorfidtags-release.apk"
+      "outputFile": "solocateasset-release.apk"
     }
   ]
 }
