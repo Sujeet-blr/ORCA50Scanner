@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">SO Locate Asset</string>
+    <string name="settings">Settings</string>
+    <string name="upload">Upload</string>
+</resources>
