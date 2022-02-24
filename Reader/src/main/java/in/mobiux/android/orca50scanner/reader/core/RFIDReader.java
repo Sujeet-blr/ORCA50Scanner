@@ -107,7 +107,8 @@ public class RFIDReader implements Reader {
             logger.i(TAG, "Setting Refresh output power is : " + Arrays.toString(readerSetting.btAryOutputPower));
 
             int rssiValue = byteArrayToInt(readerSetting.btAryOutputPower);
-            session.setInt(session.KEY_RF_OUTPUT_POWER, rssiValue);
+            logger.i(TAG, "rssiValue "+rssiValue);
+//            session.setInt(session.KEY_RF_OUTPUT_POWER, rssiValue);
             mReaderSetting = readerSetting;
         }
 

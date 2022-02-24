@@ -97,4 +97,8 @@ public class RFIDReaderBaseActivity extends BaseActivity implements RFIDReaderLi
     public void startScan() {
         rfidReader.startScan();
     }
+
+    public int setRFOutputPower(int rssi){
+        return rfidReader.setRFOutputPower(rssi);
+    }
 }

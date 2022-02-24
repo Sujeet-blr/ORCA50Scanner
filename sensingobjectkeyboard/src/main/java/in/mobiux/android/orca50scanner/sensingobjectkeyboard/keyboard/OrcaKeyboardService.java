@@ -50,6 +50,8 @@ public class OrcaKeyboardService extends InputMethodService implements KeyboardV
     public static final int KEYCODE_LOGO = 204;
     private int count = 0;
 
+    private String filterKey = "000000";
+
 
     private RFIDReader rfidReader;
     private RFIDReaderListener rfidReaderListener = null;
@@ -287,7 +289,8 @@ public class OrcaKeyboardService extends InputMethodService implements KeyboardV
                 if (tagEnd.mTotalRead == 0)
                     rfid = "";
 
-                publishData(rfid);
+                if (rfid.startsWith(filterKey))
+                    publishData(rfid);
             }
 
             @Override

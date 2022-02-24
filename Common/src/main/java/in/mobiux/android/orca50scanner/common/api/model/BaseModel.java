@@ -1,4 +1,6 @@
 package in.mobiux.android.orca50scanner.common.api.model;
 
-public class BaseModel {
+import java.io.Serializable;
+
+public class BaseModel implements Serializable {
 }

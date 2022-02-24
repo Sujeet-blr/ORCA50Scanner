@@ -98,9 +98,13 @@
     <Row>
         <Key
             android:codes="97"
-            android:horizontalGap="20dp"
             android:keyEdgeFlags="left"
             android:keyLabel="a" />
+<!--        <Key-->
+<!--            android:codes="97"-->
+<!--            android:horizontalGap="20dp"-->
+<!--            android:keyEdgeFlags="left"-->
+<!--            android:keyLabel="a" />-->
         <Key
             android:codes="115"
             android:keyLabel="s" />
@@ -125,6 +129,12 @@
         <Key
             android:codes="108"
             android:keyLabel="l" />
+        <Key
+            android:codes="44"
+            android:keyLabel="," />
+        <Key
+            android:codes="46"
+            android:keyLabel="." />
         <!--        <Key-->
         <!--            android:codes="35,64"-->
         <!--            android:keyEdgeFlags="right"-->
@@ -161,12 +171,11 @@
 
         <Key
             android:codes="-5"
+            android:iconPreview="@drawable/ic_backspace_24"
             android:isRepeatable="true"
             android:keyWidth="15%p"
-            android:iconPreview="@drawable/ic_backspace_24"
-            android:keyIcon="@drawable/ic_backspace_24"
             android:keyEdgeFlags="right"
-            />
+            android:keyIcon="@drawable/ic_backspace_24" />
         <!--        <Key-->
         <!--            android:codes="46"-->
         <!--            android:keyLabel="." />-->

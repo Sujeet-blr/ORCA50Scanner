@@ -73,6 +73,9 @@ public class Inventory implements Serializable {
     @SerializedName("scanStatus")
     @Expose
     private boolean scanStatus = false;
+    @SerializedName("isMatchingWithSample")
+    @Expose
+    private boolean isMatchingWithSample = false;
 
 //    @SerializedName("createdAt")
 //    @Expose
@@ -180,6 +183,14 @@ public class Inventory implements Serializable {
         return seconds;
     }
 
+    public boolean isMatchingWithSample() {
+        return isMatchingWithSample;
+    }
+
+    public void setMatchingWithSample(boolean matchingWithSample) {
+        isMatchingWithSample = matchingWithSample;
+    }
+
     public String getFormattedEPC() {
 //        return getEpc().replace(" ", "");
         return AppUtils.getFormattedEPC(getEpc());
@@ -196,10 +207,10 @@ public class Inventory implements Serializable {
         return null;
     }
 
-    @Override
-    public String toString() {
-        return "" + name;
-    }
+//    @Override
+//    public String toString() {
+//        return "" + name;
+//    }
 
     public static class InventoryTagEnd {
         public int mCurrentAnt = 0;

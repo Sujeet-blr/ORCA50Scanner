@@ -4,6 +4,9 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.util.Log;
 
+import java.util.HashSet;
+import java.util.Set;
+
 /**
  * Created by SUJEET KUMAR on 28-Mar-21.
  */
@@ -73,6 +76,20 @@ public class SessionManager {
 
     public String getStringValue(String key) {
         return preferences.getString(key, "");
+    }
+
+    public void setStringSet(String key, Set<String> value) {
+        SharedPreferences.Editor editor = preferences.edit();
+        Set<String> set = new HashSet<>(value);
+        editor.remove(key);
+        editor.commit();
+        editor.putStringSet(key, set);
+        editor.apply();
+        AppLogger.getInstance(context).i(TAG, "Saved as key :" + key + " value : " + set);
+    }
+
+    public Set<String> getStringSet(String key) {
+        return preferences.getStringSet(key, new HashSet<>());
     }
 
     public void setInt(String key, int value) {

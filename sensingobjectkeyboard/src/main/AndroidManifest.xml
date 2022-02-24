@@ -33,7 +33,7 @@
         </activity>
 
         <service
-            android:name=".keyboard.OrcaCompleteKeyboardService"
+            android:name=".keyboard.OrcaKeyboardService"
             android:label="Sensing Object Keyboard"
             android:permission="android.permission.BIND_INPUT_METHOD">
             <meta-data

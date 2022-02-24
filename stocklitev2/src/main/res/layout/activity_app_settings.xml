@@ -1,0 +1,190 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".activity.AppSettingsActivity">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/margin_horizontal"
+            android:orientation="vertical"
+            android:paddingBottom="@dimen/bottom_layout_margin">
+
+            <TextView
+                style="@style/TextAppearance.MaterialComponents.Headline6"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/rfid_tag_matching_rules" />
+
+            <RadioGroup
+                android:id="@+id/rg1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/margin_horizontal">
+
+                <RadioButton
+                    android:id="@+id/rbM1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/no_matching_is_required_show_all_scanned_rfid_tags" />
+
+                <RadioButton
+                    android:id="@+id/rbM2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/match_using_name_rfid_tag_map" />
+
+                <LinearLayout
+                    android:id="@+id/lltFileUpload"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="32dp"
+                    android:layout_marginRight="@dimen/margin_horizontal"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/tvAttach"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/shape_rectangle"
+                        android:drawableRight="@drawable/ic_attach_file_24"
+                        android:gravity="center_vertical"
+                        android:hint="Upload Name - RFID Tag map"
+                        android:padding="5dp" />
+
+                    <TextView
+                        style="@style/TextAppearance.MaterialComponents.Caption"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="*Upload CSV file with only 'Name - RFID Tag' as pairs" />
+
+                </LinearLayout>
+
+                <RadioButton
+                    android:id="@+id/rbM3"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/no_matching_is_required_show_all_scanned_rfid_tags" />
+
+                <TextView
+                    style="@style/TextAppearance.MaterialComponents.Caption"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="32dp"
+                    android:text="@string/only_4_chars_and_only_between_0_9_a_f_is_permitted" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <com.google.android.material.chip.ChipGroup
+                        android:id="@+id/chip_group"
+                        style="@style/Widget.MaterialComponents.ChipGroup"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+
+                    </com.google.android.material.chip.ChipGroup>
+
+                    <EditText
+                        android:id="@+id/editText"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content" />
+
+                </LinearLayout>
+
+            </RadioGroup>
+
+
+            <TextView
+                style="@style/TextAppearance.MaterialComponents.Headline6"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_vertical"
+                android:text="@string/non_matching_rfid_tags_handling_rules" />
+
+            <TextView
+                style="@style/TextAppearance.MaterialComponents.Caption"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="If a scanned RFID Tag does not match as per above selected RFID Tag matching rules" />
+
+            <RadioGroup
+                android:id="@+id/rg2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/margin_horizontal">
+
+                <RadioButton
+                    android:id="@+id/rbNM1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/show_rfid_tags" />
+
+                <RadioButton
+                    android:id="@+id/rbNM2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/do_not_show_rfid_tags" />
+
+            </RadioGroup>
+
+            <TextView
+                style="@style/TextAppearance.MaterialComponents.Headline6"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_vertical"
+                android:text="@string/non_matching_rfid_tags_handling_rules" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/margin_horizontal"
+                android:orientation="vertical">
+
+                <RadioGroup
+                    android:id="@+id/rg3"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/margin_horizontal">
+
+                    <RadioButton
+                        android:id="@+id/rbD1"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/display_scanned_rfid_tags" />
+
+                    <RadioButton
+                        android:id="@+id/rbD2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/display_last_8_bits_of_scanned_rfid_tags" />
+
+                    <CheckBox
+                        android:id="@+id/checkBox31"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/margin_horizontal"
+                        android:text="@string/show_rfid_tag_count_subtotals_when_first_4_of_the_last_8_bits_match" />
+
+                    <RadioButton
+                        android:id="@+id/rbD3"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/display_last_4_bits_of_scanned_rfid_tags" />
+                </RadioGroup>
+            </LinearLayout>
+
+
+        </LinearLayout>
+    </ScrollView>
+
+</RelativeLayout>

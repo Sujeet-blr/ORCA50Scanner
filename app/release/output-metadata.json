@@ -4,15 +4,15 @@
     "type": "APK",
     "kind": "Directory"
   },
-  "applicationId": "in.mobiux.android.orca50scanner.solocateasset",
+  "applicationId": "in.mobiux.android.orca50scanner.sensingobjectkeyboard",
   "variantName": "release",
   "elements": [
     {
       "type": "SINGLE",
       "filters": [],
       "versionCode": 1,
-      "versionName": "1.0",
-      "outputFile": "solocateasset-release.apk"
+      "versionName": "keyboard 2.0",
+      "outputFile": "sensingobjectkeyboard-release.apk"
     }
   ]
 }
