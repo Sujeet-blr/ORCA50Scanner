@@ -56,11 +56,11 @@ public class InventoryAdapter extends RecyclerView.Adapter<InventoryAdapter.Recy
         if (dpRule == RFIDUtils.DisplayRule.D1) {
 
         } else if (dpRule == RFIDUtils.DisplayRule.D2) {
-            name = name.substring(name.length() - 9, name.length() - 1);
+            name = name.substring(name.length() - 8, name.length());
         } else if (dpRule == RFIDUtils.DisplayRule.D21) {
-            name = name.substring(name.length() - 5, name.length() - 1);
+            name = name.substring(name.length() - 4, name.length());
         } else if (dpRule == RFIDUtils.DisplayRule.D3) {
-            name = name.substring(name.length() - 5, name.length() - 1);
+            name = name.substring(name.length() - 4, name.length());
         }
 
         holder.tvRFID.setText("" + rfidDisplayName(name));

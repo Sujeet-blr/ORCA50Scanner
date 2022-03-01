@@ -25,24 +25,34 @@
         android:textStyle="bold" />
 
     <SeekBar
-        android:max="30"
-        android:min="3"
         android:id="@+id/seekBar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/tvRSSI"
         android:layout_marginLeft="@dimen/margin_horizontal"
         android:layout_marginTop="48dp"
-        android:layout_marginRight="@dimen/margin_horizontal" />
+        android:layout_marginRight="@dimen/margin_horizontal"
+        android:max="33"
+        android:min="3" />
 
     <TextView
         style="@style/TextAppearance.MaterialComponents.Caption"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/seekBar"
-        android:textSize="12sp"
-        android:layout_marginBottom="32dp"
         android:layout_centerHorizontal="true"
-        android:text="Move cursor to set RF Output Power" />
+        android:layout_marginBottom="32dp"
+        android:id="@+id/tvSeekbarHint"
+        android:text="Move cursor to set RF Output Power"
+        android:textSize="12sp" />
+
+    <Button
+        android:id="@+id/btnClose"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/tvSeekbarHint"
+        android:layout_centerHorizontal="true"
+        android:backgroundTint="@color/accent"
+        android:text="Close" />
 
 </RelativeLayout>

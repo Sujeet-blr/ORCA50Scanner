@@ -71,7 +71,7 @@
                     android:id="@+id/rbM3"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/no_matching_is_required_show_all_scanned_rfid_tags" />
+                    android:text="Match first 4 bits of RFID Tags" />
 
                 <TextView
                     style="@style/TextAppearance.MaterialComponents.Caption"
@@ -96,8 +96,11 @@
 
                     <EditText
                         android:id="@+id/editText"
+
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content" />
+                        android:layout_height="wrap_content"
+                        android:inputType="textCapCharacters"
+                        android:maxLines="1" />
 
                 </LinearLayout>
 

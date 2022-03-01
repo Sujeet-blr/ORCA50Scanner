@@ -8,6 +8,8 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.text.Editable;
+import android.text.InputFilter;
+import android.text.Spanned;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
@@ -55,16 +57,19 @@ public class AppSettingsActivity extends BaseActivity {
     private TextView tvAttach;
 
     private RFIDUtils rfidUtils;
-//    private List<String> patterList = new ArrayList<>();
+    //    private List<String> patterList = new ArrayList<>();
     private Set<String> acronyms = new HashSet<>();
 
     private AppDatabaseRepo dbRepo;
+
+    String allowCharacterSet = "ABCDEFabcdef0123456789";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_app_settings);
 
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         checkBox31 = findViewById(R.id.checkBox31);
         rg1 = findViewById(R.id.rg1);
         rg2 = findViewById(R.id.rg2);
@@ -100,45 +105,34 @@ public class AppSettingsActivity extends BaseActivity {
             showFileChooser();
         });
 
+
         editText.addTextChangedListener(new TextWatcher() {
             @Override
-            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+            public void beforeTextChanged(CharSequence charSequence, int start, int count, int after) {
 
+                Log.i(TAG, "" + start);
             }
 
             @Override
-            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+            public void onTextChanged(CharSequence charSequence, int start, int before, int count) {
+                Log.i(TAG, charSequence.toString());
             }
 
             @Override
             public void afterTextChanged(Editable editable) {
                 String str = editable.toString();
 
+                if (str.length() > 0) {
+                    String lc = String.valueOf(str.charAt(str.length() - 1));
+                    if (!allowCharacterSet.contains(lc)) {
+                        editText.setText("");
+                        return;
+                    }
+                }
+
                 str = str.trim();
-                str.replace(" ", "");
+                str = str.replace(" ", "");
                 if (str.length() == 4) {
-
-//                    Chip chip = new Chip(AppSettingsActivity.this);
-//                    chip.setText(str);
-//                    chip.setCloseIconVisible(true);
-//
-//                    chip.setOnCloseIconClickListener(new View.OnClickListener() {
-//                        @Override
-//                        public void onClick(View view) {
-//                            chipGroup.removeView(chip);
-//                            patterList.remove(chip.getText().toString());
-//                            acronyms.remove(chip.getText().toString());
-//                            session.setStringSet("MR3", acronyms);
-//                        }
-//                    });
-//
-//                    patterList.add(str);
-//                    chipGroup.addView(chip);
-//                    editText.setText("");
-//
-//                    acronyms.add(str);
-//                    session.setStringSet("MR3", acronyms);
-
                     addChipToMR3(str);
                 }
             }

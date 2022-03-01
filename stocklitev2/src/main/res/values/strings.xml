@@ -43,5 +43,6 @@
     <string name="display_last_8_bits_of_scanned_rfid_tags">Display last 8 bits of scanned RFID Tags</string>
     <string name="match_using_name_rfid_tag_map">Match using "Name - RFID Tag" map</string>
     <string name="only_4_chars_and_only_between_0_9_a_f_is_permitted">*only 4 chars and only between 0-9, A-F is permitted</string>
+    <string name="allowed_digits">0123456789ABCDEF</string>
 
 </resources>

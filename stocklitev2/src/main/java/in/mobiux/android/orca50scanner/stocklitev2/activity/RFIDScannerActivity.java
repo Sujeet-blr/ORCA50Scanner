@@ -249,8 +249,10 @@ public class RFIDScannerActivity extends RFIDReaderBaseActivity {
         int MIN = 3;
         TextView tvRSSI = layout.findViewById(R.id.tvRSSI);
         SeekBar seekBar = layout.findViewById(R.id.seekBar);
+        Button btnClose = layout.findViewById(R.id.btnClose);
         tvRSSI.setText(rfOutputPower + "");
         seekBar.setProgress(rfOutputPower);
+        AlertDialog alertDialog = builder.create();
 
         seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
@@ -277,8 +279,13 @@ public class RFIDScannerActivity extends RFIDReaderBaseActivity {
             }
         });
 
-        AlertDialog alertDialog = builder.create();
+        btnClose.setOnClickListener(view -> {
+            alertDialog.dismiss();
+        });
+
+
         alertDialog.show();
+        seekBar.setProgress(rfOutputPower);
 
     }
 }
