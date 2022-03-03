@@ -57,7 +57,6 @@ public class AppSettingsActivity extends BaseActivity {
     private TextView tvAttach;
 
     private RFIDUtils rfidUtils;
-    //    private List<String> patterList = new ArrayList<>();
     private Set<String> acronyms = new HashSet<>();
 
     private AppDatabaseRepo dbRepo;
@@ -70,6 +69,7 @@ public class AppSettingsActivity extends BaseActivity {
         setContentView(R.layout.activity_app_settings);
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setTitle("App Settings");
         checkBox31 = findViewById(R.id.checkBox31);
         rg1 = findViewById(R.id.rg1);
         rg2 = findViewById(R.id.rg2);
@@ -194,8 +194,6 @@ public class AppSettingsActivity extends BaseActivity {
                 } else if (checkedId == R.id.rbD3) {
                     rfidUtils.setDisplayRule(RFIDUtils.DisplayRule.D3);
                 }
-
-                showToast("" + pos);
             }
         });
 

@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Stock Lite v2</string>
+    <string name="app_name">StockLite v3 Beta Release</string>
 
     <string name="clear_and_re_scan"><![CDATA[Clear & re-scan]]></string>
     <string name="finish_export_data"><![CDATA[Finish & export data]]></string>

@@ -41,10 +41,8 @@ public class BarcodeScannerActivity extends BarcodeReaderBaseActivity {
         btnOK = findViewById(R.id.btnOK);
         btnClear = findViewById(R.id.btnClear);
         edtBarcode.setText("");
-//        btnOK.setVisibility(View.GONE);
-//        btnClear.setVisibility(View.GONE);
 
-        getSupportActionBar().setTitle("Scan QR/Barcode");
+        getSupportActionBar().setTitle(R.string.app_name);
 
         myApp = (MyApplication) getApplicationContext();
 
@@ -61,7 +59,6 @@ public class BarcodeScannerActivity extends BarcodeReaderBaseActivity {
 
         btnClear.setOnClickListener(view -> {
             barcode = "";
-//            btnOK.setVisibility(View.GONE);
             edtBarcode.setText(barcode);
         });
     }
@@ -93,8 +90,6 @@ public class BarcodeScannerActivity extends BarcodeReaderBaseActivity {
         barcode = barcode.trim();
         this.barcode = barcode;
         edtBarcode.setText(barcode);
-        btnOK.setVisibility(View.VISIBLE);
-        btnClear.setVisibility(View.VISIBLE);
     }
 
     @Override
@@ -104,7 +99,6 @@ public class BarcodeScannerActivity extends BarcodeReaderBaseActivity {
         if (requestCode == 201 && resultCode == RESULT_FIRST_USER) {
             barcode = "";
             edtBarcode.setText("");
-            btnOK.setVisibility(View.GONE);
         }
     }
 
@@ -163,9 +157,6 @@ public class BarcodeScannerActivity extends BarcodeReaderBaseActivity {
     private void startFreshTask() {
         barcode = "";
         edtBarcode.setText("");
-        btnOK.setVisibility(View.GONE);
-        btnClear.setVisibility(View.GONE);
         myApp.clearStocks();
-        showToast("New Task");
     }
 }

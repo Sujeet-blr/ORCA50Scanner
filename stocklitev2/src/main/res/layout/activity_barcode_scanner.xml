@@ -17,7 +17,7 @@
             style="@style/TextAppearance.MaterialComponents.Body1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Scan QR Code"
+            android:text="Scan QR/Barcode"
             android:textStyle="bold" />
 
         <EditText
