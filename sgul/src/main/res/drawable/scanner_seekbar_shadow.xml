@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <item>
+        <shape>
+            <solid android:color="@color/seekbar_default" />
+            <size android:height="120dp" />
+            <stroke
+                android:width="2dp"
+                android:color="@color/white" />
+            <corners android:radius="8dp" />
+            <!--            <gradient-->
+            <!--                android:angle="180"-->
+            <!--                android:centerColor="#E5E8ED"-->
+            <!--                android:endColor="#E5E8ED"-->
+            <!--                android:startColor="#E5E8ED"-->
+            <!--                android:type="linear" />-->
+        </shape>
+    </item>
+</layer-list>

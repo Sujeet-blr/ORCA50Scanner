@@ -107,7 +107,7 @@ public class RFIDReader implements Reader {
             logger.i(TAG, "Setting Refresh output power is : " + Arrays.toString(readerSetting.btAryOutputPower));
 
             int rssiValue = byteArrayToInt(readerSetting.btAryOutputPower);
-            logger.i(TAG, "rssiValue "+rssiValue);
+            logger.i(TAG, "rssiValue " + rssiValue);
 //            session.setInt(session.KEY_RF_OUTPUT_POWER, rssiValue);
             mReaderSetting = readerSetting;
         }
@@ -492,7 +492,7 @@ public class RFIDReader implements Reader {
 
     public int getRFOutputPower() {
         int value = 0;
-        if (INSTANCE != null && isConnected()) {
+        if (INSTANCE != null && rfidReaderHelper != null && isConnected()) {
             int status = rfidReaderHelper.getOutputPower(mReaderSetting.btReadId);
         } else {
             logger.e(TAG, "RFID Reader is not connected");
