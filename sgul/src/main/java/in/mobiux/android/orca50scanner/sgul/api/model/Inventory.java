@@ -35,7 +35,9 @@ public class Inventory extends BaseModel implements Serializable {
     @SerializedName("rfid_label_name")
     @Expose
     private String rfidLabelName = "";
-
+    @SerializedName("model")
+    @Expose
+    private String model = "";
     @SerializedName("name")
     @Expose
     private String name;
@@ -182,6 +184,14 @@ public class Inventory extends BaseModel implements Serializable {
 
     public void setRfidLabelName(String rfidLabelName) {
         this.rfidLabelName = rfidLabelName;
+    }
+
+    public String getModel() {
+        return model;
+    }
+
+    public void setModel(String model) {
+        this.model = model;
     }
 
     public boolean isChecked() {

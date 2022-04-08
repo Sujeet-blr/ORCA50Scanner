@@ -218,28 +218,19 @@ public class ScanInventoryActivity extends BaseActivity implements View.OnClickL
         LayoutInflater inflater = getLayoutInflater();
         View dialogView = inflater.inflate(R.layout.dialog_list, null);
         builder.setView(dialogView);
-        builder.setTitle("Choose if these assets belongs to " + laboratory.getName() + " ?");
+        builder.setTitle("Please select assets that are currently in Lab " + laboratory.getName());
         builder.setMessage(" ");
 
 
-        CheckBox checkboxAll = dialogView.findViewById(R.id.checkboxAll);
         RecyclerView recyclerView = dialogView.findViewById(R.id.recyclerView);
-        recyclerView.setHasFixedSize(true);
 
         InventoryAlertAdapter alertAdapter = new InventoryAlertAdapter(getApplicationContext(), scannedList);
         recyclerView.setAdapter(alertAdapter);
+        recyclerView.setVerticalScrollBarEnabled(true);
         alertAdapter.setOnItemClickListener(new InventoryAlertAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(int position, Inventory a) {
 
-            }
-        });
-
-        checkboxAll.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-
-                alertAdapter.notifyDataSetChanged();
             }
         });
 

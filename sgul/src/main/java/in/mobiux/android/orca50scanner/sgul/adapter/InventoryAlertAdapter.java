@@ -45,7 +45,7 @@ public class InventoryAlertAdapter extends RecyclerView.Adapter<InventoryAlertAd
 
         Inventory inventory = list.get(position);
         holder.tvName.setText(inventory.getName());
-        holder.tvBarcode.setText(inventory.getBarcode());
+        holder.tvBarcode.setText(inventory.getModel());
         holder.tvRfidLabel.setText(inventory.getRfidLabelName());
         holder.tvRFID.setText(inventory.getFormattedEPC());
         holder.tvLab.setText(inventory.getLaboratoryName());

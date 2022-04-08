@@ -50,11 +50,13 @@ public class InventoryAdapter extends RecyclerView.Adapter<InventoryAdapter.Recy
         holder.tvID.setText("" + inventory.getName());
         holder.tvName.setText("" + inventory.getEpc());
         holder.tvRfidLabel.setText("" + inventory.getRfidLabelName());
-        if (inventory.getBarcode() == null || inventory.getBarcode().isEmpty()) {
-            holder.tvQty.setText("Not available");
-        } else {
-            holder.tvQty.setText("" + inventory.getBarcode());
-        }
+//        if (inventory.getBarcode() == null || inventory.getBarcode().isEmpty()) {
+//            holder.tvQty.setText("Not available");
+//        } else {
+//            holder.tvQty.setText("" + inventory.getBarcode());
+//        }
+
+        holder.tvQty.setText("" + inventory.getModel());
 
         if (inventory.isScanStatus()) {
             holder.ivStatus.setImageResource(R.drawable.ic_check_circle_24);

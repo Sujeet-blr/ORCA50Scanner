@@ -492,11 +492,15 @@ public class RFIDReader implements Reader {
 
     public int getRFOutputPower() {
         int value = 0;
-        if (INSTANCE != null && rfidReaderHelper != null && isConnected()) {
-            int status = rfidReaderHelper.getOutputPower(mReaderSetting.btReadId);
-        } else {
-            logger.e(TAG, "RFID Reader is not connected");
-            return 1;
+        try {
+            if (INSTANCE != null && rfidReaderHelper != null && isConnected()) {
+                int status = rfidReaderHelper.getOutputPower(mReaderSetting.btReadId);
+            } else {
+                logger.e(TAG, "RFID Reader is not connected");
+                return 1;
+            }
+        } catch (Exception e) {
+            logger.e(TAG, "" + e.getLocalizedMessage());
         }
         return value;
     }

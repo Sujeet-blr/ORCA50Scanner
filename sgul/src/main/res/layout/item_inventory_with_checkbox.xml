@@ -26,6 +26,7 @@
             <TextView
                 style="@style/TextAppearance.MaterialComponents.Caption"
                 android:layout_width="0dp"
+                android:textSize="9sp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:text="Asset Name: " />
@@ -45,15 +46,15 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:padding="2dp"
-            android:visibility="gone">
+            android:padding="2dp">
 
             <TextView
                 style="@style/TextAppearance.MaterialComponents.Caption"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="Barcode: " />
+                android:textSize="9sp"
+                android:text="Model: " />
 
             <TextView
                 android:id="@+id/tvBarcode"
@@ -70,14 +71,14 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:padding="2dp"
-            android:visibility="gone">
+            android:padding="2dp">
 
             <TextView
                 style="@style/TextAppearance.MaterialComponents.Caption"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
+                android:textSize="9sp"
                 android:text="RFID Label: " />
 
             <TextView
@@ -102,6 +103,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
+                android:textSize="9sp"
                 android:text="RFID: " />
 
             <LinearLayout
@@ -140,7 +142,8 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="Lab: " />
+                android:textSize="9sp"
+                android:text="Lab as per DB: " />
 
             <TextView
                 android:id="@+id/tvLab"
@@ -156,7 +159,6 @@
     </LinearLayout>
 
     <CheckBox
-
         android:id="@+id/checkbox"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"

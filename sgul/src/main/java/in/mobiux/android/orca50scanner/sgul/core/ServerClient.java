@@ -154,6 +154,10 @@ public class ServerClient {
                             if (attribute.getAttributes().getName().equals("RFID Label name")) {
                                 inventory.setRfidLabelName(attribute.getValues().getChoice());
                             }
+
+                            if (attribute.getAttributes().getName().equals("Model")) {
+                                inventory.setModel(attribute.getValues().getChoice());
+                            }
                         }
 
                         int labId = -1;
