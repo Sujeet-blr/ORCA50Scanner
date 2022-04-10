@@ -4,15 +4,15 @@
     "type": "APK",
     "kind": "Directory"
   },
-  "applicationId": "in.mobiux.android.orca50scanner.stocklitev2",
+  "applicationId": "in.mobiux.android.orca50scanner.sgul",
   "variantName": "release",
   "elements": [
     {
       "type": "SINGLE",
       "filters": [],
       "versionCode": 1,
-      "versionName": "3.0",
-      "outputFile": "stocklitev2-release.apk"
+      "versionName": "A01",
+      "outputFile": "sgul-release.apk"
     }
   ]
 }
