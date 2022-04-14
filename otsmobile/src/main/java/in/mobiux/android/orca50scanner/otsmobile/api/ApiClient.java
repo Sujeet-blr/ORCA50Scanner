@@ -1,8 +1,6 @@
-package in.mobiux.android.orca50scanner.sgul.api;
+package in.mobiux.android.orca50scanner.otsmobile.api;
 
 import android.content.Context;
-import android.os.Build;
-import android.util.Log;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -17,8 +15,7 @@ import javax.net.ssl.SSLSocketFactory;
 import javax.net.ssl.TrustManager;
 import javax.net.ssl.X509TrustManager;
 
-import in.mobiux.android.orca50scanner.sgul.BuildConfig;
-import in.mobiux.android.orca50scanner.sgul.util.SessionManager;
+import in.mobiux.android.orca50scanner.otsmobile.utils.SessionManager;
 import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
@@ -38,19 +35,32 @@ public class ApiClient {
 
     private static Retrofit retrofit;
     private static ApiService apiService;
+    private static ApiAuthService authService;
+    private static Retrofit retrofitAuthClient;
 
-    private static String baseUrl = Endpoints.BASE_URL;
 
+    private static Retrofit getAuthClient() {
+
+        if (retrofitAuthClient == null) {
+            HttpLoggingInterceptor interceptor = new HttpLoggingInterceptor();
+            interceptor.level(HttpLoggingInterceptor.Level.BODY);
+
+            OkHttpClient client = new OkHttpClient.Builder()
+                    .connectTimeout(1, TimeUnit.MINUTES)
+                    .readTimeout(1, TimeUnit.MINUTES)
+                    .writeTimeout(30, TimeUnit.SECONDS)
+                    .addInterceptor(interceptor).build();
+
+            retrofitAuthClient = new Retrofit.Builder()
+                    .baseUrl(Endpoints.getAuthBaseUrl())
+                    .client(getUnsafeOkHttpClient().build())
+                    .addConverterFactory(GsonConverterFactory.create())
+                    .build();
+        }
+        return retrofitAuthClient;
+    }
 
     private static Retrofit getClient() {
-
-        if (BuildConfig.DEBUG) {
-            baseUrl = Endpoints.BASE_URL_STAGING;
-        } else {
-            baseUrl = Endpoints.BASE_URL_GLOBAL;
-        }
-
-        Log.i(TAG, "getClient Called " + Endpoints.BASE_URL);
 
         if (retrofit == null) {
             HttpLoggingInterceptor interceptor = new HttpLoggingInterceptor();
@@ -62,19 +72,27 @@ public class ApiClient {
                     .writeTimeout(30, TimeUnit.SECONDS)
                     .addInterceptor(interceptor).build();
 
-//            retrofit = new Retrofit.Builder()
-//                    .baseUrl(Endpoints.BASE_URL)
-//                    .client(client)
-//                    .addConverterFactory(GsonConverterFactory.create())
-//                    .build();
             retrofit = new Retrofit.Builder()
-                    .baseUrl(Endpoints.BASE_URL)
+                    .baseUrl(Endpoints.getBaseUrl())
+//                    .client(client)
                     .client(getUnsafeOkHttpClient().build())
                     .addConverterFactory(GsonConverterFactory.create())
                     .build();
+//            retrofit = new Retrofit.Builder()
+//                    .baseUrl(Endpoints.BASE_URL)
+//                    .client(getUnsafeOkHttpClient().build())
+//                    .addConverterFactory(GsonConverterFactory.create())
+//                    .build();
         }
 //        retrofit.create(ApiService.class);
         return retrofit;
+    }
+
+    public static ApiAuthService getAuthService() {
+        if (authService == null) {
+            authService = getAuthClient().create(ApiAuthService.class);
+        }
+        return authService;
     }
 
     public static ApiService getApiService() {

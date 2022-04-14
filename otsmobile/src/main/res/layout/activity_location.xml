@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/screen_background_color"
+    tools:context=".activity.LocationActivity">
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:layout_margin="@dimen/margin_horizontal"
+        android:orientation="vertical">
+
+        <TextView
+            style="@style/TextAppearance.MaterialComponents.Headline6"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/margin_horizontal"
+            android:text="Choose Location"
+            android:textColor="@color/white"
+            android:visibility="gone" />
+
+        <Button
+            android:layout_height="@dimen/height_button"
+            android:textSize="@dimen/text_size_button"
+            android:id="@+id/btnLocation1"
+            android:layout_width="match_parent"
+
+            android:layout_marginBottom="@dimen/margin_vertical"
+            android:backgroundTint="@color/orange"
+            android:text="@string/location_1" />
+
+        <Button
+            android:layout_height="@dimen/height_button"
+            android:textSize="@dimen/text_size_button"
+            android:id="@+id/btnLocation2"
+            android:layout_width="match_parent"
+            android:layout_marginTop="@dimen/margin_vertical"
+            android:backgroundTint="@color/orange"
+            android:text="@string/location_2" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@id/ivFooter"
+        android:layout_centerHorizontal="true"
+        android:layout_margin="@dimen/margin_horizontal"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Logged in as "
+            android:textColor="@color/white"
+            android:textStyle="italic" />
+
+        <TextView
+            android:id="@+id/tvUserName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Les Davies "
+            android:textColor="@color/white"
+            android:textStyle="bold|italic" />
+    </LinearLayout>
+
+    <ImageView
+        android:id="@+id/ivFooter"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/height_footer"
+        android:layout_alignParentBottom="true"
+        android:background="@color/white"
+        android:src="@drawable/footprint_logo_footer" />
+
+</RelativeLayout>

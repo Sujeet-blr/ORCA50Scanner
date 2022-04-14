@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="margin_horizontal">16dp</dimen>
+    <dimen name="margin_vertical">16dp</dimen>
+    <dimen name="height_footer">60dp</dimen>
+    <dimen name="height_button">64dp</dimen>
+    <dimen name="text_size_button">18sp</dimen>
+</resources>
