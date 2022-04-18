@@ -5,6 +5,8 @@ import android.os.Handler;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.google.gson.Gson;
+
 import in.mobiux.android.orca50scanner.otsmobile.activity.BaseActivity;
 import in.mobiux.android.orca50scanner.otsmobile.activity.LoginActivity;
 import in.mobiux.android.orca50scanner.otsmobile.api.ApiClient;
@@ -44,7 +46,9 @@ public class SplashActivity extends BaseActivity {
             public void onResponse(Call<UserDetails> call, Response<UserDetails> response) {
                 if (response.isSuccessful()) {
                     if (response.body().isSuccess()) {
-                        tokenManger.setUniversalToken(response.body().getBody().getToken());
+
+                        UserDetails user = new Gson().fromJson(response.body().getJsonObject(), UserDetails.class);
+                        tokenManger.setUniversalToken(user.getToken());
 //                        sessionManager.setStringValue(SessionManager.KEY_UNIVERSAL_TOKEN, response.body().getToken());
                         launchActivity(LoginActivity.class);
                         finish();

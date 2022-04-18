@@ -39,17 +39,6 @@ public class UserDetails extends BaseModel {
     @SerializedName("token")
     @Expose
     private String token;
-    @SerializedName("body")
-    @Expose
-    private UserDetails body;
-
-    public UserDetails getBody() {
-        return body;
-    }
-
-    public void setBody(UserDetails body) {
-        this.body = body;
-    }
 
     public String getUuid() {
         return uuid;

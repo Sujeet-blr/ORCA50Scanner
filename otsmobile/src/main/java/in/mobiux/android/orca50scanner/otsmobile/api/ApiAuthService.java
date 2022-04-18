@@ -2,6 +2,7 @@ package in.mobiux.android.orca50scanner.otsmobile.api;
 
 import com.google.gson.JsonObject;
 
+import in.mobiux.android.orca50scanner.otsmobile.api.model.BaseModel;
 import in.mobiux.android.orca50scanner.otsmobile.api.model.UserDetails;
 import retrofit2.Call;
 import retrofit2.http.Body;
@@ -21,7 +22,7 @@ public interface ApiAuthService {
 
     //    call for validation
     @GET(Endpoints.VALIDATE_APPLICATION_TOKEN)
-    Call<UserDetails> validateApplicationToken(@Header("Authorization") String fullToken);
+    Call<BaseModel> validateApplicationToken(@Header("Authorization") String fullToken);
 
     @GET(Endpoints.LOGOUT)
     Call<BaseModel> logout(@Header("Authorization") String partialToken);

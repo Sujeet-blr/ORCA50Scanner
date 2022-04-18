@@ -4,9 +4,8 @@ import com.google.gson.JsonObject;
 
 import java.util.List;
 
+import in.mobiux.android.orca50scanner.otsmobile.api.model.BaseModel;
 import in.mobiux.android.orca50scanner.otsmobile.api.model.ProcessPoint;
-import in.mobiux.android.orca50scanner.otsmobile.api.model.ScanItem;
-import in.mobiux.android.orca50scanner.otsmobile.api.model.UserDetails;
 import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.GET;

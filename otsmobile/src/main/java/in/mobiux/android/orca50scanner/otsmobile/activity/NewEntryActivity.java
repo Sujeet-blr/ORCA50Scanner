@@ -2,7 +2,6 @@ package in.mobiux.android.orca50scanner.otsmobile.activity;
 
 import android.os.Bundle;
 import android.util.Log;
-import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -18,7 +17,7 @@ import java.util.List;
 
 import in.mobiux.android.orca50scanner.otsmobile.R;
 import in.mobiux.android.orca50scanner.otsmobile.api.ApiClient;
-import in.mobiux.android.orca50scanner.otsmobile.api.BaseModel;
+import in.mobiux.android.orca50scanner.otsmobile.api.model.BaseModel;
 import in.mobiux.android.orca50scanner.otsmobile.api.model.ProcessPoint;
 import in.mobiux.android.orca50scanner.otsmobile.api.model.ScanItem;
 import in.mobiux.android.orca50scanner.otsmobile.api.model.UserDetails;
@@ -121,7 +120,7 @@ public class NewEntryActivity extends BaseActivity {
 
                         finish();
                     } else {
-                        Toast.makeText(NewEntryActivity.this, "" + response.body().getBody().getMessage(), Toast.LENGTH_SHORT).show();
+                        Toast.makeText(NewEntryActivity.this, "" + response.body().getMessage(), Toast.LENGTH_SHORT).show();
                     }
                     Toast.makeText(NewEntryActivity.this, "", Toast.LENGTH_SHORT).show();
                 } else {

@@ -45,6 +45,8 @@ public class SettingsActivity extends BaseActivity {
 
         cardExportLogs.setVisibility(View.GONE);
         cardReaderStatus.setVisibility(View.GONE);
+        cardReadMe.setVisibility(View.GONE);
+        cardContactSupports.setVisibility(View.GONE);
 
         getSupportActionBar().setTitle("Settings");
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);

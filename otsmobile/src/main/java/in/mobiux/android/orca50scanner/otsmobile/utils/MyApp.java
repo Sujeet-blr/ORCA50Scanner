@@ -1,9 +1,6 @@
 package in.mobiux.android.orca50scanner.otsmobile.utils;
 
-import android.app.Application;
 import android.util.Log;
-import android.view.View;
-import android.widget.Toast;
 
 import androidx.lifecycle.Observer;
 
@@ -12,12 +9,12 @@ import com.google.gson.JsonObject;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import in.mobiux.android.orca50scanner.common.utils.App;
-import in.mobiux.android.orca50scanner.otsmobile.activity.MainActivity;
 import in.mobiux.android.orca50scanner.otsmobile.api.ApiClient;
-import in.mobiux.android.orca50scanner.otsmobile.api.BaseModel;
-import in.mobiux.android.orca50scanner.otsmobile.api.model.ProcessPoint;
+import in.mobiux.android.orca50scanner.otsmobile.api.model.BaseModel;
 import in.mobiux.android.orca50scanner.otsmobile.api.model.ScanItem;
 import in.mobiux.android.orca50scanner.otsmobile.database.ScanItemRepo;
 import retrofit2.Call;
@@ -31,28 +28,32 @@ public class MyApp extends App {
     private ScanItemRepo scanItemRepo;
     private List<ScanItem> items = new ArrayList<>();
     private TokenManger tokenManger;
-    private boolean onStartSyncStatus = false;
+    private Timer timer;
 
     @Override
     public void onCreate() {
         super.onCreate();
 
         tokenManger = TokenManger.getInstance(this);
+        session.setInt(session.KEY_RF_OUTPUT_POWER, 30);
         scanItemRepo = new ScanItemRepo(getApplicationContext());
+        timer = new Timer();
 
         scanItemRepo.getAllScanItemList().observeForever(new Observer<List<ScanItem>>() {
             @Override
             public void onChanged(List<ScanItem> list) {
                 items = list;
-
-                if (!onStartSyncStatus) {
-                    sendScanItems(items);
-                    onStartSyncStatus = true;
-                }
             }
         });
-    }
 
+//        sending scan data every 60 minutes to server
+        timer.scheduleAtFixedRate(new TimerTask() {
+            @Override
+            public void run() {
+                sendScanItems(items);
+            }
+        }, 1000 * 60, (1000 * 60 * 60));
+    }
 
     public void sendScanItems(List<ScanItem> list) {
 
@@ -81,7 +82,7 @@ public class MyApp extends App {
 
                         Log.i(TAG, "onResponse: Sync success");
                     } else {
-                        Log.e(TAG, "onResponse: " + response.body().getBody().getMessage());
+                        Log.e(TAG, "onResponse: " + response.body().getMessage());
                     }
                 } else {
                     Log.e(TAG, "onResponse: " + response.toString());
@@ -93,7 +94,6 @@ public class MyApp extends App {
                 Log.e(TAG, "onFailure: " + t.getLocalizedMessage());
             }
         });
-
     }
 
 }

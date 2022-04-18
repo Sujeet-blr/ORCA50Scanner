@@ -47,11 +47,6 @@ public class LoginActivity extends BaseActivity {
 
         processPointRepo = new ProcessPointRepo(getApplicationContext());
 
-        if (BuildConfig.DEBUG) {
-            edtClockNumber.setText("0000");
-            edtPinNumber.setText("1001");
-        }
-
         btnSubmit.setOnClickListener(view -> {
 
             String clockNumber = edtClockNumber.getText().toString();
@@ -63,6 +58,7 @@ public class LoginActivity extends BaseActivity {
                 details.setPinNumber(pinNumber);
 
                 login(details);
+
             } else {
                 Toast.makeText(app, "Please enter valid credentials", Toast.LENGTH_SHORT).show();
             }
@@ -81,12 +77,14 @@ public class LoginActivity extends BaseActivity {
                     JsonObject body = res.getAsJsonObject("body");
 
                     if (res.get("success").getAsBoolean()) {
+
+                        String token = body.get("token").getAsString();
+
                         JsonObject universal = body.getAsJsonObject("universal");
                         JsonObject userDetails = universal.getAsJsonObject("userDetails");
                         UserDetails user = new Gson().fromJson(userDetails, UserDetails.class);
-                        user.setApplicationToken(body.get("token").getAsString());
 
-                        tokenManger.setApplicationToken(user.getApplicationToken());
+                        tokenManger.setApplicationToken(token);
 
                         Intent intent = new Intent(getApplicationContext(), LocationActivity.class);
                         intent.putExtra("user", user);

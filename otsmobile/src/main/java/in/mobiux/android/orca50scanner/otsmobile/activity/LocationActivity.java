@@ -15,7 +15,7 @@ import org.jetbrains.annotations.NotNull;
 
 import in.mobiux.android.orca50scanner.otsmobile.R;
 import in.mobiux.android.orca50scanner.otsmobile.api.ApiClient;
-import in.mobiux.android.orca50scanner.otsmobile.api.BaseModel;
+import in.mobiux.android.orca50scanner.otsmobile.api.model.BaseModel;
 import in.mobiux.android.orca50scanner.otsmobile.api.model.ProcessPoint;
 import in.mobiux.android.orca50scanner.otsmobile.api.model.UserDetails;
 import retrofit2.Call;
@@ -46,6 +46,7 @@ public class LocationActivity extends BaseActivity {
 
         userName = getIntent().getStringExtra("username");
         userDetails = (UserDetails) getIntent().getSerializableExtra("user");
+
 
         if (userDetails != null) {
             userName = userDetails.getFirstName() + " " + userDetails.getLastName();

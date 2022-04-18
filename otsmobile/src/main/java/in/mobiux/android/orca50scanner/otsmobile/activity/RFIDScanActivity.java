@@ -1,13 +1,10 @@
 package in.mobiux.android.orca50scanner.otsmobile.activity;
 
-import androidx.annotation.NonNull;
 import androidx.lifecycle.Observer;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -16,16 +13,13 @@ import android.widget.Toast;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 
-import org.jetbrains.annotations.NotNull;
-
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import in.mobiux.android.orca50scanner.otsmobile.R;
 import in.mobiux.android.orca50scanner.otsmobile.api.ApiClient;
-import in.mobiux.android.orca50scanner.otsmobile.api.BaseModel;
+import in.mobiux.android.orca50scanner.otsmobile.api.AuthClient;
+import in.mobiux.android.orca50scanner.otsmobile.api.model.BaseModel;
 import in.mobiux.android.orca50scanner.otsmobile.api.model.ProcessPoint;
 import in.mobiux.android.orca50scanner.otsmobile.api.model.ScanItem;
 import in.mobiux.android.orca50scanner.otsmobile.api.model.UserDetails;
@@ -37,7 +31,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class RFIDScanActivity extends RFIDReaderBaseActivity {
+public class RFIDScanActivity extends RFIDReaderBaseActivity implements AuthClient.OnAuthValidation {
 
     private static final String TAG = "RFIDScanActivity";
 
@@ -68,6 +62,7 @@ public class RFIDScanActivity extends RFIDReaderBaseActivity {
         tvUploadMessage.setVisibility(View.GONE);
         tvMessage.setText("");
         tvMessage.setEnabled(false);
+        AuthClient.getInstance(getApplicationContext()).setOnAuthValidation(this);
 
         userDetails = (UserDetails) getIntent().getSerializableExtra("user");
         processPoint = (ProcessPoint) getIntent().getSerializableExtra("processPoint");
@@ -166,9 +161,7 @@ public class RFIDScanActivity extends RFIDReaderBaseActivity {
 
                     } else {
                         tvUploadMessage.setVisibility(View.GONE);
-                        Toast.makeText(RFIDScanActivity.this, "" + response.body().getBody().getMessage(), Toast.LENGTH_SHORT).show();
                     }
-                    Toast.makeText(RFIDScanActivity.this, "", Toast.LENGTH_SHORT).show();
                 } else {
                     Log.e(TAG, "onResponse: " + response.toString());
                     tvUploadMessage.setVisibility(View.GONE);
@@ -182,5 +175,14 @@ public class RFIDScanActivity extends RFIDReaderBaseActivity {
             }
         });
 
+    }
+
+    @Override
+    public void validate(boolean status) {
+        if (!status) {
+            finish();
+            Intent intent = new Intent(this, LoginActivity.class);
+            startActivity(intent);
+        }
     }
 }
