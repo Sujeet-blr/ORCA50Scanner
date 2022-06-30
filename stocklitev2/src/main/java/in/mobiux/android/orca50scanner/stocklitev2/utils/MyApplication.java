@@ -25,7 +25,6 @@ public class MyApplication extends App {
     public void onCreate() {
         super.onCreate();
 
-
         logger.i(TAG, "= App Started =\n");
         mHandler = new Handler(getMainLooper());
 

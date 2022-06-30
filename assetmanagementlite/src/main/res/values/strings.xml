@@ -1,0 +1,15 @@
+<resources>
+    <string name="app_name">Asset Management Lite</string>
+    <string name="app_name_label">Asset Check-IN / Check-OUT System</string>
+    <string name="asset_information">Asset Information</string>
+    <string name="check_in_date_time"><![CDATA[Check-In Date & Time]]></string>
+    <string name="check_out_date_time"><![CDATA[Check-Out Date & Time]]></string>
+    <string name="label_asset_check_in">Asset Check-In</string>
+    <string name="label_asset_information">Asset Information</string>
+    <string name="label_asset_check_out">Asset Check-Out</string>
+    <string name="asset_check_out">Asset \nCheck-Out</string>
+    <string name="asset_check_in">Asset \nCheck-In</string>
+    <string name="sign_in">Sign In</string>
+    <string name="sign_out">Sign Out</string>
+    <string name="settings">Settings</string>
+</resources>

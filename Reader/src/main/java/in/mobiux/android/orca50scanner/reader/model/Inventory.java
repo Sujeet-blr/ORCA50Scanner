@@ -76,8 +76,18 @@ public class Inventory implements Serializable {
     @SerializedName("isMatchingWithSample")
     @Expose
     private boolean isMatchingWithSample = false;
+    private String timestamp = AppUtils.getFormattedTimestamp();
 
-//    @SerializedName("createdAt")
+    public String getTimestamp() {
+        return timestamp;
+    }
+
+    public void setTimestamp(String timestamp) {
+        this.timestamp = timestamp;
+    }
+
+
+    //    @SerializedName("createdAt")
 //    @Expose
 //    private Date createdAt;
 

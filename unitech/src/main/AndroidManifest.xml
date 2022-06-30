@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="in.mobiux.android.orca50scanner.unitech">
-
-    <application>
-        <activity android:name=".activity.UnitechScannerActivity"></activity>
-    </application>
-
-</manifest>

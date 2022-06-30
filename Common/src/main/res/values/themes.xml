@@ -25,7 +25,8 @@
     </style>
 
     <style name="actionBarStyle" parent="Widget.AppCompat.Light.ActionBar.Solid.Inverse">
-        <item name="background">@color/white</item>
+<!--        <item name="background">@color/white</item>-->
+        <item name="background">?attr/colorOnPrimary</item>
     </style>
 
 

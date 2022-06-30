@@ -67,10 +67,8 @@ public class LoginActivity extends BaseActivity {
 
 
         if (BuildConfig.DEBUG) {
-            edtEmail.setText("adminsguldemo@footprints.com");
-            edtPassword.setText("vida@123");
-//            edtEmail.setText("msunkara@rfiddirect.eu");
-//            edtPassword.setText("sofp@123");
+            edtEmail.setText("msunkara@rfiddirect.eu");
+            edtPassword.setText("rfid@123");
         }
 
         btnLogin.setOnClickListener(new View.OnClickListener() {

@@ -51,13 +51,15 @@ public class BaseActivity extends AppActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+//        setTheme(R.style.Theme_AdeptSpace);
+
         logger.i(TAG, "created Activity : " + this.getClass().getCanonicalName());
 
         languageUtils.switchLanguage(this, session.getLanguage());
         activityLanguage = session.getLanguage();
 
-        if (getSupportActionBar() != null)
-            getSupportActionBar().setBackgroundDrawable(new ColorDrawable(Color.parseColor("#FFFFFF")));
+//        if (getSupportActionBar() != null)
+//            getSupportActionBar().setBackgroundDrawable(new ColorDrawable(Color.parseColor("#FFFFFF")));
     }
 
     @Override

@@ -1,61 +1,81 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Base application theme. -->
-    <style name="Theme.ORCA50Scanner" parent="Theme.MaterialComponents.Light">
+    <style name="Theme.AppTheme" parent="Theme.MaterialComponents.Light">
         <!--         Primary brand color. -->
         <item name="colorPrimary">@color/primary</item>
         <item name="colorPrimaryVariant">@color/primary_dark</item>
-        <item name="colorOnPrimary">@color/white</item>
+        <item name="colorOnPrimary">@color/primary_light</item>
 
         <!--         Secondary brand color. -->
         <item name="colorSecondary">@color/accent</item>
         <item name="colorSecondaryVariant">@color/accent</item>
         <item name="colorOnSecondary">@color/white</item>
 
-        <item name="android:windowBackground">@color/colorWindowBackground</item>
 
+        <!--        set actionBar style-->
         <item name="actionBarStyle">@style/actionBarStyle</item>
-        <!-- Status bar color. -->
+
+        <!--        button style-->
+        <item name="materialButtonStyle">@style/buttonStyle</item>
+
+        <!--         Status bar color. -->
         <item name="android:statusBarColor" tools:targetApi="l">?attr/colorOnPrimary</item>
         <item name="android:windowLightStatusBar" tools:ignore="NewApi">true</item>
 
         <!--         Status bar color. -->
         <item name="fontFamily">@font/lato</item>
         <item name="android:fontFamily">@font/lato</item>
+
+        <item name="android:windowBackground">@color/colorWindowBackground</item>
+
     </style>
 
+    <!--    actionBar style-->
     <style name="actionBarStyle" parent="Widget.AppCompat.Light.ActionBar.Solid.Inverse">
-        <item name="background">@color/white</item>
+        <item name="background">?attr/colorOnPrimary</item>
         <item name="android:textStyle">bold</item>
     </style>
 
-    <!--    NoActionBar theme -->
-    <style name="Theme.AppTheme.NoActionBar" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+    <style name="buttonStyle" parent="Widget.MaterialComponents.Button">
+        <item name="backgroundTint">?attr/colorPrimary</item>
+        <item name="android:textColor">?attr/colorOnSecondary</item>
+        <item name="cornerRadius">24dp</item>
+        <item name="fontFamily">@font/lato</item>
+        <item name="textAllCaps">false</item>
+        <!--        <item name="android:textSize">24sp</item>-->
+    </style>
+
+
+    <!--    Adept Space theme-->
+    <style name="Theme.AdeptSpace" parent="Theme.AppTheme">
         <!--         Primary brand color. -->
-        <item name="colorPrimary">@color/primary</item>
-        <item name="colorPrimaryVariant">@color/primary_dark</item>
-        <item name="colorOnPrimary">@color/white</item>
+        <item name="colorPrimary">@color/adept_primary</item>
+        <item name="colorPrimaryVariant">@color/adept_primaryDark</item>
+        <item name="colorOnPrimary">@color/adept_primaryLight</item>
 
         <!--         Secondary brand color. -->
         <item name="colorSecondary">@color/accent</item>
         <item name="colorSecondaryVariant">@color/accent</item>
         <item name="colorOnSecondary">@color/white</item>
 
-        <item name="android:windowBackground">@color/colorWindowBackground</item>
-
-        <!-- Status bar color. -->
-        <item name="android:statusBarColor" tools:targetApi="l">?attr/colorOnPrimary</item>
-        <item name="android:windowLightStatusBar" tools:ignore="NewApi">true</item>
-
-        <!--         Status bar color. -->
-        <item name="fontFamily">@font/lato</item>
-        <item name="android:fontFamily">@font/lato</item>
+        <!--        background color-->
+        <item name="android:windowBackground">@color/adept_colorWindowBackground</item>
     </style>
 
-    <style name="Theme.AppTheme.NoActionBar.FullScreen" parent="Theme.AppTheme.NoActionBar">
-        <item name="android:windowNoTitle">true</item>
-        <item name="android:windowActionBar">false</item>
-        <item name="android:windowFullscreen">true</item>
-        <item name="android:windowContentOverlay">@null</item>
+    <!--    Merit theme-->
+    <style name="Theme.Merit" parent="Theme.AppTheme">
+        <!--         Primary brand color. -->
+        <item name="colorPrimary">@color/merit_primary</item>
+        <item name="colorPrimaryVariant">@color/merit_primaryDark</item>
+        <item name="colorOnPrimary">@color/merit_primaryLight</item>
+
+        <!--         Secondary brand color. -->
+        <item name="colorSecondary">@color/accent</item>
+        <item name="colorSecondaryVariant">@color/accent</item>
+        <item name="colorOnSecondary">@color/white</item>
+
+        <!--        background color-->
+        <item name="android:windowBackground">@color/merit_colorWindowBackground</item>
     </style>
 
 </resources>

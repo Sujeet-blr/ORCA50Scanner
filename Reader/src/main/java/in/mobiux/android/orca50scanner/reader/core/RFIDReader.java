@@ -53,6 +53,7 @@ public class RFIDReader implements Reader {
     private boolean connectionStatus = false;
     private boolean observerRegistrationStatus = false;
     private boolean scanningStatus = false;
+    public int rssiValue;
 
     ReaderSetting mReaderSetting = ReaderSetting.newInstance();
 
@@ -106,7 +107,7 @@ public class RFIDReader implements Reader {
         protected void refreshSetting(ReaderSetting readerSetting) {
             logger.i(TAG, "Setting Refresh output power is : " + Arrays.toString(readerSetting.btAryOutputPower));
 
-            int rssiValue = byteArrayToInt(readerSetting.btAryOutputPower);
+            rssiValue = byteArrayToInt(readerSetting.btAryOutputPower);
             logger.i(TAG, "rssiValue " + rssiValue);
 //            session.setInt(session.KEY_RF_OUTPUT_POWER, rssiValue);
             mReaderSetting = readerSetting;
@@ -248,6 +249,9 @@ public class RFIDReader implements Reader {
 
                     logger.i(TAG, "beeper result " + beeperResult);
                     rfidReaderHelper.setTrigger(true);
+
+                    rssiValue = session.getInt(session.KEY_RF_OUTPUT_POWER, 30);
+                    setRFOutputPower(rssiValue);
 
                 } catch (Exception e) {
                     logger.i(TAG, "Exception - " + e.getLocalizedMessage());

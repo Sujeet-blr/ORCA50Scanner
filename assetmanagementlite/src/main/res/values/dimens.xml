@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="margin_vertical">16dp</dimen>
+    <dimen name="icon_size_medium">70dp</dimen>
+    <dimen name="card_size">180dp</dimen>
+    <dimen name="alert_icon_size">120dp</dimen>
+</resources>

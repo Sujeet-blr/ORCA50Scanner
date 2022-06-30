@@ -8,7 +8,8 @@
 
     <item
         android:id="@+id/action_app_settings"
-        android:title="App Settings" />
+        android:title="App Settings"
+        android:visible="false" />
 
     <item
         android:id="@+id/action_settings"

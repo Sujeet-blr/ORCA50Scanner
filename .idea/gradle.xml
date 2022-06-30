@@ -7,7 +7,6 @@
         <option name="testRunner" value="PLATFORM" />
         <option name="distributionType" value="DEFAULT_WRAPPED" />
         <option name="externalProjectPath" value="$PROJECT_DIR$" />
-        <option name="gradleJvm" value="JDK" />
         <option name="modules">
           <set>
             <option value="$PROJECT_DIR$" />
@@ -15,6 +14,7 @@
             <option value="$PROJECT_DIR$/OrcaBarcodeReader" />
             <option value="$PROJECT_DIR$/Reader" />
             <option value="$PROJECT_DIR$/app" />
+            <option value="$PROJECT_DIR$/assetmanagementlite" />
             <option value="$PROJECT_DIR$/otsmobile" />
             <option value="$PROJECT_DIR$/rfidtagtester" />
             <option value="$PROJECT_DIR$/sampleapp" />

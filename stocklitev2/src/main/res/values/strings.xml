@@ -1,10 +1,10 @@
 <resources>
-    <string name="app_name">StockLite v3 Beta Release</string>
+    <string name="app_name">SO Stock Lite</string>
 
-    <string name="clear_and_re_scan"><![CDATA[Clear & re-scan]]></string>
+    <string name="clear_and_re_scan"><![CDATA[Clear Room/Zone]]></string>
     <string name="finish_export_data"><![CDATA[Finish & export data]]></string>
-    <string name="scan_ok_repeat"><![CDATA[Scan ok & repeat]]></string>
-    <string name="clear_re_scan"><![CDATA[Clear & re-scan]]></string>
+    <string name="scan_ok_repeat"><![CDATA[Next Room/Zone]]></string>
+    <string name="clear_re_scan"><![CDATA[Delete All Data]]></string>
     <string name="unit_rssi">dBm</string>
     <string name="read_me_text1">"SO Stock Lite application assists you to take stock of items in your inventory.\n\nThe application assumes that all your items are tagged and identified using UHF RFID tags. The items are assumed to be stored in bins or locations that are tagged and identified using Barcodes or QR codes."</string>
 

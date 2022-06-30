@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/screen_background"
+    tools:context=".activity.CheckInActivity">
+
+    <ProgressBar
+        android:id="@+id/progressBar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:elevation="3dp" />
+
+    <include
+        layout="@layout/action_bar_app"
+        android:layout_alignParentTop="true" />
+
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@id/footer"
+        android:layout_below="@+id/toolbar">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/margin_horizontal"
+        android:orientation="vertical">
+
+        <TextView
+            style="@style/TextAppearance.MaterialComponents.Caption"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="5dp"
+            android:text="Please scan the RFID Tag" />
+
+        <TextView
+            android:id="@+id/tvRFID"
+            style="@style/TextAppearance.MaterialComponents.Body2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/margin_vertical"
+            android:background="@drawable/box_layout"
+            android:gravity="center_vertical"
+            android:text="" />
+
+        <TextView
+            style="@style/TextAppearance.MaterialComponents.Caption"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="5dp"
+            android:text="@string/asset_information" />
+
+        <TextView
+            android:id="@+id/tvName"
+            style="@style/TextAppearance.MaterialComponents.Body2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/box_layout"
+            android:gravity="center_vertical"
+            android:text="" />
+
+        <TextView
+            android:id="@+id/tvDescription"
+            style="@style/TextAppearance.MaterialComponents.Body2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/margin_vertical"
+            android:background="@drawable/box_layout"
+            android:gravity="center_vertical"
+            android:text="" />
+
+
+        <TextView
+            style="@style/TextAppearance.MaterialComponents.Caption"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="5dp"
+            android:text="@string/check_in_date_time" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/margin_vertical"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/tvDate"
+                style="@style/TextAppearance.MaterialComponents.Body2"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@drawable/box_layout"
+                android:drawableLeft="@android:drawable/ic_menu_my_calendar"
+                android:drawablePadding="@dimen/margin_vertical"
+                android:gravity="center_vertical"
+                android:text="" />
+
+            <View
+                android:layout_width="@dimen/margin_horizontal"
+                android:layout_height="@dimen/margin_vertical" />
+
+            <TextView
+                android:id="@+id/tvTime"
+                style="@style/TextAppearance.MaterialComponents.Body2"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@drawable/box_layout"
+                android:drawableLeft="@android:drawable/ic_lock_idle_alarm"
+                android:gravity="center"
+                android:text="" />
+        </LinearLayout>
+
+        <Button
+            android:backgroundTint="@color/orange"
+            android:id="@+id/btnSubmit"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_vertical"
+            android:text="Click to Confirm"
+            android:textAllCaps="false" />
+
+
+    </LinearLayout>
+    </ScrollView>
+
+    <include
+        android:id="@+id/footer"
+        layout="@layout/screen_footer"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true" />
+</RelativeLayout>

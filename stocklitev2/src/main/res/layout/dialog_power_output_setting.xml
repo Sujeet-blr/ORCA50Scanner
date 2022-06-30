@@ -32,7 +32,7 @@
         android:layout_marginLeft="@dimen/margin_horizontal"
         android:layout_marginTop="48dp"
         android:layout_marginRight="@dimen/margin_horizontal"
-        android:max="33"
+        android:max="30"
         android:min="3" />
 
     <TextView

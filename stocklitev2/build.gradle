@@ -13,8 +13,8 @@ android {
         applicationId "in.mobiux.android.orca50scanner.stocklitev2"
         minSdkVersion 19
         targetSdkVersion 32
-        versionCode 1
-        versionName "3.0"
+        versionCode 6
+        versionName "version_3_0_4"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         multiDexEnabled true

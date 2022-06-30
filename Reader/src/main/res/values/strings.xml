@@ -1,1 +1,8 @@
-<resources></resources>
+<resources>
+
+    <string name="rs232_error">"RS232 Setup Error"</string>
+
+    <string name="error_configuration">Please configurate first.</string>
+    <string name="error_security">This Port has no read and write permission.</string>
+    <string name="error_unknown">Open Fail,Unknown Error</string>
+</resources>

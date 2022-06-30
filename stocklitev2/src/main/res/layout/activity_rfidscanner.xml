@@ -7,35 +7,85 @@
     tools:context=".activity.RFIDScannerActivity">
 
     <LinearLayout
+        android:id="@+id/lltHeader"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
-        android:gravity="center"
-        android:orientation="vertical">
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
 
         <TextView
             android:id="@+id/tvHeader"
             style="@style/TextAppearance.MaterialComponents.Body1"
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/margin_horizontal"
+            android:layout_weight="1"
             android:text="RFID Tags - 0 items" />
 
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:layout_below="@id/cardView"
-            android:background="@color/divider" />
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recyclerView"
-            android:layout_width="match_parent"
+        <Button
+            android:id="@+id/btnRSSI"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:clipToPadding="false"
-            android:paddingBottom="180dp"
-            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
-
+            android:text="" />
     </LinearLayout>
+
+    <ScrollView
+        android:layout_below="@id/lltHeader"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_below="@id/cardView"
+                android:background="@color/divider" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recyclerView"
+                android:minHeight="210dp"
+                android:nestedScrollingEnabled="false"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
+
+            <LinearLayout
+                android:id="@+id/lltFooter"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:orientation="vertical"
+                android:paddingLeft="@dimen/margin_horizontal"
+                android:paddingRight="@dimen/margin_horizontal">
+
+                <Button
+                    android:id="@+id/btnRepeat"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/button_height_large"
+                    android:text="@string/scan_ok_repeat" />
+
+                <Button
+                    android:id="@+id/btnReScan"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/clear_re_scan" />
+
+                <Button
+                    android:id="@+id/btnExportData"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/button_height_large"
+                    android:text="@string/finish_export_data" />
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </ScrollView>
 
     <TextView
         android:id="@+id/tvMessage"
@@ -50,48 +100,11 @@
         android:id="@+id/fabRSSI"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_above="@id/lltFooter"
+        android:layout_alignParentBottom="true"
         android:layout_alignParentRight="true"
         android:layout_marginRight="@dimen/margin_horizontal"
         android:layout_marginBottom="@dimen/margin_vertical"
         android:src="@drawable/icon_rssi"
         app:fabSize="mini" />
 
-    <LinearLayout
-        android:id="@+id/lltFooter"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:orientation="vertical"
-        android:paddingLeft="@dimen/margin_horizontal"
-        android:paddingRight="@dimen/margin_horizontal">
-
-        <Button
-            android:id="@+id/btnRepeat"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:backgroundTint="@color/button_dark"
-            android:text="@string/scan_ok_repeat"
-            android:textAllCaps="false"
-            android:textColor="@color/white" />
-
-        <Button
-            android:id="@+id/btnReScan"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:backgroundTint="@color/button_dark"
-            android:text="@string/clear_re_scan"
-            android:textAllCaps="false"
-            android:textColor="@color/white" />
-
-        <Button
-            android:id="@+id/btnExportData"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:backgroundTint="@color/button_dark"
-            android:text="@string/finish_export_data"
-            android:textAllCaps="false"
-            android:textColor="@color/white" />
-
-    </LinearLayout>
 </RelativeLayout>

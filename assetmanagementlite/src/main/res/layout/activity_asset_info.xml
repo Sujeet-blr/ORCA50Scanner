@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/screen_background"
+    tools:context=".activity.AssetInfoActivity">
+
+    <ProgressBar
+        android:id="@+id/progressBar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:elevation="3dp" />
+
+    <include
+        layout="@layout/action_bar_app"
+        android:layout_alignParentTop="true" />
+
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@id/footer"
+        android:layout_below="@+id/toolbar">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/margin_horizontal"
+            android:orientation="vertical">
+
+            <TextView
+                style="@style/TextAppearance.MaterialComponents.Caption"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="5dp"
+                android:text="Scan/Select Asset Name" />
+
+            <TextView
+                android:id="@+id/tvRFID"
+                style="@style/TextAppearance.MaterialComponents.Body2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/margin_vertical"
+                android:background="@drawable/box_layout"
+                android:gravity="center_vertical"
+                android:text=""
+                android:visibility="gone" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/margin_vertical"
+                android:background="@drawable/shape_search_box"
+                android:orientation="horizontal">
+
+                <AutoCompleteTextView
+                    android:id="@+id/edtName"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                    android:layout_width="0dp"
+                    android:layout_height="48dp"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:hint="Search asset"
+                    android:inputType="text"
+                    android:maxLines="1"
+                    android:textStyle="bold" />
+
+                <ImageButton
+                    android:id="@+id/ibSearch"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:backgroundTint="@color/orange"
+                    android:src="@drawable/ic_arrow_right_24"
+                    android:tint="@color/white" />
+            </LinearLayout>
+
+
+            <TextView
+                style="@style/TextAppearance.MaterialComponents.Caption"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="5dp"
+                android:text="@string/asset_information" />
+
+            <TextView
+                android:id="@+id/tvName"
+                style="@style/TextAppearance.MaterialComponents.Body2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/box_layout"
+                android:gravity="center_vertical"
+                android:text="" />
+
+            <TextView
+                android:id="@+id/tvDescription"
+                style="@style/TextAppearance.MaterialComponents.Body2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/margin_vertical"
+                android:background="@drawable/box_layout"
+                android:gravity="center_vertical"
+                android:text="" />
+
+            <Button
+                android:id="@+id/btnSubmit"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_vertical"
+                android:backgroundTint="@color/orange"
+                android:text="Back to Main Menu"
+                android:textAllCaps="false" />
+
+
+        </LinearLayout>
+
+    </ScrollView>
+
+    <include
+        android:id="@+id/footer"
+        layout="@layout/screen_footer"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true" />
+</RelativeLayout>

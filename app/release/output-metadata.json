@@ -4,15 +4,15 @@
     "type": "APK",
     "kind": "Directory"
   },
-  "applicationId": "in.mobiux.android.orca50scanner.otsmobile",
+  "applicationId": "in.mobiux.android.orca50scanner.stocklitev2",
   "variantName": "release",
   "elements": [
     {
       "type": "SINGLE",
       "filters": [],
-      "versionCode": 2,
-      "versionName": "version_1.1",
-      "outputFile": "otsmobile-release.apk"
+      "versionCode": 6,
+      "versionName": "version_3_0_4",
+      "outputFile": "stocklitev2-release.apk"
     }
   ]
 }

@@ -39,18 +39,10 @@ public class ApiClient {
     private static Retrofit retrofit;
     private static ApiService apiService;
 
-    private static String baseUrl = Endpoints.BASE_URL;
+    private static String baseUrl = BuildConfig.BASE_URL;
 
 
     private static Retrofit getClient() {
-
-        if (BuildConfig.DEBUG) {
-            baseUrl = Endpoints.BASE_URL_STAGING;
-        } else {
-            baseUrl = Endpoints.BASE_URL_GLOBAL;
-        }
-
-        Log.i(TAG, "getClient Called " + Endpoints.BASE_URL);
 
         if (retrofit == null) {
             HttpLoggingInterceptor interceptor = new HttpLoggingInterceptor();
@@ -68,7 +60,7 @@ public class ApiClient {
 //                    .addConverterFactory(GsonConverterFactory.create())
 //                    .build();
             retrofit = new Retrofit.Builder()
-                    .baseUrl(Endpoints.BASE_URL)
+                    .baseUrl(baseUrl)
                     .client(getUnsafeOkHttpClient().build())
                     .addConverterFactory(GsonConverterFactory.create())
                     .build();

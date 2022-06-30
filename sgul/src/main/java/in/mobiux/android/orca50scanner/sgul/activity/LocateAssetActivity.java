@@ -285,7 +285,7 @@ public class LocateAssetActivity extends BaseActivity {
         logger.i(TAG, "tagEnd " + tagEnd.mTagCount);
 
 //        when tag is away , value should reset
-        if (tagEnd.mTagCount == 0) {
+        if (tagEnd.mTagCount == 0 && inventory != null) {
             inventory.setRssi("0");
             logger.i(TAG, "tag end " + tagEnd.mTagCount);
             if (timer == null) {

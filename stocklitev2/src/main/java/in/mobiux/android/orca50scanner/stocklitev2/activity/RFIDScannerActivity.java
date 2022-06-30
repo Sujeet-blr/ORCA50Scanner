@@ -1,7 +1,7 @@
 package in.mobiux.android.orca50scanner.stocklitev2.activity;
 
 import android.Manifest;
-import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -14,6 +14,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.widget.AppCompatButton;
 import androidx.lifecycle.Observer;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -26,7 +27,6 @@ import java.util.Set;
 
 import in.mobiux.android.orca50scanner.common.utils.AppUtils;
 import in.mobiux.android.orca50scanner.common.utils.CSVUtils;
-import in.mobiux.android.orca50scanner.common.utils.SessionManager;
 import in.mobiux.android.orca50scanner.reader.activity.RFIDReaderBaseActivity;
 import in.mobiux.android.orca50scanner.reader.model.Inventory;
 import in.mobiux.android.orca50scanner.stocklitev2.R;
@@ -46,7 +46,7 @@ public class RFIDScannerActivity extends RFIDReaderBaseActivity {
     private RecyclerView recyclerView;
     private InventoryAdapter adapter;
     private String barcode = "";
-    private Button btnRepeat, btnReScan, btnExportData;
+    private Button btnRepeat, btnReScan, btnExportData, btnRSSI;
     private Stock stock = new Stock();
     private MyApplication myApp;
     private TextView tvHeader;
@@ -71,6 +71,8 @@ public class RFIDScannerActivity extends RFIDReaderBaseActivity {
         btnExportData = findViewById(R.id.btnExportData);
         tvHeader = findViewById(R.id.tvHeader);
         fabRSSI = findViewById(R.id.fabRSSI);
+        btnRSSI = findViewById(R.id.btnRSSI);
+        fabRSSI.setVisibility(View.GONE);
 
         myApp = (MyApplication) getApplicationContext();
         dbRepo = new AppDatabaseRepo(app);
@@ -96,6 +98,10 @@ public class RFIDScannerActivity extends RFIDReaderBaseActivity {
         adapter = new InventoryAdapter(RFIDScannerActivity.this, tagList);
         recyclerView.setAdapter(adapter);
 
+        btnRSSI.setOnClickListener(view -> {
+            openPowerOutputSetting();
+        });
+
         fabRSSI.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -117,11 +123,31 @@ public class RFIDScannerActivity extends RFIDReaderBaseActivity {
         });
 
         btnReScan.setOnClickListener(view -> {
-            tagList.clear();
-            tags.clear();
-            stock.getRfidTags().clear();
-            adapter.notifyDataSetChanged();
-            tvHeader.setText("RFID Tags - " + tagList.size() + " items");
+
+            AlertDialog.Builder builder = new AlertDialog.Builder(RFIDScannerActivity.this);
+            builder.setTitle("Are you sure?");
+            builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    dialog.dismiss();
+
+                    tagList.clear();
+                    tags.clear();
+                    stock.getRfidTags().clear();
+                    adapter.notifyDataSetChanged();
+                    tvHeader.setText("RFID Tags - " + tagList.size() + " items");
+                }
+            });
+
+            builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    dialog.dismiss();
+                }
+            });
+
+            builder.show();
+
         });
 
         btnExportData.setOnClickListener(view -> {
@@ -136,13 +162,13 @@ public class RFIDScannerActivity extends RFIDReaderBaseActivity {
             CSVUtils csvUtils = new CSVUtils(getApplicationContext());
             List<String> columns = new ArrayList<>();
             StringBuilder data;
-            StringBuilder header = new StringBuilder(("Barcode \t, RFID Tags \t, RSSI (dBm)"));
+            StringBuilder header = new StringBuilder(("Barcode,RFID Tags,RSSI (dBm),timestamp"));
             columns.add(header.toString());
 
             for (Stock stock : myApp.getStocks()) {
 
                 for (Inventory inventory : stock.getRfidTags()) {
-                    data = new StringBuilder(("\n" + stock.getBarcode() + "\t," + inventory.getEpc()) + "\t," + inventory.getRssi());
+                    data = new StringBuilder(("\n" + stock.getBarcode() + "," + inventory.getEpc()) + "," + inventory.getRssi() + "," + inventory.getTimestamp());
                     columns.add(data.toString());
                 }
             }
@@ -151,6 +177,14 @@ public class RFIDScannerActivity extends RFIDReaderBaseActivity {
 
             csvUtils.createAndExportLogs(RFIDScannerActivity.this);
         });
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        rfOutputPower = session.getInt(session.KEY_RF_OUTPUT_POWER, rfOutputPower);
+        btnRSSI.setText("" + rfOutputPower);
     }
 
     @Override
@@ -266,6 +300,7 @@ public class RFIDScannerActivity extends RFIDReaderBaseActivity {
 
                 setRFOutputPower(rfOutputPower);
                 tvRSSI.setText(progress + "");
+                btnRSSI.setText("" + progress);
             }
 
             @Override
