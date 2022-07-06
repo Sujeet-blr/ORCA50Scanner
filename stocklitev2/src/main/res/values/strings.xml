@@ -4,7 +4,7 @@
     <string name="clear_and_re_scan"><![CDATA[Clear Room/Zone]]></string>
     <string name="finish_export_data"><![CDATA[Finish & export data]]></string>
     <string name="scan_ok_repeat"><![CDATA[Next Room/Zone]]></string>
-    <string name="clear_re_scan"><![CDATA[Delete All Data]]></string>
+    <string name="clear_re_scan"><![CDATA[Clear & re-Scan]]></string>
     <string name="unit_rssi">dBm</string>
     <string name="read_me_text1">"SO Stock Lite application assists you to take stock of items in your inventory.\n\nThe application assumes that all your items are tagged and identified using UHF RFID tags. The items are assumed to be stored in bins or locations that are tagged and identified using Barcodes or QR codes."</string>
 
@@ -44,5 +44,7 @@
     <string name="match_using_name_rfid_tag_map">Match using "Name - RFID Tag" map</string>
     <string name="only_4_chars_and_only_between_0_9_a_f_is_permitted">*only 4 chars and only between 0-9, A-F is permitted</string>
     <string name="allowed_digits">0123456789ABCDEF</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 
 </resources>

@@ -46,6 +46,13 @@
     </style>
 
 
+    <style name="textStyleAppName" parent="TextAppearance.AppCompat.Body2">
+        <item name="android:textStyle">bold</item>
+        <item name="android:textSize">48sp</item>
+    </style>
+    <!--    End of App Theme-->
+
+
     <!--    Adept Space theme-->
     <style name="Theme.AdeptSpace" parent="Theme.AppTheme">
         <!--         Primary brand color. -->
@@ -61,6 +68,7 @@
         <!--        background color-->
         <item name="android:windowBackground">@color/adept_colorWindowBackground</item>
     </style>
+
 
     <!--    Merit theme-->
     <style name="Theme.Merit" parent="Theme.AppTheme">

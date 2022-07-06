@@ -2,60 +2,53 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/rltContent"
     android:layout_width="match_parent"
-    android:background="@color/white"
     android:layout_height="match_parent"
+    android:background="@color/white"
     tools:context=".activity.SplashActivity">
+
+    <TextView
+        style="@style/textStyleAppName"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@id/ivLogo"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="48dp"
+        android:gravity="center_horizontal|bottom"
+        android:text="@string/app_name" />
+
+    <ImageView
+        android:id="@+id/ivLogo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginLeft="@dimen/margin_horizontal"
+        android:layout_marginRight="@dimen/margin_horizontal"
+        android:layout_weight="1"
+        android:gravity="center_horizontal|bottom"
+        android:src="@drawable/object_sensing" />
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:background="@color/white"
+        android:gravity="center_horizontal"
+        android:orientation="vertical"
+        android:paddingTop="@dimen/margin_vertical">
+
 
         <TextView
-            style="@style/TextAppearance.MaterialComponents.Headline5"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:textStyle="bold"
-            android:layout_centerInParent="true"
-            android:layout_centerHorizontal="true"
-            android:layout_weight="1"
-            android:gravity="center_horizontal|bottom"
-            android:text="@string/app_name"
-            android:textSize="48sp" />
-
-        <ImageView
-            android:id="@+id/ivSOLogo"
+            style="@style/TextAppearance.MaterialComponents.Caption"
             android:layout_width="wrap_content"
-            android:layout_height="0dp"
-            android:layout_marginLeft="@dimen/margin_horizontal"
-            android:layout_marginRight="@dimen/margin_horizontal"
-            android:layout_weight="1"
-            android:gravity="center_horizontal|bottom"
-            android:src="@drawable/object_sensing" />
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/margin_horizontal"
+            android:text="Powered by" />
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_alignParentBottom="true"
-            android:layout_centerHorizontal="true"
-            android:layout_weight="0.6"
-            android:gravity="center"
-            android:orientation="vertical">
-
-            <TextView
-                style="@style/TextAppearance.MaterialComponents.Caption"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="@dimen/margin_horizontal"
-                android:text="Powered by" />
-
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="60dp"
-                android:src="@drawable/footprints" />
-        </LinearLayout>
-
+        <include layout="@layout/screen_footer" />
     </LinearLayout>
 
 </RelativeLayout>

@@ -7,9 +7,11 @@
     tools:context=".activity.BarcodeScannerActivity">
 
     <LinearLayout
+        android:id="@+id/lltBody"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
+        android:layout_above="@id/lltButtons"
+        android:layout_marginBottom="@dimen/margin_vertical"
         android:gravity="center"
         android:orientation="vertical">
 
@@ -43,9 +45,11 @@
     </LinearLayout>
 
     <LinearLayout
+        android:id="@+id/lltButtons"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
+        android:layout_above="@id/lltFooter"
+        android:layout_marginTop="@dimen/margin_vertical"
         android:gravity="center"
         android:orientation="vertical"
         android:paddingLeft="@dimen/margin_horizontal"
@@ -61,8 +65,65 @@
         <Button
             android:id="@+id/btnClear"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="@dimen/button_height_large"
             android:text="@string/clear_and_re_scan" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/lltFooter"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/margin_horizontal"
+                android:layout_marginTop="@dimen/margin_vertical"
+                android:layout_marginRight="@dimen/margin_horizontal"
+                android:layout_weight="1"
+                android:text="Last Room " />
+
+            <TextView
+                android:id="@+id/tvRoom1"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/margin_horizontal"
+                android:layout_marginTop="@dimen/margin_vertical"
+                android:layout_marginRight="@dimen/margin_horizontal"
+                android:layout_weight="1"
+                android:text="Not Available" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/margin_horizontal"
+                android:layout_weight="1"
+                android:text="Last Room " />
+
+            <TextView
+                android:id="@+id/tvRoom2"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/margin_horizontal"
+                android:layout_weight="1"
+                android:text="Not Available" />
+
+        </LinearLayout>
+
     </LinearLayout>
 
 </RelativeLayout>

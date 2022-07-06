@@ -27,13 +27,15 @@
             android:id="@+id/btnRSSI"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="" />
+            android:drawableLeft="@drawable/icon_rssi_24"
+            android:drawableTint="@color/white"
+            android:text="34" />
     </LinearLayout>
 
     <ScrollView
-        android:layout_below="@id/lltHeader"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:layout_below="@id/lltHeader">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -48,10 +50,10 @@
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/recyclerView"
-                android:minHeight="210dp"
-                android:nestedScrollingEnabled="false"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:minHeight="210dp"
+                android:nestedScrollingEnabled="false"
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
 
             <LinearLayout
@@ -72,7 +74,7 @@
                 <Button
                     android:id="@+id/btnReScan"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="@dimen/button_height_large"
                     android:text="@string/clear_re_scan" />
 
                 <Button
@@ -100,8 +102,8 @@
         android:id="@+id/fabRSSI"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
         android:layout_alignParentRight="true"
+        android:layout_alignParentBottom="true"
         android:layout_marginRight="@dimen/margin_horizontal"
         android:layout_marginBottom="@dimen/margin_vertical"
         android:src="@drawable/icon_rssi"

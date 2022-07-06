@@ -13,8 +13,8 @@ android {
         applicationId "in.mobiux.android.orca50scanner.stocklitev2"
         minSdkVersion 19
         targetSdkVersion 32
-        versionCode 6
-        versionName "version_3_0_4"
+        versionCode 7
+        versionName "version_3_0_5"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         multiDexEnabled true
@@ -34,6 +34,27 @@ android {
     lintOptions{
         checkReleaseBuilds false
     }
+    flavorDimensions 'env'
+    productFlavors {
+        production {
+            dimension 'env'
+        }
+        staging {
+            dimension 'env'
+            applicationIdSuffix '.staging'
+            versionNameSuffix 'staging'
+        }
+        adept {
+            dimension 'env'
+            applicationIdSuffix '.adept'
+            versionNameSuffix 'adept'
+        }
+        merit {
+            dimension 'env'
+            applicationIdSuffix '.merit'
+            versionNameSuffix 'merit'
+        }
+    }
 }
 
 dependencies {
@@ -46,6 +67,7 @@ dependencies {
     implementation 'org.jetbrains:annotations:15.0'
     implementation project(path: ':OrcaBarcodeReader')
     implementation 'androidx.room:room-runtime:2.4.1'
+    implementation 'androidx.legacy:legacy-support-v4:1.0.0'
     testImplementation 'junit:junit:4.+'
     androidTestImplementation 'androidx.test.ext:junit:1.1.3'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.4.0'

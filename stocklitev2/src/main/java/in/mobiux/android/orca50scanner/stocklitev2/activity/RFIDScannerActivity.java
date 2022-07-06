@@ -3,6 +3,9 @@ package in.mobiux.android.orca50scanner.stocklitev2.activity;
 import android.Manifest;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
@@ -15,6 +18,7 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.widget.AppCompatButton;
+import androidx.cardview.widget.CardView;
 import androidx.lifecycle.Observer;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -29,6 +33,7 @@ import in.mobiux.android.orca50scanner.common.utils.AppUtils;
 import in.mobiux.android.orca50scanner.common.utils.CSVUtils;
 import in.mobiux.android.orca50scanner.reader.activity.RFIDReaderBaseActivity;
 import in.mobiux.android.orca50scanner.reader.model.Inventory;
+import in.mobiux.android.orca50scanner.stocklitev2.BuildConfig;
 import in.mobiux.android.orca50scanner.stocklitev2.R;
 import in.mobiux.android.orca50scanner.stocklitev2.adapter.InventoryAdapter;
 import in.mobiux.android.orca50scanner.stocklitev2.db.AppDatabaseRepo;
@@ -36,6 +41,7 @@ import in.mobiux.android.orca50scanner.stocklitev2.db.model.RFIDTag;
 import in.mobiux.android.orca50scanner.stocklitev2.model.Stock;
 import in.mobiux.android.orca50scanner.stocklitev2.utils.MyApplication;
 import in.mobiux.android.orca50scanner.stocklitev2.utils.RFIDUtils;
+import in.mobiux.android.orca50scanner.stocklitev2.utils.Util;
 
 import static in.mobiux.android.orca50scanner.stocklitev2.utils.RFIDUtils.MatchingRule.MR3;
 
@@ -60,7 +66,8 @@ public class RFIDScannerActivity extends RFIDReaderBaseActivity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_rfidscanner);
+        setTheme(Util.getTheme());
+        setContentView(R.layout.activity_rfid_scanner);
 
         getSupportActionBar().setTitle("Scan RFID Tags");
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -162,13 +169,14 @@ public class RFIDScannerActivity extends RFIDReaderBaseActivity {
             CSVUtils csvUtils = new CSVUtils(getApplicationContext());
             List<String> columns = new ArrayList<>();
             StringBuilder data;
-            StringBuilder header = new StringBuilder(("Barcode,RFID Tags,RSSI (dBm),timestamp"));
+            StringBuilder header = new StringBuilder(("Timestamp, Barcode, RFID Tags, RSSI (dBm)"));
             columns.add(header.toString());
 
             for (Stock stock : myApp.getStocks()) {
-
+                data = new StringBuilder("\n" + stock.getTimestamp() + "," + stock.getBarcode() + "," + " " + "," + "");
+                columns.add(data.toString());
                 for (Inventory inventory : stock.getRfidTags()) {
-                    data = new StringBuilder(("\n" + stock.getBarcode() + "," + inventory.getEpc()) + "," + inventory.getRssi() + "," + inventory.getTimestamp());
+                    data = new StringBuilder("\n" + inventory.getTimestamp() + "," + stock.getBarcode() + "," + inventory.getFormattedEPC() + "," + inventory.getRssi());
                     columns.add(data.toString());
                 }
             }

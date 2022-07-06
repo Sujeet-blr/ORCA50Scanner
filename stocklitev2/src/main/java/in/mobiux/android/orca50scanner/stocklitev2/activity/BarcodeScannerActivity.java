@@ -22,25 +22,31 @@ import org.jetbrains.annotations.NotNull;
 
 import in.mobiux.android.orca50scanner.stocklitev2.R;
 import in.mobiux.android.orca50scanner.stocklitev2.utils.MyApplication;
+import in.mobiux.android.orca50scanner.stocklitev2.utils.Util;
 
 public class BarcodeScannerActivity extends BarcodeReaderBaseActivity {
+
+    private static final String TAG = "BarcodeScannerActivity";
 
     private TextView tvMessage;
     private Button btnOK, btnClear;
     private String barcode = "";
     private MyApplication myApp;
     private EditText edtBarcode;
-
+    private TextView tvRoom1, tvRoom2;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setTheme(Util.getTheme());
         setContentView(R.layout.activity_barcode_scanner);
 
         edtBarcode = findViewById(R.id.edtBarcode);
         tvMessage = findViewById(R.id.tvMessage);
         btnOK = findViewById(R.id.btnOK);
         btnClear = findViewById(R.id.btnClear);
+        tvRoom1 = findViewById(R.id.tvRoom1);
+        tvRoom2 = findViewById(R.id.tvRoom2);
         edtBarcode.setText("");
 
         getSupportActionBar().setTitle(R.string.app_name);
@@ -62,6 +68,13 @@ public class BarcodeScannerActivity extends BarcodeReaderBaseActivity {
             barcode = "";
             edtBarcode.setText(barcode);
         });
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        tvRoom1.setText(myApp.scannedRooms[0]);
+        tvRoom2.setText(myApp.scannedRooms[1]);
     }
 
     @Override

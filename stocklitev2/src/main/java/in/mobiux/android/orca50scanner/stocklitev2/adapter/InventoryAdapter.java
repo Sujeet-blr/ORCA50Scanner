@@ -63,9 +63,9 @@ public class InventoryAdapter extends RecyclerView.Adapter<InventoryAdapter.Recy
             name = name.substring(name.length() - 4, name.length());
         }
 
-        holder.tvRFID.setText("" + rfidDisplayName(name));
-        holder.tvRSSI.setText("" + inventory.getRssi() + "dbm" + "\n\t(" + inventory.getQuantity() + ")");
-        holder.tvName.setText("" + inventory.getName());
+//        holder.tvRFID.setText("" + rfidDisplayName(name));
+        holder.tvRSSI.setText("" + inventory.getRssi() + context.getResources().getString(R.string.unit_rssi) + "(" + inventory.getQuantity() + ")");
+        holder.tvName.setText("" + inventory.getFormattedEPC());
     }
 
     @Override
@@ -82,6 +82,7 @@ public class InventoryAdapter extends RecyclerView.Adapter<InventoryAdapter.Recy
             tvRFID = itemView.findViewById(R.id.tvRFID);
             tvRSSI = itemView.findViewById(R.id.tvRSSI);
             tvName = itemView.findViewById(R.id.tvName);
+            tvRFID.setVisibility(View.GONE);
         }
     }
 

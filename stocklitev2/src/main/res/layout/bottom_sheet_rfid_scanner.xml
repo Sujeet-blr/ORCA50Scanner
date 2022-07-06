@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:id="@+id/lltFooter"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:orientation="vertical"
+        android:paddingLeft="@dimen/margin_horizontal"
+        android:paddingRight="@dimen/margin_horizontal">
+
+        <Button
+            android:id="@+id/btnRepeat"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/button_height_large"
+            android:text="@string/scan_ok_repeat" />
+
+        <Button
+            android:id="@+id/btnReScan"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/button_height_large"
+            android:text="@string/clear_re_scan" />
+
+        <Button
+            android:id="@+id/btnExportData"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/button_height_large"
+            android:text="@string/finish_export_data" />
+
+    </LinearLayout>
+
+</LinearLayout>

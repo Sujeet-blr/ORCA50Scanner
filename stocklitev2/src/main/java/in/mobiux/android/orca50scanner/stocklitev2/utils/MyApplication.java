@@ -8,6 +8,7 @@ import java.util.List;
 import in.mobiux.android.orca50scanner.common.utils.App;
 import in.mobiux.android.orca50scanner.common.utils.AppBuildConfig;
 import in.mobiux.android.orca50scanner.stocklitev2.BuildConfig;
+import in.mobiux.android.orca50scanner.stocklitev2.R;
 import in.mobiux.android.orca50scanner.stocklitev2.activity.BaseActivity;
 import in.mobiux.android.orca50scanner.stocklitev2.model.Stock;
 
@@ -20,13 +21,20 @@ public class MyApplication extends App {
 
     private List<BaseActivity> activities = new ArrayList<>();
     private List<Stock> stocks = new ArrayList<>();
+    public String[] scannedRooms = new String[2];
 
     @Override
     public void onCreate() {
         super.onCreate();
-
+//
+//        if (BuildConfig.FLAVOR.equalsIgnoreCase("adept")) {
+//            setTheme(R.style.Theme_AdeptSpace);
+//        } else {
+//            setTheme(R.style.Theme_Merit);
+//        }
         logger.i(TAG, "= App Started =\n");
         mHandler = new Handler(getMainLooper());
+        resetScannedRoomList();
 
         setBuildConfig(appBuildConfig());
     }
@@ -61,8 +69,11 @@ public class MyApplication extends App {
     }
 
     public void addStock(Stock stock) {
-        if (!stocks.contains(stock))
+        if (!stocks.contains(stock)) {
             stocks.add(stock);
+            addToScannedRoomList(stock.getBarcode());
+        }
+
     }
 
     public void removeStock(Stock stock) {
@@ -75,5 +86,18 @@ public class MyApplication extends App {
 
     public void clearStocks() {
         stocks.clear();
+    }
+
+    public void addToScannedRoomList(String barcode) {
+        scannedRooms[1] = scannedRooms[0];
+        scannedRooms[0] = barcode;
+
+        session.setStringValue("room1", scannedRooms[0]);
+        session.setStringValue("room2", scannedRooms[1]);
+    }
+
+    public void resetScannedRoomList() {
+        scannedRooms[0] = session.getStringValue("room1");
+        scannedRooms[1] = session.getStringValue("room2");
     }
 }

@@ -9,6 +9,8 @@ import com.rfid.rxobserver.ReaderSetting;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import in.mobiux.android.orca50scanner.reader.core.RFIDReader;
 import in.mobiux.android.orca50scanner.reader.core.RFIDReaderListener;
@@ -98,7 +100,19 @@ public class RFIDReaderBaseActivity extends BaseActivity implements RFIDReaderLi
         rfidReader.startScan();
     }
 
-    public int setRFOutputPower(int rssi){
-        return rfidReader.setRFOutputPower(rssi);
+
+    private Timer timer = new Timer();
+    private final long DELAY = 1000;
+
+    public void setRFOutputPower(int rssi) {
+
+        timer.cancel();
+        timer = new Timer();
+        timer.schedule(new TimerTask() {
+            @Override
+            public void run() {
+                rfidReader.setRFOutputPower(rssi);
+            }
+        }, DELAY);
     }
 }

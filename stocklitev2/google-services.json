@@ -36,6 +36,35 @@
     },
     {
       "client_info": {
+        "mobilesdk_app_id": "1:952765744815:android:b3ca770d353c255d82b65a",
+        "android_client_info": {
+          "package_name": "in.mobiux.android.orca50scanner.otsmobile"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "952765744815-1ue27qhcif4mel5888u6lhts3doihmnr.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyARfhStUnCGGqKJHmzfGdZvdvhrCHlAAFU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "952765744815-1ue27qhcif4mel5888u6lhts3doihmnr.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
         "mobilesdk_app_id": "1:952765744815:android:a36748f96b812bf382b65a",
         "android_client_info": {
           "package_name": "in.mobiux.android.orca50scanner.rfidtagtester"
@@ -210,6 +239,35 @@
     },
     {
       "client_info": {
+        "mobilesdk_app_id": "1:952765744815:android:bad25657439c744d82b65a",
+        "android_client_info": {
+          "package_name": "in.mobiux.android.orca50scanner.sgul"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "952765744815-1ue27qhcif4mel5888u6lhts3doihmnr.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyARfhStUnCGGqKJHmzfGdZvdvhrCHlAAFU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "952765744815-1ue27qhcif4mel5888u6lhts3doihmnr.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
         "mobilesdk_app_id": "1:952765744815:android:17d48d8babeec10282b65a",
         "android_client_info": {
           "package_name": "in.mobiux.android.orca50scanner.sologistics"
@@ -271,6 +329,64 @@
         "mobilesdk_app_id": "1:952765744815:android:5bcce706dc6b207c82b65a",
         "android_client_info": {
           "package_name": "in.mobiux.android.orca50scanner.stocklitev2"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "952765744815-1ue27qhcif4mel5888u6lhts3doihmnr.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyARfhStUnCGGqKJHmzfGdZvdvhrCHlAAFU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "952765744815-1ue27qhcif4mel5888u6lhts3doihmnr.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:952765744815:android:be1f0b171f0a650082b65a",
+        "android_client_info": {
+          "package_name": "in.mobiux.android.orca50scanner.stocklitev2.adept"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "952765744815-1ue27qhcif4mel5888u6lhts3doihmnr.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyARfhStUnCGGqKJHmzfGdZvdvhrCHlAAFU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "952765744815-1ue27qhcif4mel5888u6lhts3doihmnr.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:952765744815:android:a355322303e6a32482b65a",
+        "android_client_info": {
+          "package_name": "in.mobiux.android.orca50scanner.stocklitev2.merit"
         }
       },
       "oauth_client": [

@@ -28,7 +28,9 @@ import java.util.List;
 
 import in.mobiux.android.orca50scanner.common.activity.AppActivity;
 import in.mobiux.android.orca50scanner.reader.model.Inventory;
+import in.mobiux.android.orca50scanner.stocklitev2.BuildConfig;
 import in.mobiux.android.orca50scanner.stocklitev2.R;
+import in.mobiux.android.orca50scanner.stocklitev2.utils.Util;
 
 /**
  * Created by SUJEET KUMAR on 08-Mar-21.
@@ -51,7 +53,7 @@ public class BaseActivity extends AppActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-//        setTheme(R.style.Theme_AdeptSpace);
+        setTheme(Util.getTheme());
 
         logger.i(TAG, "created Activity : " + this.getClass().getCanonicalName());
 
