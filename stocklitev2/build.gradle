@@ -13,8 +13,8 @@ android {
         applicationId "in.mobiux.android.orca50scanner.stocklitev2"
         minSdkVersion 19
         targetSdkVersion 32
-        versionCode 7
-        versionName "version_3_0_5"
+        versionCode 8
+        versionName "3_0_6"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         multiDexEnabled true
@@ -24,6 +24,21 @@ android {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+
+        applicationVariants.all{
+                // this method is use to rename your all apk weather
+                // it may be signed or unsigned(debug apk)
+            variant ->
+                variant.outputs.each{
+                        // on below line we are setting a
+                        // name to our apk as GFG.apk
+                    output->
+                        def name = "SO_StockLite_${variant.versionName}.apk"
+                        // on below line we are setting the
+                        // outputFile Name to our apk file.
+                        output.outputFileName = name
+                }
         }
     }
     compileOptions {
@@ -42,17 +57,17 @@ android {
         staging {
             dimension 'env'
             applicationIdSuffix '.staging'
-            versionNameSuffix 'staging'
+            versionNameSuffix '_staging'
         }
         adept {
             dimension 'env'
             applicationIdSuffix '.adept'
-            versionNameSuffix 'adept'
+            versionNameSuffix '_adept'
         }
         merit {
             dimension 'env'
             applicationIdSuffix '.merit'
-            versionNameSuffix 'merit'
+            versionNameSuffix '_merit'
         }
     }
 }

@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".activity.AboutUsActivity">
+    tools:context=".activity.ContactUsActivity">
 
     <ScrollView
         android:layout_width="match_parent"
@@ -17,14 +17,13 @@
             android:orientation="vertical">
 
             <TextView
-                android:id="@+id/tvContent"
                 style="@style/TextAppearance.MaterialComponents.Body1"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="@dimen/margin_horizontal"
                 android:autoLink="all"
                 android:paddingBottom="@dimen/margin_vertical"
-                android:text="@string/about_us_content" />
+                android:text="@string/contact_us_content" />
         </LinearLayout>
 
     </ScrollView>

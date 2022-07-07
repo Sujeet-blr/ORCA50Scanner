@@ -8,6 +8,7 @@ import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.View;
@@ -16,6 +17,7 @@ import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.widget.AppCompatButton;
 import androidx.cardview.widget.CardView;
@@ -36,6 +38,7 @@ import in.mobiux.android.orca50scanner.reader.model.Inventory;
 import in.mobiux.android.orca50scanner.stocklitev2.BuildConfig;
 import in.mobiux.android.orca50scanner.stocklitev2.R;
 import in.mobiux.android.orca50scanner.stocklitev2.adapter.InventoryAdapter;
+import in.mobiux.android.orca50scanner.stocklitev2.components.AppDialog;
 import in.mobiux.android.orca50scanner.stocklitev2.db.AppDatabaseRepo;
 import in.mobiux.android.orca50scanner.stocklitev2.db.model.RFIDTag;
 import in.mobiux.android.orca50scanner.stocklitev2.model.Stock;
@@ -62,6 +65,7 @@ public class RFIDScannerActivity extends RFIDReaderBaseActivity {
     private AppDatabaseRepo dbRepo;
     private HashMap<String, RFIDTag> dbSample = new HashMap<>();
     private RFIDUtils rfidUtils;
+    private String NO_RFID_MSG = "No RFID Tags Found !";
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -119,17 +123,43 @@ public class RFIDScannerActivity extends RFIDReaderBaseActivity {
         btnRepeat.setOnClickListener(view -> {
 
             if (tagList.isEmpty()) {
-                showToast("No Data");
-                return;
-            }
 
-            myApp.addStock(stock);
-            Intent intent = new Intent();
-            setResult(RESULT_FIRST_USER);
-            finish();
+                AppDialog.showAlert(RFIDScannerActivity.this, "", NO_RFID_MSG)
+                        .setPositiveButton("Continue", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.dismiss();
+                                myApp.addStock(stock);
+                                Intent intent = new Intent();
+                                setResult(RESULT_FIRST_USER);
+                                finish();
+                            }
+                        }).setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                }).create().show();
+
+            } else {
+                myApp.addStock(stock);
+                Intent intent = new Intent();
+                setResult(RESULT_FIRST_USER);
+                finish();
+            }
         });
 
         btnReScan.setOnClickListener(view -> {
+
+            if (tagList.isEmpty()){
+
+                tagList.clear();
+                tags.clear();
+                stock.getRfidTags().clear();
+                adapter.notifyDataSetChanged();
+                tvHeader.setText("RFID Tags - " + tagList.size() + " items");
+                return;
+            }
 
             AlertDialog.Builder builder = new AlertDialog.Builder(RFIDScannerActivity.this);
             builder.setTitle("Are you sure?");
@@ -161,30 +191,38 @@ public class RFIDScannerActivity extends RFIDReaderBaseActivity {
             checkPermission(RFIDScannerActivity.this, Manifest.permission.WRITE_EXTERNAL_STORAGE, STORAGE_PERMISSION_CODE);
 
             if (tagList.isEmpty()) {
-                showToast("No Data");
-                return;
+
+                AppDialog.showAlert(RFIDScannerActivity.this, "", NO_RFID_MSG)
+                        .setPositiveButton("Continue", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.dismiss();
+                                export();
+                            }
+                        }).setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                }).create().show();
+
+            } else {
+                export();
             }
-
-            myApp.addStock(stock);
-            CSVUtils csvUtils = new CSVUtils(getApplicationContext());
-            List<String> columns = new ArrayList<>();
-            StringBuilder data;
-            StringBuilder header = new StringBuilder(("Timestamp, Barcode, RFID Tags, RSSI (dBm)"));
-            columns.add(header.toString());
-
-            for (Stock stock : myApp.getStocks()) {
-                data = new StringBuilder("\n" + stock.getTimestamp() + "," + stock.getBarcode() + "," + " " + "," + "");
-                columns.add(data.toString());
-                for (Inventory inventory : stock.getRfidTags()) {
-                    data = new StringBuilder("\n" + inventory.getTimestamp() + "," + stock.getBarcode() + "," + inventory.getFormattedEPC() + "," + inventory.getRssi());
-                    columns.add(data.toString());
-                }
-            }
-
-            csvUtils.writeToColumn(columns);
-
-            csvUtils.createAndExportLogs(RFIDScannerActivity.this);
         });
+
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable @org.jetbrains.annotations.Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (requestCode == 21) {
+            myApp.getStocks().clear();
+            Intent intent = new Intent();
+            setResult(RESULT_FIRST_USER);
+            finish();
+        }
     }
 
     @Override
@@ -198,6 +236,12 @@ public class RFIDScannerActivity extends RFIDReaderBaseActivity {
     @Override
     public boolean onPrepareOptionsMenu(Menu menu) {
         return super.onPrepareOptionsMenu(menu);
+    }
+
+    @Override
+    public void onBackPressed() {
+//        super.onBackPressed();
+        showToast("Back-Button Not allowed, please click a button");
     }
 
     @Override
@@ -330,5 +374,27 @@ public class RFIDScannerActivity extends RFIDReaderBaseActivity {
         alertDialog.show();
         seekBar.setProgress(rfOutputPower);
 
+    }
+
+    private void export() {
+        myApp.addStock(stock);
+        CSVUtils csvUtils = new CSVUtils(getApplicationContext());
+        List<String> columns = new ArrayList<>();
+        StringBuilder data;
+        StringBuilder header = new StringBuilder(("Timestamp, Barcode, RFID Tags, RSSI (dBm)"));
+        columns.add(header.toString());
+
+        for (Stock stock : myApp.getStocks()) {
+            data = new StringBuilder("\n" + stock.getTimestamp() + "," + stock.getBarcode() + "," + " " + "," + "");
+            columns.add(data.toString());
+            for (Inventory inventory : stock.getRfidTags()) {
+                data = new StringBuilder("\n" + inventory.getTimestamp() + "," + stock.getBarcode() + "," + inventory.getFormattedEPC() + "," + inventory.getRssi());
+                columns.add(data.toString());
+            }
+        }
+
+        csvUtils.writeToColumn(columns);
+
+        csvUtils.createAndExportLogs(RFIDScannerActivity.this);
     }
 }

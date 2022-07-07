@@ -1,0 +1,14 @@
+<resources>
+    <string name="app_name">SO Stock Lite</string>
+    <string name="app_title">Adept Space Furniture Audits</string>
+
+    <string name="license_content">"This application is supplied to Adept Space by RFIDdirect Limited. For detailed terms and conditions for this license, please contact
+        \n\nFrits van Calker
+        fvc@rfiddirect.eu
+        \nRFIDdirect Limited
+        Bromfield Commercial Park, Stephen Gray Road, Unit 1, Office 8, Mold, Flintshire, CH7 1HE. United Kingdom
+        \nTel.:
+        +44 (0)845 249 0068
+        +44 (0)1352 752044"</string>
+
+</resources>

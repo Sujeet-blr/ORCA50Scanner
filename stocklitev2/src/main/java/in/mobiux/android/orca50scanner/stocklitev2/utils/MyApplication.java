@@ -97,7 +97,7 @@ public class MyApplication extends App {
     }
 
     public void resetScannedRoomList() {
-        scannedRooms[0] = session.getStringValue("room1");
-        scannedRooms[1] = session.getStringValue("room2");
+        scannedRooms[0] = session.getStringValue("NA");
+        scannedRooms[1] = session.getStringValue("NA");
     }
 }

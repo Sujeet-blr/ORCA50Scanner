@@ -5,7 +5,7 @@
     android:id="@+id/rltContent"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/white"
+    android:background="?android:attr/windowBackground"
     tools:context=".activity.SplashActivity">
 
     <TextView
@@ -15,21 +15,23 @@
         android:layout_above="@id/ivLogo"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginBottom="48dp"
+        android:layout_marginLeft="@dimen/margin_horizontal"
+        android:layout_marginRight="@dimen/margin_horizontal"
+        android:layout_marginBottom="32dp"
         android:gravity="center_horizontal|bottom"
-        android:text="@string/app_name" />
+        android:text="@string/app_title" />
 
     <ImageView
         android:id="@+id/ivLogo"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="140dp"
+        android:layout_height="140dp"
         android:layout_centerInParent="true"
         android:layout_gravity="center_horizontal"
         android:layout_marginLeft="@dimen/margin_horizontal"
         android:layout_marginRight="@dimen/margin_horizontal"
         android:layout_weight="1"
         android:gravity="center_horizontal|bottom"
-        android:src="@drawable/object_sensing" />
+        android:src="@drawable/app_logo" />
 
     <LinearLayout
         android:layout_width="match_parent"

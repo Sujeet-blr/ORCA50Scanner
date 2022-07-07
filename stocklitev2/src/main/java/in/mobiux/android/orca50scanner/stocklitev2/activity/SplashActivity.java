@@ -21,9 +21,6 @@ public class SplashActivity extends BaseActivity {
 
     private static final String TAG = "SplashActivity";
 
-    private RelativeLayout rltContent;
-    private ImageView ivLogo;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -32,12 +29,6 @@ public class SplashActivity extends BaseActivity {
         setContentView(R.layout.activity_splash);
 
         getSupportActionBar().hide();
-
-        rltContent = findViewById(R.id.rltContent);
-        ivLogo = findViewById(R.id.ivLogo);
-
-        rltContent.setBackgroundColor(getResources().getColor(R.color.adept_colorWindowBackground));
-        ivLogo.setImageResource(R.drawable.adept_space_logo);
 
         new Handler().postDelayed(new Runnable() {
             @Override

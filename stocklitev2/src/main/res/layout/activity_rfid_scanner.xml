@@ -57,8 +57,10 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
+            android:layout_margin="@dimen/margin_horizontal"
             android:elevation="-1dp"
-            android:text="Pull the trigger to scan" />
+            android:gravity="center"
+            android:text="Pull Trigger to Scan, Once finished Room/Zone, select  Next Room/Zone if you need to Continue survey" />
 
     </LinearLayout>
 

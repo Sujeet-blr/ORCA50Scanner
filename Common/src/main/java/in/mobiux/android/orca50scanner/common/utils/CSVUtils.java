@@ -1,6 +1,7 @@
 package in.mobiux.android.orca50scanner.common.utils;
 
 import android.Manifest;
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -60,7 +61,7 @@ public class CSVUtils {
         }
     }
 
-    public void createAndExportLogs(Context context) {
+    public void createAndExportLogs(Activity context) {
 //        must check storage permission before calling this method
 
         if (ContextCompat.checkSelfPermission(context, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
@@ -80,7 +81,7 @@ public class CSVUtils {
             fileIntent.putExtra(Intent.EXTRA_SUBJECT, logFileName);
             fileIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
             fileIntent.putExtra(Intent.EXTRA_STREAM, path);
-            context.startActivity(Intent.createChooser(fileIntent, "Export data"));
+            context.startActivityForResult(Intent.createChooser(fileIntent, "Export data"), 21);
         } catch (Exception e) {
             e.printStackTrace();
         }

@@ -1,10 +1,11 @@
 <resources>
     <string name="app_name">SO Stock Lite</string>
+    <string name="app_title">SO Stock Lite V2</string>
 
     <string name="clear_and_re_scan"><![CDATA[Clear Room/Zone]]></string>
     <string name="finish_export_data"><![CDATA[Finish & export data]]></string>
     <string name="scan_ok_repeat"><![CDATA[Next Room/Zone]]></string>
-    <string name="clear_re_scan"><![CDATA[Clear & re-Scan]]></string>
+    <string name="clear_re_scan"><![CDATA[Clear & re-Scan RFID Tags]]></string>
     <string name="unit_rssi">dBm</string>
     <string name="read_me_text1">"SO Stock Lite application assists you to take stock of items in your inventory.\n\nThe application assumes that all your items are tagged and identified using UHF RFID tags. The items are assumed to be stored in bins or locations that are tagged and identified using Barcodes or QR codes."</string>
 
@@ -29,6 +30,12 @@
         fvc@rfiddirect.eu
         \nRFIDdirect Limited
         Bromfield Commercial Park, Stephen Gray Road, Unit 1, Office 8, Mold, Flintshire, CH7 1HE. United Kingdom
+        \nTel.:
+        +44 (0)845 249 0068
+        +44 (0)1352 752044"</string>
+    <string name="contact_us_content">"Name : Frits van Calker
+        \nEmail : fvc@rfiddirect.eu
+        \nCompany : RFIDdirect Limited
         \nTel.:
         +44 (0)845 249 0068
         +44 (0)1352 752044"</string>

@@ -1,0 +1,19 @@
+<resources>
+    <string name="app_name">SO Stock Lite</string>
+    <string name="app_title">Merits Furniture Audits</string>
+
+    <string name="clear_and_re_scan"><![CDATA[Clear Room/Zone]]></string>
+    <string name="finish_export_data"><![CDATA[Finish & export data]]></string>
+    <string name="scan_ok_repeat"><![CDATA[Next Room/Zone]]></string>
+    <string name="clear_re_scan"><![CDATA[Clear & re-Scan RFID Tags]]></string>
+
+    <string name="license_content">"This application is supplied to Merits Furniture by RFIDdirect Limited. For detailed terms and conditions for this license, please contact
+        \n\nFrits van Calker
+        fvc@rfiddirect.eu
+        \nRFIDdirect Limited
+        Bromfield Commercial Park, Stephen Gray Road, Unit 1, Office 8, Mold, Flintshire, CH7 1HE. United Kingdom
+        \nTel.:
+        +44 (0)845 249 0068
+        +44 (0)1352 752044"</string>
+
+</resources>

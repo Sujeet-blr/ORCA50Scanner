@@ -66,7 +66,7 @@ public class SettingsActivity extends BaseActivity {
         });
 
         cardContactSupports.setOnClickListener(view -> {
-            Intent intent = new Intent(getApplicationContext(), ContactSupportActivity.class);
+            Intent intent = new Intent(getApplicationContext(), ContactUsActivity.class);
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             startActivity(intent);
         });
