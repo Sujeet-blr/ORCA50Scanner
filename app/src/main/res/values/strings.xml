@@ -96,6 +96,9 @@
     <string name="select_asset_to_transfer">Select asset to transfer</string>
     <string name="department_where_the_asset_should_be">Department where the asset should be:</string>
     <string name="transfer_asset_to">Transfer Asset To :</string>
+    <string name="the_barcode_read_is">pull trigger</string>
+    <string name="barcode_is_read_in_ascii">Barcode is read in ASCII</string>
+    <string name="data_written_to_rfid_is">Data written to rfid tags is</string>
 
     <string-array name="dummmy_spinner">
         <item>item1</item>
