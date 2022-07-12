@@ -25,7 +25,7 @@
         \n\nPlease visit www.sensingobjects.tech to know more.
         </string>
 
-    <string name="license_content">"This application is supplied to Adept Space by RFIDdirect Limited. For detailed terms and conditions for this license, please contact
+    <string name="license_content">"This application is supplied to Adept Space Ltd by RFIDdirect Limited. For detailed terms and conditions for this license, please contact
         \n\nFrits van Calker
         fvc@rfiddirect.eu
         \nRFIDdirect Limited
@@ -33,12 +33,8 @@
         \nTel.:
         +44 (0)845 249 0068
         +44 (0)1352 752044"</string>
-    <string name="contact_us_content">"Name : Frits van Calker
-        \nEmail : fvc@rfiddirect.eu
-        \nCompany : RFIDdirect Limited
-        \nTel.:
-        +44 (0)845 249 0068
-        +44 (0)1352 752044"</string>
+    <string name="contact_us_content">"Company : Adept Space Ltd
+        \nEmail : support@adeptspace.com"</string>
     <string name="rfid_tag_matching_rules"><u>RFID Tag matching rules:</u></string>
     <string name="no_matching_is_required_show_all_scanned_rfid_tags">No matching is required. Show all scanned RFID Tags</string>
     <string name="non_matching_rfid_tags_handling_rules"><u>Non matching RFID Tags handling rules:</u></string>

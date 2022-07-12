@@ -16,7 +16,7 @@ public class AboutUsActivity extends BaseActivity {
         setContentView(R.layout.activity_about_us);
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setTitle("About Us");
+        getSupportActionBar().setTitle("About Developers");
 
         tvContent = findViewById(R.id.tvContent);
 

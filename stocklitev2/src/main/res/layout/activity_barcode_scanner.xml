@@ -60,7 +60,7 @@
             android:layout_width="match_parent"
             android:layout_height="@dimen/button_height_large"
             android:layout_marginBottom="@dimen/margin_vertical"
-            android:text="Next Room/Zone" />
+            android:text="Next Scan Room/Zone RFID tags" />
 
         <Button
             android:id="@+id/btnClear"

@@ -11,12 +11,14 @@ import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.widget.AppCompatButton;
@@ -25,6 +27,8 @@ import androidx.lifecycle.Observer;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -105,6 +109,8 @@ public class RFIDScannerActivity extends RFIDReaderBaseActivity {
             finish();
         }
 
+        btnReScan.setText("Clear & re-Scan RFID Tags\nfor Room/Zone - " + barcode);
+
         stock.setBarcode(barcode);
         adapter = new InventoryAdapter(RFIDScannerActivity.this, tagList);
         recyclerView.setAdapter(adapter);
@@ -151,7 +157,7 @@ public class RFIDScannerActivity extends RFIDReaderBaseActivity {
 
         btnReScan.setOnClickListener(view -> {
 
-            if (tagList.isEmpty()){
+            if (tagList.isEmpty()) {
 
                 tagList.clear();
                 tags.clear();
@@ -211,6 +217,14 @@ public class RFIDScannerActivity extends RFIDReaderBaseActivity {
             }
         });
 
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull @NotNull MenuItem item) {
+        if (item.getItemId() == android.R.id.home) {
+            showToast("Back-Button Not allowed, please click a button");
+        }
+        return true;
     }
 
     @Override
