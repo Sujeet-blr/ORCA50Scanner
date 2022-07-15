@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!--    theme color-->
+    <color name="primary">#3A1352</color>
+    <color name="primary_dark">#3A1352</color>
+    <color name="primary_light">#3A1352</color>
+    <color name="accent">#FF5722</color>
+    <color name="primary_text">#3A1352</color>
+    <color name="secondary_text">#4A6300</color>
+    <color name="icons">#FFFFFF</color>
+    <color name="divider">#BDBDBD</color>
+
+    <color name="color_button">#3A1352</color>
+    <color name="colorWindowBackground">#ECE1F2</color>
+
+</resources>

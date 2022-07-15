@@ -74,7 +74,7 @@ public class RFIDScannerActivity extends RFIDReaderBaseActivity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setTheme(Util.getTheme());
+//        setTheme(Util.getTheme());
         setContentView(R.layout.activity_rfid_scanner);
 
         getSupportActionBar().setTitle("Scan RFID Tags");
@@ -213,7 +213,19 @@ public class RFIDScannerActivity extends RFIDReaderBaseActivity {
                 }).create().show();
 
             } else {
-                export();
+                AppDialog.showAlert(RFIDScannerActivity.this, "", "Export all data and Start a new Task?")
+                        .setPositiveButton("Export", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.dismiss();
+                                export();
+                            }
+                        }).setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                }).create().show();
             }
         });
 

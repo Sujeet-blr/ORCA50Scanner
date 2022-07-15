@@ -50,7 +50,7 @@ public class BaseActivity extends AppActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        setTheme(Util.getTheme());
+//        setTheme(Util.getTheme());
 
         logger.i(TAG, "created Activity : " + this.getClass().getCanonicalName());
 

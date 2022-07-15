@@ -9,9 +9,9 @@ public class Util {
 
     public static int getTheme() {
         if (BuildConfig.FLAVOR.equalsIgnoreCase("adept")) {
-            theme = R.style.Theme_AdeptSpace;
+//            theme = R.style.Theme_AdeptSpace;
         } else if (BuildConfig.FLAVOR.equalsIgnoreCase("merit")) {
-            theme = R.style.Theme_Merit;
+//            theme = R.style.Theme_Merit;
         }
         return theme;
     }

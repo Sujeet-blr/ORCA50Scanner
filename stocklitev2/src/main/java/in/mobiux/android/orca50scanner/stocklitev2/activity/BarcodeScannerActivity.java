@@ -38,7 +38,7 @@ public class BarcodeScannerActivity extends BarcodeReaderBaseActivity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setTheme(Util.getTheme());
+//        setTheme(Util.getTheme());
         setContentView(R.layout.activity_barcode_scanner);
 
         edtBarcode = findViewById(R.id.edtBarcode);
