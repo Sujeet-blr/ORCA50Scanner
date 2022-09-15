@@ -11,8 +11,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.List;
 
-import in.mobiux.android.orca50scanner.reader.model.Inventory;
 import in.mobiux.android.orca50scanner.stocklitev2.R;
+import in.mobiux.android.orca50scanner.stocklitev2.db.model.Inventory;
 import in.mobiux.android.orca50scanner.stocklitev2.utils.RFIDUtils;
 
 /**

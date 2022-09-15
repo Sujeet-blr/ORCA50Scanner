@@ -50,4 +50,10 @@
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
 
+    <string name="camera_permission_granted">Camera Permission Granted</string>
+    <string name="camera_permission_denied">Camera Permission Denied</string>
+    <string name="storage_permission_granted">Storage Permission Granted</string>
+    <string name="storage_permission_denied">Storage Permission Denied</string>
+    <string name="sync_required">Sync required to proceed</string>
+
 </resources>

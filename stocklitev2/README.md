@@ -1,5 +1,7 @@
 # Stock Lite
 
+Device Support : Orca50Air
+
 How to create a new apk for new Client
 ---------------------------------------
 This can be done by creating build-flavour for each client.

@@ -6,7 +6,8 @@ import androidx.room.PrimaryKey;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-import in.mobiux.android.orca50scanner.common.api.model.BaseModel;
+import in.mobiux.android.commonlibs.api.model.BaseModel;
+
 
 @Entity(tableName = "tags")
 public class RFIDTag extends BaseModel {

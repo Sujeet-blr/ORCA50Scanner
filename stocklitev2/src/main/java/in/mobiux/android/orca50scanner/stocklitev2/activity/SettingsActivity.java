@@ -10,13 +10,12 @@ import android.widget.ToggleButton;
 
 import androidx.cardview.widget.CardView;
 
-import in.mobiux.android.orca50scanner.common.activity.ContactSupportActivity;
-import in.mobiux.android.orca50scanner.common.activity.ExportLogsActivity;
-import in.mobiux.android.orca50scanner.reader.activity.RFOutputPowerActivity;
-import in.mobiux.android.orca50scanner.reader.activity.ReaderStatusActivity;
-import in.mobiux.android.orca50scanner.reader.core.RFIDReader;
-import in.mobiux.android.orca50scanner.reader.core.Reader;
+
 import in.mobiux.android.orca50scanner.stocklitev2.R;
+import in.mobiux.android.orcaairlibs.activity.RFOutputPowerActivity;
+import in.mobiux.android.orcaairlibs.activity.ReaderStatusActivity;
+import in.mobiux.android.orcaairlibs.core.RFIDReader;
+import in.mobiux.android.orcaairlibs.core.Reader;
 
 public class SettingsActivity extends BaseActivity {
 

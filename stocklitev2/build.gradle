@@ -7,14 +7,14 @@ apply plugin: 'com.google.firebase.crashlytics'
 
 android {
     compileSdkVersion 32
-    buildToolsVersion "32.0.0"
+//    buildToolsVersion "32.0.0"
 
     defaultConfig {
         applicationId "in.mobiux.android.orca50scanner.stocklitev2"
-        minSdkVersion 19
+        minSdkVersion 21
         targetSdkVersion 32
         versionCode 10
-        versionName "3_0_8"
+        versionName "3_1_0"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         multiDexEnabled true
@@ -72,15 +72,19 @@ android {
     }
 }
 
+repositories {
+    maven { url "https://mobiux.jfrog.io/artifactory/androidlibs-gradle-release" }
+}
+
 dependencies {
 
     implementation 'androidx.appcompat:appcompat:1.3.1'
     implementation 'com.google.android.material:material:1.4.0'
     implementation 'androidx.constraintlayout:constraintlayout:2.1.1'
-    implementation project(path: ':Common')
-    implementation project(path: ':Reader')
+//    implementation project(path: ':Common')
+//    implementation project(path: ':Reader')
     implementation 'org.jetbrains:annotations:15.0'
-    implementation project(path: ':OrcaBarcodeReader')
+//    implementation project(path: ':OrcaBarcodeReader')
     implementation 'androidx.room:room-runtime:2.4.1'
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
     testImplementation 'junit:junit:4.+'
@@ -102,4 +106,7 @@ dependencies {
     annotationProcessor 'androidx.room:room-compiler:2.4.1'
 
     implementation 'com.opencsv:opencsv:5.5.2'
+
+    implementation 'in.mobiux.android.libs:androidutils:v1.0.2'
+    implementation 'in.mobiux.android.orca:Orca50AirLibs:v1.0.6'
 }

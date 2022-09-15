@@ -34,10 +34,10 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import in.mobiux.android.orca50scanner.reader.model.Inventory;
 import in.mobiux.android.orca50scanner.stocklitev2.R;
 import in.mobiux.android.orca50scanner.stocklitev2.db.AppDatabaseRepo;
 import in.mobiux.android.orca50scanner.stocklitev2.db.model.RFIDTag;
+import in.mobiux.android.orca50scanner.stocklitev2.utils.MyApplication;
 import in.mobiux.android.orca50scanner.stocklitev2.utils.RFIDUtils;
 
 import static in.mobiux.android.orca50scanner.stocklitev2.utils.RFIDUtils.MatchingRule.MR1;
@@ -60,6 +60,7 @@ public class AppSettingsActivity extends BaseActivity {
     private Set<String> acronyms = new HashSet<>();
 
     private AppDatabaseRepo dbRepo;
+    private MyApplication app;
 
     String allowCharacterSet = "ABCDEFabcdef0123456789";
 
@@ -262,7 +263,7 @@ public class AppSettingsActivity extends BaseActivity {
     @Override
     public void onActivityResult(int requestCode, int resultCode,
                                  Intent resultData) {
-//        super.onActivityResult(requestCode, resultCode, resultData);
+        super.onActivityResult(requestCode, resultCode, resultData);
         if (requestCode == PICK_FILE
                 && resultCode == Activity.RESULT_OK) {
             // The result data contains a URI for the document or directory that

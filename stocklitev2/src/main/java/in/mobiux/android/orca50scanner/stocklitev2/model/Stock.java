@@ -3,8 +3,8 @@ package in.mobiux.android.orca50scanner.stocklitev2.model;
 import java.util.ArrayList;
 import java.util.List;
 
-import in.mobiux.android.orca50scanner.common.utils.AppUtils;
-import in.mobiux.android.orca50scanner.reader.model.Inventory;
+import in.mobiux.android.commonlibs.utils.AppUtils;
+import in.mobiux.android.orca50scanner.stocklitev2.db.model.Inventory;
 
 public class Stock {
 

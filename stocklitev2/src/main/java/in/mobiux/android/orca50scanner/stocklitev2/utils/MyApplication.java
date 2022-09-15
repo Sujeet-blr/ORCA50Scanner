@@ -5,8 +5,8 @@ import android.os.Handler;
 import java.util.ArrayList;
 import java.util.List;
 
-import in.mobiux.android.orca50scanner.common.utils.App;
-import in.mobiux.android.orca50scanner.common.utils.AppBuildConfig;
+import in.mobiux.android.commonlibs.utils.App;
+import in.mobiux.android.commonlibs.utils.SessionManager;
 import in.mobiux.android.orca50scanner.stocklitev2.BuildConfig;
 import in.mobiux.android.orca50scanner.stocklitev2.R;
 import in.mobiux.android.orca50scanner.stocklitev2.activity.BaseActivity;
@@ -22,6 +22,9 @@ public class MyApplication extends App {
     private List<BaseActivity> activities = new ArrayList<>();
     private List<Stock> stocks = new ArrayList<>();
     public String[] scannedRooms = new String[2];
+    public AppLogger logger;
+    private Handler mHandler;
+    private SessionManager session;
 
     @Override
     public void onCreate() {
@@ -32,24 +35,25 @@ public class MyApplication extends App {
 //        } else {
 //            setTheme(R.style.Theme_Merit);
 //        }
-        logger.i(TAG, "= App Started =\n");
         mHandler = new Handler(getMainLooper());
+        logger = AppLogger.getInstance(getApplicationContext());
+        session = SessionManager.getInstance(getApplicationContext());
         resetScannedRoomList();
 
-        setBuildConfig(appBuildConfig());
+//        setBuildConfig(appBuildConfig());
     }
 
-    private AppBuildConfig appBuildConfig() {
-
-        AppBuildConfig appBuildConfig = new AppBuildConfig();
-
-        appBuildConfig.DEBUG = BuildConfig.DEBUG;
-        appBuildConfig.APPLICATION_ID = BuildConfig.APPLICATION_ID;
-        appBuildConfig.BUILD_TYPE = BuildConfig.BUILD_TYPE;
-        appBuildConfig.VERSION_CODE = BuildConfig.VERSION_CODE;
-        appBuildConfig.VERSION_NAME = BuildConfig.VERSION_NAME;
-        return appBuildConfig;
-    }
+//    private AppBuildConfig appBuildConfig() {
+//
+//        AppBuildConfig appBuildConfig = new AppBuildConfig();
+//
+//        appBuildConfig.DEBUG = BuildConfig.DEBUG;
+//        appBuildConfig.APPLICATION_ID = BuildConfig.APPLICATION_ID;
+//        appBuildConfig.BUILD_TYPE = BuildConfig.BUILD_TYPE;
+//        appBuildConfig.VERSION_CODE = BuildConfig.VERSION_CODE;
+//        appBuildConfig.VERSION_NAME = BuildConfig.VERSION_NAME;
+//        return appBuildConfig;
+//    }
 
 
     @Override

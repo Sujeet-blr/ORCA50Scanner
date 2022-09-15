@@ -26,10 +26,14 @@ import org.jetbrains.annotations.NotNull;
 import java.io.File;
 import java.util.List;
 
-import in.mobiux.android.orca50scanner.common.activity.AppActivity;
-import in.mobiux.android.orca50scanner.reader.model.Inventory;
+import in.mobiux.android.commonlibs.activity.AppActivity;
+import in.mobiux.android.commonlibs.utils.LanguageUtils;
 import in.mobiux.android.orca50scanner.stocklitev2.BuildConfig;
 import in.mobiux.android.orca50scanner.stocklitev2.R;
+import in.mobiux.android.orca50scanner.stocklitev2.db.model.Inventory;
+import in.mobiux.android.orca50scanner.stocklitev2.utils.AppLogger;
+import in.mobiux.android.orca50scanner.stocklitev2.utils.MyApplication;
+import in.mobiux.android.orca50scanner.stocklitev2.utils.SessionManager;
 import in.mobiux.android.orca50scanner.stocklitev2.utils.Util;
 
 /**
@@ -45,17 +49,24 @@ public class BaseActivity extends AppActivity {
     protected ProgressDialog progressDialog;
     private ImageView ivHome;
     private TextView textToolbarTitle;
+    protected AppLogger logger;
+    protected LanguageUtils languageUtils;
+    protected SessionManager session;
+    protected MyApplication app;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
 //        setTheme(Util.getTheme());
+        logger = AppLogger.getInstance(getApplicationContext());
+        session = SessionManager.getInstance(getApplicationContext());
+        app = (MyApplication) getApplicationContext();
 
         logger.i(TAG, "created Activity : " + this.getClass().getCanonicalName());
 
-        languageUtils.switchLanguage(this, session.getLanguage());
-        activityLanguage = session.getLanguage();
+//        languageUtils.switchLanguage(this, session.getLanguage());
+//        activityLanguage = session.getLanguage();
     }
 
     @Override

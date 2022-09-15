@@ -16,15 +16,15 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.widget.AppCompatButton;
 
-import com.zebra.sdl.BarcodeReaderBaseActivity;
 
 import org.jetbrains.annotations.NotNull;
 
 import in.mobiux.android.orca50scanner.stocklitev2.R;
 import in.mobiux.android.orca50scanner.stocklitev2.utils.MyApplication;
 import in.mobiux.android.orca50scanner.stocklitev2.utils.Util;
+import in.mobiux.android.orcaairlibs.activity.BarcodeBaseActivity;
 
-public class BarcodeScannerActivity extends BarcodeReaderBaseActivity {
+public class BarcodeScannerActivity extends BarcodeBaseActivity {
 
     private static final String TAG = "BarcodeScannerActivity";
 
@@ -89,11 +89,11 @@ public class BarcodeScannerActivity extends BarcodeReaderBaseActivity {
         int id = item.getItemId();
 
         if (id == R.id.action_settings) {
-            startActivity(new Intent(app, SettingsActivity.class));
+            startActivity(new Intent(myApp, SettingsActivity.class));
         } else if (id == R.id.action_create) {
             askForNewTask();
         } else if (id == R.id.action_app_settings) {
-            startActivity(new Intent(app, AppSettingsActivity.class));
+            startActivity(new Intent(myApp, AppSettingsActivity.class));
         }
         return super.onOptionsItemSelected(item);
     }

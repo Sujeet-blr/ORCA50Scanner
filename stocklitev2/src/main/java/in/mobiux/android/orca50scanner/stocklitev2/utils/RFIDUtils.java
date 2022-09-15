@@ -5,7 +5,6 @@ import android.content.Context;
 import java.util.HashSet;
 import java.util.Set;
 
-import in.mobiux.android.orca50scanner.common.utils.SessionManager;
 
 import static in.mobiux.android.orca50scanner.stocklitev2.utils.RFIDUtils.MatchingRule.MR3;
 

@@ -3,12 +3,9 @@ package in.mobiux.android.orca50scanner.stocklitev2.activity;
 import android.Manifest;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
-import android.graphics.drawable.Drawable;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -21,8 +18,8 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.widget.AppCompatButton;
-import androidx.cardview.widget.CardView;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.lifecycle.Observer;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -35,20 +32,23 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Set;
 
-import in.mobiux.android.orca50scanner.common.utils.AppUtils;
-import in.mobiux.android.orca50scanner.common.utils.CSVUtils;
-import in.mobiux.android.orca50scanner.reader.activity.RFIDReaderBaseActivity;
-import in.mobiux.android.orca50scanner.reader.model.Inventory;
+import in.mobiux.android.commonlibs.activity.AppActivity;
+import in.mobiux.android.commonlibs.utils.CSVUtils;
 import in.mobiux.android.orca50scanner.stocklitev2.BuildConfig;
 import in.mobiux.android.orca50scanner.stocklitev2.R;
 import in.mobiux.android.orca50scanner.stocklitev2.adapter.InventoryAdapter;
 import in.mobiux.android.orca50scanner.stocklitev2.components.AppDialog;
 import in.mobiux.android.orca50scanner.stocklitev2.db.AppDatabaseRepo;
+import in.mobiux.android.orca50scanner.stocklitev2.db.model.Inventory;
 import in.mobiux.android.orca50scanner.stocklitev2.db.model.RFIDTag;
 import in.mobiux.android.orca50scanner.stocklitev2.model.Stock;
+import in.mobiux.android.orca50scanner.stocklitev2.utils.Constraints;
 import in.mobiux.android.orca50scanner.stocklitev2.utils.MyApplication;
 import in.mobiux.android.orca50scanner.stocklitev2.utils.RFIDUtils;
+import in.mobiux.android.orca50scanner.stocklitev2.utils.SessionManager;
 import in.mobiux.android.orca50scanner.stocklitev2.utils.Util;
+import in.mobiux.android.orcaairlibs.activity.RFIDReaderBaseActivity;
+import in.mobiux.android.orcaairlibs.utils.AppUtils;
 
 import static in.mobiux.android.orca50scanner.stocklitev2.utils.RFIDUtils.MatchingRule.MR3;
 
@@ -64,12 +64,13 @@ public class RFIDScannerActivity extends RFIDReaderBaseActivity {
     private MyApplication myApp;
     private TextView tvHeader;
     private FloatingActionButton fabRSSI;
-    private int rfOutputPower = 0;
+    private int rfOutputPower = Constraints.DEFAULT_RF_POWER_OUTPUT;
 
     private AppDatabaseRepo dbRepo;
     private HashMap<String, RFIDTag> dbSample = new HashMap<>();
     private RFIDUtils rfidUtils;
     private String NO_RFID_MSG = "No RFID Tags Found !";
+    private SessionManager session;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -90,8 +91,9 @@ public class RFIDScannerActivity extends RFIDReaderBaseActivity {
         fabRSSI.setVisibility(View.GONE);
 
         myApp = (MyApplication) getApplicationContext();
-        dbRepo = new AppDatabaseRepo(app);
-        rfidUtils = RFIDUtils.getInstance(app);
+        dbRepo = new AppDatabaseRepo(myApp);
+        rfidUtils = RFIDUtils.getInstance(myApp);
+        session = SessionManager.getInstance(getApplicationContext());
 
         dbRepo.getRFIDTagsList().observe(this, new Observer<List<RFIDTag>>() {
             @Override
@@ -194,7 +196,7 @@ public class RFIDScannerActivity extends RFIDReaderBaseActivity {
         });
 
         btnExportData.setOnClickListener(view -> {
-            checkPermission(RFIDScannerActivity.this, Manifest.permission.WRITE_EXTERNAL_STORAGE, STORAGE_PERMISSION_CODE);
+            checkPermission(RFIDScannerActivity.this, Manifest.permission.WRITE_EXTERNAL_STORAGE, Constraints.STORAGE_PERMISSION_CODE);
 
             if (tagList.isEmpty()) {
 
@@ -271,8 +273,12 @@ public class RFIDScannerActivity extends RFIDReaderBaseActivity {
     }
 
     @Override
-    public void onInventoryTag(Inventory inventory) {
-        super.onInventoryTag(inventory);
+    public void onInventoryTag(in.mobiux.android.orcaairlibs.model.Inventory inv) {
+        super.onInventoryTag(inv);
+
+        Inventory inventory = new Inventory();
+        inventory.setEpc(inv.getEpc());
+        inventory.setRssi(inv.getRssi());
 
         Inventory matchingInventory = tags.get(inventory.getFormattedEPC());
 
@@ -422,5 +428,52 @@ public class RFIDScannerActivity extends RFIDReaderBaseActivity {
         csvUtils.writeToColumn(columns);
 
         csvUtils.createAndExportLogs(RFIDScannerActivity.this);
+    }
+
+    // Function to check and request permission.
+    public void checkPermission(AppActivity activity, String permission, int requestCode) {
+        if (ContextCompat.checkSelfPermission(RFIDScannerActivity.this, permission)
+                == PackageManager.PERMISSION_DENIED) {
+
+            // Requesting the permission
+            ActivityCompat.requestPermissions(RFIDScannerActivity.this,
+                    new String[]{permission},
+                    requestCode);
+        } else {
+            logger.i(TAG, "Permission already granted");
+        }
+    }
+
+    // This function is called when the user accepts or decline the permission.
+    // Request Code is used to check which permission called this function.
+    // This request code is provided when the user is prompt for permission.
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode,
+                                           @NonNull String[] permissions,
+                                           @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+
+        if (requestCode == Constraints.CAMERA_PERMISSION_CODE) {
+            if (grantResults.length > 0
+                    && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                Toast.makeText(this,
+                        R.string.camera_permission_granted,
+                        Toast.LENGTH_SHORT)
+                        .show();
+            } else {
+                Toast.makeText(this,
+                        R.string.camera_permission_denied,
+                        Toast.LENGTH_SHORT)
+                        .show();
+            }
+        } else if (requestCode == Constraints.STORAGE_PERMISSION_CODE) {
+            if (grantResults.length > 0
+                    && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                logger.i(TAG, getResources().getString(R.string.storage_permission_granted));
+            } else {
+                logger.e(TAG, getResources().getString(R.string.storage_permission_denied));
+            }
+        }
     }
 }
