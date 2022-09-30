@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -279,6 +280,7 @@ public class RFIDScannerActivity extends RFIDReaderBaseActivity {
         Inventory inventory = new Inventory();
         inventory.setEpc(inv.getEpc());
         inventory.setRssi(inv.getRssi());
+        inventory.setTimestamp(inventory.getCreatedAt());
 
         Inventory matchingInventory = tags.get(inventory.getFormattedEPC());
 
@@ -286,6 +288,7 @@ public class RFIDScannerActivity extends RFIDReaderBaseActivity {
         if (matchingInventory != null) {
             matchingInventory.setRssi(inventory.getRssi());
             matchingInventory.setQuantity(matchingInventory.getQuantity() + 1);
+            matchingInventory.setTimestamp(inventory.getTimestamp());
         } else {
             inventory.setQuantity(inventory.getQuantity() + 1);
             matchingInventory = inventory;

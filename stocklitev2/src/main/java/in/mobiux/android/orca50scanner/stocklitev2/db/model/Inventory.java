@@ -7,6 +7,9 @@ import androidx.room.PrimaryKey;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
+import in.mobiux.android.commonlibs.utils.AppUtils;
+import in.mobiux.android.orca50scanner.stocklitev2.utils.Util;
+
 @Entity(tableName = "inventory")
 public class Inventory extends in.mobiux.android.orcaairlibs.model.Inventory {
 
@@ -27,6 +30,9 @@ public class Inventory extends in.mobiux.android.orcaairlibs.model.Inventory {
     @SerializedName("isMatchingWithSample")
     @Expose
     private boolean isMatchingWithSample = false;
+    @SerializedName("createdAt")
+    @Expose
+    private String createdAt = AppUtils.getFormattedTimestampUpToSeconds();
 
     public int getInventoryId() {
         return inventoryId;
@@ -50,6 +56,14 @@ public class Inventory extends in.mobiux.android.orcaairlibs.model.Inventory {
 
     public void setMatchingWithSample(boolean matchingWithSample) {
         isMatchingWithSample = matchingWithSample;
+    }
+
+    public String getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(String createdAt) {
+        this.createdAt = createdAt;
     }
 
     @Override

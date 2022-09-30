@@ -1,0 +1,18 @@
+{
+  "version": 2,
+  "artifactType": {
+    "type": "APK",
+    "kind": "Directory"
+  },
+  "applicationId": "in.mobiux.android.orca50scanner.stocklitev2",
+  "variantName": "productionRelease",
+  "elements": [
+    {
+      "type": "SINGLE",
+      "filters": [],
+      "versionCode": 11,
+      "versionName": "3_1_1",
+      "outputFile": "SO_StockLite_3_1_1.apk"
+    }
+  ]
+}

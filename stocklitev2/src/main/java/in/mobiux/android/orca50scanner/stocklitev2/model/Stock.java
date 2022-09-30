@@ -10,7 +10,7 @@ public class Stock {
 
     private String barcode;
     private List<Inventory> rfidTags = new ArrayList<>();
-    private String timestamp = AppUtils.getFormattedTimestamp();
+    private String timestamp = AppUtils.getFormattedTimestampUpToSeconds();
 
     public String getBarcode() {
         return barcode;
